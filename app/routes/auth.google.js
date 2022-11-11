@@ -1,6 +1,6 @@
 import { authenticator } from "~/models/auth.server.js";
 import { SocialsProvider } from "remix-auth-socials";
-import { returnCookie } from "~/utils/cookies.js"
+import { returnCookie } from "~/cookies.js"
 
 export const loader = ({ request }) => login(request);
 export const action = ({ request }) => login(request);
@@ -9,6 +9,8 @@ async function login(request){
   const url = new URL(request.url)
   const code = url.searchParams.get("code")
 
+  console.log("CODE", code)
+
   try{
     return await authenticator.authenticate(SocialsProvider.GOOGLE, request, {
       successRedirect: "/dashboard",
@@ -16,6 +18,7 @@ async function login(request){
     });
   }
   catch (error){
+    console.log("ERROR!")
     if(!code) throw error;
     if(error instanceof Response && isRedirect(error)){
       error.headers.append(
