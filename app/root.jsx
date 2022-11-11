@@ -7,12 +7,20 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
+import globalStylesheetUrl from "~/styles/global.css"
+
 export const meta = () => ({
   charset: "utf-8",
   title: "New Remix App",
   viewport: "width=device-width,initial-scale=1",
 });
 
+
+export const links = () => {
+  return [
+    { rel: 'stylesheet', href: globalStylesheetUrl }
+  ]
+}
 export default function App() {
   return (
     <html lang="en">

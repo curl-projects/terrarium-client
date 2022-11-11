@@ -1,32 +1,32 @@
-export default function Index() {
+import { Form } from "@remix-run/react";
+import { SocialsProvider } from "remix-auth-socials";
+
+const CONTAINER_STYLES = {
+  width: "100%",
+  height: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+const BUTTON_STYLES = {
+  padding: "15px 25px",
+  background: "#dd4b39",
+  border: "0",
+  outline: "none",
+  cursor: "pointer",
+  color: "white",
+  fontWeight: "bold",
+};
+
+export default function Index(){
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
-    </div>
+    <Form
+      method="post"
+      action={`/auth/${SocialsProvider.GOOGLE}`}
+      style={CONTAINER_STYLES}
+    >
+      <button style={BUTTON_STYLES}>Login with Google</button>
+    </Form>
   );
-}
+};
