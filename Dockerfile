@@ -34,8 +34,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules /app/node_modules
 
 # If we're using Prisma, uncomment to cache the prisma schema
-# ADD prisma .
-# RUN npx prisma generate
+ADD prisma .
+RUN npx prisma generate
 
 ADD . .
 RUN npm run build
