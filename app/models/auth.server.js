@@ -2,6 +2,10 @@ import { Authenticator } from "remix-auth";
 import { sessionStorage } from "~/models/session.server";
 import { GoogleStrategy, SocialsProvider } from "remix-auth-socials";
 
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
+
+
 // Create an instance of the authenticator
 // It will take session storage as an input parameter and creates the user session on successful authentication
 export const authenticator = new Authenticator(sessionStorage);
@@ -9,6 +13,13 @@ export const authenticator = new Authenticator(sessionStorage);
 async function handleSocialAuthCallback({ profile }) {
   // create user in your db here
   // profile object contains all the user data like image, displayName, id
+  console.log("PROFILE", profile)
+  const user = await prisma.user.upsert({
+    where: { id: profile.id },
+    update: { },
+    create: { id: profile.id, email: profile.emails[0]['value'] }
+  })
+  console.log("USER", user)
   return profile;
 }
 

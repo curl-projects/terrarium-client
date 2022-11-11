@@ -8,11 +8,13 @@
     "start": "node -r dotenv/config ./node_modules/.bin/remix-serve build"
   },
   "dependencies": {
+    "@prisma/client": "^4.6.1",
     "@remix-run/node": "^1.7.5",
     "@remix-run/react": "^1.7.5",
     "@remix-run/serve": "^1.7.5",
     "dotenv": "^16.0.3",
     "isbot": "^3.5.4",
+    "prisma": "^4.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remix-auth": "^3.3.0",
