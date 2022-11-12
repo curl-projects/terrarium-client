@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { db } from "~/models/db.server"
 
 export async function authenticateNotionCode(code){
   const config = {
@@ -19,4 +20,31 @@ export async function authenticateNotionCode(code){
 
   const jsonResponse = await response.json()
   return jsonResponse
+}
+
+export async function createNotionAuth(notionData, userId){
+  // const notionAuth = await db.notionAuth.upsert({
+  //   where: { id: notionData.id},
+  //   create: { },
+  //   update: {}
+  //
+  // })
+
+  const notionAuth = await db.notionAuth.create({
+    data: {
+      id: notionData.id,
+      accessToken: notionData.accessToken,
+      botId: notionData.botId,
+      owner: JSON.stringify(notionData.owner),
+      duplicatedTemplateId: notionData.duplicatedTemplateId,
+      workspaceIcon: notionData.workspaceIcon,
+      workspaceId: notionData.workspaceId,
+      workspaceName: notionData.workspaceName,
+      user: {
+        connect: [{id: userId}]
+      }
+    }
+  })
+
+  return notionAuth
 }
