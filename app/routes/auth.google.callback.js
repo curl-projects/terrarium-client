@@ -7,8 +7,6 @@ export async function loader({ request }){
     await returnCookie.parse(request.headers.get("Cookie"))
   )
 
-  console.log("RETURN TO", request)
-
   return authenticator.authenticate(SocialsProvider.GOOGLE, request, {
     successRedirect: `/dashboard?code=${returnTo}`,
     failureRedirect: "/",

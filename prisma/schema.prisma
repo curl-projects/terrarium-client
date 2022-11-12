@@ -11,6 +11,20 @@ datasource db {
 }
 
 model User {
-  id String @id
+  id String @id // google id of the user
   email String
+  notionAuths NotionAuth[]
+}
+
+model NotionAuth {
+  id String @id
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  accessToken String
+  botId String
+  owner String
+  duplicatedTemplateId String
+  workspaceIcon String
+  workspaceId String
+  workspaceName String
 }

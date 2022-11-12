@@ -1,6 +1,6 @@
 import { useLoaderData, Form } from "@remix-run/react";
-
 import { authenticator } from "~/models/auth.server.js";
+import { authenticateNotionCode } from "~/models/notion.server"
 
 const CONTAINER_STYLES = {
   width: "100%",
@@ -27,6 +27,20 @@ export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/",
   })
+
+  const url = new URL(request.url)
+  const code = url.searchParams.get("code")
+
+  console.log("CODE!", code, code==="null")
+
+  if(code !== "null"){
+    const notionResponse = await authenticateNotionCode(code)
+    console.log("NOTION RESPONSE:", notionResponse)
+    if(notionResponse.error){
+      console.log("NOTION ERROR!")
+    }
+  }
+
   return { user };
 };
 

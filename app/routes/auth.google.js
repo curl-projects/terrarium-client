@@ -18,7 +18,6 @@ async function login(request){
     });
   }
   catch (error){
-    console.log("ERROR!")
     if(!code) throw error;
     if(error instanceof Response && isRedirect(error)){
       error.headers.append(
