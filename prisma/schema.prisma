@@ -25,8 +25,11 @@ model NotionAuth {
   workspaceIcon String
   workspaceId String
   workspaceName String
-
   user User @relation(fields: [userId], references: [id])
   userId String
 
+}
+
+model DiscordUsers {
+  username String @id
 }
