@@ -17,9 +17,8 @@ model User {
 }
 
 model NotionAuth {
-  id String @id
+  botId String @id
   accessToken String
-  botId String
   owner String
   duplicatedTemplateId String
   workspaceIcon String

@@ -23,46 +23,25 @@ export async function authenticateNotionCode(code){
     body: JSON.stringify(data)
   })
 
-  // const config = {
-  //   method: "post",
-  //   url: "https://api.notion.com/v1/oauth/token",
-  //   auth: {
-  //     username: process.env.NOTION_CLIENT_ID,
-  //     password: process.env.NOTION_CLIENT_SECRET
-  //   },
-  //   data: {
-  //     grant_type: "authorization_code",
-  //     code: code,
-  //   },
-  //   headers: { "Content-Type": "application/json"}
-  // }
-  //
-  // const response = await axios(config)
-
   const jsonResponse = await response.json()
   return jsonResponse
 }
 
 export async function createNotionAuth(notionData, userId){
-  // const notionAuth = await db.notionAuth.upsert({
-  //   where: { id: notionData.id},
-  //   create: { },
-  //   update: {}
-  //
-  // })
-
-  const notionAuth = await db.notionAuth.create({
-    data: {
-      id: notionData.id,
-      accessToken: notionData.accessToken,
-      botId: notionData.botId,
+  console.log("INNER NOTION DATA:", notionData)
+  const notionAuth = await db.notionAuth.upsert({
+    where: { botId: notionData.bot_id},
+    update: {},
+    create: {
+      botId: notionData.bot_id,
+      accessToken: notionData.access_token,
       owner: JSON.stringify(notionData.owner),
-      duplicatedTemplateId: notionData.duplicatedTemplateId,
-      workspaceIcon: notionData.workspaceIcon,
-      workspaceId: notionData.workspaceId,
-      workspaceName: notionData.workspaceName,
+      duplicatedTemplateId: notionData.duplicated_template_id===null ? "null" : notionData.duplicated_template_id,
+      workspaceIcon: notionData.workspace_icon,
+      workspaceId: notionData.workspace_id,
+      workspaceName: notionData.workspace_name,
       user: {
-        connect: [{id: userId}]
+        connect: {id: userId}
       }
     }
   })
