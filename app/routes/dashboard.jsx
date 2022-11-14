@@ -1,6 +1,9 @@
-import { useLoaderData, Form } from "@remix-run/react";
+import { useEffect } from "react";
+import { useLoaderData, useActionData, Form } from "@remix-run/react";
 import { authenticator } from "~/models/auth.server.js";
-import { authenticateNotionCode, createNotionAuth } from "~/models/notion.server"
+import { authenticateNotionCode, createNotionAuth,
+         readNotionAuth, addGuildAndUsers, readDiscordUsers } from "~/models/notion.server"
+
 
 const CONTAINER_STYLES = {
   width: "100%",
@@ -28,12 +31,12 @@ export const loader = async ({ request }) => {
     failureRedirect: "/",
   })
 
-  console.log("USER", user)
+  // console.log("USER", user)
 
   const url = new URL(request.url)
-  const code = url.searchParams.get("code")
+  const code = url.searchParams.get("code")===null ? 'null' : url.searchParams.get("code")
 
-  console.log("CODE!", code, code==="null")
+  // console.log("CODE!", code, code==="null")
 
   if(code !== "null"){
     const notionResponse = await authenticateNotionCode(code)
@@ -47,18 +50,57 @@ export const loader = async ({ request }) => {
     }
   }
 
-  return { user };
+  const notionAuth = await readNotionAuth(user.id)
+
+  const discordUsers = await readDiscordUsers(notionAuth[0].botId)
+  console.log('DISCORD USERS:', discordUsers)
+  return({user: user, notionAuth: notionAuth, discordUsers: discordUsers});
 };
 
+
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const botId = formData.get('botId')
+  const guildName = formData.get('guildName');
+  const discordUsers = formData.get('discordUsers');
+  const transaction = await addGuildAndUsers(botId, guildName, discordUsers)
+  console.log('FORM DATA:', guildName, discordUsers)
+  return { transaction }
+}
+
+
 export default function Dashboard(){
-  const { user } = useLoaderData();
+  const loaderData = useLoaderData();
+  const actionData = useActionData();
+
+  useEffect(()=>{
+    console.log("LOADER DATA", loaderData)
+  }, [loaderData])
+
+  useEffect(()=>{
+    console.log("ACTION DATA", actionData)
+  }, [actionData])
 
   return(
     <div style={CONTAINER_STYLES}>
        <h1>You are Logged in</h1>
-       <p>{user.displayName}</p>
+       <p>{loaderData.user.displayName}</p>
       <Form action="/logout" method="post">
         <button style={BUTTON_STYLES}>Logout</button>
+      </Form>
+
+      <Form method="post">
+        <input type="hidden" name="botId" value={loaderData.notionAuth[0].botId}></input>
+        <input type='text'
+               name='guildName'
+               placeholder="Guild Name"
+               defaultValue={loaderData.notionAuth[0]?.guildName}>
+        </input>
+        <input type='text'
+               name='discordUsers'
+               placeholder="Authorized Users"
+               defaultValue={loaderData.discordUsers?.map(element=>element.username).join(",")}></input>
+        <button type="submit">Submit</button>
       </Form>
     </div>
   );

@@ -28,7 +28,6 @@ export async function authenticateNotionCode(code){
 }
 
 export async function createNotionAuth(notionData, userId){
-  console.log("INNER NOTION DATA:", notionData)
   const notionAuth = await db.notionAuth.upsert({
     where: { botId: notionData.bot_id},
     update: {},
@@ -47,6 +46,83 @@ export async function createNotionAuth(notionData, userId){
   })
 
   return notionAuth
+}
+
+export async function readNotionAuth(userId){
+  const notionAuth = await db.notionAuth.findMany({
+    where: {
+      user: {
+        is: {
+          id: userId
+        }
+      }
+    }
+  })
+
+  return notionAuth
+}
+
+export async function addGuildAndUsers(botId, guildName, discordUsers){
+  const usersArray = discordUsers.split(",")
+  const trimmedUsersArray = usersArray.map(element => {
+    return element.trim()
+  })
+  const formattedUsersArray = trimmedUsersArray.map(element => {
+    return { username: element }
+  })
+
+  console.log("BOTID", botId)
+
+  // UPDATE GUILD ID
+  const updateGuild = db.notionAuth.update({
+    where: {
+      botId: botId
+    },
+    data: {
+      guildName: guildName
+    }
+  })
+
+  // DELETE AND CREATE USERS
+  const deleteDiscordUsers = db.discordUser.deleteMany({
+    where: {
+      notionAuth: {
+        is: {
+          botId: botId
+        }
+      }
+    }
+  })
+
+  const createDiscordUsers = db.notionAuth.update({
+    where: { botId: botId },
+    data: {
+      discordUsers: {
+        createMany: {
+          data: formattedUsersArray
+        }
+      }
+    }
+  })
+
+  const transaction = await db.$transaction([updateGuild, deleteDiscordUsers, createDiscordUsers])
+  return transaction
+}
+
+export async function readDiscordUsers(botId){
+  const discordUsers = await db.discordUser.findMany({
+    where: {
+      notionAuth: {
+        is: {
+          botId: botId
+        }
+      }
+    },
+    select: {
+      username: true
+    }
+  })
+  return discordUsers
 }
 
 async function verifyNotionAccess(discordUsername){
