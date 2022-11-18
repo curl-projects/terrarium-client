@@ -1,8 +1,15 @@
-import { useEffect } from "react";
-import { useLoaderData, useActionData, Form } from "@remix-run/react";
+import { useEffect, useState } from "react";
+import { useLoaderData, useActionData, Form, useTransition } from "@remix-run/react";
 import { authenticator } from "~/models/auth.server.js";
 import { authenticateNotionCode, createNotionAuth,
          readNotionAuth, addGuildAndUsers, readDiscordUsers } from "~/models/notion.server"
+import cn from 'classnames'
+import { BsFillArrowRightCircleFill } from "react-icons/bs"
+
+import Header from "~/components/Header/Header";
+
+import notionIcon from "../../public/assets/notion-logo.png"
+import discordIcon from "../../public/assets/discord.png";
 
 
 const CONTAINER_STYLES = {
@@ -14,15 +21,6 @@ const CONTAINER_STYLES = {
   flexDirection: "column",
 };
 
-const BUTTON_STYLES = {
-  padding: "15px 25px",
-  background: "#dd4b39",
-  border: "0",
-  outline: "none",
-  cursor: "pointer",
-  color: "white",
-  fontWeight: "bold",
-}
 
 export const loader = async ({ request }) => {
   // authenticator.isAuthenticated function returns the user object if found
@@ -52,7 +50,8 @@ export const loader = async ({ request }) => {
 
   const notionAuth = await readNotionAuth(user.id)
 
-  const discordUsers = await readDiscordUsers(notionAuth[0].botId)
+  console.log("NOTION AUTH", notionAuth)
+  const discordUsers = notionAuth[0]?.botId ? await readDiscordUsers(notionAuth[0].botId) : []
   console.log('DISCORD USERS:', discordUsers)
   return({user: user, notionAuth: notionAuth, discordUsers: discordUsers});
 };
@@ -72,6 +71,19 @@ export const action = async ({ request }) => {
 export default function Dashboard(){
   const loaderData = useLoaderData();
   const actionData = useActionData();
+  const transition = useTransition();
+  const [notionIsAuthenticated, setNotionIsAuthenticated] = useState(false)
+  const [discordUpdate, setDiscordUpdate] = useState(false)
+  const [discordIsUpdated, setDiscordIsUpdated] = useState(false)
+
+  useEffect(()=>{
+    if(loaderData.notionAuth.length === 0){
+      setNotionIsAuthenticated(false)
+    }
+    else{
+      setNotionIsAuthenticated(true)
+    }
+  }, [loaderData])
 
   useEffect(()=>{
     console.log("LOADER DATA", loaderData)
@@ -79,30 +91,89 @@ export default function Dashboard(){
 
   useEffect(()=>{
     console.log("ACTION DATA", actionData)
+    if(actionData && actionData["transaction"]){
+      setDiscordUpdate(false)
+      setDiscordIsUpdated(true)
+    }
   }, [actionData])
 
   return(
     <div style={CONTAINER_STYLES}>
-       <h1>You are Logged in</h1>
-       <p>{loaderData.user.displayName}</p>
-       <a target="_blank" href='https://api.notion.com/v1/oauth/authorize?client_id=d2e58919-d704-42a9-8638-c8c92806d68c&response_type=code&owner=user&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fnotion'>Connect notion</a>
-      <Form action="/logout" method="post">
-        <button style={BUTTON_STYLES}>Logout</button>
-      </Form>
+      <Header />
+      <div className='integrations'>
+        <div className='integrationBox'>
+          <div className='integrationBoxWrapper'>
+            <div className='connectWrapper'>
+              <div>
+                <img className='integrationIcon' src={notionIcon}></img>
+              </div>
+              <div style={{flex: 1}}/>
+              <button className={notionIsAuthenticated ? 'connectedButton' : 'connectButton'} onClick={()=> window.open('https://api.notion.com/v1/oauth/authorize?client_id=d2e58919-d704-42a9-8638-c8c92806d68c&response_type=code&owner=user&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fnotion', "_self")}>
+                {notionIsAuthenticated
+                  ? <p style={{fontSize: "18px", color: 'rgb(94, 160, 85)'}}>Connected</p>
+                  : <p style={{fontSize: "18px"}}>Connect</p>}
+              </button>
+            </div>
+            <div className='serviceNameWrapper'>
+              <p style={{fontSize: "24px"}}>Notion</p>
+            </div>
+            <div style={{flex: 1}}>
+              <p>Connect your Notion workspace to sync your Discord bug reports</p>
+            </div>
+          </div>
+        </div>
 
-      <Form method="post" action='/dashboard'>
-        <input type="hidden" name="botId" value={loaderData.notionAuth[0].botId}></input>
-        <input type='text'
-               name='guildName'
-               placeholder="Guild Name"
-               defaultValue={loaderData.notionAuth[0]?.guildName}>
-        </input>
-        <input type='text'
-               name='discordUsers'
-               placeholder="Authorized Users"
-               defaultValue={loaderData.discordUsers?.map(element=>element.username).reverse().join(",")}></input>
-        <button type="submit">Submit</button>
-      </Form>
+        <div className='integrationBox'>
+          <div className='integrationBoxWrapper'>
+            <div className='connectWrapper'>
+              <div>
+                <img className='integrationIcon' src={discordIcon}></img>
+              </div>
+              <div style={{flex: 1}}/>
+              <button className={discordIsUpdated ? "connectedButton" : 'connectButton'} onClick={()=>setDiscordUpdate(prevState => !prevState)}>
+                {discordIsUpdated
+                  ? <p style={{fontSize: "18px", color: 'rgb(94, 160, 85)'}}>Updated</p>
+                  : <p style={{fontSize: "18px"}}>{discordUpdate ? "Cancel" : "Update"}</p>}
+              </button>
+            </div>
+            <div className='serviceNameWrapper'>
+              <p style={{fontSize: "24px"}}>Discord</p>
+            </div>
+            <div style={{flex: 1}}>
+              <p>Update the guild and usernames that have access to your Notion workspace</p>
+            </div>
+            {discordUpdate &&
+              <div className='discordInputWrapper'>
+                <Form method="post" action='/dashboard'>
+                  <input type="hidden" name="botId" value={loaderData.notionAuth[0] && loaderData.notionAuth[0].botId}></input>
+                    <input type='text'
+                           name='guildName'
+                           placeholder="Guild Name"
+                           className='discordInputButton'
+                           defaultValue={loaderData.notionAuth[0]?.guildName}>
+                    </input>
+                  <input type='text'
+                         name='discordUsers'
+                         placeholder="Authorized Users"
+                         className='discordInputButton'
+                         defaultValue={loaderData.discordUsers?.map(element=>element.username).reverse().join(",")}></input>
+                       <div style={{display: "flex", justifyContent: "center", alignItems: "center", paddingTop: "10px"}}>
+                         <button className="discordUpdateButton" type="submit">
+                           {transition.state === 'submitting'
+                             ? "..."
+                             : <BsFillArrowRightCircleFill style={{height: "20px", width: "20px", color: "rgb(94, 160, 85)"}}/>
+                           }
+                         </button>
+                       </div>
+
+                </Form>
+
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };

@@ -8,6 +8,7 @@ import {
 } from "@remix-run/react";
 
 import globalStylesheetUrl from "~/styles/global.css"
+import tailwindStylesheetUrl from "~/styles/app.css"
 
 export const meta = () => ({
   charset: "utf-8",
@@ -18,7 +19,8 @@ export const meta = () => ({
 
 export const links = () => {
   return [
-    { rel: 'stylesheet', href: globalStylesheetUrl }
+    { rel: 'stylesheet', href: globalStylesheetUrl },
+    { rel: 'stylesheet', href: tailwindStylesheetUrl },
   ]
 }
 export default function App() {

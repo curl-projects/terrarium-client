@@ -134,9 +134,6 @@ export async function readDiscordUsers(botId){
       username: true
     }
   })
+  console.log('INNER DISCORD USERS:', discordUsers)
   return discordUsers
-}
-
-async function verifyNotionAccess(discordUsername){
-
 }

@@ -154,5 +154,126 @@ select {
 /* Layout                         */
 /* ------------------------------ */
 body {
-    background-color: rgb(var(--clr-grey-700));
+    /* background-color: rgb(var(--clr-grey-700)); */
+}
+
+.logInText {
+  font-family: var(--ff-sansserif);
+}
+
+/* HEADER */
+.header {
+  width: 100vw;
+  height: 60px;
+  background-color: rgb(237, 237, 237);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-right: 8px;
+}
+
+/* INTEGRATIONS */
+.integrations {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
+.integrationBox {
+  border: 1px solid rgb(239, 239, 239);
+  /* height: 240px; */
+  height: fit-content;
+  width: 360px;
+  border-radius: 10px;
+  box-shadow: 1px 2px 5px 1px rgb(237, 237, 237);
+  /* background-color: rgb(243 244 246/var(--tw-bg-opacity)); */
+}
+
+.integrationBoxWrapper {
+  display: flex;
+  flex-direction: column;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.connectWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  padding-bottom: 8px;
+  alignItems: center;
+}
+
+.integrationIcon {
+  height: 36px;
+  width: 36px;
+}
+
+.connectButton {
+  border: 1px solid rgb(239, 239, 239);
+  border-radius: 10px;
+  height: 40px;
+  width: 120px;
+  box-shadow: 1px 1px 2px 0.5px rgb(237, 237, 237);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.connectedButton {
+  border-radius: 10px;
+  height: 40px;
+  width: 120px;
+  background-color: rgb(236, 253, 234);
+  box-shadow: 1px 1px 2px 0.5px rgb(236, 253, 234);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.serviceNameWrapper{
+  flex: 1;
+  padding-bottom: 10px;
+}
+
+.logoutButton {
+  padding: 10px 20px;
+  background: rgba(140, 140, 140, 0.3);
+  border-radius: 7px;
+  border: 0;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
+.discordInputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.discordInputButton {
+  /* border: 1px solid green !important; */
+  height: 40px;
+  width: 100%;
+  text-align: center;
+  font-size: 25px;
+  color: rgb(94, 160, 85);
+  margin-top: 10px;
+  border-radius: 8px;
+  background-color: rgba(236, 253, 234, 0.9) !important;
+  box-shadow: 1px 1px 2px 0.5px rgba(236, 253, 234) !important;
+}
+
+.discordUpdateButton {
+  border: none;
+  padding-top: 3px;
+  cursor: pointer;
 }
