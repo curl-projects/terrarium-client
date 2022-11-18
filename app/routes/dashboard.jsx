@@ -85,11 +85,12 @@ export default function Dashboard(){
     <div style={CONTAINER_STYLES}>
        <h1>You are Logged in</h1>
        <p>{loaderData.user.displayName}</p>
+       <a target="_blank" href='https://api.notion.com/v1/oauth/authorize?client_id=d2e58919-d704-42a9-8638-c8c92806d68c&response_type=code&owner=user&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fnotion'>Connect notion</a>
       <Form action="/logout" method="post">
         <button style={BUTTON_STYLES}>Logout</button>
       </Form>
 
-      <Form method="post">
+      <Form method="post" action='/dashboard'>
         <input type="hidden" name="botId" value={loaderData.notionAuth[0].botId}></input>
         <input type='text'
                name='guildName'
@@ -99,7 +100,7 @@ export default function Dashboard(){
         <input type='text'
                name='discordUsers'
                placeholder="Authorized Users"
-               defaultValue={loaderData.discordUsers?.map(element=>element.username).join(",")}></input>
+               defaultValue={loaderData.discordUsers?.map(element=>element.username).reverse().join(",")}></input>
         <button type="submit">Submit</button>
       </Form>
     </div>
