@@ -13,6 +13,7 @@ datasource db {
 model User {
   id String @id // google id of the user
   email String
+  discordBotAuth Boolean @default(false)
   notionAuths NotionAuth[]
 }
 
