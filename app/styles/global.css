@@ -178,15 +178,18 @@ body {
 /* INTEGRATIONS */
 .integrations {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 40px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .integrationBox {
   border: 1px solid rgb(239, 239, 239);
   /* height: 240px; */
   height: fit-content;
-  width: 360px;
+  width: 40%;
   border-radius: 10px;
   box-shadow: 1px 2px 5px 1px rgb(237, 237, 237);
   /* background-color: rgb(243 244 246/var(--tw-bg-opacity)); */
@@ -214,6 +217,12 @@ body {
   width: 36px;
 }
 
+.buttonRowWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
 .connectButton {
   border: 1px solid rgb(239, 239, 239);
   border-radius: 10px;
@@ -232,7 +241,6 @@ body {
   width: 120px;
   background-color: rgb(236, 253, 234);
   box-shadow: 1px 1px 2px 0.5px rgb(236, 253, 234);
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
