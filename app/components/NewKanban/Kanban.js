@@ -4,15 +4,15 @@ import KanbanColumn from '~/components/NewKanban/KanbanColumn.js'
 
 const columnsFromBackend = {
   1: {
-    name: "To do",
+    name: "Roadmap",
     items: []
   },
   2: {
-    name: "In Progress",
+    name: "Workspace",
     items: []
   },
   3: {
-    name: "Done",
+    name: "Drafts",
     items: []
   }
 };
@@ -21,7 +21,7 @@ export default function Kanban(){
   const [columns, setColumns] = useState(columnsFromBackend);
 
   const [columnOne, setColumnOne] = useState([{id: "1", title: "Test One", description: "This is test one", cardState: 1}])
-  const [columnTwo, setColumnTwo] = useState([])
+  const [columnTwo, setColumnTwo] = useState([{id: "2", title: "Test Two", description: "This is test two", cardState: 2}])
   const [columnThree, setColumnThree] = useState([])
 
 
@@ -29,17 +29,17 @@ export default function Kanban(){
     setColumns(
       {
         1: {
-          name: "To do",
+          name: "Roadmap",
           items: columnOne,
           color: "#E1E4E8",
         },
         2: {
-          name: "In Progress",
+          name: "Workspace",
           items: columnTwo,
           color: "#F0E7F6",
         },
         3: {
-          name: "Complete",
+          name: "Drafts",
           items: columnThree,
           color: "#FFDCE0",
         }
@@ -96,7 +96,6 @@ export default function Kanban(){
 
   return(
     <div className="kanbanBoard">
-      <div className="kanbanContent">
         <DragDropContext
           onDragEnd={result => onDragEnd(result, columns, setColumns)}
         >
@@ -106,7 +105,6 @@ export default function Kanban(){
             );
           })}
         </DragDropContext>
-      </div>
     </div>
   )
 }

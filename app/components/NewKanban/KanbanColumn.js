@@ -7,18 +7,13 @@ export default function KanbanColumn(props){
   console.log('COLUMN ID:', props.columnId)
   return(
     <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        backgroundColor: "rgb(236, 240, 241)"
-      }}
+      className='kanbanColumnOuter'
       key={props.columnId}
     >
-      <div className="columnTitleWrapper" style={{backgroundColor: props.column.color}}>
-        <h2 className="columnTitleText">{props.column.name}</h2>
+      <div className="columnNameWrapper" style={{backgroundColor: props.column.color}}>
+        <h2 className="columnName">{props.column.name}</h2>
       </div>
-      <div style={{ margin: 8 }}>
+      <div className='kanbanColumnInner'>
         <Droppable droppableId={props.columnId} key={props.columnId}>
           {(provided, snapshot) => {
             return (
@@ -30,10 +25,9 @@ export default function KanbanColumn(props){
                     ? `${props.column.color}`
                     : "rgb(236, 240, 241)",
                   padding: 4,
-                  width: 350,
-                  margin: 10,
-                  minHeight: 500,
-                  borderRadius: "8px"
+                  width: '100%',
+                  height: "100%",
+                  borderRadius: "8px",
                 }}
               >
                   {props.column.items.map((item, index) => {

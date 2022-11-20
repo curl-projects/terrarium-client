@@ -17,7 +17,7 @@ export default function KanbanCard(props){
               userSelect: "none",
               padding: 16,
               margin: "8px",
-              minHeight: "50px",
+              height: "fit-content",
               boxShadow: "0 2px 4px rgba(0, 0, 0, 0.08)",
               border: "1px solid #DDDDDD",
               borderRadius: "8px",
@@ -31,11 +31,9 @@ export default function KanbanCard(props){
           >
           <div className="cardContentWrapper">
             <div className="cardHeader">
-            <div className="headerTextWrapper">
               <p className="headerText">
                 {props.item ? props.item.title : ""}
               </p>
-            </div>
             </div>
             <div className="cardContent">
               <p className="contentText">
