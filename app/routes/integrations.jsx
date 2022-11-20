@@ -43,7 +43,6 @@ export const loader = async ({ request }) => {
     }
     else{
       const notionAuth = await createNotionAuth(notionResponse, user.id)
-      console.log("NOTION AUTH:", notionAuth)
     }
   }
 
@@ -62,7 +61,6 @@ export const action = async ({ request }) => {
   const guildName = formData.get('guildName');
   const discordUsers = formData.get('discordUsers');
   const transaction = await addGuildAndUsers(botId, guildName, discordUsers)
-  console.log('FORM DATA:', guildName, discordUsers)
   return { transaction }
 }
 
@@ -72,6 +70,7 @@ export default function Dashboard(){
   const actionData = useActionData();
   const [notionIsAuthenticated, setNotionIsAuthenticated] = useState(false)
   const [usersAreAuthenticated, setUsersAreAuthenticated] = useState(false)
+  const [userUpdateSuccess, setUserUpdateSuccess] = useState(false)
 
   useEffect(()=>{
     if(loaderData.notionAuth.length === 0){
@@ -87,6 +86,7 @@ export default function Dashboard(){
     else{
       setUsersAreAuthenticated(true)
     }
+
   }, [loaderData])
 
   useEffect(()=>{
@@ -104,11 +104,11 @@ export default function Dashboard(){
         <NotionIntegration notionIsAuthenticated={notionIsAuthenticated} />
         <DiscordIntegration
           databaseUser = {loaderData.databaseUser}
-
           />
         <UserAuthIntegration
           usersAreAuthenticated={usersAreAuthenticated}
           loaderData={loaderData}
+          transaction = {actionData?.transaction ? actionData.transaction : []}
         />
 
       </div>

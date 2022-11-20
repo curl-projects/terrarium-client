@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, useTransition } from "@remix-run/react"
 
 import { BsFillArrowRightCircleFill } from "react-icons/bs"
@@ -8,6 +8,12 @@ import userIcon from "../../../public/assets/user-icon.png";
 export default function UserAuthIntegration(props){
   const [usersUpdate, setUsersUpdate] = useState(false)
   const transition = useTransition()
+
+  useEffect(()=>{
+    if(props.transaction && props.transaction.length !== 0){
+      setUsersUpdate(false)
+    }
+  }, [props.transaction])
 
   return(
     <div className='integrationBox'>

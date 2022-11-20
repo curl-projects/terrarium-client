@@ -15,6 +15,7 @@ model User {
   email String
   discordBotAuth Boolean @default(false)
   notionAuths NotionAuth[]
+  features Feature[]
 }
 
 model NotionAuth {
@@ -35,4 +36,12 @@ model DiscordUser {
   username String @id
   notionAuth NotionAuth @relation(fields: [notionAuthId], references: [botId])
   notionAuthId String
+}
+
+model Feature {
+  id Int @id @default(sequence())
+  title String
+  description String
+  user User @relation(fields: [userId], references: [id])
+  userId String
 }

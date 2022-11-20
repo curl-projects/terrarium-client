@@ -1,0 +1,39 @@
+
+.kanbanHeader{
+  height: 300px;
+  display: flex;
+  flex-direction: row;
+}
+
+.kanbanTitle{
+  width: 70%;
+  box-sizing: border-box;
+  padding-left: 40px;
+  padding-top: 40px;
+}
+
+.kanbanTitleText{
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.kanbanTitleDescriptionWrapper{
+  padding-right: 150px;
+  margin-top: 0px;
+}
+
+.kanbanTitleDescriptionText{
+  font-size: 20px;
+  color: gray;
+}
+
+.titleIconGearText{
+  font-size: 50px;
+  line-height: 0;
+}
+
+.kanbanCreate{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

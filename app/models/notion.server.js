@@ -28,7 +28,6 @@ export async function authenticateNotionCode(code){
 }
 
 export async function createNotionAuth(notionData, userId){
-  console.log("INNER NOTION DATA", notionData)
   const notionAuth = await db.notionAuth.upsert({
     where: { botId: notionData.bot_id},
     update: {
@@ -83,7 +82,6 @@ export async function addGuildAndUsers(botId, guildName, discordUsers){
     return { username: element }
   })
 
-  console.log("BOTID", botId)
 
   // UPDATE GUILD ID
   const updateGuild = db.notionAuth.update({
@@ -134,6 +132,5 @@ export async function readDiscordUsers(botId){
       username: true
     }
   })
-  console.log('INNER DISCORD USERS:', discordUsers)
   return discordUsers
 }

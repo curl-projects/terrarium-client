@@ -12,9 +12,5 @@ export const loader = async({ request }) => {
   if(user){
     await authenticator.logout(request, { redirectTo: `/auth/notion?code=${code}`})
   }
-  // const logout = await authenticator.logout(request)
-  // console.log("CODE!", code)
-  // console.log("USER", user)
-  // console.log("DATA", request)
   return redirect(`/auth/google?code=${code}`)
 }

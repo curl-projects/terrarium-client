@@ -1,0 +1,46 @@
+.createWrapper{
+  display: flex;
+  flex-direction: row;
+}
+
+  .inputWrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+.buttonWrapper{
+  margin-top: 5px;
+  width: 140px;
+  height: 40px;
+  color: white;
+  background: #828282;
+  border-radius: 20px;
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.08));
+  border: none;
+  text-align: center;
+  font-size: 16px;
+  text-align: left;
+  padding-left: 15px;
+  padding-top: 4px;
+  box-sizing: border-box;
+  position: relative;
+  left: 5px;
+}
+
+.buttonText{
+  line-height: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+.input{
+  width: 300px;
+  height: 40px;
+  margin: 5px;
+
+  background: white;
+  border: 1px solid #DDDDDD;
+  border-radius: 10px;
+  padding: 4px 12px;
+}
