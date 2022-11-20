@@ -17,13 +17,18 @@ const columnsFromBackend = {
   }
 };
 
-export default function Kanban(){
+export default function Kanban(props){
   const [columns, setColumns] = useState(columnsFromBackend);
 
   const [columnOne, setColumnOne] = useState([{id: "1", title: "Test One", description: "This is test one", cardState: 1}])
   const [columnTwo, setColumnTwo] = useState([{id: "2", title: "Test Two", description: "This is test two", cardState: 2}])
   const [columnThree, setColumnThree] = useState([])
 
+  useEffect(()=>{
+    setColumnOne(props.features[0])
+    setColumnTwo(props.features[1])
+    setColumnThree(props.features[2])
+  }, [props.features])
 
   useEffect(()=>{
     setColumns(
@@ -49,9 +54,6 @@ export default function Kanban(){
   const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
     const { source, destination } = result;
-
-    console.log("SOURCE:", source)
-    console.log("DESTINATION:", destination)
 
     // If moving between lists, update droppable and index
     if (source.droppableId !== destination.droppableId) {

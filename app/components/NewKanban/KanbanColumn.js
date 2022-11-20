@@ -1,10 +1,11 @@
+import { Form } from "@remix-run/react";
+
 import { Droppable } from "@hello-pangea/dnd";
 import KanbanCard from '~/components/NewKanban/KanbanCard.js'
-
+import plusButton from "../../../public/assets/plus-button.png"
 
 export default function KanbanColumn(props){
 
-  console.log('COLUMN ID:', props.columnId)
   return(
     <div
       className='kanbanColumnOuter'
@@ -12,6 +13,16 @@ export default function KanbanColumn(props){
     >
       <div className="columnNameWrapper" style={{backgroundColor: props.column.color}}>
         <h2 className="columnName">{props.column.name}</h2>
+        <div style={{flex: 1}}/>
+        <div className='addCardWrapper'>
+          <Form method="post">
+            <button type="submit">
+              <input type='hidden' name="columnState" value={props.columnId}/>
+              <input type='hidden' name="rankState" value={props.column.items.length + 1}/>
+              <img src={plusButton} alt="+" className='addCardButton'></img>
+            </button>
+          </Form>
+        </div>
       </div>
       <div className='kanbanColumnInner'>
         <Droppable droppableId={props.columnId} key={props.columnId}>
@@ -32,7 +43,7 @@ export default function KanbanColumn(props){
               >
                   {props.column.items.map((item, index) => {
                   return (
-                    <KanbanCard item={item} index={index}/>
+                    <KanbanCard key={index} item={item} index={index}/>
                   );
                 })}
                 {provided.placeholder}

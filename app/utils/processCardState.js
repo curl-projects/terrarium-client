@@ -9,7 +9,7 @@ function sort_by_key(array, key)
 }
 
 
-function processCardState(data){
+export function processCardState(data){
   /**
   Takes in all cards and splits it up into three columns using its
   card state attribute
@@ -18,15 +18,15 @@ function processCardState(data){
   var column2 = [];
   var column3 = [];
   if(data !== []){
-    for(const taskIndex in data){
-      if(data[taskIndex].cardState === 1){
-        column1.push(data[taskIndex])
+    for(const featureIndex in data){
+      if(data[featureIndex].columnState === 1){
+        column1.push(data[featureIndex])
       }
-      else if(data[taskIndex].cardState === 2){
-        column2.push(data[taskIndex])
+      else if(data[featureIndex].columnState === 2){
+        column2.push(data[featureIndex])
       }
-      else if(data[taskIndex].cardState === 3){
-        column3.push(data[taskIndex])
+      else if(data[featureIndex].columnState === 3){
+        column3.push(data[featureIndex])
       }
       else{
         console.log("Process Card State Error")
@@ -37,5 +37,3 @@ function processCardState(data){
   }
   return [[], [], []]
 }
-
-export default processCardState

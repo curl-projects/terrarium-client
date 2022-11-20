@@ -3,8 +3,8 @@ import { Draggable } from "@hello-pangea/dnd";
 export default function KanbanCard(props){
   return(
     <Draggable
-      draggableId={props.item.id}
-      key={props.item.id}
+      draggableId={String(props.item.id)}
+      key={String(props.item.id)}
       index={props.index}
       >
       {(provided, snapshot) => {

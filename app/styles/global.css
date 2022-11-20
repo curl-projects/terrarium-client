@@ -340,7 +340,6 @@ body {
 .columnNameWrapper {
   width: 100%;
   height: 60px;
-  border: 2px solid pink;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -352,7 +351,20 @@ body {
   font-weight: normal;
 }
 
+.addCardWrapper {
+  height: 60px;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.addCardButton {
+  height: 30px;
+  width: 30px;
+  filter: opacity(0.3);
+  cursor: pointer;
+}
 /* KANBAN CARD*/
 .cardContentWrapper{
   display: flex;
