@@ -3,12 +3,12 @@
 // REACT & REMIX
 import { useState, useEffect } from "react";
 import { useLoaderData, useActionData } from "@remix-run/react"
-import { json } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import cn from 'classnames'
 
 // MODELS
 // import { embeddingSearch } from "~/models/search-embeddings.server"
-import { updateFeatureTitle } from "~/models/kanban.server"
+import { readFeature, updateFeatureTitle } from "~/models/kanban.server"
 
 // UTILITIES
 import { filterSearchedData } from "~/utils/filterSearchedData.js"
@@ -38,8 +38,9 @@ export const links = () => {
 export async function loader({ request, params }){
   const featureId = params["*"].split("-").at(-1)
 
+  const feature = await readFeature(featureId)
   console.log("PARAMS!", featureId)
-  return { featureId: featureId }
+  return { feature: feature }
 }
 
 
@@ -49,7 +50,7 @@ export async function action({ request, params }){
   const featureTitle = formData.get('featureDescription')
   const updatedFeature = await updateFeatureTitle(featureId, featureTitle)
 
-  return { updatedFeature: updatedFeature }
+  return redirect(`/feature/${props.item.title.toLowerCase().replace(" ", "-")}-${props.item.id}`)
   // const filterType = formData.get('filterType')
   // if(filterType && filterType === 'search'){
   //   const knnIDs = await embeddingSearch(formData)
@@ -78,6 +79,10 @@ export default function FeatureNotepad() {
   //   }
   // }, [actionData])
 
+  useEffect(()=>{
+    console.log('LOADER DATA', loaderData)
+  }, [loaderData])
+
 
   function resetSearchData() {
     setTopLevelStreamDataObj(data)
@@ -101,7 +106,7 @@ export default function FeatureNotepad() {
             isSubmitted={isSubmitted}
             setSubmitted={setSubmitted}
             setFocus={setFocus}
-            featureId={loaderData.featureId}
+            feature={loaderData.feature}
           />
           <SearchTextEditor isSubmitted={isSubmitted} />
         </div>

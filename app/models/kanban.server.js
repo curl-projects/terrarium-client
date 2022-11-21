@@ -86,3 +86,12 @@ export async function updateAllFeaturePositions(columns){
     allCols.map(feature => updateFeaturePosition(feature.id, feature.colIdx, feature.featureIdx))
   )
 }
+
+export async function readFeature(featureId){
+  const feature = await db.feature.findUnique({
+    where: {
+      id: parseInt(featureId)
+    }
+  })
+  return feature
+}
