@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useLoaderData, useActionData } from "@remix-run/react"
+import { useLoaderData, useActionData } from "@remix-run/react";
+import { redirect } from "@remix-run/node";
 
 import Header from "~/components/Header/Header";
 import Kanban from "~/components/NewKanban/Kanban"
@@ -27,21 +28,18 @@ export async function action({ request }){
     failureRedirect: "/",
   })
   const formData = await request.formData();
-
   const actionType = formData.get('actionType');
 
   if(actionType === "create"){
     const columnState = formData.get('columnState')
     const rankState = formData.get('rankState')
-
     const feature = await createFeature(user.id, columnState, rankState)
-
-    return({ columnState: columnState})
+    console.log("CREATED FEATURE:", feature)
+    return redirect(`/feature/${feature.title}-${feature.id}`)
   }
   else if(actionType === "delete"){
     const featureId = formData.get('featureId');
     const deletedFeature = await deleteFeature(featureId);
-
     return ({ deleteFeature })
   }
 }

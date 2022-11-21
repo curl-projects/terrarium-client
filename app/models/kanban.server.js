@@ -16,8 +16,8 @@ export async function getFeatures(userId){
 export async function createFeature(userId, columnState, rankState){
   const feature = await db.feature.create({
     data: {
-      title: "Placeholder Title",
-      description: "Placeholder Desription",
+      title: "Untitled",
+      description: "~~~",
       columnState: parseInt(columnState),
       rankState: parseInt(rankState),
       user: {
@@ -37,6 +37,18 @@ export async function deleteFeature(featureId){
   return feature
 }
 
+export async function updateFeatureTitle(featureId, featureTitle){
+  const feature = await db.feature.update({
+    where: {
+      id: parseInt(featureId)
+    },
+    data: {
+      title: featureTitle
+    }
+  })
+  return feature
+}
+
 export async function updateFeaturePosition(featureId, columnState, rankState){
   const feature = await db.feature.update({
     where: {
@@ -51,7 +63,6 @@ export async function updateFeaturePosition(featureId, columnState, rankState){
 }
 
 export async function updateAllFeaturePositions(columns){
-  console.log("INNER COLUMNS", columns)
 
   const updatedPositions = []
 

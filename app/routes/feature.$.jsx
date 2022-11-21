@@ -1,5 +1,4 @@
 // LIBRARIES
-// import * as d3 from "d3"
 
 // REACT & REMIX
 import { useState, useEffect } from "react";
@@ -9,6 +8,7 @@ import cn from 'classnames'
 
 // MODELS
 // import { embeddingSearch } from "~/models/search-embeddings.server"
+import { updateFeatureTitle } from "~/models/kanban.server"
 
 // UTILITIES
 import { filterSearchedData } from "~/utils/filterSearchedData.js"
@@ -16,10 +16,9 @@ import { manipulateInputData } from "~/utils/manipulateInputData.js"
 
 // COMPONENTS
 import SearchTextEditor from "~/components/Notepad/SearchTextEditor/SearchTextEditor.js"
-// import D3CanvasScaffold from "~/components/Canvas/D3CanvasScaffold.js"
 import MessageStream from "~/components/Notepad/MessageStream/MessageStream.js"
 import TextBoxSearchBar from "~/components/Notepad/TextBoxSearchBar/TextBoxSearchBar.js"
-
+import FeatureHeader from "~/components/Header/FeatureHeader"
 // DATA
 import d from "~/mock-data/final_output.json"
 
@@ -40,39 +39,44 @@ export async function loader({ request, params }){
   const featureId = params["*"].split("-").at(-1)
 
   console.log("PARAMS!", featureId)
-  return null
+  return { featureId: featureId }
 }
 
 
-export async function action({ request }){
+export async function action({ request, params }){
   const formData = await request.formData()
-  const filterType = formData.get('filterType')
-  if(filterType && filterType === 'search'){
-    const knnIDs = await embeddingSearch(formData)
-    const data = {
-      knnIDs: knnIDs,
-      filterType: filterType
-    }
-    return json(data)
-  }
+  const featureId = formData.get('featureId')
+  const featureTitle = formData.get('featureDescription')
+  const updatedFeature = await updateFeatureTitle(featureId, featureTitle)
+
+  return { updatedFeature: updatedFeature }
+  // const filterType = formData.get('filterType')
+  // if(filterType && filterType === 'search'){
+  //   const knnIDs = await embeddingSearch(formData)
+  //   const data = {
+  //     knnIDs: knnIDs,
+  //     filterType: filterType
+  //   }
+  //   return json(data)
+  // }
 }
 
 export default function FeatureNotepad() {
-
+  const loaderData = useLoaderData();
   const actionData = useActionData();
   const [searchResults, setSearchResults] = useState([])
   const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState(data)
   const [isSubmitted, setSubmitted] = useState(false);
   const [isFocused, setFocus] = useState(false);
 
-  useEffect(() => {
-    console.log("ACTION DATA", actionData)
-    if (actionData?.filterType === 'search') {
-      if (actionData.knnIDs) {
-        filterSearchedData(data, actionData.knnIDs, setTopLevelStreamDataObj, setSearchResults)
-      }
-    }
-  }, [actionData])
+  // useEffect(() => {
+  //   console.log("ACTION DATA", actionData)
+  //   if (actionData?.filterType === 'search') {
+  //     if (actionData.knnIDs) {
+  //       filterSearchedData(data, actionData.knnIDs, setTopLevelStreamDataObj, setSearchResults)
+  //     }
+  //   }
+  // }, [actionData])
 
 
   function resetSearchData() {
@@ -81,7 +85,10 @@ export default function FeatureNotepad() {
   }
 
   return (
-    <div className="relative  md:p-24 lg:px-32 lg:py-22 xl:px-56 xl:py-24 2xl:px-96 2xl:py-32 h-screen w-screen">
+    <>
+    <FeatureHeader />
+    <div className="relative md:p-24 lg:px-32 lg:py-22 xl:px-56 xl:py-24 2xl:px-96 2xl:py-32 h-screen w-screen"
+      style={{margin: "60px"}}>
       <div className="h-full w-full bg-gray-100 border flex">
         <div
           className={cn(
@@ -94,6 +101,7 @@ export default function FeatureNotepad() {
             isSubmitted={isSubmitted}
             setSubmitted={setSubmitted}
             setFocus={setFocus}
+            featureId={loaderData.featureId}
           />
           <SearchTextEditor isSubmitted={isSubmitted} />
         </div>
@@ -104,5 +112,6 @@ export default function FeatureNotepad() {
         </div>
       </div>
     </div>
+    </>
   );
 }

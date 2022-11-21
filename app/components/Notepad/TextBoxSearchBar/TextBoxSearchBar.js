@@ -5,7 +5,7 @@ import cn from "classnames";
 // import boids from "../../../../public/assets/boids.gif";
 
 
-export default function TextBoxSearchBar({ resetSearchData, isSubmitted, setSubmitted, setFocus }) {
+export default function TextBoxSearchBar({ featureId, resetSearchData, isSubmitted, setSubmitted, setFocus }) {
   const submit = useSubmit();
   const transition = useTransition()
   const [searchTerm, setSearchTerm] = useState("");
@@ -59,7 +59,7 @@ export default function TextBoxSearchBar({ resetSearchData, isSubmitted, setSubm
       )}
     >
       <input type='hidden' name="filterType" value="search" />
-
+      <input type='hidden' name='featureId' value={featureId} />
       <textarea
         // style={boidsBg}
         className={cn(
@@ -69,7 +69,7 @@ export default function TextBoxSearchBar({ resetSearchData, isSubmitted, setSubm
           { "cursor-not-allowed": isSubmitted }
         )}
         type="text"
-        name="searchString"
+        name="featureDescription"
         value={searchTerm}
         placeholder={"Enter a Feature Description"}
         onChange={handleInput}

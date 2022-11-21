@@ -11,10 +11,6 @@ export default function KanbanCard(props){
       >
       {(provided, snapshot) => {
         return (
-          <Link to={`/feature/${props.item.title.toLowerCase().replace(" ", "-")}-${props.item.id}`}
-                style={{
-                  textDecoration: "none"
-                }}>
           <div
             ref={provided.innerRef}
             {...provided.draggableProps}
@@ -36,12 +32,18 @@ export default function KanbanCard(props){
             }}
           >
           <div className="cardContentWrapper">
+
             <div className="cardHeader">
+              <Link to={`/feature/${props.item.title.toLowerCase().replace(" ", "-")}-${props.item.id}`}
+                    style={{
+                      textDecoration: "none"
+                    }}>
               <div className="headerTextWrapper">
               <p className="headerText">
-                {props.item ? props.item.title : ""} {props.item ? props.item.id : ""}
+                {props.item ? props.item.title : ""}{props.item ? ` [${props.item.id}]` : ""}
               </p>
               </div>
+              </Link>
               <div style={{flex: 1}}/>
               <div className='deleteCardButtonWrapper'>
                 <Form method='post'>
@@ -52,16 +54,14 @@ export default function KanbanCard(props){
                   </button>
                 </Form>
               </div>
-
             </div>
-            <div className="cardContent">
-              <p className="contentText">
-                {props.item ? props.item.description : ""}
-              </p>
-            </div>
+              <div className="cardContent">
+                <p className="contentText">
+                  {props.item ? props.item.description : ""}
+                </p>
+              </div>
           </div>
         </div>
-        </Link>
         );
       }}
 
