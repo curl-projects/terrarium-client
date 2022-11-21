@@ -5,4 +5,12 @@ module.exports = {
   // assetsBuildDirectory: "public/build",
   // serverBuildPath: "build/index.js",
   // publicPath: "/build/",
+  serverDependenciesToBundle: [/^d3*/,
+                             "d3-selection",
+                             "d3-array",
+                             "d3-force-d3",
+                             "d3-scale",
+                             "d3-scale-chromatic",
+                             "robust-predicates",
+                             "internmap"]
 };

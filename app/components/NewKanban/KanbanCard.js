@@ -1,4 +1,4 @@
-import { Form } from "@remix-run/react"
+import { Form, Link } from "@remix-run/react"
 import { Draggable } from "@hello-pangea/dnd";
 import deleteButton from "../../../public/assets/delete-button.png"
 
@@ -11,6 +11,10 @@ export default function KanbanCard(props){
       >
       {(provided, snapshot) => {
         return (
+          <Link to={`/feature/${props.item.title.toLowerCase().replace(" ", "-")}-${props.item.id}`}
+                style={{
+                  textDecoration: "none"
+                }}>
           <div
             ref={provided.innerRef}
             {...provided.draggableProps}
@@ -57,6 +61,7 @@ export default function KanbanCard(props){
             </div>
           </div>
         </div>
+        </Link>
         );
       }}
 

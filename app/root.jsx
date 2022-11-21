@@ -7,22 +7,23 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-import globalStylesheetUrl from "~/styles/global.css"
-import tailwindStylesheetUrl from "~/styles/app.css"
+import styles from "~/styles/app.css";
+import globalStyles from "~/styles/global.css"
+
+export function links() {
+  return [
+    {rel: "stylesheet", href: styles},
+    {rel: 'stylesheet', href: globalStyles}
+];
+}
 
 export const meta = () => ({
   charset: "utf-8",
-  title: "New Remix App",
+  title: "Terrarium",
   viewport: "width=device-width,initial-scale=1",
 });
 
 
-export const links = () => {
-  return [
-    { rel: 'stylesheet', href: globalStylesheetUrl },
-    { rel: 'stylesheet', href: tailwindStylesheetUrl },
-  ]
-}
 export default function App() {
   return (
     <html lang="en">

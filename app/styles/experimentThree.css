@@ -1,0 +1,94 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: content-box;
+}
+
+
+
+
+/* MESSAGE STREAM INNER CLASSES */
+.messageStream {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.messageStreamMetadataRow {
+  border: 2px solid grey;
+  width: 90%;
+  margin-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+}
+
+.messageCard {
+  background-color: #fafafa;
+  border: 1px solid #e7e7e7;
+  border-radius: 0px;
+  padding: 3px;
+  text-overflow: clip;
+}
+
+/* SEARCH INNER CLASSES */
+.searchBarWrapper {
+  /* border: 4px solid blue; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 5px;
+}
+
+textarea::placeholder {
+  color: #bdbcbc80;
+  white-space: pre-line;
+}
+
+textarea {
+  resize: none;
+}
+
+.textbox-shadow {
+  box-shadow: -16px 16px rgba(0, 0, 0, 0.03);
+}
+
+textarea:focus {
+  outline-width: 0;
+  outline: none;
+}
+
+/* TEXTBOX STYLES */
+textarea::placeholder {
+  color: #e0e0e0;
+  white-space: pre-line;
+}
+textarea {
+  resize: none;
+}
+
+.textbox-shadow {
+  box-shadow: -16px 16px rgba(0, 0, 0, 0.03);
+}
+
+textarea:focus {
+  outline-width: 0;
+  outline: none;
+}
+
+div.DraftEditor-root {
+  background-color: "#FFFFFF";
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: scroll;
+
+  flex-grow: 1;
+  padding: 20px;
+  font-size: 18px;
+  font-family: 'Inter', sans-serif;
+}
