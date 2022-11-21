@@ -1,4 +1,6 @@
+import { Form } from "@remix-run/react"
 import { Draggable } from "@hello-pangea/dnd";
+import deleteButton from "../../../public/assets/delete-button.png"
 
 export default function KanbanCard(props){
   return(
@@ -31,9 +33,22 @@ export default function KanbanCard(props){
           >
           <div className="cardContentWrapper">
             <div className="cardHeader">
+              <div className="headerTextWrapper">
               <p className="headerText">
                 {props.item ? props.item.title : ""}
               </p>
+              </div>
+              <div style={{flex: 1}}/>
+              <div className='deleteCardButtonWrapper'>
+                <Form method='post'>
+                  <input type="hidden" name='actionType' value='delete'/>
+                  <input type="hidden" name='featureId' value={props.item.id}/>
+                  <button type="submit">
+                    <img className="deleteCardButton" src={deleteButton} alt="X"></img>
+                  </button>
+                </Form>
+              </div>
+
             </div>
             <div className="cardContent">
               <p className="contentText">

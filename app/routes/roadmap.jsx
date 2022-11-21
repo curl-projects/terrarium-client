@@ -6,7 +6,7 @@ import Kanban from "~/components/NewKanban/Kanban"
 
 import { authenticator } from "~/models/auth.server.js";
 
-import { getFeatures, createFeature } from "~/models/kanban.server"
+import { getFeatures, createFeature, deleteFeature } from "~/models/kanban.server"
 
 import { processCardState } from "~/utils/processCardState"
 
@@ -25,14 +25,24 @@ export async function action({ request }){
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/",
   })
-
   const formData = await request.formData();
-  const columnState = formData.get('columnState')
-  const rankState = formData.get('rankState')
 
-  const feature = await createFeature(user.id, columnState, rankState)
+  const actionType = formData.get('actionType');
 
-  return({ columnState: columnState})
+  if(actionType === "create"){
+    const columnState = formData.get('columnState')
+    const rankState = formData.get('rankState')
+
+    const feature = await createFeature(user.id, columnState, rankState)
+
+    return({ columnState: columnState})
+  }
+  else if(actionType === "delete"){
+    const featureId = formData.get('featureId');
+    const deletedFeature = await deleteFeature(featureId);
+
+    return ({ deleteFeature })
+  }
 }
 
 export default function Roadmap(){

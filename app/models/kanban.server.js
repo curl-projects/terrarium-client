@@ -31,9 +31,10 @@ export async function createFeature(userId, columnState, rankState){
 export async function deleteFeature(featureId){
   const feature = await db.feature.delete({
     where: {
-      id: featureId
+      id: parseInt(featureId)
     }
   })
+  return feature
 }
 
 export async function updateFeaturePosition(featureId, columnState, rankState){

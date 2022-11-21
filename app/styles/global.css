@@ -376,12 +376,19 @@ body {
 .cardHeader{
   display: flex;
   flex-direction: row;
-  align-items: center;
-  /* height: 50px; */
+  align-items: flex-start;
+  height: 40px;
   box-sizing: border-box;
   align-items: flex-start;
   border-radius: 20px;
   padding-left: 5px;
+}
+
+.headerTextWrapper{
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .headerText{
@@ -390,6 +397,22 @@ body {
   color: #4D4D4D;
 
 }
+
+.deleteCardButtonWrapper {
+  height: 100%;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.deleteCardButton {
+    height: 24px;
+    width: 24px;
+    filter: opacity(0.15);
+    cursor: pointer;
+}
+
 
 .cardContent{
   box-sizing: border-box;

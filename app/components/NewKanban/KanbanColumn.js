@@ -17,6 +17,7 @@ export default function KanbanColumn(props){
         <div className='addCardWrapper'>
           <Form method="post">
             <button type="submit">
+              <input type="hidden" name='actionType' value='create'/>
               <input type='hidden' name="columnState" value={props.columnId}/>
               <input type='hidden' name="rankState" value={props.column.items.length + 1}/>
               <img src={plusButton} alt="+" className='addCardButton'></img>
@@ -38,7 +39,9 @@ export default function KanbanColumn(props){
                   padding: 4,
                   width: '100%',
                   height: "100%",
+                  maxHeight: "89%",
                   borderRadius: "8px",
+                  overflow: "scroll"
                 }}
               >
                   {props.column.items.map((item, index) => {
