@@ -40,7 +40,7 @@ export async function deleteFeature(featureId){
 export async function updateFeaturePosition(featureId, columnState, rankState){
   const feature = await db.feature.update({
     where: {
-      id: featureId
+      id: parseInt(featureId)
     },
     data: {
       columnState: columnState,
@@ -48,4 +48,12 @@ export async function updateFeaturePosition(featureId, columnState, rankState){
     }
   })
   return feature
+}
+
+export async function updateAllFeaturePositions(columns){
+  await columns.map(async(col, colIdx) =>
+    await col.items.map(async(feature, featureIdx) =>
+      await updateFeaturePosition(feature.id, colIdx+1, featureIdx+1)
+    )
+  )
 }

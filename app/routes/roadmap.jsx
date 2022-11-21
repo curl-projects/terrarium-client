@@ -6,7 +6,7 @@ import Kanban from "~/components/NewKanban/Kanban"
 
 import { authenticator } from "~/models/auth.server.js";
 
-import { getFeatures, createFeature, deleteFeature } from "~/models/kanban.server"
+import { getFeatures, createFeature, deleteFeature, updateAllFeaturePositions } from "~/models/kanban.server"
 
 import { processCardState } from "~/utils/processCardState"
 

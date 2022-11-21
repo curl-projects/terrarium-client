@@ -35,7 +35,7 @@ export default function KanbanCard(props){
             <div className="cardHeader">
               <div className="headerTextWrapper">
               <p className="headerText">
-                {props.item ? props.item.title : ""}
+                {props.item ? props.item.title : ""} {props.item ? props.item.id : ""}
               </p>
               </div>
               <div style={{flex: 1}}/>

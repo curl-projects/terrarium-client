@@ -1,3 +1,4 @@
+import { useFetcher } from "@remix-run/react";
 import { useState, useEffect } from 'react';
 import { DragDropContext} from "@hello-pangea/dnd";
 import KanbanColumn from '~/components/NewKanban/KanbanColumn.js'
@@ -23,6 +24,8 @@ export default function Kanban(props){
   const [columnOne, setColumnOne] = useState([{id: "1", title: "Test One", description: "This is test one", cardState: 1}])
   const [columnTwo, setColumnTwo] = useState([{id: "2", title: "Test Two", description: "This is test two", cardState: 2}])
   const [columnThree, setColumnThree] = useState([])
+
+  const fetcher = useFetcher();
 
   useEffect(()=>{
     setColumnOne(props.features[0])
@@ -51,18 +54,19 @@ export default function Kanban(props){
       }
     )}, [columnOne, columnTwo, columnThree])
 
-  const onDragEnd = (result, columns, setColumns) => {
+  const onDragEnd = async(result, columns, setColumns) => {
     if (!result.destination) return;
     const { source, destination } = result;
 
     // If moving between lists, update droppable and index
-    if (source.droppableId !== destination.droppableId) {
+    if (source.droppableId !== destination.droppableId){
       const sourceColumn = columns[source.droppableId];
       const destColumn = columns[destination.droppableId];
       const sourceItems = [...sourceColumn.items];
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
+
       setColumns({
         ...columns,
         [source.droppableId]: {
@@ -74,11 +78,18 @@ export default function Kanban(props){
           items: destItems
         }
       });
-      // // update the backend so that it's in sync with the frontend
-      // updateTaskColumn({variables:
-      //                   {id: result.draggableId,
-      //                    cardState: parseInt(result.destination.droppableId),
-      //                    }})
+
+      fetcher.submit({ columns: JSON.stringify({
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems
+        }
+      }), actionType: 'update'}, {method: 'get', action: "utils/update-feature-positions"})
 
     } else {
       // if not moving between lists, rearrange indexes
@@ -86,6 +97,7 @@ export default function Kanban(props){
       const copiedItems = [...column.items];
       const [removed] = copiedItems.splice(source.index, 1);
       copiedItems.splice(destination.index, 0, removed);
+
       setColumns({
         ...columns,
         [source.droppableId]: {
@@ -93,6 +105,15 @@ export default function Kanban(props){
           items: copiedItems
         }
       });
+
+
+      // fetcher.submit({ columns: JSON.stringify({
+      //   ...columns,
+      //   [source.droppableId]: {
+      //     ...column,
+      //     items: copiedItems
+      //   }
+      // })}, {method: 'post', action: "utils/update-feature-positions"})
     }
   };
 
