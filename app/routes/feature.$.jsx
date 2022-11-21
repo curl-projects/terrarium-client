@@ -37,7 +37,7 @@ export const links = () => {
 
 export async function loader({ request, params }){
   const featureId = params["*"].split("-").at(-1)
-
+  console.log("FEATURE ID:", featureId)
   const feature = await readFeature(featureId)
   console.log("PARAMS!", featureId)
   return { feature: feature }
@@ -50,7 +50,7 @@ export async function action({ request, params }){
   const featureTitle = formData.get('featureDescription')
   const updatedFeature = await updateFeatureTitle(featureId, featureTitle)
 
-  return redirect(`/feature/${props.item.title.toLowerCase().replace(" ", "-")}-${props.item.id}`)
+  return redirect(`/feature/${featureTitle.toLowerCase().replace(" ", "-")}-${featureId}`)
   // const filterType = formData.get('filterType')
   // if(filterType && filterType === 'search'){
   //   const knnIDs = await embeddingSearch(formData)
