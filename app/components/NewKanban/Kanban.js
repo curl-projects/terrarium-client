@@ -89,7 +89,7 @@ export default function Kanban(props){
           ...destColumn,
           items: destItems
         }
-      }), actionType: 'update'}, {method: 'get', action: "utils/update-feature-positions"})
+      })}, {method: 'get', action: "utils/update-feature-positions"})
 
     } else {
       // if not moving between lists, rearrange indexes
@@ -107,13 +107,13 @@ export default function Kanban(props){
       });
 
 
-      // fetcher.submit({ columns: JSON.stringify({
-      //   ...columns,
-      //   [source.droppableId]: {
-      //     ...column,
-      //     items: copiedItems
-      //   }
-      // })}, {method: 'post', action: "utils/update-feature-positions"})
+      fetcher.submit({ columns: JSON.stringify({
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems
+        }
+      })}, {method: 'get', action: "utils/update-feature-positions"})
     }
   };
 

@@ -14,6 +14,9 @@ export function processCardState(data){
   Takes in all cards and splits it up into three columns using its
   card state attribute
   */
+  console.log("PROCESSING CARD STATE", data)
+
+
   var column1 = [];
   var column2 = [];
   var column3 = [];
@@ -32,6 +35,10 @@ export function processCardState(data){
         console.log("Process Card State Error")
       }
     }
+
+    column1.sort((a,b)=>a.rankState-b.rankState)
+    column2.sort((a,b)=>a.rankState-b.rankState)
+    column3.sort((a,b)=>a.rankState-b.rankState)
 
   return [column1, column2, column3]
   }

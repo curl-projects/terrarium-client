@@ -18,6 +18,7 @@ export async function loader({ request }){
 
   const organisedFeatures = processCardState(features)
 
+  console.log("ORGANISED FEATURES", organisedFeatures)
   return({ features: organisedFeatures })
 }
 

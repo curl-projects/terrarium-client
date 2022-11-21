@@ -51,9 +51,27 @@ export async function updateFeaturePosition(featureId, columnState, rankState){
 }
 
 export async function updateAllFeaturePositions(columns){
-  await columns.map(async(col, colIdx) =>
-    await col.items.map(async(feature, featureIdx) =>
-      await updateFeaturePosition(feature.id, colIdx+1, featureIdx+1)
+  console.log("INNER COLUMNS", columns)
+
+  const updatedPositions = []
+
+  columns.map((col, colIdx) =>
+    col.items.map((feature, featureIdx) =>
+        updatedPositions.push({colIdx: colIdx+1, featureIdx: featureIdx+1})
+      )
     )
+
+  const allCols = []
+
+  for(let col of columns){
+    allCols.push(...col.items)
+  }
+
+  for(let featNum in allCols){
+    allCols[featNum] = {...allCols[featNum], ...updatedPositions[featNum]}
+  }
+
+  const updatedFeatures = await Promise.all(
+    allCols.map(feature => updateFeaturePosition(feature.id, feature.colIdx, feature.featureIdx))
   )
 }
