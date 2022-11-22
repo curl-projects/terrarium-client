@@ -35,7 +35,7 @@ export async function action({ request }){
     const rankState = formData.get('rankState')
     const feature = await createFeature(user.id, columnState, rankState)
     console.log("CREATED FEATURE:", feature)
-    return redirect(`/feature/${feature.title}-${feature.id}`)
+    return redirect(`/feature/${feature.id}`)
   }
   else if(actionType === "delete"){
     const featureId = formData.get('featureId');

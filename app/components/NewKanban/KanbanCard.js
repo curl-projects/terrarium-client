@@ -34,7 +34,7 @@ export default function KanbanCard(props){
           <div className="cardContentWrapper">
 
             <div className="cardHeader">
-              <Link to={`/feature/${props.item.title.toLowerCase().replace(" ", "-")}-${props.item.id}`}
+              <Link to={`/feature/${props.item.id}`}
                     style={{
                       textDecoration: "none"
                     }}>

@@ -1,4 +1,4 @@
-import { Form, useSubmit, useTransition } from "@remix-run/react";
+import { Form, useSubmit, useTransition, useFetcher } from "@remix-run/react";
 import { useState, useEffect } from "react";
 import cn from "classnames";
 // IMAGES
@@ -8,6 +8,7 @@ import cn from "classnames";
 export default function TextBoxSearchBar({ feature, resetSearchData, isSubmitted, setSubmitted, setFocus }) {
   const submit = useSubmit();
   const transition = useTransition()
+  const fetcher = useFetcher();
   const [searchTerm, setSearchTerm] = useState(feature.title);
 
   const handleInput = (event) => {
@@ -22,7 +23,7 @@ export default function TextBoxSearchBar({ feature, resetSearchData, isSubmitted
     if (searchTerm.length > 0) {
       event.preventDefault();
       setSubmitted(true);
-      submit(event.currentTarget, { method: 'post' })
+      submit(event.currentTarget, { method: 'post', action: `/feature/${feature.id}` })
       resetSearchData();
     } else {
       event.preventDefault();
@@ -55,7 +56,6 @@ export default function TextBoxSearchBar({ feature, resetSearchData, isSubmitted
         "flex flex-col",
         { "shrink": isSubmitted },
         { "grow": !isSubmitted }
-
       )}
     >
       <input type='hidden' name="filterType" value="search" />
@@ -81,8 +81,8 @@ export default function TextBoxSearchBar({ feature, resetSearchData, isSubmitted
       {!isSubmitted && searchTerm.length > 0 && (
         <button
           className="m-2 p-2 bg-slate-300 hover:bg-slate-400 text-white font-bold"
-          type="submit"
-          onClick={(e) => submitIfFull(e)}>
+          onClick={(e) => submitIfFull(e)}
+          >
           Submit
         </button>
       )}

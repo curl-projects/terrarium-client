@@ -7,7 +7,7 @@ import { json, redirect } from '@remix-run/node';
 import cn from 'classnames'
 
 // MODELS
-// import { embeddingSearch } from "~/models/search-embeddings.server"
+import { embeddingSearch } from "~/models/embedding-search.server"
 import { readFeature, updateFeatureTitle } from "~/models/kanban.server"
 
 // UTILITIES
@@ -36,7 +36,11 @@ export const links = () => {
 }
 
 export async function loader({ request, params }){
+  console.log("FEATURE ID PARAMS", params)
   const featureId = params["*"].split("-").at(-1)
+  // if(featureId === ""){
+  //   return redirect("/roadmap")
+  // }
   console.log("FEATURE ID:", featureId)
   const feature = await readFeature(featureId)
   console.log("PARAMS!", featureId)
@@ -47,19 +51,18 @@ export async function loader({ request, params }){
 export async function action({ request, params }){
   const formData = await request.formData()
   const featureId = formData.get('featureId')
-  const featureTitle = formData.get('featureDescription')
-  const updatedFeature = await updateFeatureTitle(featureId, featureTitle)
+  const searchString = formData.get('featureDescription')
+  const filterType = formData.get('filterType')
+  const updatedFeature = await updateFeatureTitle(featureId, searchString)
 
-  return redirect(`/feature/${featureTitle.toLowerCase().replace(" ", "-")}-${featureId}`)
-  // const filterType = formData.get('filterType')
-  // if(filterType && filterType === 'search'){
-  //   const knnIDs = await embeddingSearch(formData)
-  //   const data = {
-  //     knnIDs: knnIDs,
-  //     filterType: filterType
-  //   }
-  //   return json(data)
-  // }
+  if(filterType && filterType === 'search'){
+    const knnIDs = await embeddingSearch(searchString)
+    const data = {
+      knnIDs: knnIDs,
+      filterType: filterType
+    }
+    return json(data)
+  }
 }
 
 export default function FeatureNotepad() {
@@ -70,19 +73,19 @@ export default function FeatureNotepad() {
   const [isSubmitted, setSubmitted] = useState(false);
   const [isFocused, setFocus] = useState(false);
 
-  // useEffect(() => {
-  //   console.log("ACTION DATA", actionData)
-  //   if (actionData?.filterType === 'search') {
-  //     if (actionData.knnIDs) {
-  //       filterSearchedData(data, actionData.knnIDs, setTopLevelStreamDataObj, setSearchResults)
-  //     }
-  //   }
-  // }, [actionData])
+  useEffect(() => {
+    console.log("ACTION DATA", actionData)
+    if (actionData?.filterType === 'search') {
+      if (actionData.knnIDs) {
+        filterSearchedData(data, actionData.knnIDs, setTopLevelStreamDataObj, setSearchResults)
+      }
+    }
+  }, [actionData])
 
   useEffect(()=>{
     console.log('LOADER DATA', loaderData)
+    console.log("HIO!")
   }, [loaderData])
-
 
   function resetSearchData() {
     setTopLevelStreamDataObj(data)

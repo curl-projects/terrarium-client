@@ -1,0 +1,49 @@
+const { Configuration, OpenAIApi } = require("openai");
+
+
+export async function generateSearchVector(searchString){
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_KEY,
+  });
+
+  const openai = new OpenAIApi(configuration);
+  const response = await openai.createEmbedding({
+    "model": "text-search-babbage-query-001",
+    "input": searchString,
+    "user": "Terrarium"
+  })
+
+  return response.data
+}
+
+export async function getKNNfromSearchVector(vector, topK=1){
+  let url = "https:/terrarium-1ce80e9.svc.us-west1-gcp.pinecone.io/query"
+
+  let data = {
+    "vector": vector,
+    "includeValues": false,
+    "topK": topK,
+  }
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Api-Key": process.env.PINECONE_KEY
+    },
+    body: JSON.stringify(data)
+  })
+
+  console.log("RES:", res)
+  return res.json()
+  }
+
+export async function embeddingSearch(searchString){
+  const searchVectorRes = await generateSearchVector(searchString)
+  const searchVector = searchVectorRes.data && searchVectorRes.data[0]['embedding']
+  console.log("SEARCH VECTOR", searchVector)
+  const knn = await getKNNfromSearchVector(searchVector, topK=100)
+  console.log("KNN", knn)
+  const knnIDs = knn.matches
+  return knnIDs
+}
