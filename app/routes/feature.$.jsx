@@ -76,7 +76,7 @@ export default function FeatureNotepad() {
     console.log("ACTION DATA", actionData)
     if (actionData?.filterType === 'search') {
       if (actionData.knnIDs) {
-        filterSearchedData(data, actionData.knnIDs, setTopLevelStreamDataObj, setSearchResults)
+        filterSearchedData(loaderData.data, actionData.knnIDs, setTopLevelStreamDataObj, setSearchResults)
       }
     }
   }, [actionData])
