@@ -26,8 +26,6 @@ import d from "~/mock-data/final_output.json"
 import experimentThreeStylesheetUrl from "~/styles/experimentThree.css"
 import draftjsStylesheetUrl from "draft-js/dist/Draft.css"
 
-const data = manipulateInputData(d)
-
 export const links = () => {
   return [
     { rel: "stylesheet", href: experimentThreeStylesheetUrl },
@@ -44,7 +42,8 @@ export async function loader({ request, params }){
   console.log("FEATURE ID:", featureId)
   const feature = await readFeature(featureId)
   console.log("PARAMS!", featureId)
-  return { feature: feature }
+  const data = manipulateInputData(d)
+  return { feature: feature, data: data}
 }
 
 
@@ -69,7 +68,7 @@ export default function FeatureNotepad() {
   const loaderData = useLoaderData();
   const actionData = useActionData();
   const [searchResults, setSearchResults] = useState([])
-  const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState(data)
+  const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState(loaderData.data)
   const [isSubmitted, setSubmitted] = useState(false);
   const [isFocused, setFocus] = useState(false);
 
@@ -88,7 +87,7 @@ export default function FeatureNotepad() {
   }, [loaderData])
 
   function resetSearchData() {
-    setTopLevelStreamDataObj(data)
+    setTopLevelStreamDataObj(loaderData.data)
     setSearchResults([])
   }
 
