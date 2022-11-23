@@ -8,8 +8,6 @@ generator client {
 datasource db {
   provider = "cockroachdb"
   url      = env("DATABASE_URL")
-  previewFeatures = ["interactiveTransactions"]
-
 }
 
 model User {
@@ -48,4 +46,13 @@ model Feature {
   rankState Int
   user User @relation(fields: [userId], references: [id])
   userId String
+  textBox TextBox?
+}
+
+model TextBox {
+    id                Int      @id @default(sequence())
+    serializedContent String
+    localUpdatedAt    DateTime @default(now())
+    feature Feature? @relation(fields: [featureId], references: [id])
+    featureId Int @unique()
 }

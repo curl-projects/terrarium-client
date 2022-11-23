@@ -18,6 +18,7 @@ import { manipulateInputData } from "~/utils/manipulateInputData.js"
 import SearchTextEditor from "~/components/Notepad/SearchTextEditor/SearchTextEditor.js"
 import MessageStream from "~/components/Notepad/MessageStream/MessageStream.js"
 import TextBoxSearchBar from "~/components/Notepad/TextBoxSearchBar/TextBoxSearchBar.js"
+import RichTextEditor from "~/components/LeoEditor/RichTextEditor.tsx"
 import FeatureHeader from "~/components/Header/FeatureHeader"
 // DATA
 import d from "~/mock-data/final_output.json"
@@ -110,7 +111,9 @@ export default function FeatureNotepad() {
             setFocus={setFocus}
             feature={loaderData.feature}
           />
-          <SearchTextEditor isSubmitted={isSubmitted} />
+        <RichTextEditor
+          featureId={loaderData.feature.id}
+          />
         </div>
         <div className='bg-gray-100 overflow-y overflow-x-hidden xl:w-2/5 md:w-3/5 sm:w-3/5'>
           <MessageStream
@@ -122,3 +125,6 @@ export default function FeatureNotepad() {
     </>
   );
 }
+
+
+// <SearchTextEditor isSubmitted={isSubmitted} />

@@ -22,6 +22,11 @@ export async function createFeature(userId, columnState, rankState){
       rankState: parseInt(rankState),
       user: {
         connect: {id: userId}
+      },
+      textBox: {
+        create: {
+          serializedContent: '{"blocks":[{"key":"9lhsg","text":"Hello world!","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'
+        }
       }
     }
   })
@@ -29,6 +34,10 @@ export async function createFeature(userId, columnState, rankState){
 }
 
 export async function deleteFeature(featureId){
+  const textBox = await db.textBox.delete({
+    where: { featureId: parseInt(featureId) }
+  })
+
   const feature = await db.feature.delete({
     where: {
       id: parseInt(featureId)
