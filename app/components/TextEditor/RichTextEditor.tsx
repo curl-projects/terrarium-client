@@ -3,10 +3,10 @@ import { EditorState, RichUtils } from 'draft-js'
 import Editor from "@draft-js-plugins/editor"
 import { DraftHandleValue } from "draft-js"
 import {CgSpinner} from "react-icons/cg"
-import {useTextBox} from "~/components/LeoEditor/useTextBox"
+import {useTextBox} from "~/components/TextEditor/useTextBox"
 
 import SyncIndicator from "./SyncIndicator"
-import Toolbar from "~/components/LeoEditor/Toolbar"
+import Toolbar from "~/components/TextEditor/Toolbar"
 
 import createAutoListPlugin from 'draft-js-autolist-plugin'
 const autoListPlugin = createAutoListPlugin()
@@ -30,13 +30,11 @@ const RichTextEditor: React.FC<RichTextEditorType> = (props) => {
         }
         return "not-handled"
     }
-
     const handleTab = (e: any) => {
         if (editorState) {
             setEditorState(RichUtils.onTab(e, editorState, 6))
         }
     }
-
     const focus = () => {
         editorRef.current?.focus()
     }

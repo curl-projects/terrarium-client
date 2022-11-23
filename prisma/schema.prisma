@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,48 +8,63 @@ datasource db {
 }
 
 model User {
-  id String @id // google id of the user
-  email String
-  discordBotAuth Boolean @default(false)
-  notionAuths NotionAuth[]
-  features Feature[]
+  id              String           @id
+  email           String
+  discordBotAuth  Boolean          @default(false)
+  features        Feature[]
+  featureRequests FeatureRequest[]
+  notionAuths     NotionAuth[]
 }
 
 model NotionAuth {
-  botId String @id
-  accessToken String
-  owner String
+  botId                String        @id
+  accessToken          String
+  owner                String
   duplicatedTemplateId String
-  workspaceIcon String
-  workspaceId String
-  workspaceName String
-  user User @relation(fields: [userId], references: [id])
-  userId String
-  discordUsers DiscordUser[]
-  guildName String?
+  workspaceIcon        String
+  workspaceId          String
+  workspaceName        String
+  userId               String
+  guildName            String?
+  user                 User          @relation(fields: [userId], references: [id])
+  discordUsers         DiscordUser[]
 }
 
 model DiscordUser {
-  username String @id
-  notionAuth NotionAuth @relation(fields: [notionAuthId], references: [botId])
+  username     String     @id
   notionAuthId String
+  notionAuth   NotionAuth @relation(fields: [notionAuthId], references: [botId])
 }
 
 model Feature {
-  id Int @id @default(sequence())
-  title String
+  id          Int      @id @default(sequence())
+  title       String
   description String
+  userId      String
   columnState Int
-  rankState Int
-  user User @relation(fields: [userId], references: [id])
-  userId String
-  textBox TextBox?
+  rankState   Int
+  isSearched  Boolean  @default(false)
+  user        User     @relation(fields: [userId], references: [id])
+  textBox     TextBox?
 }
 
 model TextBox {
-    id                Int      @id @default(sequence())
-    serializedContent String
-    localUpdatedAt    DateTime @default(now())
-    feature Feature? @relation(fields: [featureId], references: [id])
-    featureId Int @unique()
+  id                Int      @id @default(sequence())
+  serializedContent String
+  localUpdatedAt    DateTime @default(now())
+  featureId         Int      @unique
+  feature           Feature  @relation(fields: [featureId], references: [id])
+}
+
+model FeatureRequest {
+  fr_id         String @id
+  message_id    String
+  message       String
+  created_at    String
+  author        String
+  label         String
+  fr            String
+  kmeans_labels Int
+  userId        String
+  user          User   @relation(fields: [userId], references: [id])
 }

@@ -1,4 +1,5 @@
 import { db } from "~/models/db.server";
+import { deleteTextBox, createTextBox } from "~/models/text-box.server"
 
 export async function getFeatures(userId){
   const features = await db.feature.findMany({
@@ -22,21 +23,17 @@ export async function createFeature(userId, columnState, rankState){
       rankState: parseInt(rankState),
       user: {
         connect: {id: userId}
-      },
-      textBox: {
-        create: {
-          serializedContent: '{"blocks":[{"key":"9lhsg","text":"Hello world!","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'
-        }
       }
     }
   })
+
+  const textData = await createTextBox(feature.id)
+
   return feature
 }
 
 export async function deleteFeature(featureId){
-  const textBox = await db.textBox.delete({
-    where: { featureId: parseInt(featureId) }
-  })
+  const textBox = await deleteTextBox(featureId)
 
   const feature = await db.feature.delete({
     where: {
@@ -52,7 +49,8 @@ export async function updateFeatureTitle(featureId, featureTitle){
       id: parseInt(featureId)
     },
     data: {
-      title: featureTitle
+      title: featureTitle,
+      isSearched: true
     }
   })
   return feature

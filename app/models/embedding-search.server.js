@@ -34,16 +34,13 @@ export async function getKNNfromSearchVector(vector, topK=1){
     body: JSON.stringify(data)
   })
 
-  console.log("RES:", res)
   return res.json()
   }
 
 export async function embeddingSearch(searchString){
   const searchVectorRes = await generateSearchVector(searchString)
   const searchVector = searchVectorRes.data && searchVectorRes.data[0]['embedding']
-  console.log("SEARCH VECTOR", searchVector)
   const knn = await getKNNfromSearchVector(searchVector, topK=100)
-  console.log("KNN", knn)
   const knnIDs = knn.matches
   return knnIDs
 }

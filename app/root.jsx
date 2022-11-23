@@ -9,11 +9,14 @@ import {
 
 import styles from "~/styles/app.css";
 import globalStyles from "~/styles/global.css"
+import draftStyles from "draft-js/dist/Draft.css"
+
 
 export function links() {
   return [
     {rel: "stylesheet", href: styles},
-    {rel: 'stylesheet', href: globalStyles}
+    {rel: 'stylesheet', href: globalStyles},
+    {rel: 'stylesheet', href: draftStyles},
 ];
 }
 

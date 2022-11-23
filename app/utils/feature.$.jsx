@@ -9,9 +9,11 @@ import cn from 'classnames'
 // MODELS
 import { embeddingSearch } from "~/models/embedding-search.server"
 import { readFeature, updateFeatureTitle } from "~/models/kanban.server"
+import { readFeatureRequests } from "~/models/feature-requests.server"
+import { authenticator } from "~/models/auth.server.js";
 
 // UTILITIES
-import { filterSearchedData } from "~/utils/filterSearchedData.js"
+import { filterSearchedData } from "~/models/feature-requests.server.js"
 import { manipulateInputData } from "~/utils/manipulateInputData.js"
 
 // COMPONENTS
@@ -20,31 +22,28 @@ import MessageStream from "~/components/Notepad/MessageStream/MessageStream.js"
 import TextBoxSearchBar from "~/components/Notepad/TextBoxSearchBar/TextBoxSearchBar.js"
 import RichTextEditor from "~/components/LeoEditor/RichTextEditor.tsx"
 import FeatureHeader from "~/components/Header/FeatureHeader"
-// DATA
-import d from "~/mock-data/final_output.json"
 
 // STYLES
-import experimentThreeStylesheetUrl from "~/styles/experimentThree.css"
-import draftjsStylesheetUrl from "draft-js/dist/Draft.css"
-
-export const links = () => {
-  return [
-    { rel: "stylesheet", href: experimentThreeStylesheetUrl },
-    { rel: "stylesheet", href: draftjsStylesheetUrl },
-  ]
-}
 
 export async function loader({ request, params }){
+  const user = await authenticator.isAuthenticated(request, {
+    failureRedirect: "/",
+  })
+
   console.log("FEATURE ID PARAMS", params)
   const featureId = params["*"].split("-").at(-1)
-  // if(featureId === ""){
-  //   return redirect("/roadmap")
-  // }
+
   console.log("FEATURE ID:", featureId)
   const feature = await readFeature(featureId)
-  console.log("PARAMS!", featureId)
-  const data = manipulateInputData(d)
-  return { feature: feature, data: data}
+  console.log("FEATURE!", feature)
+
+  if(feature.isSearched){
+    console.log("IS SEARCHED!")
+  }
+
+  const featureRequests = await readFeatureRequests(user.id)
+  const processedFeatureRequests = manipulateInputData(featureRequests)
+  return { feature: feature, data: processedFeatureRequests}
 }
 
 
@@ -55,12 +54,24 @@ export async function action({ request, params }){
   const filterType = formData.get('filterType')
   const updatedFeature = await updateFeatureTitle(featureId, searchString)
 
+  console.log("ACTION HI!")
   if(filterType && filterType === 'search'){
+    const fullfrData = formData.get('data')
+    const jsonData = JSON.parse(fullfrData)
+
     const knnIDs = await embeddingSearch(searchString)
+
+    // UPDATE DATABASE WITH KNN IDS INFO
+    const filteredData = await filterSearchedData(jsonData, knnIDs)
+
+    console.log("FILTERED DATA", filteredData)
+
     const data = {
-      knnIDs: knnIDs,
-      filterType: filterType
+      filterType: filterType,
+      filteredData: filteredData,
+      knnIDs: knnIDs
     }
+
     return json(data)
   }
 }
@@ -74,17 +85,21 @@ export default function FeatureNotepad() {
   const [isFocused, setFocus] = useState(false);
 
   useEffect(() => {
-    console.log("ACTION DATA", actionData)
+    console.log("HI")
     if (actionData?.filterType === 'search') {
       if (actionData.knnIDs) {
-        filterSearchedData(loaderData.data, actionData.knnIDs, setTopLevelStreamDataObj, setSearchResults)
+        setTopLevelStreamDataObj(actionData.filteredData)
+        setSearchResults(actionData.knnIDs)
       }
     }
   }, [actionData])
 
+  useEffect(() => {
+    console.log("ACTION DATA", actionData)
+  }, [actionData])
+
   useEffect(()=>{
     console.log('LOADER DATA', loaderData)
-    console.log("HIO!")
   }, [loaderData])
 
   function resetSearchData() {
@@ -110,6 +125,7 @@ export default function FeatureNotepad() {
             setSubmitted={setSubmitted}
             setFocus={setFocus}
             feature={loaderData.feature}
+            data={loaderData.data}
           />
         <RichTextEditor
           featureId={loaderData.feature.id}

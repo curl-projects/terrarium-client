@@ -1,7 +1,8 @@
-import {db} from "~/models/db.server"
-import invariant from "tiny-invariant"
-import { convertFromRaw } from 'draft-js'
-import { ApiHandler, apiResponse } from "~/components/LeoEditor/apiResponse"
+import {db} from "~/models/db.server";
+import invariant from "tiny-invariant";
+import { convertFromRaw } from 'draft-js';
+import { ApiHandler, apiResponse } from "~/components/TextEditor/apiResponse";
+import { updateTextBox } from "~/models/text-box.server";
 
 export const loader = () => {
     return apiResponse(400, "must supply id")
@@ -40,14 +41,11 @@ export const action: ApiHandler = async ({request}) => {
 
     // attempt to update
     try {
-        const update = await db.textBox.update({
-            where: { featureId: id},
-            data: {serializedContent}
-        })
-        console.log("UPDATE:", update)
+        const update = await updateTextBox(id, serializedContent)
+        console.log("UPDATED!", update)
         return apiResponse(200)
     } catch (e) {
-        console.log("ERROR", e)
+        console.log("E", e)
         return apiResponse(500)
     }
 }

@@ -1,6 +1,6 @@
 import {db} from "~/models/db.server"
 import { TextBox } from "@prisma/client"
-import { apiResponse, ApiHandler } from "~/components/LeoEditor/apiResponse"
+import { apiResponse, ApiHandler } from "~/components/TextEditor/apiResponse"
 import { findTextBox } from "~/models/text-box.server";
 
 export const loader: ApiHandler<{textBox: TextBox}> = async ({params}) => {
