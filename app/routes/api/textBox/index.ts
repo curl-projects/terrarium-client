@@ -42,10 +42,8 @@ export const action: ApiHandler = async ({request}) => {
     // attempt to update
     try {
         const update = await updateTextBox(id, serializedContent)
-        console.log("UPDATED!", update)
         return apiResponse(200)
     } catch (e) {
-        console.log("E", e)
         return apiResponse(500)
     }
 }

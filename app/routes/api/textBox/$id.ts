@@ -4,7 +4,6 @@ import { apiResponse, ApiHandler } from "~/components/TextEditor/apiResponse"
 import { findTextBox } from "~/models/text-box.server";
 
 export const loader: ApiHandler<{textBox: TextBox}> = async ({params}) => {
-  console.log("MY PARAMS:", params)
     if (!params.id) {
         return apiResponse(400, "did not receive argument for feature id")
     }
@@ -15,7 +14,6 @@ export const loader: ApiHandler<{textBox: TextBox}> = async ({params}) => {
     }
 
     const textBox = await findTextBox(featureId)
-    console.log("TEXT BOX!", textBox)
     if (textBox === null) {
         return apiResponse(404, "not found in database")
     }
