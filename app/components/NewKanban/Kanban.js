@@ -4,25 +4,25 @@ import { DragDropContext} from "@hello-pangea/dnd";
 import KanbanColumn from '~/components/NewKanban/KanbanColumn.js'
 
 const columnsFromBackend = {
-  1: {
-    name: "Roadmap",
-    items: []
-  },
-  2: {
-    name: "Workspace",
-    items: []
-  },
-  3: {
-    name: "Drafts",
-    items: []
-  }
+  // 1: {
+  //   name: "Roadmap",
+  //   items: []
+  // },
+  // 2: {
+  //   name: "Workspace",
+  //   items: []
+  // },
+  // 3: {
+  //   name: "Drafts",
+  //   items: []
+  // }
 };
 
 export default function Kanban(props){
   const [columns, setColumns] = useState(columnsFromBackend);
 
-  const [columnOne, setColumnOne] = useState([{id: "1", title: "Test One", description: "This is test one", cardState: 1}])
-  const [columnTwo, setColumnTwo] = useState([{id: "2", title: "Test Two", description: "This is test two", cardState: 2}])
+  const [columnOne, setColumnOne] = useState([])
+  const [columnTwo, setColumnTwo] = useState([])
   const [columnThree, setColumnThree] = useState([])
 
   const fetcher = useFetcher();
@@ -39,18 +39,18 @@ export default function Kanban(props){
         1: {
           name: "Roadmap",
           items: columnOne,
-          color: "#E1E4E8",
+          color: "rgba(119, 153, 141, 1)",
         },
-        2: {
-          name: "Workspace",
-          items: columnTwo,
-          color: "#F0E7F6",
-        },
-        3: {
-          name: "Drafts",
-          items: columnThree,
-          color: "#FFDCE0",
-        }
+        // 2: {
+        //   name: "Workspace",
+        //   items: columnTwo,
+        //   color: "#F0E7F6",
+        // },
+        // 3: {
+        //   name: "Drafts",
+        //   items: columnThree,
+        //   color: "#FFDCE0",
+        // }
       }
     )}, [columnOne, columnTwo, columnThree])
 
@@ -128,6 +128,9 @@ export default function Kanban(props){
             );
           })}
         </DragDropContext>
+        <div className='pointFieldWrapper'>
+
+        </div>
     </div>
   )
 }

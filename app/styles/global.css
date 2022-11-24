@@ -182,6 +182,7 @@ body {
   justify-content: flex-start;
   align-items: center;
   padding-right: 8px;
+  z-index: 100;
 }
 
 .navigationTextWrapper {
@@ -324,7 +325,7 @@ body {
 .kanbanBoard{
    display: flex;
    flex-direction: row;
-   justify-content: center;
+   justify-content: flex-start;
    gap: 50px;
    width: 100%;
    height: 80%;
@@ -337,6 +338,7 @@ body {
   justify-content: flex-start;
   background-color: rgb(236, 240, 241);
   width: 28%;
+  flex: 1;
 }
 
 .kanbanColumnInner {
@@ -358,6 +360,7 @@ body {
 .columnName {
   font-size: 24px;
   font-weight: normal;
+
 }
 
 .addCardWrapper {
@@ -378,8 +381,9 @@ body {
 .cardContentWrapper{
   display: flex;
   flex-direction: column;
-  border-radius: 20px;
   filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.08));
+  flex: 3;
+  padding: 16px;
 }
 
 .cardHeader{
@@ -401,10 +405,10 @@ body {
 }
 
 .headerText{
-  font-weight: bold;
-  font-size: 26px;
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
   color: #4D4D4D;
-
 }
 
 .deleteCardButtonWrapper {
@@ -435,6 +439,38 @@ body {
   color: #5A5A65;
 }
 
+.roadmapIndicatorWrapper{
+  padding-left: 25px;
+  padding-right: 25px;
+  background-color:  rgba(119, 153, 141, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.roadmapIndicator {
+  font-weight: 600;
+  font-size: 2rem;
+  color: black;
+}
+
+@media only screen and (max-width: 1300px){
+  .roadmapIndicatorWrapper{
+    padding-left: 0px;
+    padding-right: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 0px !important;
+    border: 2px solid rgba(119, 153, 141, 0.4);
+  }
+
+  .roadmapIndicator {
+    font-weight: 600;
+    font-size: 0rem;
+    color: black;
+  }
+}
 /*  -------- NOTEPAD -------- */
 .notepadScaffold {
   --tw-bg-opacity: 1;
@@ -505,7 +541,7 @@ body {
   text-align: center;
   margin-top: 20px;
   margin-bottom: 10px;
-  color: rgba(55 65 81, 1);
+  color: rgba(55, 65, 81, 1);
   width: 100%;
   height: 70px;
   padding: 10px;
@@ -570,7 +606,14 @@ div.DraftEditor-root {
   }
 }
 
-
 .animate-spin {
   animation: spin 1s linear infinite;
+}
+
+/* POINT FIELD */
+.pointFieldWrapper {
+  border: 2px solid green;
+  flex: 2.5;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 4px;
+  border: 1px solid rgba(119, 153, 141, 0.3);
 }

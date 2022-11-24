@@ -34,7 +34,7 @@ export default function KanbanColumn(props){
                 ref={provided.innerRef}
                 style={{
                   background: snapshot.isDraggingOver
-                    ? `${props.column.color}`
+                    ? "rgb(236, 240, 241)" // `${props.column.color}`
                     : "rgb(236, 240, 241)",
                   padding: 4,
                   width: '100%',

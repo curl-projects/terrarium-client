@@ -1,6 +1,7 @@
 import { Form, Link } from "@remix-run/react"
 import { Draggable } from "@hello-pangea/dnd";
 import deleteButton from "../../../public/assets/delete-button.png"
+import cn from "classnames";
 
 export default function KanbanCard(props){
   return(
@@ -17,13 +18,12 @@ export default function KanbanCard(props){
             {...provided.dragHandleProps}
             style={{
               userSelect: "none",
-              padding: 16,
               margin: "8px",
               height: "fit-content",
               boxShadow: "0 2px 4px rgba(0, 0, 0, 0.08)",
               border: "1px solid #DDDDDD",
-              borderRadius: "8px",
-
+              display: "flex",
+              flexDirection: 'row',
               backgroundColor: snapshot.isDragging
                 ? "rgb(232, 236, 241)"
                 : "white",
@@ -31,8 +31,10 @@ export default function KanbanCard(props){
               ...provided.draggableProps.style
             }}
           >
+          <div className='roadmapIndicatorWrapper'>
+            <h2 className='roadmapIndicator'>1</h2>
+          </div>
           <div className="cardContentWrapper">
-
             <div className="cardHeader">
               <Link to={`/feature/${props.item.id}`}
                     style={{
@@ -40,7 +42,7 @@ export default function KanbanCard(props){
                     }}>
               <div className="headerTextWrapper">
               <p className="headerText">
-                {props.item ? props.item.title : ""}{props.item ? ` [${props.item.id}]` : ""}
+                {props.item ? props.item.title : ""}
               </p>
               </div>
               </Link>
