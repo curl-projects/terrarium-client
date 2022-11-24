@@ -76,8 +76,8 @@ export default function FeatureNotepad(){
   const transition = useTransition();
 
   useEffect(() => {
-    console.log("transition:", transition.state)
-  }, [transition])
+    console.log("loader data:", loaderData)
+  }, [loaderData])
 
   return(
     <>
@@ -97,7 +97,7 @@ export default function FeatureNotepad(){
                 </div>
                   <button className="searchBarSubmit" type="submit">
                     { transition.state === "loading" ?
-                      <><div>Finding Feature Requests </div><span /> <CgSpinner className="animate-spin" /></>
+                      <><div style={{marginRight: "5px"}}>Finding Feature Requests </div><CgSpinner className="animate-spin" /></>
                       : loaderData.isSearched ? "Update Search Term" : "Find Feature Requests"
                     }
                   </button>
@@ -107,7 +107,10 @@ export default function FeatureNotepad(){
               </ClientOnly>
             </fetcher.Form>
             <div className="messageStreamColumn">
-              <MessageStream data={loaderData.featureRequests}/>
+              <MessageStream
+                data={loaderData.featureRequests}
+                featureId={loaderData.feature.id} />
+                />
             </div>
           </div>
         </div>

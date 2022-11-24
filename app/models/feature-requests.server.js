@@ -1,17 +1,29 @@
 import { db } from "~/models/db.server";
 
 export async function findFeatureRequests(featureId){
-  const featureRequests = await db.featureRequest.findMany({
-    where: {
-      features: {
-        some: {
-          feature: {
-            id: parseInt(featureId)
-          }
-        }
-      }
+  // const featureRequests = await db.featureRequest.findMany({
+  //   where: {
+  //     features: {
+  //       some: {
+  //         feature: {
+  //           id: parseInt(featureId)
+  //         }
+  //       }
+  //     }
+  //   },
+  //   include: {
+  //     featureRequestMap: true
+  //   }
+  // })
+
+  const featureRequests = await db.featureRequestMap.findMany({
+    where: { featureId: parseInt(featureId)},
+    include: {
+      featureRequest: true
     }
   })
+
+  console.log("FEATURE_REQUEST:", featureRequests)
 
   return featureRequests
 }
@@ -60,7 +72,7 @@ export async function associateFeatureRequestsWithFeature(knnIDs, featureId){
   }
   console.log("CONNECTION ARRAY CREATED")
 
-
+  // always explicitly edit the connection model, rather than using nested writes
   const newMap = await db.featureRequestMap.createMany({
     data: connectionArray
   })
