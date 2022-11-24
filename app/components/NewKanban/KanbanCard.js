@@ -32,7 +32,7 @@ export default function KanbanCard(props){
             }}
           >
           <div className='roadmapIndicatorWrapper'>
-            <h2 className='roadmapIndicator'>1</h2>
+            <h2 className='roadmapIndicator'>{props.index + 1}</h2>
           </div>
           <div className="cardContentWrapper">
             <div className="cardHeader">

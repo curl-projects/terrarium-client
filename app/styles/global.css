@@ -446,12 +446,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.5s linear;
+  width: 20%;
 }
 
 .roadmapIndicator {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 2rem;
-  color: black;
+  color: rgba(110, 110, 110);
 }
 
 @media only screen and (max-width: 1300px){
@@ -466,9 +468,7 @@ body {
   }
 
   .roadmapIndicator {
-    font-weight: 600;
     font-size: 0rem;
-    color: black;
   }
 }
 /*  -------- NOTEPAD -------- */

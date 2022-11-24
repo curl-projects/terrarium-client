@@ -84,8 +84,7 @@ export default function MessageStream(props) {
               cardData={cardData.featureRequest}
               isExpanded={isExpanded}
               pinCard={pinCard}
-              isPinned={true}
-            />
+              isPinned={true}/>
           ))}
           {pinnedCards.length > 0 && <h1 className="text-gray-400 text-xs font-medium pl-4">Remaining Feature Requests</h1>}
           {remainingCards.map((cardData, idx) => (
@@ -94,11 +93,9 @@ export default function MessageStream(props) {
               key={cardData.featureRequest.fr_id}
               cardData={cardData.featureRequest}
               isExpanded={isExpanded}
-              pinCard={pinCard}
-            />
+              pinCard={pinCard} />
           ))}
         </div>
-
       </div>
     </>
   )

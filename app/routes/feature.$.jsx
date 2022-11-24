@@ -55,7 +55,7 @@ export async function loader({ request, params}){
     // // works because of the update above
     // const featureRequests = await findFeatureRequests(featureId)
 
-    return redirect(`/updated/${featureId}`)
+    return redirect(`/feature/${featureId}`)
   }
 
   if(feature.isSearched){
@@ -70,7 +70,7 @@ export async function action({ request }){
   const formData = await request.formData();
   const featureId = formData.get('featureId');
   const searchTerm = formData.get('searchTerm');
-  return redirect(`/updated/${featureId}?searchTerm=${searchTerm}`)
+  return redirect(`/feature/${featureId}?searchTerm=${searchTerm}`)
 }
 
 
@@ -114,7 +114,6 @@ export default function FeatureNotepad(){
               <MessageStream
                 data={loaderData.featureRequests}
                 featureId={loaderData.feature.id} />
-                />
             </div>
           </div>
         </div>

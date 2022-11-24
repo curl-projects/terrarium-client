@@ -38,7 +38,7 @@ export async function getKNNfromSearchVector(vector, topK=1){
   }
 
 export async function filterEmbeddings(knnIDs){
-    const filteredResults = knnIDs.filter(a => a['score'] > 0.35)
+    const filteredResults = knnIDs.filter(a => a['score'] > 0.25)
     const sortedResponses = filteredResults.slice().sort((a,b)=>b-a)
     const dataIDs = sortedResponses.map(a => a.id)
     return dataIDs
