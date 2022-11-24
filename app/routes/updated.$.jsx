@@ -82,8 +82,7 @@ export default function FeatureNotepad(){
   return(
     <>
       <FeatureHeader />
-        <div className="relative md:p-24 lg:px-32 lg:py-22 xl:px-56 xl:py-24 2xl:px-96 2xl:py-32 h-screen w-screen"
-          style={{margin: "60px"}}>
+        <div className="relative md:p-24 lg:px-32 lg:py-22 xl:px-56 xl:py-24 2xl:px-96 2xl:py-32 h-screen w-screen">
           <div className="notepadScaffold">
             <fetcher.Form className="textboxColumn" method='post'>
                 <input type='hidden' name='featureId' value={loaderData.feature.id}/>
