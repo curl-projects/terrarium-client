@@ -6,7 +6,7 @@ import { CgSpinner } from "react-icons/cg"
 
 const SyncIndicator = (props: {syncState: "idle" | "syncing" | "error"}) => {
     return (
-        <div>
+        <div className='syncIndicator'>
             {props.syncState === "idle" &&
                 <FcCheckmark/>}
             {props.syncState === "error" &&

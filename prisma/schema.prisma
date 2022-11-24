@@ -1,5 +1,7 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+
 }
 
 datasource db {
@@ -46,6 +48,7 @@ model Feature {
   isSearched  Boolean  @default(false)
   user        User     @relation(fields: [userId], references: [id])
   textBox     TextBox?
+  featureRequests FeatureRequestMap[]
 }
 
 model TextBox {
@@ -67,4 +70,15 @@ model FeatureRequest {
   kmeans_labels Int
   userId        String
   user          User   @relation(fields: [userId], references: [id])
+  features FeatureRequestMap[]
+}
+
+model FeatureRequestMap {
+  feature Feature @relation(fields: [featureId], references: [id])
+  featureId Int
+  featureRequest FeatureRequest @relation(fields: [featureRequestId], references: [fr_id])
+  featureRequestId String
+  pinned Boolean @default(false)
+
+  @@id([featureId, featureRequestId])
 }

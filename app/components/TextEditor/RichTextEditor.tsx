@@ -59,6 +59,7 @@ const RichTextEditor: React.FC<RichTextEditorType> = (props) => {
                             onTab={handleTab}
                             ref={editorRef}
                             readOnly={props.readOnly}
+                            placeholder={"Write notes here!"}
                             />
                         <SyncIndicator syncState={syncState}/>
                     </>

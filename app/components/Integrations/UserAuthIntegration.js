@@ -42,7 +42,7 @@ export default function UserAuthIntegration(props){
         </div>
         {usersUpdate &&
           <div className='discordInputWrapper'>
-            <Form method="post" action='/dashboard'>
+            <Form method="post" action='/integrations'>
               <input type="hidden" name="botId" value={props.loaderData.notionAuth[0] && props.loaderData.notionAuth[0].botId}></input>
                 <input type='text'
                        name='guildName'

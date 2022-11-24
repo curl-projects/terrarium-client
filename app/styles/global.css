@@ -275,7 +275,7 @@ body {
 
 .logoutButton {
   padding: 10px 20px;
-  background: rgba(140, 140, 140, 0.3);
+  background-color: rgba(119, 153, 141, 0.5);
   border-radius: 7px;
   border: 0;
   cursor: pointer;
@@ -435,8 +435,35 @@ body {
   color: #5A5A65;
 }
 
-/* NOTEPAD */
+/*  -------- NOTEPAD -------- */
+.notepadScaffold {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  border-width: 1px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.textboxColumn {
+  background-clip: border-box;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 55%;
+}
 /* MESSAGE STREAM INNER CLASSES */
+.messageStreamColumn {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 45%;
+}
+
+
 .messageStream {
   display: flex;
   flex-direction: column;
@@ -461,34 +488,44 @@ body {
   text-overflow: clip;
 }
 
-/* SEARCH INNER CLASSES */
-.searchBarWrapper {
-  /* border: 4px solid blue; */
+/* SEARCH BOX CLASSES */
+
+.searchBarWrapper{
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content:center;
+  align-items:center;
+  overflow: visible;
+  position: relative;
+}
+
+.searchBar {
+  font-weight: 500;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: rgba(55 65 81, 1);
+  width: 100%;
+  height: 70px;
+  padding: 10px;
+}
+
+.searchBarSubmit {
+  background-color: rgba(119, 153, 141, 0.5);
+  color: rgba(255, 255, 255, 1);
+  font-weight: 700;
+  padding: 0.5rem;
+  margin: 0.5rem;
   margin-bottom: 20px;
-  gap: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-textarea::placeholder {
-  color: #bdbcbc80;
-  white-space: pre-line;
+.searchBarSubmit:hover{
+  background-color: rgba(119, 153, 141, 1);
 }
-
-textarea {
-  resize: none;
-}
-
-.textbox-shadow {
-  box-shadow: -16px 16px rgba(0, 0, 0, 0.03);
-}
-
-textarea:focus {
-  outline-width: 0;
-  outline: none;
-}
-
 /* TEXTBOX STYLES */
 textarea::placeholder {
   color: #e0e0e0;
@@ -518,4 +555,22 @@ div.DraftEditor-root {
   padding: 20px;
   font-size: 18px;
   font-family: 'Inter', sans-serif;
+}
+
+.syncIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 5px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
