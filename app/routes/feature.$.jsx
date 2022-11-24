@@ -31,7 +31,12 @@ export async function loader({ request, params}){
 
   const featureId = params["*"]
   const feature = await readFeature(featureId)
+  console.log("FEATURE:", feature)
 
+  // make sure the right user is looking at the feature information
+  if(feature.userId !== user.id){
+    return redirect("/")
+  }
 
   if(searchTerm){
     // update feature title

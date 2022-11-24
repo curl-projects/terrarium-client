@@ -36,6 +36,9 @@ export async function associateFeatureRequestsWithFeature(knnIDs, featureId){
     data: connectionArray
   })
 
+  // TODO add scores
+
+
   return {}
 }
 
