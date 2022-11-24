@@ -6,9 +6,11 @@ import MessageCard from "~/components/Notepad/MessageStream/MessageCard";
 export default function MessageStream(props) {
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const [pins, setPinned] = useState([]);
+  const [pins, setPinned] = useState(props.data.filter(d => d.pinned === true).map(e => e.featureRequestId));
   const paneRef = useRef(null);
   const pinnedFetcher = useFetcher();
+  const [pinnedCards, setPinnedCards] = useState([])
+  const [remainingCards, setRemainingCards] = useState([])
 
 
   const pinCard = (fr_id) => {
@@ -45,14 +47,22 @@ export default function MessageStream(props) {
     }
   }, [])
 
+  useEffect(()=>{
+    console.log("DATA", props.data)
+    setPinnedCards(props.data.filter(d => pins.includes(d.featureRequestId)))
+    setRemainingCards(props.data.filter(d => !pins.includes(d.featureRequestId)))
+  }, [pins])
+
+
+  useEffect(()=>{
+    console.log("PINS", pins)
+    console.log("PINNED CARDS", pinnedCards)
+    console.log("REMAINING CARDS", remainingCards)
+  }, [pinnedCards, remainingCards, pins])
+
   const scrollToTop = () => {
     paneRef.current.scrollIntoView();
   }
-
-  // pinned cards
-  const pinnedCards = props.data.filter(d => pins.includes(d.featureRequest.fr_id))
-  // rest of the cards
-  const remainingCards = props.data.filter(d => !pins.includes(d.featureRequest.fr_id))
 
   return (
     <>

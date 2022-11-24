@@ -1,29 +1,12 @@
 import { db } from "~/models/db.server";
 
 export async function findFeatureRequests(featureId){
-  // const featureRequests = await db.featureRequest.findMany({
-  //   where: {
-  //     features: {
-  //       some: {
-  //         feature: {
-  //           id: parseInt(featureId)
-  //         }
-  //       }
-  //     }
-  //   },
-  //   include: {
-  //     featureRequestMap: true
-  //   }
-  // })
-
   const featureRequests = await db.featureRequestMap.findMany({
     where: { featureId: parseInt(featureId)},
     include: {
       featureRequest: true
     }
   })
-
-  console.log("FEATURE_REQUEST:", featureRequests)
 
   return featureRequests
 }
@@ -40,29 +23,6 @@ export async function associateFeatureRequestsWithFeature(knnIDs, featureId){
       id: parseInt(featureId)
     }
   })
-  console.log("MAPPING DELETED!")
-
-
-  // async function generateMapping(knnIDs, featureId){
-  //   return await db.$transaction(async (tx) => {
-  //
-  //   })
-  // }
-  // const createTransaction = await generateMapping(knnIDs, featureId)
-
-  // const newMap = await db.feature.update({
-  //   where: {
-  //     id: parseInt(featureId)
-  //   },
-  //   data: {
-  //     featureRequests: {
-  //       create: connectionArray
-  //     }
-  //   }
-  // })
-  // console.log("MAPPING CREATED!")
-  //
-  // const connectionArray = []
 
 
   const connectionArray = []
@@ -70,41 +30,26 @@ export async function associateFeatureRequestsWithFeature(knnIDs, featureId){
   for(let fr of knnIDs){
     connectionArray.push({ featureRequestId: fr, featureId: parseInt(featureId)})
   }
-  console.log("CONNECTION ARRAY CREATED")
 
   // always explicitly edit the connection model, rather than using nested writes
   const newMap = await db.featureRequestMap.createMany({
     data: connectionArray
   })
-  console.log("NEW MAP CREATED!")
 
   return {}
 }
 
 export async function setPinned(fr_id, featureId, pinnedStatus){
   const updated = await db.featureRequestMap.update({
-    where: { featureRequestId: fr_id, featureId: featureId },
+    where: { featureId_featureRequestId: {featureRequestId: fr_id, featureId: parseInt(featureId) }},
     data: {
-      pinned: pinnedStatus
+      pinned: JSON.parse(pinnedStatus)
     }
   })
   return updated
 }
 
-export async function getPinned(featureId){
-  const pinnedFeatureRequests = await prisma.featureRequestMap.findMany({
-    where: {
-      feature: {
-        id: {
-          equals: featureId
-        }
-      },
-      pinned: true
-    }
-  })
 
-  return pinnedFeatureRequests
-}
 //
 // export async function filterSearchedData(data, knnIDs) {
 //   const filteredResults = knnIDs.filter(a => a['score'] > 0.25)

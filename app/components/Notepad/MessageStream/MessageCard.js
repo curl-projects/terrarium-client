@@ -27,7 +27,6 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
     //   .ease(d3.easeCubicInOut)
     //   .attr('stroke', 'red')
     //   .attr("r", 20)
-    console.log("HI!")
     setIsHovered(true);
   }
   function handleMouseOut(event, fr_id) {
