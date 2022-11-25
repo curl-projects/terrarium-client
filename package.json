@@ -6,7 +6,7 @@
     "build:css": "tailwindcss -m -i app/styles/app.css -o app/styles/app.css",
     "deploy": "fly deploy --remote-only",
     "dev": "concurrently \"npm run dev:css\" \"node -r dotenv/config ./node_modules/.bin/remix dev\"",
-    "dev:css": "tailwindcss -w -i ./styles/app.css -o app/styles/app.css",
+    "dev:css": "tailwindcss -w -i app/styles/app.css -o app/styles/app.css",
     "start": "node -r dotenv/config ./node_modules/.bin/remix-serve build"
   },
   "dependencies": {
@@ -23,6 +23,7 @@
     "dotenv": "^16.0.3",
     "draft-js": "^0.11.7",
     "draft-js-autolist-plugin": "^3.0.0",
+    "gaussian": "^1.2.0",
     "isbot": "^3.5.4",
     "openai": "^3.1.0",
     "prisma": "^4.6.1",

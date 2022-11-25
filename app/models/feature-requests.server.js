@@ -11,6 +11,23 @@ export async function findFeatureRequests(featureId){
   return featureRequests
 }
 
+export async function getAllActiveFeatureRequests(userId){
+  const featureRequests = await db.featureRequest.findMany({
+    where: {
+      AND: {
+        user: {
+          id: userId
+        },
+        features: {
+          some: {}
+        }
+      }
+    }
+  })
+
+  return featureRequests
+}
+
 export async function associateFeatureRequestsWithFeature(knnIDs, featureId){
   // DELETE EXISTING MAPPING
   const deletedConnections = await db.feature.update({
@@ -52,6 +69,16 @@ export async function setPinned(fr_id, featureId, pinnedStatus){
   return updated
 }
 
+export async function deleteOldRequests(){
+  const deleted = await db.featureRequest.deleteMany({
+    where: {
+      fr_id: {
+        contains: "/"
+      }
+    }
+  })
+  return deleted
+}
 
 //
 // export async function filterSearchedData(data, knnIDs) {

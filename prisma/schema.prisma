@@ -46,7 +46,7 @@ model Feature {
   columnState Int
   rankState   Int
   isSearched  Boolean  @default(false)
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   textBox     TextBox?
   featureRequests FeatureRequestMap[]
 }
@@ -56,7 +56,7 @@ model TextBox {
   serializedContent String
   localUpdatedAt    DateTime @default(now())
   featureId         Int      @unique
-  feature           Feature  @relation(fields: [featureId], references: [id])
+  feature           Feature  @relation(fields: [featureId], references: [id], onDelete: Cascade)
 }
 
 model FeatureRequest {
@@ -69,14 +69,14 @@ model FeatureRequest {
   fr            String
   kmeans_labels Int
   userId        String
-  user          User   @relation(fields: [userId], references: [id])
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   features FeatureRequestMap[]
 }
 
 model FeatureRequestMap {
-  feature Feature @relation(fields: [featureId], references: [id])
+  feature Feature @relation(fields: [featureId], references: [id], onDelete: Cascade)
   featureId Int
-  featureRequest FeatureRequest @relation(fields: [featureRequestId], references: [fr_id])
+  featureRequest FeatureRequest @relation(fields: [featureRequestId], references: [fr_id], onDelete: Cascade)
   featureRequestId String
   pinned Boolean @default(false)
 

@@ -57,11 +57,7 @@ export default function KanbanCard(props){
                 </Form>
               </div>
             </div>
-              <div className="cardContent">
-                <p className="contentText">
-                  {props.item ? props.item.description : ""}
-                </p>
-              </div>
+
           </div>
         </div>
         );
@@ -71,4 +67,8 @@ export default function KanbanCard(props){
   )
 }
 
-// <DeleteCardButton item={props.item}/>
+// <div className="cardContent">
+//   <p className="contentText">
+//     {props.item ? props.item.description : ""}
+//   </p>
+// </div>

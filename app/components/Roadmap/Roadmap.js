@@ -1,7 +1,7 @@
 import { useFetcher } from "@remix-run/react";
 import { useState, useEffect } from 'react';
 import { DragDropContext} from "@hello-pangea/dnd";
-import KanbanColumn from '~/components/NewKanban/KanbanColumn.js'
+import RoadmapColumn from '~/components/Roadmap/RoadmapColumn.js'
 
 const columnsFromBackend = {
   // 1: {
@@ -106,7 +106,6 @@ export default function Kanban(props){
         }
       });
 
-
       fetcher.submit({ columns: JSON.stringify({
         ...columns,
         [source.droppableId]: {
@@ -124,13 +123,10 @@ export default function Kanban(props){
         >
           {Object.entries(columns).map(([columnId, column], index) => {
             return (
-              <KanbanColumn key={columnId} columnId={columnId} column={column} index={index}/>
+              <RoadmapColumn key={columnId} columnId={columnId} column={column} index={index}/>
             );
           })}
         </DragDropContext>
-        <div className='pointFieldWrapper'>
-
-        </div>
     </div>
   )
 }

@@ -16,9 +16,9 @@ import Textarea from 'react-expanding-textarea';
 import { CgSpinner } from "react-icons/cg"
 
 // COMPONENTS
-import FeatureHeader from "~/components/Feature/FeatureHeader"
+import FeatureHeader from "~/components/Header/FeatureHeader"
 import RichTextEditor from "~/components/TextEditor/RichTextEditor.tsx"
-import MessageStream from "~/components/Notepad/MessageStream/MessageStream.js"
+import MessageStream from "~/components/MessageStream/MessageStream.js"
 
 export async function loader({ request, params}){
   const user = await authenticator.isAuthenticated(request, {

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useFetcher } from "@remix-run/react";
-import MessageStreamMetadata from "~/components/Notepad/MessageStream/MessageStreamMetadata";
-import MessageCard from "~/components/Notepad/MessageStream/MessageCard";
+import MessageStreamMetadata from "~/components/MessageStream/MessageStreamMetadata";
+import MessageCard from "~/components/MessageStream/MessageCard";
 
 export default function MessageStream(props) {
 

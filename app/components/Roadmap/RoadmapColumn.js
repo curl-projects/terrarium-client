@@ -1,7 +1,7 @@
 import { Form } from "@remix-run/react";
 
 import { Droppable } from "@hello-pangea/dnd";
-import KanbanCard from '~/components/NewKanban/KanbanCard.js'
+import RoadmapCard from '~/components/Roadmap/RoadmapCard.js'
 import plusButton from "../../../public/assets/plus-button.png"
 
 export default function KanbanColumn(props){
@@ -46,7 +46,7 @@ export default function KanbanColumn(props){
               >
                   {props.column.items.map((item, index) => {
                   return (
-                    <KanbanCard key={index} item={item} index={index}/>
+                    <RoadmapCard key={index} item={item} index={index}/>
                   );
                 })}
                 {provided.placeholder}

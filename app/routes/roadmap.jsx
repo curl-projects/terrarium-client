@@ -3,7 +3,7 @@ import { useLoaderData, useActionData } from "@remix-run/react";
 import { redirect } from "@remix-run/node";
 
 import Header from "~/components/Header/Header";
-import Kanban from "~/components/NewKanban/Kanban"
+import Roadmap from "~/components/Roadmap/Roadmap"
 
 import { authenticator } from "~/models/auth.server.js";
 
@@ -44,7 +44,7 @@ export async function action({ request }){
   }
 }
 
-export default function Roadmap(){
+export default function RoadmapRoute(){
   const loaderData = useLoaderData();
   const actionData = useActionData();
 
@@ -59,8 +59,11 @@ export default function Roadmap(){
   return(
     <>
       <Header />
-      <div className="kanbanWrapper">
-        <Kanban features={loaderData.features}/>
+      <div className="roadmapWrapper">
+        <Roadmap features={loaderData.features}/>
+          <div className='pointFieldWrapper'>
+
+          </div>
       </div>
     </>
   )
