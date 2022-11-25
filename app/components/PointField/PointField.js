@@ -17,7 +17,9 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
 
   // the weird domains create padding around the svg
   const xDomain = [-0.05, 1.05]
-  const yDomain = [-0.05, 1.05]
+  const yDomain = [-0.05, 1.10]
+  // const xDomain = [0, 1]
+  // const yDomain = [0, 1]
   const [windowWidth, windowHeight] = useWindowSize();
 
 
