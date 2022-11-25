@@ -30,6 +30,8 @@ export default function KanbanCard(props){
               color: "white",
               ...provided.draggableProps.style
             }}
+            onMouseEnter={(event)=>props.updateHoveredData(event, props.item.id)}
+            onMouseOut={(event)=>props.updateHoveredData(event, false)}
           >
           <div className='roadmapIndicatorWrapper'>
             <h2 className='roadmapIndicator'>{props.index + 1}</h2>

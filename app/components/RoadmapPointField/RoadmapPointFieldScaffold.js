@@ -98,6 +98,7 @@ export default function RoadmapPointFieldScaffold(props){
         style={{height: "100%"}}
         filterBrushedData={props.filterBrushedData}
         resetBrushFilter={props.resetBrushFilter}
+        hoveredData={props.hoveredData}
         />
       <button
         onClick={generateClusters}

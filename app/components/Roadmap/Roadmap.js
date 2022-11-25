@@ -123,7 +123,12 @@ export default function Kanban(props){
         >
           {Object.entries(columns).map(([columnId, column], index) => {
             return (
-              <RoadmapColumn key={columnId} columnId={columnId} column={column} index={index}/>
+              <RoadmapColumn key={columnId}
+                             columnId={columnId}
+                             column={column}
+                             index={index}
+                             updateHoveredData={props.updateHoveredData}
+                             />
             );
           })}
         </DragDropContext>

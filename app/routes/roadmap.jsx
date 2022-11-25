@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useLoaderData, useActionData, Outlet } from "@remix-run/react";
+import { useEffect, useState } from "react";
+import { useLoaderData, useActionData, Outlet, useFetcher } from "@remix-run/react";
 import { redirect } from "@remix-run/node";
 
 import Header from "~/components/Header/Header";
@@ -8,7 +8,6 @@ import Roadmap from "~/components/Roadmap/Roadmap"
 import { authenticator } from "~/models/auth.server.js";
 
 import { getFeatures, createFeature, deleteFeature, updateAllFeaturePositions } from "~/models/kanban.server"
-
 import { processCardState } from "~/utils/processCardState"
 
 export async function loader({ request }){
@@ -47,6 +46,32 @@ export async function action({ request }){
 export default function RoadmapRoute(){
   const loaderData = useLoaderData();
   const actionData = useActionData();
+  const [hoveredData, setHoveredData] = useState([])
+  const hoverFetcher = useFetcher();
+
+  useEffect(() => {
+    console.log("HOVERED_DATA:", hoveredData)
+  }, [hoveredData])
+
+  useEffect(()=>{
+    if(hoverFetcher.data){
+      console.log("UPDATED!")
+      setHoveredData(hoverFetcher.data.featureRequests)
+    }
+    else{
+    }
+  }, [hoverFetcher.data])
+
+  function updateHoveredData(event, featureId){
+    console.log("FEATUREID", featureId)
+    if(featureId){
+      console.log("HI!")
+      hoverFetcher.submit({actionType: 'hover', featureId: featureId}, {method: 'get', action: "utils/hover-feature-requests"})
+    }
+    else{
+      setHoveredData([])
+    }
+  }
 
   useEffect(()=>{
     console.log("LOADER DATA:", loaderData)
@@ -60,9 +85,10 @@ export default function RoadmapRoute(){
     <>
       <Header />
       <div className="roadmapWrapper">
-        <Roadmap features={loaderData.features}/>
+        <Roadmap features={loaderData.features}
+                 updateHoveredData={updateHoveredData} />
           <div className='pointFieldWrapper'>
-            <Outlet />
+            <Outlet context={{ hoveredData: hoveredData }}/>
           </div>
       </div>
     </>

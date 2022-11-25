@@ -46,7 +46,11 @@ export default function KanbanColumn(props){
               >
                   {props.column.items.map((item, index) => {
                   return (
-                    <RoadmapCard key={index} item={item} index={index}/>
+                    <RoadmapCard key={index}
+                                 item={item}
+                                 index={index}
+                                 updateHoveredData={props.updateHoveredData}
+                                 />
                   );
                 })}
                 {provided.placeholder}

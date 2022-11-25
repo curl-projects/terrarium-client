@@ -691,11 +691,14 @@ div.DraftEditor-root {
   transition: 1s ease-out all;
 }
 
-.searchSelected{
-  transition: 0.5s ease-in fill;
-  transition: 0.2s ease-in r;
-  r: 10;
-  fill: black !important;
+.frNode{
+  transition: 0.5s ease-out r;
+}
+
+.hoverSelected{
+  transition: 0.5s ease-in r;
+  r: 7;
+  fill: rgba(119, 153, 141, 1) !important;
 }
 
 .mouseOverFr{

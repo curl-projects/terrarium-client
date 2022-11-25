@@ -5,7 +5,7 @@ import * as d3 from "d3"
 
 // REACT & REMIX
 import { useState, useEffect } from "react";
-import { useLoaderData, useActionData} from "@remix-run/react"
+import { useLoaderData, useActionData, useOutletContext } from "@remix-run/react"
 import { json } from '@remix-run/node';
 
 // MODELS
@@ -31,8 +31,13 @@ export async function loader({ request }){
 
 export default function RoadmapPointField() {
   const loaderData = useLoaderData();
+  const context = useOutletContext();
   const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
   const [zoomObject, setZoomObject] = useState(null)
+
+  useEffect(()=>{
+    console.log('CONTEXT:', context)
+  }, [context])
 
 
   useEffect(()=>{
@@ -73,6 +78,7 @@ export default function RoadmapPointField() {
       zoomObject={zoomObject}
       setZoomObject={setZoomObject}
       resetZoomedData={resetZoomedData}
+      hoveredData={context.hoveredData}
       />
   );
 }

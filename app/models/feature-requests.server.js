@@ -24,7 +24,6 @@ export async function getAllActiveFeatureRequests(userId){
       }
     }
   })
-
   return featureRequests
 }
 

@@ -13,7 +13,7 @@ function usePrevious(value) {
 
 export default function RoadmapPointField({ data, clusters, regions, searchResults, filterBrushedData,
                                    resetBrushFilter, zoomObject, setZoomObject,
-                                   displayControl, resetZoomedData}) {
+                                   displayControl, resetZoomedData, hoveredData}) {
 
   // the weird domains create padding around the svg
   const xDomain = [-0.05, 1.05]
@@ -21,8 +21,18 @@ export default function RoadmapPointField({ data, clusters, regions, searchResul
   const [windowWidth, windowHeight] = useWindowSize();
 
   useEffect(()=>{
-
-  }, )
+    if(hoveredData && hoveredData.length !== 0){
+      const hoveredDataResults = hoveredData.map(a => `#fr-${a.featureRequestId}`)
+      const activePoints = d3.select(ref.current)
+        .selectAll(hoveredDataResults.join(","))
+          .classed("hoverSelected", true)
+    }
+    else if(hoveredData && hoveredData.length === 0){
+      d3.select(ref.current)
+        .selectAll('.hoverSelected')
+        .classed("hoverSelected", false)
+    }
+  }, [hoveredData])
 
   const prevDisplayControl = usePrevious(displayControl)
 
