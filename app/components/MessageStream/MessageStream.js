@@ -6,11 +6,16 @@ import MessageCard from "~/components/MessageStream/MessageCard";
 export default function MessageStream(props) {
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const [pins, setPinned] = useState(props.data.filter(d => d.pinned === true).map(e => e.featureRequestId));
+  const [pins, setPinned] = useState([]);
   const paneRef = useRef(null);
   const pinnedFetcher = useFetcher();
   const [pinnedCards, setPinnedCards] = useState([])
   const [remainingCards, setRemainingCards] = useState([])
+
+  useEffect(() => {
+    setPinned(props.data.filter(d => d.pinned === true).map(e => e.featureRequestId))
+  }, [props.data])
+
 
 
   const pinCard = (fr_id) => {
@@ -48,8 +53,6 @@ export default function MessageStream(props) {
   }, [])
 
   useEffect(()=>{
-    console.log("PINS", pins)
-    console.log("MESSAGE STREAM DATA", props.data)
     setPinnedCards(props.data.filter(d => pins.includes(d.featureRequestId)))
     setRemainingCards(props.data.filter(d => !pins.includes(d.featureRequestId)))
   }, [pins, props.data])

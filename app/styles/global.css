@@ -744,7 +744,6 @@ div.DraftEditor-root {
 .discoveryPointComponentsWrapper {
   display: flex;
   height: 100%;
-  border: 2px solid pink;
   flex-direction: column;
   position: relative;
   flex: 2;

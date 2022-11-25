@@ -2,6 +2,8 @@ import * as d3 from 'd3';
 import PointField from "~/components/PointField/PointField.js"
 import { useEffect, useState } from 'react';
 import _ from "underscore";
+import network from '../../../public/assets/network.svg';
+import refresh from '../../../public/assets/refresh.svg';
 var gaussian = require('gaussian');
 
 export default function PointFieldScaffold(props){
@@ -100,39 +102,32 @@ export default function PointFieldScaffold(props){
         filterBrushedData={props.filterBrushedData}
         resetBrushFilter={props.resetBrushFilter}
         />
-      <button
+      <img
         onClick={generateClusters}
+        src={network}
+        alt="Generate Clusters"
         style={{
           position: 'absolute',
-          bottom: 30,
-          right: 180,
+          bottom: 20,
+          right: 20,
+          zIndex: 100,
           height: '40px',
-          width: '60px'
-        }}>
-          Cluster Data
-        </button>
-        <button
+          width: '40px',
+          cursor: 'pointer'
+        }} />
+        <img
           onClick={generateUniform}
+          src={refresh}
+          alt="Redistribute Data"
           style={{
             position: 'absolute',
-            bottom: 30,
-            right: 260,
+            bottom: 20,
+            right: 80,
+            zIndex: 100,
             height: '40px',
-            width: '60px'
-          }}>
-            Uniformly Distribute Data
-        </button>
-        <button
-          onClick={()=>props.setZoomObject(null)}
-          style={{
-            position: 'absolute',
-            bottom: 30,
-            right: 340,
-            height: '40px',
-            width: '60px'
-          }}>
-            Reset Zoom
-        </button>
+            width: '40px',
+            cursor: 'pointer'
+          }} />
     </>
 
   )

@@ -3,6 +3,8 @@ import RoadmapPointField from "~/components/RoadmapPointField/RoadmapPointField.
 import { useEffect, useState } from 'react';
 import _ from "underscore";
 var gaussian = require('gaussian');
+import network from '../../../public/assets/network.svg';
+import refresh from '../../../public/assets/refresh.svg';
 
 export default function RoadmapPointFieldScaffold(props){
   const [xMin, xMax] = [0, 1]
@@ -100,39 +102,32 @@ export default function RoadmapPointFieldScaffold(props){
         resetBrushFilter={props.resetBrushFilter}
         hoveredData={props.hoveredData}
         />
-      <button
-        onClick={generateClusters}
-        style={{
-          position: 'absolute',
-          bottom: 30,
-          right: 180,
-          height: '40px',
-          width: '60px'
-        }}>
-          Cluster Data
-        </button>
-        <button
-          onClick={generateUniform}
+        <img
+          onClick={generateClusters}
+          src={network}
+          alt="Generate Clusters"
           style={{
             position: 'absolute',
-            bottom: 30,
-            right: 260,
+            bottom: 20,
+            right: 20,
+            zIndex: 100,
             height: '40px',
-            width: '60px'
-          }}>
-            Uniformly Distribute Data
-        </button>
-        <button
-          onClick={()=>props.setZoomObject(null)}
-          style={{
-            position: 'absolute',
-            bottom: 30,
-            right: 340,
-            height: '40px',
-            width: '60px'
-          }}>
-            Reset Zoom
-        </button>
+            width: '40px',
+            cursor: 'pointer'
+          }} />
+          <img
+            onClick={generateUniform}
+            src={refresh}
+            alt="Redistribute Data"
+            style={{
+              position: 'absolute',
+              bottom: 20,
+              right: 80,
+              zIndex: 100,
+              height: '40px',
+              width: '40px',
+              cursor: 'pointer'
+            }} />
     </>
 
   )
