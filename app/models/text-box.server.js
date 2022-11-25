@@ -16,5 +16,5 @@ export async function updateTextBox(featureId, serializedContent){
 }
 
 export async function deleteTextBox(featureId){
-  const deleted = await redis.delete(featureId)
+  const deleted = await redis.del(featureId)
 }

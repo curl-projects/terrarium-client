@@ -1,7 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["interactiveTransactions"]
-
 }
 
 datasource db {
@@ -39,28 +38,19 @@ model DiscordUser {
 }
 
 model Feature {
-  id          Int      @id @default(sequence())
-  title       String
-  description String
-  userId      String
-  columnState Int
-  rankState   Int
-  isSearched  Boolean  @default(false)
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  textBox     TextBox?
+  id              Int                 @id @default(sequence())
+  title           String
+  description     String
+  userId          String
+  columnState     Int
+  rankState       Int
+  isSearched      Boolean             @default(false)
+  user            User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   featureRequests FeatureRequestMap[]
 }
 
-model TextBox {
-  id                Int      @id @default(sequence())
-  serializedContent String
-  localUpdatedAt    DateTime @default(now())
-  featureId         Int      @unique
-  feature           Feature  @relation(fields: [featureId], references: [id], onDelete: Cascade)
-}
-
 model FeatureRequest {
-  fr_id         String @id
+  fr_id         String              @id
   message_id    String
   message       String
   created_at    String
@@ -69,16 +59,16 @@ model FeatureRequest {
   fr            String
   kmeans_labels Int
   userId        String
-  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  features FeatureRequestMap[]
+  user          User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  features      FeatureRequestMap[]
 }
 
 model FeatureRequestMap {
-  feature Feature @relation(fields: [featureId], references: [id], onDelete: Cascade)
-  featureId Int
-  featureRequest FeatureRequest @relation(fields: [featureRequestId], references: [fr_id], onDelete: Cascade)
+  featureId        Int
   featureRequestId String
-  pinned Boolean @default(false)
+  pinned           Boolean        @default(false)
+  feature          Feature        @relation(fields: [featureId], references: [id])
+  featureRequest   FeatureRequest @relation(fields: [featureRequestId], references: [fr_id])
 
   @@id([featureId, featureRequestId])
 }

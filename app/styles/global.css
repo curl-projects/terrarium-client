@@ -330,7 +330,7 @@ body {
    justify-content: flex-start;
    width: 100%;
    height: 80%;
-   flex: 1;
+   flex: 0.8;
 }
 
 .kanbanColumnOuter{
@@ -357,6 +357,7 @@ body {
   justify-content: flex-start;
   align-items: center;
   padding-left: 20px;
+  border: 2px solid rgba(119, 153, 141, 1);
 }
 
 .columnName {
@@ -391,10 +392,10 @@ body {
 .cardHeader{
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   height: 40px;
   box-sizing: border-box;
-  align-items: flex-start;
   border-radius: 20px;
   padding-left: 5px;
 }
@@ -408,8 +409,8 @@ body {
 
 .headerText{
   font-weight: 500;
-  font-size: 1.5rem;
-  line-height: 2.5rem;
+  font-size: 1.1rem;
+  line-height: 2rem;
   color: #4D4D4D;
 }
 
@@ -441,23 +442,76 @@ body {
   color: #5A5A65;
 }
 
-.roadmapIndicatorWrapper{
-  padding-left: 25px;
-  padding-right: 25px;
-  background-color:  rgba(119, 153, 141, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.5s ease-in;
-  width: 20%;
+@keyframes slideIn {
+  0% {  width: 0%;
+        padding-left: 0px;
+        padding-right: 0px;
+        border: 2px solid rgba(119, 153, 141, 0.4);
+        }
+  100% {
+      width: 20%;
+      padding-left: 25px;
+      padding-right: 25px;
+      border: 0px solid rgba(119, 153, 141, 0.4);
+  }
 }
 
-.roadmapIndicator {
-  font-weight: 500;
-  font-size: 2rem;
-  color: rgba(110, 110, 110);
-  transition: all 1s linear;
+@keyframes slideOut {
+  0% {
+      width: 20%;
+      padding-left: 25px;
+      padding-right: 25px;
+      background-color: rgba(119, 153, 141, 0.4);
+      border: 0px solid rgba(119, 153, 141, 0.4);
+  }
+  100% {  width: 0%;
+        padding-left: 0px;
+        padding-right: 0px;
+        background-color: rgba(119, 153, 141, 0.4);
+        border: 2px solid rgba(119, 153, 141, 0.4);
+        }
 }
+
+@keyframes textAppear {
+  0% {
+        opacity: 0;
+     }
+  50% {
+    opacity: 0;  }
+  100% {
+      opacity: 1;
+       }
+}
+
+@keyframes textDisappear {
+  0% {
+        opacity: 1;
+     }
+  50% {
+    opacity: 0.5;  }
+  100% {
+      opacity: 0;
+       }
+}
+
+
+@media only screen and (min-width: 1300px){
+  .roadmapIndicatorWrapper{
+    background-color: rgba(119, 153, 141, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: 0.7s ease-in-out 0s slideIn;
+    width: 20%;
+  }
+
+  .roadmapIndicator {
+    font-size: 2rem;
+    color: rgba(110, 110, 110);
+    animation: 0.5s ease-in 0s textAppear;
+  }
+}
+
 
 @media only screen and (max-width: 1300px){
   .roadmapIndicatorWrapper{
@@ -468,10 +522,12 @@ body {
     align-items: center;
     width: 0px !important;
     border: 2px solid rgba(119, 153, 141, 0.4);
+    animation: 0.5s ease-in-out 0s slideOut;
   }
 
   .roadmapIndicator {
     font-size: 0rem;
+    animation: 0.3s ease-out 0s textDisappear;
   }
 }
 /*  -------- NOTEPAD -------- */
@@ -620,4 +676,29 @@ div.DraftEditor-root {
   box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 4px;
   border: 1px solid rgba(119, 153, 141, 0.3);
   height: 80%;
+  position: relative;
+}
+
+/* CANVAS D3 CLASSES */
+.canvasSVG{
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgba(119, 153, 141, 0);
+}
+
+.featureRequestCircle{
+  transition: 1s ease-out all;
+}
+
+.searchSelected{
+  transition: 0.5s ease-in fill;
+  transition: 0.2s ease-in r;
+  r: 10;
+  fill: black !important;
+}
+
+.mouseOverFr{
+  transition: 0.2s ease-in all;
+  r: 20 !important;
 }

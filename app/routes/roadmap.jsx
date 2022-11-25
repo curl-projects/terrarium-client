@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLoaderData, useActionData } from "@remix-run/react";
+import { useLoaderData, useActionData, Outlet } from "@remix-run/react";
 import { redirect } from "@remix-run/node";
 
 import Header from "~/components/Header/Header";
@@ -62,7 +62,7 @@ export default function RoadmapRoute(){
       <div className="roadmapWrapper">
         <Roadmap features={loaderData.features}/>
           <div className='pointFieldWrapper'>
-
+            <Outlet />
           </div>
       </div>
     </>
