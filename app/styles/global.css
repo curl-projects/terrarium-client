@@ -701,7 +701,71 @@ div.DraftEditor-root {
   fill: rgba(119, 153, 141, 1) !important;
 }
 
+.searchSelected {
+  transition: 0.5s ease-in r;
+  r: 7;
+  fill: rgba(119, 153, 141, 1) !important;
+}
+
 .mouseOverFr{
   transition: 0.2s ease-in all;
   r: 20 !important;
+}
+
+.discoveryPadding {
+  padding: 8rem;
+  height: 100vh;
+  width: 100vw;
+  border: 2px solid black;
+}
+
+.featureDiscoveryWrapper {
+  display: flex;
+  flex-direction: row;
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  border-width: 1px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+}
+
+.discoveryMessageStreamColumn {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 40%;
+}
+
+.discoveryPointComponentsWrapper {
+  display: flex;
+  height: 100%;
+  border: 2px solid pink;
+  flex-direction: column;
+  position: relative;
+  flex: 2;
+  padding: 10px;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+.discoverySearchWrapper {
+  height: 40px;
+  width: 90%;
+  border: 2px solid green;
+  position: absolute;
+  z-index: 100;
+  top: 20px;
+  left: 20px;
+}
+
+.discoveryPointFieldWrapper {
+    border: 2px solid green;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 4px;
+    border: 1px solid rgba(119, 153, 141, 0.3);
+    height: 96%;
+    position: relative;
+    background-color: white;
 }

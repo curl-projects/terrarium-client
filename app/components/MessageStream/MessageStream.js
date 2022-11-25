@@ -48,17 +48,12 @@ export default function MessageStream(props) {
   }, [])
 
   useEffect(()=>{
-    console.log("DATA", props.data)
+    console.log("PINS", pins)
+    console.log("MESSAGE STREAM DATA", props.data)
     setPinnedCards(props.data.filter(d => pins.includes(d.featureRequestId)))
     setRemainingCards(props.data.filter(d => !pins.includes(d.featureRequestId)))
-  }, [pins])
+  }, [pins, props.data])
 
-
-  useEffect(()=>{
-    console.log("PINS", pins)
-    console.log("PINNED CARDS", pinnedCards)
-    console.log("REMAINING CARDS", remainingCards)
-  }, [pinnedCards, remainingCards, pins])
 
   const scrollToTop = () => {
     paneRef.current.scrollIntoView();
