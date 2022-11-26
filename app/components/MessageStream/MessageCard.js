@@ -12,6 +12,7 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
   const [isHovered, setIsHovered] = useState(false);
 
 
+
   if (props.cardData.fr == "Wider Page") {
     console.log(props.cardData);
   }
@@ -20,23 +21,23 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
   const date = props.cardData.created_at ? new Date(props.cardData.created_at).toLocaleDateString('default', options ) : "n.d.";
 
   function handleMouseOver(event, fr_id) {
-    // d3.select(`#fr-${fr_id}`)
-    //   .classed("mouseOverFr", true)
-    //   .transition()
-    //   .duration(200)
-    //   .ease(d3.easeCubicInOut)
-    //   .attr('stroke', 'red')
-    //   .attr("r", 20)
+    d3.select(`#fr-${fr_id}`)
+      .classed("mouseOverFr", true)
+      .transition()
+      .duration(200)
+      .ease(d3.easeCubicInOut)
     setIsHovered(true);
+
+    // .attr('fill', "rgba(119, 153, 141, 0.5)")
+    // .attr("stroke", 'rgba(119, 153, 141, 1)')
   }
   function handleMouseOut(event, fr_id) {
-    // d3.select(`#fr-${fr_id}`)
-    //   .classed("mouseOverFr", false)
-    //   .transition()
-    //   .duration(200)
-    //   .ease(d3.easeCubicInOut)
-    //   .attr("r", 5)
-    //   .attr('stroke', 'none')
+    d3.select(`#fr-${fr_id}`)
+      .classed("mouseOverFr", false)
+      .transition()
+      .duration(200)
+      .ease(d3.easeCubicInOut)
+      .attr("r", 5)
 
     setIsHovered(false);
   }
