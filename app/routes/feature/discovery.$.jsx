@@ -80,6 +80,7 @@ export default function Discovery() {
       }
     }
     setTopLevelStreamDataObj(dateFilteredArray)
+    setSearchResults(dateFilteredArray.map(a => a.featureRequestId))
     console.log('DATE FILTERED ARRAY', dateFilteredArray)
   }, [dateValue])
 

@@ -89,7 +89,7 @@ export default function RoadmapPointField({ data, clusters, regions, searchResul
             .style('opacity', 0)
             .attr('cx', d => x(d.xDim))
             .attr('cy', d => y(d.yDim))
-            .attr('fill', "blue")
+            .attr('fill', "rgba(119, 153, 141, 0.7)")
             .on("click", function(e){
               console.log("DATA", e.target.__data__)
               setZoomObject({"id": e.target.__data__.id, "type": e.target.__data__.type})
@@ -118,7 +118,7 @@ export default function RoadmapPointField({ data, clusters, regions, searchResul
           .transition()
           .delay(500)
           .duration(500)
-          .style('font-size', '20px');
+          .style('font-size', '0px');
     }
 
     // UNGROUPED DATA
@@ -140,60 +140,60 @@ export default function RoadmapPointField({ data, clusters, regions, searchResul
 
   }, [data, clusters, displayControl, windowWidth, windowHeight])
 
-  // ZOOM ANIMATIONS
-  useEffect(()=>{
-    function zoomed(event){
-      const pointTransform = event.transform;
-
-      d3.select("#dotlayer").attr("transform", pointTransform)
-      d3.select("#clusterlayer").attr("transform", pointTransform)
-      d3.select("#annotationlayer").attr("transform", pointTransform)
-      d3.select("#labellayer").attr("transform", pointTransform)
-
-    }
-
-    const zoom = d3.zoom()
-    .extent([[0, 0], [ref.current.clientWidth, ref.current.clientHeight]])
-    .translateExtent([[0, 0], [ref.current.clientWidth, ref.current.clientHeight]])
-    .on("zoom", zoomed);
-
-    if(zoomObject && clusters.length !== 0){
-      var x = d3.scaleLinear()
-      .domain(xDomain)
-      .range([0, ref.current.clientWidth]);
-
-      // Y-AXIS
-      var y = d3.scaleLinear()
-        .domain(yDomain)
-        .range([ref.current.clientHeight, 0]);
-
-      let zoomObjectMap = {
-        'cluster': "kmeans_labels",
-        'regionCluster': 'regionCluster'
-      }
-
-      const clusterIdName =  zoomObjectMap[zoomObject.type]
-
-      const transforms = [[]].concat(d3.groups(data, d => d[clusterIdName]).map(([key, data])=> {
-        const [x0, x1] = d3.extent(data, d => d["xDim"]).map(x);
-        const [y1, y0] = d3.extent(data, d => d['yDim']).map(y);
-        let margin = 10
-        const k = 0.1*Math.min(ref.current.clientWidth / (x1+2*margin - x0), ref.current.clientHeight / (y1+2*margin - y0));
-        const tx = (ref.current.clientWidth - k * (x0 + x1)) / 2;
-        const ty = (ref.current.clientHeight - k * (y0 + y1)) / 2;
-        return [data[0][clusterIdName], d3.zoomIdentity.translate(tx, ty).scale(k)];
-      }))
-
-      const transform = transforms.find((el) => el[0] === zoomObject.id)
-
-      d3.select('svg').transition().duration(1000).call(zoom.transform, transform[1]);
-    }
-    else{
-
-      d3.select('svg').transition().duration(1000).call(zoom.transform, d3.zoomIdentity.scale(1));
-
-    }
-  }, [zoomObject, displayControl])
+  // // ZOOM ANIMATIONS
+  // useEffect(()=>{
+  //   function zoomed(event){
+  //     const pointTransform = event.transform;
+  //
+  //     d3.select("#dotlayer").attr("transform", pointTransform)
+  //     d3.select("#clusterlayer").attr("transform", pointTransform)
+  //     d3.select("#annotationlayer").attr("transform", pointTransform)
+  //     d3.select("#labellayer").attr("transform", pointTransform)
+  //
+  //   }
+  //
+  //   const zoom = d3.zoom()
+  //   .extent([[0, 0], [ref.current.clientWidth, ref.current.clientHeight]])
+  //   .translateExtent([[0, 0], [ref.current.clientWidth, ref.current.clientHeight]])
+  //   .on("zoom", zoomed);
+  //
+  //   if(zoomObject && clusters.length !== 0){
+  //     var x = d3.scaleLinear()
+  //     .domain(xDomain)
+  //     .range([0, ref.current.clientWidth]);
+  //
+  //     // Y-AXIS
+  //     var y = d3.scaleLinear()
+  //       .domain(yDomain)
+  //       .range([ref.current.clientHeight, 0]);
+  //
+  //     let zoomObjectMap = {
+  //       'cluster': "kmeans_labels",
+  //       'regionCluster': 'regionCluster'
+  //     }
+  //
+  //     const clusterIdName =  zoomObjectMap[zoomObject.type]
+  //
+  //     const transforms = [[]].concat(d3.groups(data, d => d[clusterIdName]).map(([key, data])=> {
+  //       const [x0, x1] = d3.extent(data, d => d["xDim"]).map(x);
+  //       const [y1, y0] = d3.extent(data, d => d['yDim']).map(y);
+  //       let margin = 10
+  //       const k = 0.1*Math.min(ref.current.clientWidth / (x1+2*margin - x0), ref.current.clientHeight / (y1+2*margin - y0));
+  //       const tx = (ref.current.clientWidth - k * (x0 + x1)) / 2;
+  //       const ty = (ref.current.clientHeight - k * (y0 + y1)) / 2;
+  //       return [data[0][clusterIdName], d3.zoomIdentity.translate(tx, ty).scale(k)];
+  //     }))
+  //
+  //     const transform = transforms.find((el) => el[0] === zoomObject.id)
+  //
+  //     d3.select('svg').transition().duration(1000).call(zoom.transform, transform[1]);
+  //   }
+  //   else{
+  //
+  //     d3.select('svg').transition().duration(1000).call(zoom.transform, d3.zoomIdentity.scale(1));
+  //
+  //   }
+  // }, [zoomObject, displayControl])
 
 
   const ref = useD3(

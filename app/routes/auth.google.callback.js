@@ -8,7 +8,7 @@ export async function loader({ request }){
   )
 
   return authenticator.authenticate(SocialsProvider.GOOGLE, request, {
-    successRedirect: `/integrations?code=${returnTo}`,
+    successRedirect: `/roadmap?code=${returnTo}`,
     failureRedirect: "/",
   });
 };

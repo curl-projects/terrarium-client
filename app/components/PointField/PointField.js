@@ -298,10 +298,12 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
         const message = d.target.__data__.message
         const fr = d.target.__data__.fr
 
+
+        // <h1 style={{font-size: 800}}>${fr}</h1>
+        // <p>${message}</p>
+
         const foreignObjectHtml = (
         `
-          <h1 style={{font-size: 800}}>${fr}</h1>
-          <p>${message}</p>
         `
         )
         d3.select("#annotationlayer").append("foreignObject")

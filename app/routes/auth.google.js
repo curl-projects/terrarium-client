@@ -13,7 +13,7 @@ async function login(request){
 
   try{
     return await authenticator.authenticate(SocialsProvider.GOOGLE, request, {
-      successRedirect: "/integrations",
+      successRedirect: "/roadmap",
       failureRedirect: "/",
     });
   }

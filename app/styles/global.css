@@ -764,6 +764,8 @@ div.DraftEditor-root {
 
 .notepadPadding {
   padding: 8rem;
+  padding-left: 14rem;
+  padding-right: 14rem;
   height: 100vh;
   width: 100vw;
 }

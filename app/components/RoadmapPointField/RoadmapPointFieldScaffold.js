@@ -17,7 +17,11 @@ export default function RoadmapPointFieldScaffold(props){
 
   useEffect(()=>{
     setDataObj(generateUniformCoords(props.data))
+    generateUniform(null)
+    console.log("CLICKED")
   }, [props.data])
+
+
 
   // SHARED FUNCTIONS
   function generateUniformCoords(data){
