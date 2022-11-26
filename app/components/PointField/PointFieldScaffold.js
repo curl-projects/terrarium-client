@@ -123,8 +123,8 @@ export default function PointFieldScaffold(props){
         alt="Generate Clusters"
         style={{
           position: 'absolute',
-          bottom: 20,
-          right: 20,
+          bottom: 30,
+          right: 30,
           zIndex: 100,
           height: '40px',
           width: '40px',
@@ -136,8 +136,8 @@ export default function PointFieldScaffold(props){
           alt="Redistribute Data"
           style={{
             position: 'absolute',
-            bottom: 20,
-            right: 80,
+            bottom: 30,
+            right: 100,
             zIndex: 100,
             height: '40px',
             width: '40px',
