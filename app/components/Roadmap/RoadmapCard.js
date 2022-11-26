@@ -22,6 +22,7 @@ export default function KanbanCard(props){
               height: "fit-content",
               boxShadow: "0 2px 4px rgba(0, 0, 0, 0.08)",
               border: "1px solid #DDDDDD",
+              borderRadius: "0px 4px 4px 0px",
               display: "flex",
               flexDirection: 'row',
               backgroundColor: snapshot.isDragging
@@ -38,7 +39,7 @@ export default function KanbanCard(props){
           </div>
           <div className="cardContentWrapper">
             <div className="cardHeader">
-              <Link to={`/feature/${props.item.id}`}
+              <Link to={`/feature/notepad/${props.item.id}`}
                     style={{
                       textDecoration: "none"
                     }}>
