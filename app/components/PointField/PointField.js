@@ -17,7 +17,7 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
 
   // the weird domains create padding around the svg
   const xDomain = [-0.05, 1.05]
-  const yDomain = [-0.05, 1.15]
+  const yDomain = [-0.10, 1.15]
   // const xDomain = [0, 1]
   // const yDomain = [0, 1]
   const [windowWidth, windowHeight] = useWindowSize();
@@ -78,7 +78,7 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
             .style('opacity', 0)
             .attr('cx', d => x(d.xDim))
             .attr('cy', d => y(d.yDim))
-            .attr('fill', "blue")
+            .attr('fill', "rgba(119, 153, 141, 0.7)")
             .on("click", function(e){
               console.log("DATA", e.target.__data__)
               setZoomObject({"id": e.target.__data__.id, "type": e.target.__data__.type})
@@ -107,7 +107,7 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
           .transition()
           .delay(500)
           .duration(500)
-          .style('font-size', '20px');
+          .style('font-size', '0px');
     }
 
     // UNGROUPED DATA
@@ -274,9 +274,9 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
         let value = [];
         if (selection){
           const [[x0, y0], [x1, y1]] = selection;
-          dots.style("fill", "#69b3a2")
+          dots.style("fill", "rgba(119, 153, 141, 0.5)")
               .filter(d => x0 <= x(d.xDim) && x(d.xDim) < x1 && y0 <= y(d.yDim) && y(d.yDim) < y1)
-              .style("fill", "red")
+              .style("fill", "rgba(119, 153, 141, 1)")
               .data();
 
         } else {

@@ -5,6 +5,12 @@ import _ from "underscore";
 import network from '../../../public/assets/network.svg';
 import refresh from '../../../public/assets/refresh.svg';
 var gaussian = require('gaussian');
+import TextField from '@mui/material/TextField';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
+
 
 export default function PointFieldScaffold(props){
   const [xMin, xMax] = [0, 1]
@@ -13,7 +19,6 @@ export default function PointFieldScaffold(props){
   const [dataObj, setDataObj] = useState(generateUniformCoords(props.data))
   const [clusters, setClusters] = useState([])
   const [displayControl, setDisplayControl] = useState({data: true, clusters: false})
-
 
   useEffect(()=>{
     setDataObj(generateUniformCoords(props.data))
@@ -102,6 +107,16 @@ export default function PointFieldScaffold(props){
         filterBrushedData={props.filterBrushedData}
         resetBrushFilter={props.resetBrushFilter}
         />
+      <button style={{
+        position: 'absolute',
+        bottom: 20,
+        right: 140,
+        zIndex: 100,
+        height: '40px',
+        width: '40px',
+        cursor: 'pointer'
+      }}>
+    </button>
       <img
         onClick={generateClusters}
         src={network}
@@ -128,6 +143,26 @@ export default function PointFieldScaffold(props){
             width: '40px',
             cursor: 'pointer'
           }} />
+
+        <div style={{
+            position: 'absolute',
+            left: 10,
+            bottom: 10,
+          }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+                views={['year', 'month']}
+                label="After"
+                minDate={dayjs('2012-03-01')}
+                maxDate={dayjs('2023-06-01')}
+                value={props.dateValue}
+                onChange={(newValue) => {
+                  props.setDateValue(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} helperText={null} />}
+              />
+          </LocalizationProvider>
+        </div>
     </>
 
   )

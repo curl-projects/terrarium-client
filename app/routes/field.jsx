@@ -2,7 +2,9 @@
 
 // LIBRARIES
 import * as d3 from "d3"
-
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc'
+dayjs.extend(utc)
 // REACT & REMIX
 import { useState, useEffect } from "react";
 import { useLoaderData, useActionData, useOutletContext, useFetcher } from "@remix-run/react";
@@ -60,7 +62,7 @@ export default function Field() {
   const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
   const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])
   const [zoomObject, setZoomObject] = useState(null)
-
+  const [dateValue, setDateValue] = useState(null);
   const searchFetcher = useFetcher();
 
   useEffect(()=>{
@@ -68,8 +70,18 @@ export default function Field() {
   }, [loaderData])
 
   useEffect(()=>{
-    console.log("TOP LEVEL STREAM OBJECT", topLevelStreamDataObj)
-  }, [topLevelStreamDataObj])
+    const dateFilteredArray = []
+    if(topLevelStreamDataObj[0]){
+      for(let fr of loaderData.featureRequests){
+        // console.log(fr.featureRequest.created_at, dayjs.utc(fr.featureRequest.created_at).isAfter(dayjs.utc(dateValue)))
+        if(dayjs.utc(fr.featureRequest.created_at).isAfter(dayjs.utc(dateValue))){
+          dateFilteredArray.push(fr)
+        }
+      }
+    }
+    setTopLevelStreamDataObj(dateFilteredArray)
+    console.log('DATE FILTERED ARRAY', dateFilteredArray)
+  }, [dateValue])
 
 
 
@@ -157,6 +169,8 @@ export default function Field() {
               zoomObject={zoomObject}
               setZoomObject={setZoomObject}
               resetZoomedData={resetZoomedData}
+              dateValue={dateValue}
+              setDateValue={setDateValue}
               />
           </div>
         </div>
