@@ -7,7 +7,7 @@ export async function authenticateNotionCode(code){
   const data = {
     "grant_type": "authorization_code",
     "code": code,
-    "redirect_uri": "http://localhost:3000/auth/notion"}
+    "redirect_uri": `${DOMAIN}auth/notion`}
 
   const authToken = Buffer.from(
     `${process.env.NOTION_CLIENT_ID}:${process.env.NOTION_CLIENT_SECRET}`

@@ -57,4 +57,5 @@ COPY --from=build /app/build /app/build
 COPY --from=build /app/public /app/public
 ADD . .
 
+RUN npx prisma generate
 CMD ["npm", "run", "start"]

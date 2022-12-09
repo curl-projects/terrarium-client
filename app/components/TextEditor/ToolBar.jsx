@@ -15,21 +15,14 @@ const INLINE_STYLES = [
     {label: 'Monospace', style: 'CODE', icon: <BiCode />},
 ];
 
-type StyleButtonType = {
-    active: boolean
-    icon: JSX.Element
-    onToggle: (style: string) => void
-    style: string
-    shortcut?: string
-}
 
-const StyleButton: React.FC<StyleButtonType> = (props) => {
+const StyleButton = (props) => {
 
     const tipId = "StyleButton-tip-" + props.style
     const [hovered, setHovered] = useState(false)
     const className = `toolbar-button${props.active && "-selected"}` +
         " bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-md"
-    
+
     return (
         <>
             <div
@@ -56,20 +49,16 @@ const StyleButton: React.FC<StyleButtonType> = (props) => {
     )
 }
 
-type ToolBarType = {
-    editorState?: EditorState
-    setEditorState?: (current: EditorState) => void
-}
 
-const ToolBar: React.FC<ToolBarType> = (props) => {
+const Toolbar = (props) => {
     const {editorState, setEditorState} = props
     const inlineStyle = editorState && editorState.getCurrentInlineStyle()
     const blockType = editorState && editorState
         .getCurrentContent()
         .getBlockForKey(editorState.getSelection().getStartKey())
         .getType()
-    
-    const handleToggleSelection = (style: string, inline: boolean) => {
+
+    const handleToggleSelection = (style, inline) => {
         if (editorState && setEditorState) {
             const func = inline ? RichUtils.toggleInlineStyle : RichUtils.toggleBlockType
             setEditorState(func(editorState, style))
@@ -104,4 +93,4 @@ const ToolBar: React.FC<ToolBarType> = (props) => {
     )
 }
 
-export default ToolBar
+export default Toolbar

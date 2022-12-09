@@ -1,6 +1,6 @@
-# fly.toml file generated for terrarium on 2022-11-11T09:24:47-03:00
+# fly.toml file generated for terrarium-app on 2022-12-09T16:47:49-03:00
 
-app = "terrarium"
+app = "terrarium-app"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []

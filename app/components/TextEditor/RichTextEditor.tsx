@@ -6,7 +6,7 @@ import {CgSpinner} from "react-icons/cg"
 import {useTextBox} from "~/components/TextEditor/useTextBox"
 
 import SyncIndicator from "./SyncIndicator"
-import Toolbar from "~/components/TextEditor/Toolbar"
+import Toolbar from "app/components/TextEditor/ToolBar"
 
 import createAutoListPlugin from 'draft-js-autolist-plugin'
 const autoListPlugin = createAutoListPlugin()
