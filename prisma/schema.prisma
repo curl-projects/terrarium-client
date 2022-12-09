@@ -45,7 +45,7 @@ model Feature {
   columnState     Int
   rankState       Int
   isSearched      Boolean             @default(false)
-  user            User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            User                @relation(fields: [userId], references: [id])
   featureRequests FeatureRequestMap[]
 }
 
@@ -59,7 +59,7 @@ model FeatureRequest {
   fr            String
   kmeans_labels Int
   userId        String
-  user          User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User                @relation(fields: [userId], references: [id])
   features      FeatureRequestMap[]
 }
 
@@ -67,8 +67,25 @@ model FeatureRequestMap {
   featureId        Int
   featureRequestId String
   pinned           Boolean        @default(false)
-  feature          Feature        @relation(fields: [featureId], references: [id])
-  featureRequest   FeatureRequest @relation(fields: [featureRequestId], references: [fr_id])
+  feature          Feature        @relation(fields: [featureId], references: [id], onDelete: Cascade)
+  featureRequest   FeatureRequest @relation(fields: [featureRequestId], references: [fr_id], onDelete: Cascade)
 
   @@id([featureId, featureRequestId])
+}
+
+model Thread {
+  ticketNumber    String           @id
+  threadName      String
+  createdTime     String
+  threadLink      String
+  bugOverview     String
+  discordMessages DiscordMessage[]
+}
+
+model DiscordMessage {
+  id             Int    @id @default(sequence())
+  threadId       String
+  messageUser    String
+  messageContent String
+  thread         Thread @relation(fields: [threadId], references: [ticketNumber])
 }

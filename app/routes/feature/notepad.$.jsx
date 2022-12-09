@@ -53,8 +53,9 @@ export async function loader({ request, params}){
 
     // // works because of the update above
     // const featureRequests = await findFeatureRequests(featureId)
-
-    return redirect(`/feature/${featureId}`)
+    console.log("REDIRECT", featureId)
+    console.log("REDIRECT URL", `/feature/nodepad/${featureId}`)
+    return redirect(`/feature/notepad/${featureId}`)
   }
 
   if(feature.isSearched){
@@ -69,7 +70,7 @@ export async function action({ request }){
   const formData = await request.formData();
   const featureId = formData.get('featureId');
   const searchTerm = formData.get('searchTerm');
-  return redirect(`/feature/${featureId}?searchTerm=${searchTerm}`)
+  return redirect(`/feature/notepad/${featureId}?searchTerm=${searchTerm}`)
 }
 
 

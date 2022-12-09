@@ -14,6 +14,10 @@ export async function getFeatures(userId){
   return features
 }
 
+export async function syncBackendRoadmap(notionAuth, featureName){
+
+}
+
 export async function createFeature(userId, columnState, rankState){
   const feature = await db.feature.create({
     data: {
@@ -26,6 +30,7 @@ export async function createFeature(userId, columnState, rankState){
       }
     }
   })
+
 
   const textData = await createTextBox(feature.id)
 
