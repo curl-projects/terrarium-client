@@ -18,7 +18,6 @@ export default function SearchTextEditor({ isSubmitted }) {
   }
 
   useEffect(() => {
-    console.log("clearing editor state")
     setEditorState(EditorState.createEmpty())
   }, [isSubmitted])
 

@@ -12,7 +12,6 @@ export default function Feature(){
     console.log(matches[2].pathname.includes('discovery'))
   }, [matches])
 
-
   return(
     <>
       <FeatureHeader />

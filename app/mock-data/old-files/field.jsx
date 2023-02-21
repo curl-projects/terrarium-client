@@ -73,7 +73,6 @@ export default function Field() {
     const dateFilteredArray = []
     if(topLevelStreamDataObj[0]){
       for(let fr of loaderData.featureRequests){
-        // console.log(fr.featureRequest.created_at, dayjs.utc(fr.featureRequest.created_at).isAfter(dayjs.utc(dateValue)))
         if(dayjs.utc(fr.featureRequest.created_at).isAfter(dayjs.utc(dateValue))){
           dateFilteredArray.push(fr)
         }
