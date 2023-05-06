@@ -30,20 +30,19 @@ export default function Index(){
   return (
     <div style={CONTAINER_STYLES}>
       <Form
-        method="post"
-        action={`/auth/${SocialsProvider.GOOGLE}`}
-        onClick={handleSubmit}
-        style={{cursor: "pointer"}}
-        >
-        <div style={{width: "100px", height: "100px"}}>
-          <img className='terrarium' src={terrarium}></img>
-          <div style={{textAlign: 'center', marginTop: "5px"}}>
-            <h3 className='logInText'>Log In</h3>
-          </div>
-        </div>
+          method="post"
+          action={`/auth/${SocialsProvider.GOOGLE}`}
+          onClick={handleSubmit}
+          style={{cursor: "pointer", display: "flex", justifyContent: "center", flexDirection: "row"}}
+          >
+      <h1 className="terrarium-logo">Terrarium | <span className='terrarium-login'>Log In</span></h1>
       </Form>
     </div>
   );
 };
 
 // <button style={BUTTON_STYLES}>Login with Google</button>
+{/* <img className='terrarium' src={terrarium}></img>
+          <div style={{textAlign: 'center', marginTop: "5px"}}>
+            <h3 className='logInText'>Log In</h3>
+          </div> */}

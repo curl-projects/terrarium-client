@@ -27,3 +27,4 @@ authenticator.use(new GoogleStrategy({
   },
   handleSocialAuthCallback
 ));
+

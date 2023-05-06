@@ -47,7 +47,6 @@ export async function embeddingSearch(searchString){
   const searchVectorRes = await generateSearchVector(searchString)
   const searchVector = searchVectorRes.data && searchVectorRes.data[0]['embedding']
   const knn = await getKNNfromSearchVector(searchVector, topK=100)
-
   const knnIDs = knn.matches
   const filteredEmbeddings = await filterEmbeddings(knnIDs)
   return filteredEmbeddings

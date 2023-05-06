@@ -26,11 +26,9 @@ export async function loader({ request, params}){
   const url = new URL(request.url)
   const searchTerm = url.searchParams.get("searchTerm")
 
-  console.log("SEARCH TERM:", searchTerm)
 
   const featureId = params["*"]
   const feature = await readFeature(featureId)
-  console.log("FEATURE:", feature)
 
   // make sure the right user is looking at the feature information
   if(feature.userId !== user.id){
@@ -44,7 +42,6 @@ export async function loader({ request, params}){
     // conduct search
     const knnIDs = await embeddingSearch(searchTerm); // get sorted scores
 
-    console.log("KNNIDS", knnIDs)
     // update all feature requests for easier future recall
     const updatedFeatures = await associateFeatureRequestsWithFeature(knnIDs, featureId)
 
