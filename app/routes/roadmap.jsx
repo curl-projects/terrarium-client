@@ -55,9 +55,7 @@ export default function RoadmapRoute(){
   }, [hoverFetcher.data])
 
   function updateHoveredData(event, featureId){
-    console.log("FEATUREID", featureId)
     if(featureId){
-      console.log("HI!")
       hoverFetcher.submit({actionType: 'hover', featureId: featureId}, {method: 'get', action: "utils/hover-feature-requests"})
     }
     else{

@@ -11,6 +11,9 @@ export default function Header(){
         <Link to ='/integrations' style={{textDecoration: "none"}}>
         <h3 className='navigationText'>Integrations</h3>
         </Link>
+        <Link to ='/data-sources' style={{textDecoration: "none"}}>
+        <h3 className='navigationText'>Data Sources</h3>
+        </Link>
       </div>
       <div style={{flex: 1}}/>
       <Form action="/logout" method="post">

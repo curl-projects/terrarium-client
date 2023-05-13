@@ -10,6 +10,9 @@ import {
 import styles from "~/styles/app.css";
 import globalStyles from "~/styles/global.css"
 import draftStyles from "draft-js/dist/Draft.css"
+import agGrid from 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
+import agGridAlpine from 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
+
 
 
 export function links() {
@@ -17,6 +20,8 @@ export function links() {
     {rel: "stylesheet", href: styles},
     {rel: 'stylesheet', href: globalStyles},
     {rel: 'stylesheet', href: draftStyles},
+    {rel: 'stylesheet', href: agGrid},
+    {rel: 'stylesheet', href: agGridAlpine},
 ];
 }
 
