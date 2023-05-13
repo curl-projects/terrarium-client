@@ -8,19 +8,20 @@ import Textarea from 'react-expanding-textarea';
 import { CgSpinner } from "react-icons/cg"
 import { GoSearch } from "react-icons/go"
 
-
 dayjs.extend(utc)
 
 // REACT & REMIX
 import { useState, useEffect } from "react";
 import { useLoaderData, useActionData, useOutletContext, useFetcher, useTransition } from "@remix-run/react";
-import { json } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
+
 
 // MODELS
-import { readFeature } from "~/models/kanban.server";
-import { findFeatureRequests } from "~/models/feature-requests.server";
+import { readFeature, updateFeatureTitle, updateFeatureIsSearched } from "~/models/kanban.server";
+import { findFeatureRequests, associateFeatureRequestsWithFeature } from "~/models/feature-requests.server";
 import { authenticator } from "~/models/auth.server.js";
 import { embeddingSearch } from "~/models/embedding-search.server";
+
 
 // UTILITIES
 import { filterSearchedData } from "~/utils/filterSearchedData"
@@ -35,22 +36,58 @@ import MessageStream from "~/components/MessageStream/MessageStream.js";
 
 // STYLES
 
-export async function loader({ request, params }){
+export async function loader({ request, params}){
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/",
   })
+  const url = new URL(request.url)
+  const searchTerm = url.searchParams.get("searchTerm")
 
-  const featureId = params['*']
+
+  const featureId = params["*"]
   const feature = await readFeature(featureId)
-  const featureRequests = await findFeatureRequests(featureId); // get associated data objects
 
-  return { featureRequests: featureRequests, feature: feature}
+  // make sure the right user is looking at the feature information
+  if(feature.userId !== user.id){
+    return redirect("/")
+  }
+
+  if(searchTerm){
+    // update feature title
+    const updatedFeature = await updateFeatureTitle(featureId, searchTerm)
+
+    // conduct search
+    const knnIDs = await embeddingSearch(searchTerm); // get sorted scores
+
+    // update all feature requests for easier future recall
+    const updatedFeatures = await associateFeatureRequestsWithFeature(knnIDs, featureId)
+
+    // mark search as completed
+    const markedFeature = await updateFeatureIsSearched(featureId)
+
+    // // works because of the update above
+    // const featureRequests = await findFeatureRequests(featureId)
+    return redirect(`/feature/discovery/${featureId}`)
+  }
+
+  if(feature.isSearched){
+    const featureRequests = await findFeatureRequests(featureId); // get associated data objects
+    return { feature: feature, featureRequests: featureRequests }
+  }
+
+  return { feature: feature, featureRequests: [] }
 }
 
 export async function action({ request }){
   const formData = await request.formData()
+  const featureId = formData.get("featureId")
+  const searchTerm = formData.get('searchTerm')
   const filterType = formData.get('filterType')
-  if(filterType && filterType === 'search'){
+
+  if(searchTerm && featureId){
+    return redirect(`/feature/discovery/${featureId}?searchTerm=${searchTerm}`)
+  }
+  else if(filterType && filterType === 'search'){
     const searchString = formData.get('searchString');
     const knnIDs = await embeddingSearch(searchString)
     const data = {

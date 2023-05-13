@@ -686,6 +686,7 @@ body {
   width: 100%;
   padding: 10px;
   outline: none;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
 
