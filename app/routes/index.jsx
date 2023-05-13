@@ -1,43 +1,45 @@
 import { Form, useSubmit } from "@remix-run/react";
 import { SocialsProvider } from "remix-auth-socials";
-import terrarium from "../../public/assets/terrarium.png"
-
-const CONTAINER_STYLES = {
-  width: "100%",
-  height: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-const BUTTON_STYLES = {
-  padding: "15px 25px",
-  background: "#dd4b39",
-  border: "0",
-  outline: "none",
-  cursor: "pointer",
-  color: "white",
-  fontWeight: "bold",
-};
+import { Canvas } from "@react-three/fiber";
+import { useState, useRef } from 'react';
+import Points3D from '~/components/3DCanvas/Points3D.js';
+import { OrbitControls, Html } from '@react-three/drei';
+import { ClientOnly } from "remix-utils";
 
 export default function Index(){
   const submit = useSubmit();
+  const [titleHovered, setTitleHovered] = useState(false)
+  const pointsRef = useRef()
 
   function handleSubmit(event){
-    submit(event.currentTarget)
+    submit(null, {method: "post", "action": `/auth/${SocialsProvider.GOOGLE}`})
   }
 
   return (
-    <div style={CONTAINER_STYLES}>
-      <Form
-          method="post"
-          action={`/auth/${SocialsProvider.GOOGLE}`}
-          onClick={handleSubmit}
-          style={{cursor: "pointer", display: "flex", justifyContent: "center", flexDirection: "row"}}
-          >
-      <h1 className="terrarium-logo">Terrarium | <span className='terrarium-login'>Log In</span></h1>
-      </Form>
-    </div>
+    <>
+    <ClientOnly>
+    {() => (
+      <Canvas camera={{ position: [0, 0, 0.5] }} style={{width: '100vw', height: "100vh"}}>
+                <Points3D titleHovered={titleHovered} pointsRef={pointsRef}/>
+                <Html
+                 distanceFactor={0.5}
+                 position={[0, 0, 0]}
+                 transform
+                 occlude="blending"
+                >
+                <h1 
+                  className="terrarium-logo"
+                  onPointerOver={()=>setTitleHovered(true)}
+                  onPointerOut={()=>setTitleHovered(false)}
+                  onClick={handleSubmit}
+                  style={{cursor: "pointer"}}
+                >Terrarium</h1>
+                </Html>
+            </Canvas> 
+          
+    )}
+    </ClientOnly>
+    </>
   );
 };
 
