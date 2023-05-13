@@ -36,17 +36,7 @@ export default function RoadmapPointField() {
   const [zoomObject, setZoomObject] = useState(null)
 
   useEffect(()=>{
-    console.log('CONTEXT:', context)
-  }, [context])
-
-
-  useEffect(()=>{
-    console.log("TOP LEVEL DATA OBJECT", topLevelCanvasDataObj)
-  }, [topLevelCanvasDataObj])
-
-  useEffect(()=>{
     setTopLevelCanvasDataObj(loaderData.data)
-    console.log("LOADER DATA:", loaderData)
       }, [loaderData])
 
 

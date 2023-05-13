@@ -991,26 +991,3 @@ code {
     padding-bottom: 8rem;
   }
 }
-
-/* LOGIN PAGE */
-
-.terrarium-logo {
-  color: #7E988E;
-  font-size: 60px;
-  font-family: "Helvetica Neue";
-  font-weight: bold;
-  transition: all 0.5s ease-in-out;
-}
-
-.terrarium-login {
-  color: rgba(145, 170, 160, 0.8);
-  font-size: 50px;
-  font-family: "Helvetica Neue";
-  font-weight: bold;
-  transition: all 0.3s ease-in-out;
-}
-
-.terrarium-login:hover {
-  opacity: 0.4;
-  font-size: 55px;
-}

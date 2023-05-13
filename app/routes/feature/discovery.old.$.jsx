@@ -66,6 +66,10 @@ export default function Discovery() {
   const searchFetcher = useFetcher();
 
   useEffect(()=>{
+    console.log('LOADER DATA', loaderData)
+  }, [loaderData])
+
+  useEffect(()=>{
     const dateFilteredArray = []
     if(topLevelStreamDataObj[0]){
       for(let fr of loaderData.featureRequests){
@@ -138,44 +142,38 @@ export default function Discovery() {
 
   return (
     <>
-      <div className="discoveryOverarchingWrapper">
-        <div className="discoveryTopicSearchWrapper">
-
-
+      <div className='featureDiscoveryWrapper'>
+        <div className="discoveryMessageStreamColumn">
+          <MessageStream
+            data={topLevelStreamDataObj}
+            featureId={loaderData.feature.id}
+            zoomObject={zoomObject}
+            setZoomObject={setZoomObject}
+            />
         </div>
-        <div className='featureDiscoveryWrapper'>
-          <div className="discoveryMessageStreamColumn">
-            <MessageStream
-              data={topLevelStreamDataObj}
+        <div className='discoveryPointComponentsWrapper'>
+          <div className='discoverySearchWrapper'>
+            <PointFieldSearch
+              searchFetcher={searchFetcher}
               featureId={loaderData.feature.id}
-              zoomObject={zoomObject}
-              setZoomObject={setZoomObject}
+              resetSearchData={resetSearchData}
               />
           </div>
-          <div className='discoveryPointComponentsWrapper'>
-            <div className='discoverySearchWrapper'>
-              <PointFieldSearch
-                searchFetcher={searchFetcher}
-                featureId={loaderData.feature.id}
-                resetSearchData={resetSearchData}
-                />
-            </div>
-            <div className='discoveryPointFieldWrapper'>
-              <PointFieldScaffold
-                data={topLevelCanvasDataObj}
-                searchResults={searchResults}
-                filterBrushedData={filterBrushedData}
-                resetBrushFilter={resetBrushFilter}
-                zoomObject={zoomObject}
-                setZoomObject={setZoomObject}
-                resetZoomedData={resetZoomedData}
-                dateValue={dateValue}
-                setDateValue={setDateValue}
-                />
-            </div>
+          <div className='discoveryPointFieldWrapper'>
+            <PointFieldScaffold
+              data={topLevelCanvasDataObj}
+              searchResults={searchResults}
+              filterBrushedData={filterBrushedData}
+              resetBrushFilter={resetBrushFilter}
+              zoomObject={zoomObject}
+              setZoomObject={setZoomObject}
+              resetZoomedData={resetZoomedData}
+              dateValue={dateValue}
+              setDateValue={setDateValue}
+              />
           </div>
         </div>
-      </div>
+    </div>
     </>
   );
 }

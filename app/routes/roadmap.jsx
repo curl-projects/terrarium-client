@@ -33,8 +33,7 @@ export async function action({ request }){
     const columnState = formData.get('columnState')
     const rankState = formData.get('rankState')
     const feature = await createFeature(user.id, columnState, rankState)
-    console.log("CREATED FEATURE:", `/feature/notepad/${feature.id})`)
-    return redirect(`/feature/notepad/${feature.id}`)
+    return redirect(`/feature/discovery/${feature.id}`)
   }
   else if(actionType === "delete"){
     const featureId = formData.get('featureId');
@@ -49,16 +48,9 @@ export default function RoadmapRoute(){
   const [hoveredData, setHoveredData] = useState([])
   const hoverFetcher = useFetcher();
 
-  useEffect(() => {
-    console.log("HOVERED_DATA:", hoveredData)
-  }, [hoveredData])
-
   useEffect(()=>{
     if(hoverFetcher.data){
-      console.log("UPDATED!")
       setHoveredData(hoverFetcher.data.featureRequests)
-    }
-    else{
     }
   }, [hoverFetcher.data])
 
@@ -72,14 +64,6 @@ export default function RoadmapRoute(){
       setHoveredData([])
     }
   }
-
-  useEffect(()=>{
-    console.log("LOADER DATA:", loaderData)
-  }, [loaderData])
-
-  useEffect(()=>{
-    console.log("ACTION DATA:", actionData)
-  }, [actionData])
 
   return(
     <>

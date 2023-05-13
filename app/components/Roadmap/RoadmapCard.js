@@ -39,7 +39,7 @@ export default function KanbanCard(props){
           </div>
           <div className="cardContentWrapper">
             <div className="cardHeader">
-              <Link to={`/feature/notepad/${props.item.id}`}
+              <Link to={`/feature/discovery/${props.item.id}`}
                     style={{
                       textDecoration: "none"
                     }}>

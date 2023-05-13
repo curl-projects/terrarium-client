@@ -92,7 +92,7 @@ export default function FeatureNotepad(){
                 placeholder={"Enter a Feature Description"}
                 name="searchTerm"
                 defaultValue={loaderData.feature.title}
-                />
+              />
             </div>
               <button className="searchBarSubmit" type="submit">
                 { transition.state === "loading" ?
