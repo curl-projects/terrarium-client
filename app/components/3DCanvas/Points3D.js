@@ -23,7 +23,13 @@ export default function Points3D(props){
       return (
         <group>
           <AnimatedPoints ref={props.pointsRef} positions={sphere} frustumCulled={false} scale={springs.scale} {...props}>
-            <PointMaterial color={"rgba(122, 156, 142, 1)"} size={0.01} sizeAttenuation={true} depthWrite={true} transparent={true} opacity={0.9}/>
+            <PointMaterial 
+                color={props.titleHovered ? "#7E988E" : "rgba(145, 170, 160, 0.8)"} 
+                size={0.01} 
+                sizeAttenuation={true} 
+                depthWrite={true} 
+                transparent={true} 
+                opacity={0.9}/>
           </AnimatedPoints>
         </group>
       )

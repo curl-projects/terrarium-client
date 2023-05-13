@@ -19,7 +19,10 @@ export default function Index(){
     <>
     <ClientOnly>
     {() => (
-      <Canvas camera={{ position: [0, 0, 0.5] }} style={{width: '100vw', height: "100vh"}}>
+      <Canvas gl={{ antialias: true}}
+              camera={{ position: [0, 0, 0.5] }} 
+              style={{width: '100vw', height: "100vh"}} 
+              linear>
                 <Points3D titleHovered={titleHovered} pointsRef={pointsRef}/>
                 <Html
                  distanceFactor={0.5}
@@ -32,7 +35,8 @@ export default function Index(){
                   onPointerOver={()=>setTitleHovered(true)}
                   onPointerOut={()=>setTitleHovered(false)}
                   onClick={handleSubmit}
-                  style={{cursor: "pointer"}}
+                  style={{cursor: "pointer", userSelect: "none"}}
+            
                 >Terrarium</h1>
                 </Html>
             </Canvas> 
