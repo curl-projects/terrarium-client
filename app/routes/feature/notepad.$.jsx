@@ -77,10 +77,6 @@ export default function FeatureNotepad(){
   const fetcher = useFetcher();
   const transition = useTransition();
 
-  useEffect(() => {
-    console.log("loader data:", loaderData)
-  }, [loaderData])
-
   return(
     <>
       <div className="notepadScaffold">

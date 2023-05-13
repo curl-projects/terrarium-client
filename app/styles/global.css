@@ -599,6 +599,18 @@ body {
   position: relative;
   width: 55%;
 }
+
+.discoveryTextboxColumn {
+  background-clip: border-box;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 /* MESSAGE STREAM INNER CLASSES */
 .messageStreamColumn {
   --tw-bg-opacity: 1;
@@ -643,6 +655,15 @@ body {
   position: relative;
 }
 
+.discoveryTopicSearchBarWrapper{
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  overflow: visible;
+  position: relative;
+  flex: 1;
+}
+
 .searchBar {
   font-weight: 500;
   font-size: 2.25rem;
@@ -656,6 +677,18 @@ body {
   padding: 10px;
 }
 
+.discoveryTopicSearchBar {
+  font-weight: 500;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  text-align: center;
+  color: rgba(55, 65, 81, 1);
+  width: 100%;
+  padding: 10px;
+  outline: none;
+}
+
+
 .searchBarSubmit {
   background-color: rgba(119, 153, 141, 0.5);
   color: rgba(255, 255, 255, 1);
@@ -668,7 +701,18 @@ body {
   justify-content: center;
 }
 
-.searchBarSubmit:hover{
+.discoveryTopicSearchBarSubmit {
+  background-color: rgba(119, 153, 141, 0.5);
+  color: rgba(255, 255, 255, 1);
+  font-weight: 700;
+  flex: 0.05;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.discoveryTopicSearchBarSubmit:hover{
   background-color: rgba(119, 153, 141, 1);
 }
 /* TEXTBOX STYLES */
@@ -774,18 +818,15 @@ div.DraftEditor-root {
   height: 100%;
   border-width: 1px;
   display: grid;
-  grid-template-rows: 10% 90%;
+  grid-template-rows: 8% 92%;
   grid-template-columns: 1fr;
-  border: 2px solid green;
 }
 
 .discoveryTopicSearchWrapper {
   width: 100%;
   flex: 0.2;
-  border: 2px solid red;
   grid-row: 1 / 2;
   grid-column: 1 / 2;
-
 }
 
 .featureDiscoveryWrapper {

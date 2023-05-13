@@ -4,10 +4,16 @@
 import * as d3 from "d3"
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc'
+import Textarea from 'react-expanding-textarea';
+import { CgSpinner } from "react-icons/cg"
+import { GoSearch } from "react-icons/go"
+
+
 dayjs.extend(utc)
+
 // REACT & REMIX
 import { useState, useEffect } from "react";
-import { useLoaderData, useActionData, useOutletContext, useFetcher } from "@remix-run/react";
+import { useLoaderData, useActionData, useOutletContext, useFetcher, useTransition } from "@remix-run/react";
 import { json } from '@remix-run/node';
 
 // MODELS
@@ -64,6 +70,8 @@ export default function Discovery() {
   const [zoomObject, setZoomObject] = useState(null)
   const [dateValue, setDateValue] = useState(null);
   const searchFetcher = useFetcher();
+  const fetcher = useFetcher();
+  const transition = useTransition();
 
   useEffect(()=>{
     const dateFilteredArray = []
@@ -79,7 +87,6 @@ export default function Discovery() {
     setSearchResults(dateFilteredArray.map(a => a.featureRequestId))
     console.log('DATE FILTERED ARRAY', dateFilteredArray)
   }, [dateValue])
-
 
 
   useEffect(()=>{
@@ -134,14 +141,27 @@ export default function Discovery() {
     setTopLevelStreamDataObj(loaderData.featureRequests)
   }
 
-
-
   return (
     <>
       <div className="discoveryOverarchingWrapper">
         <div className="discoveryTopicSearchWrapper">
-
-
+          <fetcher.Form className="discoveryTextboxColumn" method='post'>
+              <input type='hidden' name='featureId' value={loaderData.feature.id}/>
+              <div className='discoveryTopicSearchBarWrapper'>
+                <input
+                  className='discoveryTopicSearchBar'
+                  placeholder={"Enter a Feature Description"}
+                  name="searchTerm"
+                  defaultValue={loaderData.feature.title}
+                />
+              </div>
+                <button className="discoveryTopicSearchBarSubmit" type="submit">
+                  { transition.state === "loading" ?
+                    <><CgSpinner className="animate-spin" /></>
+                    : <><h1 style={{fontSize: '26px'}}><GoSearch/></h1></>
+                  }
+                </button>
+          </fetcher.Form>
         </div>
         <div className='featureDiscoveryWrapper'>
           <div className="discoveryMessageStreamColumn">

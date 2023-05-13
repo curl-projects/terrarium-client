@@ -66,10 +66,6 @@ export default function Discovery() {
   const searchFetcher = useFetcher();
 
   useEffect(()=>{
-    console.log('LOADER DATA', loaderData)
-  }, [loaderData])
-
-  useEffect(()=>{
     const dateFilteredArray = []
     if(topLevelStreamDataObj[0]){
       for(let fr of loaderData.featureRequests){
@@ -137,7 +133,6 @@ export default function Discovery() {
   function resetBrushFilter(){
     setTopLevelStreamDataObj(loaderData.featureRequests)
   }
-
 
 
   return (
