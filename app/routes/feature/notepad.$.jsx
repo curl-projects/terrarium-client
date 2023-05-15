@@ -91,7 +91,7 @@ export default function FeatureNotepad(){
               />
             </div>
               <button className="searchBarSubmit" type="submit">
-                { transition.state === "loading" ?
+                { transition.type === "fetchActionRedirect" ?
                   <><div style={{marginRight: "5px"}}>Finding Feature Requests </div><CgSpinner className="animate-spin" /></>
                   : loaderData.isSearched ? "Update Search Term" : "Find Feature Requests"
                 }

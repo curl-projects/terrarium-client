@@ -43,7 +43,6 @@ export async function loader({ request, params}){
   const url = new URL(request.url)
   const searchTerm = url.searchParams.get("searchTerm")
 
-
   const featureId = params["*"]
   const feature = await readFeature(featureId)
 
@@ -178,6 +177,10 @@ export default function Discovery() {
     setTopLevelStreamDataObj(loaderData.featureRequests)
   }
 
+  useEffect(()=>{
+    console.log("Transition Type:", transition.type)
+  })
+
   return (
     <>
       <div className="discoveryOverarchingWrapper">
@@ -193,7 +196,7 @@ export default function Discovery() {
                 />
               </div>
                 <button className="discoveryTopicSearchBarSubmit" type="submit">
-                  { transition.state === "loading" ?
+                  { transition.type === "fetchActionRedirect" ?
                     <><CgSpinner className="animate-spin" /></>
                     : <><h1 style={{fontSize: '26px'}}><GoSearch/></h1></>
                   }

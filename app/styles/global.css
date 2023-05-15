@@ -686,7 +686,6 @@ body {
   width: 100%;
   padding: 10px;
   outline: none;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
 
@@ -819,7 +818,7 @@ div.DraftEditor-root {
   height: 100%;
   border-width: 1px;
   display: grid;
-  grid-template-rows: 8% 92%;
+  grid-template-rows: 10% 92%;
   grid-template-columns: 1fr;
 }
 
