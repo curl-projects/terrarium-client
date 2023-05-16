@@ -36,7 +36,6 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
       .range([ref.current.clientHeight, 0]);
 
     function tearDownClusters(){
-      console.log("EXECUTED CLUSTER TEARDOWN")
       // TEAR DOWN CLUSTER BLOBS
       d3.select(ref.current)
         .selectAll(".clusterNode")

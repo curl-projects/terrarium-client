@@ -44,7 +44,8 @@ export async function getPinnedFeatureRequests(userId){
           featureRequest: {
             select: {
               fr: true,
-              author: true
+              author: true,
+              message: true
             }
     
           }
@@ -60,7 +61,7 @@ export async function createFeature(userId, columnState, rankState){
   const feature = await db.feature.create({
     data: {
       title: "Untitled",
-      description: "~~~",
+      description: "",
       columnState: parseInt(columnState),
       rankState: parseInt(rankState),
       user: {

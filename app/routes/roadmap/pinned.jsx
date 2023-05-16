@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useLoaderData } from "@remix-run/react";
 import { getPinnedFeatureRequests } from "~/models/kanban.server";
+import { processPinnedFeatureRequests } from "~/utils/processPinnedFeatureRequests" 
 import { authenticator } from "~/models/auth.server.js";
+import PinnedFeatureRequest from "~/components/roadmap/PinnedFeatureRequest";
 
 export async function loader({ request }){
     const user = await authenticator.isAuthenticated(request, {
@@ -9,8 +11,9 @@ export async function loader({ request }){
       })
 
     const pinnedFeatureRequests = await getPinnedFeatureRequests(user.id)
-
-    return pinnedFeatureRequests
+    console.log("PINNED FEATURE REQUESTS:", pinnedFeatureRequests[0].featureRequests)
+    const processedPinnedFeatureRequests = processPinnedFeatureRequests(pinnedFeatureRequests)
+    return processedPinnedFeatureRequests
 }
 
 export default function Pinned(){
@@ -21,8 +24,10 @@ export default function Pinned(){
     }, [loaderData])
 
     return(
-        <div>
-            <h1>Pinned feature requests go here</h1>
+        <div className="pinnedFROuterWrapper">
+            {loaderData && loaderData.map((item, index) => (
+                <PinnedFeatureRequest item={item} index={index} />
+            ))}
         </div>
     )
 

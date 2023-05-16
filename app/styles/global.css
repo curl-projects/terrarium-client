@@ -444,7 +444,7 @@ body {
 
 .kanbanCardTitleText{
   color: #4B5563;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 20px;
 }
 
@@ -858,4 +858,40 @@ div.DraftEditor-root {
 .terrarium-login:hover {
   opacity: 0.4;
   font-size: 55px;
+}
+
+/* PINNED FEATURE REQUESTS */
+.pinnedFROuterWrapper{
+  overflow: scroll;
+  padding: 20px;
+  height: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.pinnedFRWrapper{
+  width: 100%;
+  border: 1px solid #e7e7e7;
+  background-color: #fafafa;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.pinnedFRTitle{
+  font-size: 18px;
+  color: #4B5563;
+}
+
+.pinnedFRAuthor{
+  font-size: 16px;
+  color: rgba(119, 153, 141, 0.8)
+}
+
+.pinnedFRMessage{
+  font-size: 14px;
+  color: #4B5563;
 }
