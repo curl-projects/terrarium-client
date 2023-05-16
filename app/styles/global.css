@@ -318,7 +318,7 @@ body {
 .roadmapWrapper{
   display: grid;
   grid-template-rows: 30px 95%;
-  grid-template-columns: 0.27fr 0.83fr;
+  grid-template-columns: 0.30fr 0.70fr;
   height: calc(100vh - 60px);
   width: 100vw;
   margin-top: 60px;

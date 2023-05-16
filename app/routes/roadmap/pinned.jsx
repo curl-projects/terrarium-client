@@ -22,7 +22,9 @@ export default function Pinned(){
 
     return(
         <div>
-            <h1>Hello!</h1>
+            <h1>Pinned feature requests go here</h1>
         </div>
     )
+
+    // TODO: process loader data in a flat array
 }
