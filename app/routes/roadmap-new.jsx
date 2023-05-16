@@ -17,8 +17,6 @@ export async function loader({ request }){
   const features = await getFeatures(user.id)
 
   const organisedFeatures = processCardState(features)
-
-  console.log("ORGANISED FEATURES", organisedFeatures)
   return({ features: organisedFeatures })
 }
 
@@ -45,37 +43,24 @@ export async function action({ request }){
 export default function RoadmapRoute(){
     const loaderData = useLoaderData();
     const actionData = useActionData();
-    const [hoveredData, setHoveredData] = useState([])
-    const hoverFetcher = useFetcher();
-  
+
     useEffect(()=>{
-      if(hoverFetcher.data){
-        setHoveredData(hoverFetcher.data.featureRequests)
-      }
-    }, [hoverFetcher.data])
-  
-    function updateHoveredData(event, featureId){
-      if(featureId){
-        hoverFetcher.submit({actionType: 'hover', featureId: featureId}, {method: 'get', action: "utils/hover-feature-requests"})
-      }
-      else{
-        setHoveredData([])
-      }
-    }
+        console.log("HI!")
+        console.log("Loader Data:", loaderData)
+    }, [loaderData])
 
     return(
         <>
             <Header />
             <div className='roadmapWrapper'>
                 <div className='innerRoadmapWrapper'>
-                    <Roadmap features={loaderData.features}
-                             updateHoveredData={updateHoveredData} />
+                    <Roadmap features={loaderData.features} />
                 </div>
                 <div className='roadmapTagsWrapper'>
 
                 </div>
                 <div className='roadmapOutletWrapper'>
-                    <Outlet context={{ hoveredData: hoveredData }}/>
+                    <Outlet />
                 </div>
             </div>
         </>

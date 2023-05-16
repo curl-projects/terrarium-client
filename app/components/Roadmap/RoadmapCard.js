@@ -11,7 +11,12 @@ export default function KanbanCard(props){
             index={props.index}>
             {(provided, snapshot) => {
                 return(
-                <Link className="kanbanCardWrapper" to={`/feature/discovery/${props.item.id}`} ref={provided.innerRef}>
+                <Link className="kanbanCardWrapper" 
+                      to={`/feature/discovery/${props.item.id}`} 
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      >
                     <div className='kanbanCardBookmark'></div>
                     <div className='kanbanCardContent'>
                         <div className='kanbanCardTitle'>

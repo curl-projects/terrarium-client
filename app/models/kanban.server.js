@@ -9,7 +9,18 @@ export async function getFeatures(userId){
           id: userId
         }
       }
-    }
+    },
+    // include: {
+    //   _count: {
+    //     select: {
+    //       featureRequests: {
+    //         where: {
+    //           pinned: true
+    //           }
+    //         }
+    //       }
+    //     }
+    // }
   })
   return features
 }
