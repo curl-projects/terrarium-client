@@ -9,8 +9,6 @@ async function login(request){
   const url = new URL(request.url)
   const code = url.searchParams.get("code")
 
-  console.log("CODE", code)
-
   try{
     return await authenticator.authenticate(SocialsProvider.GOOGLE, request, {
       successRedirect: "/roadmap",

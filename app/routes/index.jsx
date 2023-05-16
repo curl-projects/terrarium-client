@@ -46,9 +46,3 @@ export default function Index(){
     </>
   );
 };
-
-// <button style={BUTTON_STYLES}>Login with Google</button>
-{/* <img className='terrarium' src={terrarium}></img>
-          <div style={{textAlign: 'center', marginTop: "5px"}}>
-            <h3 className='logInText'>Log In</h3>
-          </div> */}

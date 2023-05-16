@@ -25,8 +25,35 @@ export async function getFeatures(userId){
   return features
 }
 
-export async function syncBackendRoadmap(notionAuth, featureName){
+export async function getPinnedFeatureRequests(userId){
+  // get all pinned feature requests and their associated topics
+  const pinnedRequests = await db.feature.findMany({
+    where: {
+      user: {
+        is: {
+          id: userId
+        }
+      }
+    },
+    include: {
+      featureRequests: {
+        where: {
+          pinned: true
+        },
+        include: {
+          featureRequest: {
+            select: {
+              fr: true,
+              author: true
+            }
+    
+          }
+        }
+      }
+    }
+  })
 
+  return pinnedRequests
 }
 
 export async function createFeature(userId, columnState, rankState){

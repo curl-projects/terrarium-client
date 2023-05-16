@@ -1,5 +1,4 @@
 import { Outlet, Link, useParams, useMatches } from "@remix-run/react";
-import { useEffect } from "react";
 import cn from 'classnames'
 import FeatureHeader from "~/components/Header/FeatureHeader"
 

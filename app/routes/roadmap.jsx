@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLoaderData, useActionData, Outlet, useFetcher } from "@remix-run/react";
+import { useLoaderData, useActionData, Outlet, Link, useParams, useMatches } from "@remix-run/react";
 import { redirect } from "@remix-run/node";
 
 import Header from "~/components/Header/Header";
@@ -9,16 +9,16 @@ import { authenticator } from "~/models/auth.server.js";
 
 import { getFeatures, createFeature, deleteFeature, updateAllFeaturePositions } from "~/models/kanban.server"
 import { processCardState } from "~/utils/processCardState"
+import cn from "classnames";
 
 export async function loader({ request }){
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/",
   })
   const features = await getFeatures(user.id)
+  console.log("FEATURES!:", features)
 
   const organisedFeatures = processCardState(features)
-
-  console.log("ORGANISED FEATURES", organisedFeatures)
   return({ features: organisedFeatures })
 }
 
@@ -43,36 +43,39 @@ export async function action({ request }){
 }
 
 export default function RoadmapRoute(){
-  const loaderData = useLoaderData();
-  const actionData = useActionData();
-  const [hoveredData, setHoveredData] = useState([])
-  const hoverFetcher = useFetcher();
+    const loaderData = useLoaderData();
+    const actionData = useActionData();
+    const matches = useMatches();
 
-  useEffect(()=>{
-    if(hoverFetcher.data){
-      setHoveredData(hoverFetcher.data.featureRequests)
-    }
-  }, [hoverFetcher.data])
-
-  function updateHoveredData(event, featureId){
-    if(featureId){
-      hoverFetcher.submit({actionType: 'hover', featureId: featureId}, {method: 'get', action: "utils/hover-feature-requests"})
-    }
-    else{
-      setHoveredData([])
-    }
-  }
-
-  return(
-    <>
-      <Header />
-      <div className="roadmapWrapper">
-        <Roadmap features={loaderData.features}
-                 updateHoveredData={updateHoveredData} />
-          <div className='pointFieldWrapper'>
-            <Outlet context={{ hoveredData: hoveredData }}/>
-          </div>
-      </div>
-    </>
-  )
+    return(
+        <>
+            <Header />
+            <div className='roadmapWrapper'>
+                <div className='innerRoadmapWrapper'>
+                    <Roadmap features={loaderData.features} />
+                </div>
+                <div className='roadmapTagsWrapper'>
+                    <div className='notepadTabBar'>
+                        <Link to={`/roadmap/pinned`}>
+                        <div className={cn('notepadTab',
+                                            {"notepadTabActive": matches[2].pathname.includes('pinned')}
+                                            )}>
+                            <p className="notepadTabLabel">Pinned</p>
+                        </div>
+                        </Link>
+                        <Link to={`/roadmap`}>
+                        <div className={cn('notepadTab',
+                                            {"notepadTabActive": matches[2].pathname.includes('placeholder')}
+                                            )}>
+                            <p className="notepadTabLabel">Placeholder</p>
+                        </div>
+                        </Link>
+                    </div>
+                </div>
+                <div className='roadmapOutletWrapper'>
+                    <Outlet />
+                </div>
+            </div>
+        </>
+    )
 }
