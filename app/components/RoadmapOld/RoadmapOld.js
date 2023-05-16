@@ -3,10 +3,23 @@ import { useState, useEffect } from 'react';
 import { DragDropContext} from "@hello-pangea/dnd";
 import RoadmapColumn from '~/components/Roadmap/RoadmapColumn.js'
 
-const columnsFromBackend = {};
+const columnsFromBackend = {
+  // 1: {
+  //   name: "Roadmap",
+  //   items: []
+  // },
+  // 2: {
+  //   name: "Workspace",
+  //   items: []
+  // },
+  // 3: {
+  //   name: "Drafts",
+  //   items: []
+  // }
+};
 
-export default function Roadmap(props){
-    const [columns, setColumns] = useState(columnsFromBackend);
+export default function Kanban(props){
+  const [columns, setColumns] = useState(columnsFromBackend);
 
   const [columnOne, setColumnOne] = useState([])
   const [columnTwo, setColumnTwo] = useState([])
@@ -104,19 +117,21 @@ export default function Roadmap(props){
   };
 
   return(
-    <DragDropContext
-        onDragEnd={result => onDragEnd(result, columns, setColumns)}
-    >
-        {Object.entries(columns).map(([columnId, column], index) => {
-        return (
-            <RoadmapColumn key={columnId}
-                            columnId={columnId}
-                            column={column}
-                            index={index}
-                            updateHoveredData={props.updateHoveredData}
-                            />
-        );
-        })}
-    </DragDropContext>
+    <div className="kanbanBoard">
+        <DragDropContext
+          onDragEnd={result => onDragEnd(result, columns, setColumns)}
+        >
+          {Object.entries(columns).map(([columnId, column], index) => {
+            return (
+              <RoadmapColumn key={columnId}
+                             columnId={columnId}
+                             column={column}
+                             index={index}
+                             updateHoveredData={props.updateHoveredData}
+                             />
+            );
+          })}
+        </DragDropContext>
+    </div>
   )
 }

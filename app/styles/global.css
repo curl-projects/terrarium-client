@@ -314,27 +314,38 @@ body {
 }
 
 /* KANBAN BOARD */
-.roadmapWrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: row;
-  height: 100vh;
+
+.roadmapWrapper{
+  display: grid;
+  grid-template-rows: 30px 95%;
+  grid-template-columns: 0.27fr 0.83fr;
+  height: calc(100vh - 60px);
   width: 100vw;
-  padding-left: 40px;
-  padding-right: 40px;
+  margin-top: 60px;
+  box-sizing: content-box;
+  padding: 60px;
   box-sizing: border-box;
-  gap: 50px;
+  column-gap: 30px;
 }
 
+.innerRoadmapWrapper{
+  grid-row: 1 / 3;
+  grid-column: 1 /2;
+  border: 1px solid rgba(119, 153, 141, .3);
+  box-shadow: #00000014 0 2px 4px;
+}
 
-.kanbanBoard{
-   display: flex;
-   flex-direction: row;
-   justify-content: flex-start;
-   width: 100%;
-   height: 80%;
-   flex: 0.8;
+.roadmapTagsWrapper{
+  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+  border: 2px solid green;
+}
+
+.roadmapOutletWrapper{
+  grid-row: 2 / 3;
+  grid-column: 2 / 3;
+  border: 1px solid rgba(119, 153, 141, .3);
+  box-shadow: #00000014 0 2px 4px;
 }
 
 .kanbanColumnOuter{
@@ -342,16 +353,29 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: rgb(236, 240, 241);
-  width: 28%;
+  width: 100%;
+  height: 100%;
   flex: 1;
 }
 
 .kanbanColumnInner {
-  margin: 8px;
   width: 100%;
   height: 100%;
-  box-sizing: content-box;
+  box-sizing: border-box;
+}
+
+.roadmapControlPanel{
+  border: 2px solid red;
+  height: 55px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.newTopicButton{
+  color: #BBBBBB;
+  font-size: 20px;
 }
 
 .columnNameWrapper {
@@ -385,155 +409,51 @@ body {
   cursor: pointer;
 }
 /* KANBAN CARD*/
-.cardContentWrapper{
-  display: flex;
-  flex-direction: column;
-  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.08));
-  flex: 3;
-  padding: 16px;
-}
-
-.cardHeader{
+.kanbanCardWrapper{
+  height: auto;
+  width: 100%;
+  border: 1px solid #E7E7E7;
+  background-color: #FAFAFA;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  box-sizing: border-box;
-  border-radius: 20px;
-  padding-left: 5px;
+  margin-top: 20px;
 }
 
-.headerTextWrapper{
-  height: 100%;
+.kanbanCardBookmark {
+  width: 10px;
+  background-color: rgba(119, 153, 141, 0.6);
+}
+
+.kanbanCardContent {
+  flex: 1;
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  flex-direction: column;
+  padding: 15px;
+  padding-left: 15px;
 }
 
-.headerText{
-  font-weight: 500;
-  font-size: 1.1rem;
-  line-height: 2rem;
-  color: #4D4D4D;
+.kanbanCardTitleText{
+  color: #4B5563;
+  font-weight: 800;
+  font-size: 20px;
 }
 
-.deleteCardButtonWrapper {
-  height: 100%;
-  width: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.deleteCardButton {
-    height: 24px;
-    width: 24px;
-    filter: opacity(0.15);
-    cursor: pointer;
-}
-
-
-.cardContent{
-  box-sizing: border-box;
-  border-radius: 20px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.contentText{
+.kanbanCardPinnedText{
+  color: rgba(119, 153, 141, 0.8);
   font-size: 16px;
-  color: #5A5A65;
+  position: relative;
+  top: -5px;
+  left: 1px;
 }
 
-@keyframes slideIn {
-  0% {  width: 0%;
-        padding-left: 0px;
-        padding-right: 0px;
-        border: 2px solid rgba(119, 153, 141, 0.4);
-        }
-  100% {
-      width: 20%;
-      padding-left: 25px;
-      padding-right: 25px;
-      border: 0px solid rgba(119, 153, 141, 0.4);
-  }
+.kanbanCardDescriptionText{
+ color: #4B5563;
+ font-size: 16px;
+ font-weight: 400; 
+ position: relative;
+ left: 1px;
 }
 
-@keyframes slideOut {
-  0% {
-      width: 20%;
-      padding-left: 25px;
-      padding-right: 25px;
-      background-color: rgba(119, 153, 141, 0.4);
-      border: 0px solid rgba(119, 153, 141, 0.4);
-  }
-  100% {  width: 0%;
-        padding-left: 0px;
-        padding-right: 0px;
-        background-color: rgba(119, 153, 141, 0.4);
-        border: 2px solid rgba(119, 153, 141, 0.4);
-        }
-}
-
-@keyframes textAppear {
-  0% {
-        opacity: 0;
-     }
-  50% {
-    opacity: 0;  }
-  100% {
-      opacity: 1;
-       }
-}
-
-@keyframes textDisappear {
-  0% {
-        opacity: 1;
-     }
-  50% {
-    opacity: 0.5;  }
-  100% {
-      opacity: 0;
-       }
-}
-
-
-@media only screen and (min-width: 1300px){
-  .roadmapIndicatorWrapper{
-    background-color: rgba(119, 153, 141, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: 0.7s ease-in-out 0s slideIn;
-    width: 20%;
-  }
-
-  .roadmapIndicator {
-    font-size: 2rem;
-    color: rgba(110, 110, 110);
-    animation: 0.5s ease-in 0s textAppear;
-  }
-}
-
-
-@media only screen and (max-width: 1300px){
-  .roadmapIndicatorWrapper{
-    padding-left: 0px;
-    padding-right: 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 0px !important;
-    border: 2px solid rgba(119, 153, 141, 0.4);
-    animation: 0.5s ease-in-out 0s slideOut;
-  }
-
-  .roadmapIndicator {
-    font-size: 0rem;
-    animation: 0.3s ease-out 0s textDisappear;
-  }
-}
 /*  -------- NOTEPAD -------- */
 .notepadScaffold {
   --tw-bg-opacity: 1;

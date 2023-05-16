@@ -11,6 +11,20 @@ export default function KanbanColumn(props){
       className='kanbanColumnOuter'
       key={props.columnId}
     >
+      <div className="columnNameWrapper" style={{backgroundColor: props.column.color}}>
+        <h2 className="columnName">{props.column.name}</h2>
+        <div style={{flex: 1}}/>
+        <div className='addCardWrapper'>
+          <Form method="post">
+            <button type="submit">
+              <input type="hidden" name='actionType' value='create'/>
+              <input type='hidden' name="columnState" value={props.columnId}/>
+              <input type='hidden' name="rankState" value={props.column.items.length + 1}/>
+              <img src={plusButton} alt="+" className='addCardButton'></img>
+            </button>
+          </Form>
+        </div>
+      </div>
       <div className='kanbanColumnInner'>
         <Droppable droppableId={props.columnId} key={props.columnId}>
           {(provided, snapshot) => {
@@ -19,10 +33,15 @@ export default function KanbanColumn(props){
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 style={{
-                  padding: "30px",
+                  background: snapshot.isDraggingOver
+                    ? "rgb(236, 240, 241)" // `${props.column.color}`
+                    : "rgb(236, 240, 241)",
+                  padding: 4,
                   width: '100%',
                   height: "100%",
-                  overflow: "scroll",
+                  maxHeight: "89%",
+                  borderRadius: "8px",
+                  overflow: "scroll"
                 }}
               >
                   {props.column.items.map((item, index) => {
@@ -40,9 +59,6 @@ export default function KanbanColumn(props){
           }}
         </Droppable>
       </div>
-      <div className='roadmapControlPanel'>
-            <p className='newTopicButton'>New Topic</p>
-    </div>
     </div>
   )
 }
