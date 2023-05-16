@@ -178,7 +178,7 @@ export default function Discovery() {
   }
 
   useEffect(()=>{
-    console.log("Transition Type:", transition.type)
+    console.log("LOADER DATA:", loaderData.feature)
   })
 
   return (
@@ -192,7 +192,8 @@ export default function Discovery() {
                   className='discoveryTopicSearchBar'
                   placeholder={"Enter a Feature Description"}
                   name="searchTerm"
-                  defaultValue={loaderData.feature.title}
+                  autofocus
+                  defaultValue={loaderData.feature.title == "Untitled" ? null : loaderData.feature.title }
                 />
               </div>
                 <button className="discoveryTopicSearchBarSubmit" type="submit">

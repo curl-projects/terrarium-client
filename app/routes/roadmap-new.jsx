@@ -15,6 +15,7 @@ export async function loader({ request }){
     failureRedirect: "/",
   })
   const features = await getFeatures(user.id)
+  console.log("FEATURES!:", features)
 
   const organisedFeatures = processCardState(features)
   return({ features: organisedFeatures })

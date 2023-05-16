@@ -28,16 +28,6 @@ export default function Roadmap(props){
           items: columnOne,
           color: "rgba(119, 153, 141, 1)",
         },
-        // 2: {
-        //   name: "Workspace",
-        //   items: columnTwo,
-        //   color: "#F0E7F6",
-        // },
-        // 3: {
-        //   name: "Drafts",
-        //   items: columnThree,
-        //   color: "#FFDCE0",
-        // }
       }
     )}, [columnOne, columnTwo, columnThree])
 
@@ -113,7 +103,6 @@ export default function Roadmap(props){
                             columnId={columnId}
                             column={column}
                             index={index}
-                            updateHoveredData={props.updateHoveredData}
                             />
         );
         })}

@@ -365,7 +365,8 @@ body {
 }
 
 .roadmapControlPanel{
-  border: 2px solid red;
+  padding: 10px;
+  padding-left: 20px;
   height: 55px;
   width: 100%;
   box-sizing: border-box;
@@ -430,6 +431,16 @@ body {
   flex-direction: column;
   padding: 15px;
   padding-left: 15px;
+}
+
+.kanbanCardTitle{
+  display: flex;
+  flex-direction: row;
+}
+
+.kanbanCardMenu{
+  color: rgba(119, 153, 141, 0.8);
+  font-size: 20px;
 }
 
 .kanbanCardTitleText{
