@@ -99,6 +99,18 @@ export async function updateFeatureTitle(featureId, featureTitle){
   return feature
 }
 
+export async function updateFeatureDescription(featureId, featureDescription){
+  const feature = await db.feature.update({
+    where: {
+      id: parseInt(featureId)
+    },
+    data: {
+      description: featureDescription
+    }
+  })
+  return feature
+}
+
 export async function updateFeatureIsSearched(featureId){
   const feature = await db.feature.update({
     where: {

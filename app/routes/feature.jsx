@@ -4,10 +4,11 @@ import { redirect } from "@remix-run/node"
 import { useLoaderData, useActionData, Form, useFetcher, useTransition } from "@remix-run/react";
 import { ClientOnly } from "remix-utils";
 import ContentEditable from 'react-contenteditable';
+import LinearProgress from '@mui/material/LinearProgress';
 
 // MODULE IMPORTS
 import { authenticator } from "~/models/auth.server.js";
-import { readFeature, updateFeatureTitle, updateFeatureIsSearched } from "~/models/kanban.server"
+import { readFeature, updateFeatureTitle, updateFeatureIsSearched, updateFeatureDescription } from "~/models/kanban.server"
 import { findFeatureRequests, associateFeatureRequestsWithFeature } from "~/models/feature-requests.server"
 import { embeddingSearch } from "~/models/embedding-search.server"
 
@@ -18,7 +19,7 @@ import { Outlet, Link, useParams, useMatches } from "@remix-run/react";
 import cn from 'classnames'
 import MessageStream from "~/components/MessageStream/MessageStream.js"
 
-export async function loader({ request, params}){
+export async function loader({ request, params }){
     const user = await authenticator.isAuthenticated(request, {
       failureRedirect: "/",
     })
@@ -64,30 +65,32 @@ export async function loader({ request, params}){
   
   export async function action({ request }){
     const formData = await request.formData()
-    const featureId = formData.get("featureId")
-    const searchTerm = formData.get('searchTerm')
-    const filterType = formData.get('filterType')
-
-    console.log("FEATURE ID:", featureId)
-    console.log("SEARCH TERM:", searchTerm)
+    const actionType = formData.get('actionType')
+    
+    console.log("ACTION TYPE:", actionType)
   
-    if(searchTerm && featureId){
+    if(actionType === 'featureSearch'){
+        const featureId = formData.get("featureId")
+        const searchTerm = formData.get('searchTerm')
       return redirect(`/feature/notepad/${featureId}?searchTerm=${searchTerm}`)
     }
-    else if(filterType && filterType === 'search'){
-      const searchString = formData.get('searchString');
-      const knnIDs = await embeddingSearch(searchString)
-      const data = {
-        knnIDs: knnIDs,
-        filterType: filterType
-      }
-      return json(data)
+    else if(actionType === "saveDescription"){
+        const featureId = formData.get("featureId")
+        const featureDescription = formData.get('featureDescription')
+
+        console.log("FEATUREID", featureId)
+        console.log("DESCRIPTION", featureDescription)
+        const updatedFeature = await updateFeatureDescription(featureId, featureDescription)   
+        return {updatedFeature}
     }
   }
 
 export default function Feature(){
     const titleRef = useRef();
-    const [titleFocused, setTitleFocused] = useState(false)
+    const [titleFocused, setTitleFocused] = useState(false);
+    const [descriptionFocused, setDescriptionFocused] = useState(false);
+
+    const [description, setDescription] = useState("No description")
     const [title, setTitle] = useState("")
     const params = useParams();
     const matches = useMatches();
@@ -95,15 +98,23 @@ export default function Feature(){
     const loaderData = useLoaderData();
     const actionData = useActionData();
     const fetcher = useFetcher();
+    const descriptionFetcher = useFetcher();
     const transition = useTransition();
 
     useEffect(()=>{
         setTitle(loaderData.feature.title)
+        setDescription(loaderData.feature.description)
     }, [loaderData])
 
     useEffect(()=>{
-        console.log("TITLEREF:", titleRef)
-    }, [titleRef])
+        console.log("LOADER DATA", loaderData)
+    }, [loaderData])
+
+    useEffect(()=>{
+        if(titleFocused){
+            titleRef.current.focus();
+        }
+    }, [titleFocused])
 
     return(
         <>
@@ -113,16 +124,16 @@ export default function Feature(){
                     {titleFocused
                      ? (
                         <>
-                            <input type='hidden' name='featureId' value={loaderData.feature.id}/>
                             <input className='featureTitleInnerInput' 
                             onBlur={()=>setTitleFocused(false)}
                             placeholder={"Enter a Feature Description"}
-                            defaultValue={loaderData.feature.title == "Untitled" ? null : loaderData.feature.title}
+                            defaultValue={title == "Untitled" ? null : title}
                             data-gramm="false"
+                            ref={titleRef}
                             onChange={(e)=>setTitle(e.target.value)}
                             data-gramm_editor="false"
                             data-enable-grammarly="false"
-                            autofocus />
+                            />
                             
                         </>
                      )
@@ -138,18 +149,45 @@ export default function Feature(){
                     
                     <div style={{flex: 1}}/>
                     <input type='hidden' name='searchTerm' value={title} />
-                    <input type='hidden' name='featureId' value={loaderData.feature.id}/>
+                    <input type='hidden' name='featureId' value={params["*"]}/>
+                    <input type='hidden' name='actionType' value='featureSearch' />
                     <button className='searchIconWrapper'>
                         <ImSearch className='searchIconText'/>
                     </button>
                 </fetcher.Form>
+                {transition.type === "fetchActionRedirect" &&
+                    <LinearProgress 
+                        variant="indeterminate"
+                        style={{width: "100%", 
+                                height: "2px", 
+                                backgroundColor: 'rgba(119, 153, 141, 0.3)'}}
+                    />
+                }
     
                 <div className="pinnedMessagesWrapper">
                     <p className='pinnedMessagesText'><em>5 pinned messages</em></p>
                 </div>
-                <div className='featureDescriptionWrapper'>
-                    <p className='featureDescriptionText'>This feature centres around improving the whiteboard functionality of Heptabase, especially interactivity, multiple whiteboards and responsiveness.</p>
-                </div>
+                <textarea 
+                    className='featureDescriptionWrapper' 
+                    defaultValue={"No Description"}
+                    value={description == "" ? null : description}
+                    onFocus={()=>setDescriptionFocused(true)}
+                    onBlur={()=>setDescriptionFocused(false)}
+                    onChange={(e)=>setDescription(e.target.value)}
+                    />
+                
+                <descriptionFetcher.Form method='post' style={{height: "0px"}}>
+                    <input type='hidden' name='actionType' value='saveDescription' />
+                    <input type='hidden' name='featureId' value={params["*"]} />
+                    <input type="hidden" name="featureDescription" value={description} />
+                    {descriptionFocused &&
+                        <button className='featureDescriptionSave' type='submit'>
+                            <p>Save</p>
+                        </button>
+                    }
+                </descriptionFetcher.Form>
+                
+    
             <div className='workspaceScaffold'>
                 <div className='workspaceOutletScaffold'>
                     <div className='workspaceOutletControls'>
