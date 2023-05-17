@@ -194,8 +194,9 @@ body {
 }
 
 .navigationText {
-  color: black;
+  color: #4B5563;
   text-decoration: none;
+  font-weight: 400;
 }
 
 /* INTEGRATIONS */
@@ -318,7 +319,7 @@ body {
 .roadmapWrapper{
   display: grid;
   grid-template-rows: 30px 95%;
-  grid-template-columns: 0.30fr 0.70fr;
+  grid-template-columns: 0.40fr 0.60fr;
   height: calc(100vh - 60px);
   width: 100vw;
   margin-top: 60px;
@@ -437,6 +438,7 @@ body {
   flex-direction: row;
 }
 
+
 .kanbanCardMenu{
   color: rgba(119, 153, 141, 0.8);
   font-size: 20px;
@@ -444,13 +446,13 @@ body {
 
 .kanbanCardTitleText{
   color: #4B5563;
-  font-weight: 600;
-  font-size: 20px;
+  font-weight: 500;
+  font-size: 16px;
 }
 
 .kanbanCardPinnedText{
   color: rgba(119, 153, 141, 0.8);
-  font-size: 16px;
+  font-size: 12px;
   position: relative;
   top: -5px;
   left: 1px;
@@ -458,7 +460,7 @@ body {
 
 .kanbanCardDescriptionText{
  color: #4B5563;
- font-size: 16px;
+ font-size: 12px;
  font-weight: 400; 
  position: relative;
  left: 1px;
@@ -877,21 +879,74 @@ div.DraftEditor-root {
   padding-right: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
-  margin-top: 20px;
+  margin-top: 14px;
   cursor: pointer;
 }
 
 .pinnedFRTitle{
-  font-size: 18px;
+  font-size: 14px;
   color: #4B5563;
 }
 
 .pinnedFRAuthor{
-  font-size: 16px;
+  font-size: 12px;
   color: rgba(119, 153, 141, 0.8)
 }
 
 .pinnedFRMessage{
   font-size: 14px;
   color: #4B5563;
+}
+
+/* FEATURE SCAFFOLD */
+.featureScaffold{
+  display: grid;
+  grid-template-columns: 70px 40vw 43vw;
+  grid-template-rows: 150px 50px 65vh;
+  margin: 60px;
+  border: 2px solid pink;
+}
+
+.featureTitle{
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  border: 2px solid green;
+}
+
+/* NEW ROADMAP */
+.kanbanRoadmapWrapper{
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 5%;
+  flex-direction: column;
+}
+
+.kanbanRoadmapTitle{
+  border-bottom: 1px solid #BBBBBB;
+  width: 100%;
+  text-align: left;
+  line-height: 1.1;
+  margin-top: 50px;
+
+}
+
+.kanbanRoadmapTitleText{
+  font-weight: bold;
+  font-size: 50px;
+  color: #4B5563;
+}
+
+.kanbanRoadmapDescription{
+  padding-top: 18px;
+}
+
+.kanbanRoadmapDescriptionText{
+  font-size: 16px;
+  color: #4B5563;
+}
+
+.kanbanRoadmapColumns{
+  border: 2px solid pink;
+  width: 100%;
 }
