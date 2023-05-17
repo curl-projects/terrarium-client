@@ -47,34 +47,39 @@ export default function Discovery(){
     const [zoomObject, setZoomObject] = useState(null)
     const [dateValue, setDateValue] = useState(null);
     const searchFetcher = useFetcher();
+    const [innerCanvasData, setInnerCanvasData] = useState([]) 
     const fetcher = useFetcher();
     const transition = useTransition();
     const params = useParams();
    
     const [topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData] = useOutletContext();
-
     
-  useEffect(()=>{
-    const dateFilteredArray = []
-    if(topLevelStreamDataObj[0]){
-        for(let fr of loaderData.featureRequests){
-        if(dayjs.utc(fr.featureRequest.created_at).isAfter(dayjs.utc(dateValue))){
-            dateFilteredArray.push(fr)
-        }
-        }
-    }
-    setTopLevelStreamDataObj(dateFilteredArray)
-    setSearchResults(dateFilteredArray.map(a => a.featureRequestId))
-  }, [dateValue])
+    useEffect(()=>{
+        setInnerCanvasData(topLevelCanvasDataObj)
+    }, [topLevelCanvasDataObj])
+    // useEffect(()=>{
+    //     const dateFilteredArray = []
+    //     if(topLevelStreamDataObj[0]){
+    //         for(let fr of loaderData.featureRequests){
+    //         if(dayjs.utc(fr.featureRequest.created_at).isAfter(dayjs.utc(dateValue))){
+    //             dateFilteredArray.push(fr)
+    //         }
+    //         }
+    //     }
+    //     console.log("TOP LEVEL STREAM", topLevelStreamDataObj)
+    //     console.log("DATE FILTERED", dateFilteredArray)
+    //     setTopLevelStreamDataObj(dateFilteredArray)
+    //     setSearchResults(dateFilteredArray.map(a => a.featureRequestId))
+    // }, [dateValue])
 
 
-  useEffect(()=>{
-    if(searchFetcher.data && searchFetcher.data.featureRequests){
-      const featureRequests = searchFetcher.data.featureRequests;
-      setTopLevelStreamDataObj(featureRequests);
-      setSearchResults(featureRequests.map(a => a.featureRequestId));
-    }
-  }, [searchFetcher.data])
+//   useEffect(()=>{
+//     if(searchFetcher.data && searchFetcher.data.featureRequests){
+//       const featureRequests = searchFetcher.data.featureRequests;
+//       setTopLevelStreamDataObj(featureRequests);
+//       setSearchResults(featureRequests.map(a => a.featureRequestId));
+//     }
+//   }, [searchFetcher.data])
 
   function resetSearchData(){
     setTopLevelStreamDataObj(loaderData.featureRequests)
@@ -109,6 +114,7 @@ export default function Discovery(){
 
     setTopLevelStreamDataObj(filteredData)
   }
+
   function resetBrushFilter(){
     setTopLevelStreamDataObj(loaderData.featureRequests)
   }
@@ -124,7 +130,7 @@ export default function Discovery(){
             </div>
             <div className='discoveryPointFieldWrapper'>
             <PointFieldScaffold
-                data={topLevelCanvasDataObj}
+                data={innerCanvasData}
                 searchResults={searchResults}
                 filterBrushedData={filterBrushedData}
                 resetBrushFilter={resetBrushFilter}

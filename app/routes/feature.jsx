@@ -54,7 +54,7 @@ export async function loader({ request, params }){
   
     if(feature.isSearched){
       const featureRequests = await findFeatureRequests(featureId); // get associated data objects
-      return { feature: feature, featureRequests: featureRequests }
+      return { feature: feature, featureRequests: featureRequests}
     }
   
     return { feature: feature, featureRequests: [] }
@@ -63,8 +63,6 @@ export async function loader({ request, params }){
   export async function action({ request }){
     const formData = await request.formData()
     const actionType = formData.get('actionType')
-    
-    console.log("ACTION TYPE:", actionType)
   
     if(actionType === 'featureSearch'){
         const featureId = formData.get("featureId")
@@ -106,15 +104,22 @@ export default function Feature(){
     useEffect(()=>{
         setTitle(loaderData.feature.title)
         setDescription(loaderData.feature.description)
+    }, [loaderData])
+
+    useEffect(()=>{
         setTopLevelStreamDataObj(loaderData.featureRequests)
         setTopLevelCanvasDataObj(loaderData.featureRequests.map(a => a.featureRequest))
-    }, [loaderData])
+    }, [loaderData.featureRequests])
 
     useEffect(()=>{
         if(titleFocused){
             titleRef.current.focus();
         }
     }, [titleFocused])
+
+    useEffect(()=>{
+        console.log("STREAM OBJ", topLevelStreamDataObj)
+    }, [topLevelStreamDataObj])
 
 
 
@@ -144,7 +149,7 @@ export default function Feature(){
                             className='featureTitleInnerWrapper' 
                             onClick={()=>setTitleFocused(true)} 
                             > 
-                            <h1 className='featureTitleText'>{title} / <span style={{color: "#B0BFB9"}}>Discovery</span></h1>
+                            <h1 className='featureTitleText'>{title} / <span style={{color: "#B0BFB9", textTransform: "capitalize"}}>{matches[2].pathname.split("/")[2]}</span></h1>
                         </div>
                      )
                     }

@@ -1,5 +1,5 @@
 import { redirect } from "@remix-run/node";
 
-export async function loader({ request }){
-  return redirect('/feature')
+export async function loader(){
+  return redirect('/roadmap')
 }
