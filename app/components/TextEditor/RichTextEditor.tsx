@@ -43,9 +43,6 @@ const RichTextEditor: React.FC<RichTextEditorType> = (props) => {
         <div
             onClick={focus}
             className={'relative max-h-full overflow-auto flex flex-col gap-0' + props.className}>
-            <Toolbar
-                editorState={editorState || undefined}
-                setEditorState={setEditorState || undefined}/>
             {editorState
                 ? (
                     <>
@@ -71,7 +68,9 @@ const RichTextEditor: React.FC<RichTextEditorType> = (props) => {
                     </div>
                 )
             }
-
+        <Toolbar
+                editorState={editorState || undefined}
+                setEditorState={setEditorState || undefined}/>
         </div>
     )
 }
