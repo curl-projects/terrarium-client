@@ -23,7 +23,7 @@ export default function KanbanColumn(props){
                 overflow: "scroll",
             }}
             >
-                {props.column.items.map((item, index) => {
+                {props.column.items && props.column.items.map((item, index) => {
                 return (
                 <RoadmapCard key={index}
                                 item={item}
@@ -41,7 +41,7 @@ export default function KanbanColumn(props){
             <Form method='post'>
                 <input type="hidden" name='actionType' value='create'/>
                 <input type='hidden' name="columnState" value={props.columnId}/>
-                <input type='hidden' name="rankState" value={props.column.items.length + 1}/>
+                <input type='hidden' name="rankState" value={props.column.items ? props.column.items.length + 1: 0}/>
                 <button>
                     <p className='newTopicButton'>New Topic</p>
                 </button>

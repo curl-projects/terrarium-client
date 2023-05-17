@@ -949,4 +949,6 @@ div.DraftEditor-root {
 .kanbanRoadmapColumns{
   border: 2px solid pink;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
 }

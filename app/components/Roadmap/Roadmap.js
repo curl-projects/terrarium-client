@@ -28,6 +28,16 @@ export default function Roadmap(props){
           items: columnOne,
           color: "rgba(119, 153, 141, 1)",
         },
+        2: {
+            name: "Roadmap2",
+            items: columnTwo,
+            color: "rgba(119, 153, 141, 1)",
+          },
+        3: {
+        name: "Roadmap2",
+        items: columnThree,
+        color: "rgba(119, 153, 141, 1)",
+        },
       }
     )}, [columnOne, columnTwo, columnThree])
 
