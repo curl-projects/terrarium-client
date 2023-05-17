@@ -29,7 +29,7 @@ export default function KanbanCard(props){
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                       >
-                    <div className='kanbanCardBookmark'></div>
+                    <div className='kanbanCardBookmark' style={{"backgroundColor": props.color}}></div>
                     <div className='kanbanCardContent'>
                         <div className='kanbanCardTitle'>
                             <Link to={`/feature/discovery/${props.item.id}`} >
@@ -50,10 +50,10 @@ export default function KanbanCard(props){
                             </div>
                         </div>
                         <div className='kanbanCardPinned'>
-                            <p className='kanbanCardPinnedText'><em>{props.item ? props.item._count.featureRequests : 0} pinned messages</em></p>
+                            <p className='kanbanCardPinnedText' style={{"color": props.color}}><em>{props.item ? props.item._count.featureRequests : 0} pinned messages</em></p>
                         </div>
                         <div className='kanbanCardDescription'>
-                            <p className='kanbanCardDescriptionText'>{props.item ? props.item.description : "No description"}</p>
+                            <p className='kanbanCardDescriptionText'>{props.item ? props.item.description : ""}</p>
                         </div>
                     </div>
                 </div>

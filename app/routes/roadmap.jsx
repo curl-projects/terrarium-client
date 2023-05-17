@@ -16,7 +16,6 @@ export async function loader({ request }){
     failureRedirect: "/",
   })
   const features = await getFeatures(user.id)
-  console.log("FEATURES!:", features)
 
   const organisedFeatures = processCardState(features)
   return({ features: organisedFeatures })
@@ -47,34 +46,23 @@ export default function RoadmapRoute(){
     const actionData = useActionData();
     const matches = useMatches();
 
+    useEffect(()=>{
+        console.log("LOADER DATA:", loaderData)
+    }, [loaderData])
+
     return(
         <>
             <Header />
-            <div className='roadmapWrapper'>
-                <div className='innerRoadmapWrapper'>
-                    <Roadmap features={loaderData.features} />
-                </div>
-                <div className='roadmapTagsWrapper'>
-                    <div className='notepadTabBar'>
-                        <Link to={`/roadmap/pinned`}>
-                        <div className={cn('notepadTab',
-                                            {"notepadTabActive": matches[2].pathname.includes('pinned')}
-                                            )}>
-                            <p className="notepadTabLabel">Pinned</p>
-                        </div>
-                        </Link>
-                        <Link to={`/roadmap`}>
-                        <div className={cn('notepadTab',
-                                            {"notepadTabActive": matches[2].pathname.includes('placeholder')}
-                                            )}>
-                            <p className="notepadTabLabel">Placeholder</p>
-                        </div>
-                        </Link>
+            <div className='kanbanRoadmapWrapper'>
+                    <div className='kanbanRoadmapTitle'>
+                        <h1 className='kanbanRoadmapTitleText'>Roadmap</h1>
                     </div>
-                </div>
-                <div className='roadmapOutletWrapper'>
-                    <Outlet />
-                </div>
+                    <div className='kanbanRoadmapDescription'>
+                        <p className='kanbanRoadmapDescriptionText'>Use this space to create and organise features.</p>
+                    </div>
+                    <div className='kanbanRoadmapColumns'>
+                        <Roadmap features={loaderData.features} />
+                    </div>
             </div>
         </>
     )

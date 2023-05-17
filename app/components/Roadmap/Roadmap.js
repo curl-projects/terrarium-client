@@ -6,7 +6,7 @@ import RoadmapColumn from '~/components/Roadmap/RoadmapColumn.js'
 const columnsFromBackend = {};
 
 export default function Roadmap(props){
-    const [columns, setColumns] = useState(columnsFromBackend);
+const [columns, setColumns] = useState(columnsFromBackend);
 
   const [columnOne, setColumnOne] = useState([])
   const [columnTwo, setColumnTwo] = useState([])
@@ -26,18 +26,22 @@ export default function Roadmap(props){
         1: {
           name: "Roadmap",
           items: columnOne,
-          color: "rgba(119, 153, 141, 1)",
+          color: "#B7CEC6",
+          backgroundColor: "rgba(183, 206, 198, 0.2)"
         },
         2: {
-            name: "Roadmap2",
+            name: "Drafts",
             items: columnTwo,
-            color: "rgba(119, 153, 141, 1)",
+            color: "#B7C2CE",
+            backgroundColor: "rgba(183, 194, 206, 0.2)"
           },
         3: {
-        name: "Roadmap2",
+        name: "Rejects",
         items: columnThree,
-        color: "rgba(119, 153, 141, 1)",
+        color: "#CEB0A0",
+        backgroundColor: "rgba(206, 176, 160, 0.2)"
         },
+
       }
     )}, [columnOne, columnTwo, columnThree])
 
