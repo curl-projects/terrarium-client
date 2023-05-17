@@ -1,12 +1,12 @@
-import React, {SyntheticEvent, useRef, useState} from "react"
-import { EditorState, RichUtils } from 'draft-js'
-import Editor from "@draft-js-plugins/editor"
-import { DraftHandleValue } from "draft-js"
-import {CgSpinner} from "react-icons/cg"
-import {useTextBox} from "~/components/TextEditor/useTextBox"
+import React, {SyntheticEvent, useRef, useState} from "react";
+import { EditorState, RichUtils } from 'draft-js';
+import Editor from "@draft-js-plugins/editor";
+import { DraftHandleValue } from "draft-js";
+import {CgSpinner} from "react-icons/cg";
+import {useTextBox} from "~/components/TextEditor/useTextBox";
 
-import SyncIndicator from "./SyncIndicator"
-import Toolbar from "app/components/TextEditor/ToolBar"
+import SyncIndicator from "./SyncIndicator";
+import Toolbar from "app/components/TextEditor/ToolBar";
 
 import createAutoListPlugin from 'draft-js-autolist-plugin'
 const autoListPlugin = createAutoListPlugin()
@@ -42,7 +42,8 @@ const RichTextEditor: React.FC<RichTextEditorType> = (props) => {
     return (
         <div
             onClick={focus}
-            className={'relative max-h-full overflow-auto flex flex-col gap-0' + props.className}>
+            style={{height: "100%"}}
+            className={'relative max-h-full flex flex-col gap-0' + props.className}>
             {editorState
                 ? (
                     <>

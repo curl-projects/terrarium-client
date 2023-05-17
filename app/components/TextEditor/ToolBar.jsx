@@ -17,7 +17,6 @@ const INLINE_STYLES = [
 
 
 const StyleButton = (props) => {
-
     const tipId = "StyleButton-tip-" + props.style
     const [hovered, setHovered] = useState(false)
     const className = `toolbar-button${props.active && "-selected"}` +
@@ -66,7 +65,8 @@ const Toolbar = (props) => {
     }
 
     return (
-        <div id="editor-toolbar" className="flex mx-auto gap-2 bg-white">
+        <div id="editor-toolbar" className="flex gap-2 bg-white"
+             style={{position: "absolute", bottom: "10px", right: "10px"}}>
             <div className="flex gap-0">
                 {INLINE_STYLES.map(({label, style, icon, shortcut}) => (
                     <StyleButton

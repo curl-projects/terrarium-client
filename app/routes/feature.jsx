@@ -77,10 +77,7 @@ export default function Feature(){
             <div className="featureScaffold">
                 <div className="featureTitleWrapper">
                     <div className='featureTitleInnerWrapper'>
-                        <h1 className='featureTitleText'>Responsive Whiteboards </h1>
-                    </div>
-                    <div className='featurePositionWrapper'> 
-                        <h1 className='featurePositionText'> / <span style={{color: "#B0BFB9"}}>Discovery</span></h1>
+                        <h1 className='featureTitleText'>Responsive Whiteboards / <span style={{color: "#B0BFB9"}}>Discovery</span></h1>
                     </div>
                     <div style={{flex: 1}}/>
                     <div className='searchIconWrapper'>

@@ -575,8 +575,6 @@ body {
 .messageStreamColumn {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
-  overflow-x: hidden;
-  overflow-y: hidden;
   width: 100%;
 }
 
@@ -1009,6 +1007,7 @@ div.DraftEditor-root {
   background-color: rgb(243 244 246);
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .workspaceOutletInnerScaffold{
@@ -1017,13 +1016,14 @@ div.DraftEditor-root {
   box-sizing: border-box;
   background-color: white;
   box-shadow: 4px 4px 11px -1px rgba(0, 0, 0, 0.1);
+  min-height: 0;
 }
 .messageStreamScaffold{
   flex: 1;
   border: 2px solid green;
   height: 100%;
   max-height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .workspaceOutletControls{
@@ -1061,6 +1061,8 @@ div.DraftEditor-root {
 }
 
 .textEditorScaffold{
+  height: 100%;
+  width: 100%;
 
 }
 
