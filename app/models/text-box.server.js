@@ -1,7 +1,7 @@
 import { redis } from "~/models/redis.server";
 
 export async function createTextBox(featureId){
-  let initialData = '{"blocks":[{"key":"9lhsg","text":"Hello world!","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'
+  let initialData = '{"blocks":[{"key":"9lhsg","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'
   const created = await redis.set(featureId, initialData)
 }
 

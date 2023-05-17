@@ -1,8 +1,9 @@
 // REACT-REMIX IMPORTS
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { redirect } from "@remix-run/node"
 import { useLoaderData, useActionData, Form, useFetcher, useTransition } from "@remix-run/react";
 import { ClientOnly } from "remix-utils";
+import ContentEditable from 'react-contenteditable';
 
 // MODULE IMPORTS
 import { authenticator } from "~/models/auth.server.js";
@@ -61,8 +62,33 @@ export async function loader({ request, params}){
     return { feature: feature, featureRequests: [] }
   }
   
+  export async function action({ request }){
+    const formData = await request.formData()
+    const featureId = formData.get("featureId")
+    const searchTerm = formData.get('searchTerm')
+    const filterType = formData.get('filterType')
+
+    console.log("FEATURE ID:", featureId)
+    console.log("SEARCH TERM:", searchTerm)
+  
+    if(searchTerm && featureId){
+      return redirect(`/feature/notepad/${featureId}?searchTerm=${searchTerm}`)
+    }
+    else if(filterType && filterType === 'search'){
+      const searchString = formData.get('searchString');
+      const knnIDs = await embeddingSearch(searchString)
+      const data = {
+        knnIDs: knnIDs,
+        filterType: filterType
+      }
+      return json(data)
+    }
+  }
 
 export default function Feature(){
+    const titleRef = useRef();
+    const [titleFocused, setTitleFocused] = useState(false)
+    const [title, setTitle] = useState("")
     const params = useParams();
     const matches = useMatches();
 
@@ -71,19 +97,53 @@ export default function Feature(){
     const fetcher = useFetcher();
     const transition = useTransition();
 
+    useEffect(()=>{
+        setTitle(loaderData.feature.title)
+    }, [loaderData])
+
+    useEffect(()=>{
+        console.log("TITLEREF:", titleRef)
+    }, [titleRef])
+
     return(
         <>
         <FeatureHeader />
             <div className="featureScaffold">
-                <div className="featureTitleWrapper">
-                    <div className='featureTitleInnerWrapper'>
-                        <h1 className='featureTitleText'>Responsive Whiteboards / <span style={{color: "#B0BFB9"}}>Discovery</span></h1>
-                    </div>
+                <fetcher.Form className="featureTitleWrapper" method='post'>
+                    {titleFocused
+                     ? (
+                        <>
+                            <input type='hidden' name='featureId' value={loaderData.feature.id}/>
+                            <input className='featureTitleInnerInput' 
+                            onBlur={()=>setTitleFocused(false)}
+                            placeholder={"Enter a Feature Description"}
+                            defaultValue={loaderData.feature.title == "Untitled" ? null : loaderData.feature.title}
+                            data-gramm="false"
+                            onChange={(e)=>setTitle(e.target.value)}
+                            data-gramm_editor="false"
+                            data-enable-grammarly="false"
+                            autofocus />
+                            
+                        </>
+                     )
+                     : (
+                        <div 
+                            className='featureTitleInnerWrapper' 
+                            onClick={()=>setTitleFocused(true)} 
+                            > 
+                            <h1 className='featureTitleText'>{title} / <span style={{color: "#B0BFB9"}}>Discovery</span></h1>
+                        </div>
+                     )
+                    }
+                    
                     <div style={{flex: 1}}/>
-                    <div className='searchIconWrapper'>
+                    <input type='hidden' name='searchTerm' value={title} />
+                    <input type='hidden' name='featureId' value={loaderData.feature.id}/>
+                    <button className='searchIconWrapper'>
                         <ImSearch className='searchIconText'/>
-                    </div>
-                </div>
+                    </button>
+                </fetcher.Form>
+    
                 <div className="pinnedMessagesWrapper">
                     <p className='pinnedMessagesText'><em>5 pinned messages</em></p>
                 </div>

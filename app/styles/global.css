@@ -709,6 +709,8 @@ div.DraftEditor-root {
   align-items: center;
   justify-content: flex-start;
   padding-left: 5px;
+  padding-bottom: 10px;
+  padding-left: 10px;
 }
 
 @keyframes spin {
@@ -944,6 +946,14 @@ div.DraftEditor-root {
 
 }
 
+.featureTitleInnerInput{
+  font-weight: 700;
+  font-size: 50px;
+  color: #4b5563;
+  width: 100%;
+  outline: none;
+}
+
 .featureTitleText{
   font-weight: 700;
   font-size: 50px;
@@ -992,17 +1002,16 @@ div.DraftEditor-root {
 }
 
 .workspaceScaffold{
-  border: 2px solid pink;
   width: 100%;
   margin-top: 45px;
   display: flex;
   flex-direction: row;
   overflow: hidden;
+  flex: 1;
 }
 
 .workspaceOutletScaffold{
   flex: 1;
-  border: 2px solid grey;
   padding: 26px;
   background-color: rgb(243 244 246);
   display: flex;
@@ -1020,10 +1029,10 @@ div.DraftEditor-root {
 }
 .messageStreamScaffold{
   flex: 1;
-  border: 2px solid green;
   height: 100%;
   max-height: 100%;
   overflow-y: scroll;
+  display: flex;
 }
 
 .workspaceOutletControls{
@@ -1035,7 +1044,8 @@ div.DraftEditor-root {
 
 .notepadTab {
   height: 100%;
-  width: 166px;
+  width: 10vw;
+  min-width: 60px;
   border-radius: 10px 10px 0px 0px;
   background-color: rgba(119, 153, 141, 0.2);
   text-align: center;
@@ -1056,7 +1066,7 @@ div.DraftEditor-root {
 }
 
 .notepadTabLabel {
-  font-size: 20px;
+  font-size: 16px;
   color: rgba(75, 85, 99, 0.6)
 }
 
