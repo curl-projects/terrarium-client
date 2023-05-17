@@ -152,7 +152,7 @@ export default function Feature(){
                             onClick={()=>setTitleFocused(true)} 
                             > 
                             <h1 className='featureTitleText' 
-                                style={{fontSize: headerCollapsed ? "24px" : "40px"}}>{title} / <span style={{color: "#B0BFB9", textTransform: "capitalize"}}>{matches[2].pathname.split("/")[2]}</span></h1>
+                                style={{fontSize: headerCollapsed ? "24px" : "40px"}}>{title} {title && <span>/</span>} <span style={{color: "#B0BFB9", textTransform: "capitalize"}}>{title && matches[2].pathname.split("/")[2]}</span></h1>
                         </div>
                      )
                     }
