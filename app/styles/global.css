@@ -941,7 +941,25 @@ div.DraftEditor-root {
   width: 100%;
   border-bottom: 1px solid #bbbbbb;
   line-height: 1.1;
+  position: relative;
+}
 
+.featureDropDownArrow{
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  left: -36px;
+  top: 7.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+
+.featureDropDownArrow:hover{
+  filter: contrast(1.5);
 }
 
 .featureTitleInnerInput{
@@ -956,6 +974,7 @@ div.DraftEditor-root {
   font-weight: 700;
   font-size: 40px;
   color: #4b5563;
+  transition: all 0.5s ease-in-out;
 }
 
 .featurePositionWrapper{
@@ -974,6 +993,7 @@ div.DraftEditor-root {
   width: 100%;
   height: 50px;
   padding-top: 10px;
+  transition: all 0.5s ease-in-out;
 }
 
 .featureDescriptionSave{
@@ -985,22 +1005,22 @@ div.DraftEditor-root {
 
 .searchIconWrapper{
   padding-right: 2px;
+  transition: all 0.5s ease-in-out;
 }
 
 .searchIconText{
   color: #77998D;
   height: 40px;
   width: 40px;
-
+  transition: all 0.5s ease-in-out;
 }
 
 .pinnedMessagesWrapper{
-
+  transition: all 0.5s ease-in-out;
 }
 
 .pinnedMessagesText{
   color: #B9C7C0;
-  font-size: 18px;
   font-weight: 500;
   position: relative;
   bottom: 2px;

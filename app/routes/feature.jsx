@@ -17,6 +17,7 @@ import { ImSearch } from "react-icons/im"
 import { Outlet, Link, useParams, useMatches } from "@remix-run/react";
 import cn from 'classnames'
 import MessageStream from "~/components/MessageStream/MessageStream.js"
+import {IoIosArrowDropdown} from "react-icons/io"
 
 export async function loader({ request, params }){
     const user = await authenticator.isAuthenticated(request, {
@@ -24,7 +25,6 @@ export async function loader({ request, params }){
     })
     const url = new URL(request.url)
     const searchTerm = url.searchParams.get("searchTerm")
-  
   
     const featureId = params["*"]
     const feature = await readFeature(featureId)
@@ -49,7 +49,7 @@ export async function loader({ request, params }){
   
       // // works because of the update above
       // const featureRequests = await findFeatureRequests(featureId)
-      return redirect(`/feature/notepad/${featureId}`)
+      return redirect(`/feature/discovery/${featureId}`)
     }
   
     if(feature.isSearched){
@@ -67,7 +67,7 @@ export async function loader({ request, params }){
     if(actionType === 'featureSearch'){
         const featureId = formData.get("featureId")
         const searchTerm = formData.get('searchTerm')
-      return redirect(`/feature/notepad/${featureId}?searchTerm=${searchTerm}`)
+      return redirect(`/feature/discovery/${featureId}?searchTerm=${searchTerm}`)
     }
     else if(actionType === "saveDescription"){
         const featureId = formData.get("featureId")
@@ -84,6 +84,7 @@ export default function Feature(){
     const titleRef = useRef();
     const [titleFocused, setTitleFocused] = useState(false);
     const [descriptionFocused, setDescriptionFocused] = useState(false);
+    const [headerCollapsed, setHeaderCollapsed] = useState(false);
 
     const [description, setDescription] = useState("No description")
     const [title, setTitle] = useState("")
@@ -136,6 +137,7 @@ export default function Feature(){
                             placeholder={"Enter a Feature Description"}
                             defaultValue={title == "Untitled" ? null : title}
                             data-gramm="false"
+                            style={{fontSize: headerCollapsed ? "24px" : "40px"}}
                             ref={titleRef}
                             onChange={(e)=>setTitle(e.target.value)}
                             data-gramm_editor="false"
@@ -149,17 +151,34 @@ export default function Feature(){
                             className='featureTitleInnerWrapper' 
                             onClick={()=>setTitleFocused(true)} 
                             > 
-                            <h1 className='featureTitleText'>{title} / <span style={{color: "#B0BFB9", textTransform: "capitalize"}}>{matches[2].pathname.split("/")[2]}</span></h1>
+                            <h1 className='featureTitleText' 
+                                style={{fontSize: headerCollapsed ? "24px" : "40px"}}>{title} / <span style={{color: "#B0BFB9", textTransform: "capitalize"}}>{matches[2].pathname.split("/")[2]}</span></h1>
                         </div>
                      )
                     }
-                    
+                    <div 
+                        className='featureDropDownArrow' 
+                        onClick={()=>setHeaderCollapsed(prevState => !prevState)}
+                        style={{
+                            transform: headerCollapsed ? "rotate(0deg)" : "rotate(180deg)",
+                            height: headerCollapsed ? "22px" : "30px",
+                            width: headerCollapsed ? "22px" : "30px",
+                            top: headerCollapsed ? "2px" : "7.5px",
+                            left: headerCollapsed ? "-24px" : "-36px",
+                               }}>
+                            <IoIosArrowDropdown color="#B0BFB9"/>
+                    </div>
                     <div style={{flex: 1}}/>
                     <input type='hidden' name='searchTerm' value={title} />
                     <input type='hidden' name='featureId' value={params["*"]}/>
                     <input type='hidden' name='actionType' value='featureSearch' />
                     <button className='searchIconWrapper'>
-                        <ImSearch className='searchIconText'/>
+                        <ImSearch 
+                            className='searchIconText'
+                            style={{
+                                width: headerCollapsed ? "20px" : "40px",
+                                height: headerCollapsed ? "20px" : "40px",
+                            }}/>
                     </button>
                 </fetcher.Form>
                 {transition.type === "fetchActionRedirect" &&
@@ -171,10 +190,14 @@ export default function Feature(){
                     />
                 }
     
-                <div className="pinnedMessagesWrapper">
+                <div className="pinnedMessagesWrapper" style={{fontSize: headerCollapsed ? "0px" : "18px"}}>
                     <p className='pinnedMessagesText'><em>{loaderData.feature._count.featureRequests} pinned {(loaderData.feature._count.featureRequests == 1) ? <span>message</span> : <span>messages</span>}</em></p>
                 </div>
                 <textarea 
+                    style={{
+                        fontSize: headerCollapsed ? "0px" : "16px",
+                        height: headerCollapsed ? "0px" : "50px",
+                    }}
                     className='featureDescriptionWrapper' 
                     defaultValue={"No Description"}
                     value={description == "" ? null : description}
