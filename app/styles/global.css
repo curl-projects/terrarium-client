@@ -942,13 +942,12 @@ div.DraftEditor-root {
   width: 100%;
   border-bottom: 1px solid #bbbbbb;
   line-height: 1.1;
-  margin-top: 20px;
 
 }
 
 .featureTitleInnerInput{
   font-weight: 700;
-  font-size: 50px;
+  font-size: 40px;
   color: #4b5563;
   width: 100%;
   outline: none;
@@ -956,7 +955,7 @@ div.DraftEditor-root {
 
 .featureTitleText{
   font-weight: 700;
-  font-size: 50px;
+  font-size: 40px;
   color: #4b5563;
 }
 
@@ -1044,7 +1043,7 @@ div.DraftEditor-root {
 
 .workspaceOutletControls{
   width: 100%;
-  height: 40px;
+  height: 30px;
   display: flex;
 }
 
@@ -1056,7 +1055,7 @@ div.DraftEditor-root {
   border-radius: 10px 10px 0px 0px;
   background-color: rgba(119, 153, 141, 0.2);
   text-align: center;
-  margin-right: 30px;
+  margin-right: 8px;
   display: flex;
   align-items: center;
   justify-content: center;

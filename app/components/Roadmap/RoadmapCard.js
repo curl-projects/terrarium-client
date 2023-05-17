@@ -32,7 +32,7 @@ export default function KanbanCard(props){
                     <div className='kanbanCardBookmark' style={{"backgroundColor": props.color}}></div>
                     <div className='kanbanCardContent'>
                         <div className='kanbanCardTitle'>
-                            <Link to={`/feature/${props.item.id}`} >
+                            <Link to={`/feature/notepad/${props.item.id}`} >
                             <h1 className='kanbanCardTitleText'> {props.item ? props.item.title : "Untitled"}</h1>
                             </Link>
                             <div style={{flex: 1}}/>
@@ -50,7 +50,7 @@ export default function KanbanCard(props){
                             </div>
                         </div>
                         <div className='kanbanCardPinned'>
-                            <p className='kanbanCardPinnedText' style={{"color": props.color}}><em>{props.item ? props.item._count.featureRequests : 0} pinned messages</em></p>
+                            <p className='kanbanCardPinnedText' style={{"color": props.color}}><em>{props.item ? props.item._count.featureRequests : 0} pinned {(props.item._count.featureRequests == 1) ? <span>message</span> : <span>messages</span>}</em></p>
                         </div>
                         <div className='kanbanCardDescription'>
                             <p className='kanbanCardDescriptionText'>{props.item ? props.item.description : ""}</p>

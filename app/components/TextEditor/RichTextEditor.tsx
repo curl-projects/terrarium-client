@@ -42,7 +42,7 @@ const RichTextEditor: React.FC<RichTextEditorType> = (props) => {
     return (
         <div
             onClick={focus}
-            style={{height: "100%"}}
+            style={{height: "100%", color: "#4b5563"}}
             className={'relative max-h-full flex flex-col gap-0' + props.className}>
             {editorState
                 ? (

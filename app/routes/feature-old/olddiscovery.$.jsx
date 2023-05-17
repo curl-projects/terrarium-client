@@ -113,7 +113,6 @@ export default function Discovery() {
     const dateFilteredArray = []
     if(topLevelStreamDataObj[0]){
       for(let fr of loaderData.featureRequests){
-        // console.log(fr.featureRequest.created_at, dayjs.utc(fr.featureRequest.created_at).isAfter(dayjs.utc(dateValue)))
         if(dayjs.utc(fr.featureRequest.created_at).isAfter(dayjs.utc(dateValue))){
           dateFilteredArray.push(fr)
         }
@@ -144,7 +143,6 @@ export default function Discovery() {
 
       }, [loaderData])
 
-
   useEffect(()=>{
     if(zoomObject){
       filterZoomedData(zoomObject)
@@ -161,6 +159,7 @@ export default function Discovery() {
 
     const filteredData = loaderData.data.filter(obj => obj[clusterIdName] === zoomObject.id)
   }
+  
   function resetZoomedData(e, changeParam){
     setZoomObject(null)
   }

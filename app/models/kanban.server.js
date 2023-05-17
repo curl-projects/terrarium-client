@@ -165,6 +165,17 @@ export async function readFeature(featureId){
   const feature = await db.feature.findUnique({
     where: {
       id: parseInt(featureId)
+    },
+    include: {
+      _count: {
+        select: {
+          featureRequests: {
+            where: {
+              pinned: true
+              }
+            }
+          }
+        }
     }
   })
   return feature

@@ -12,7 +12,6 @@ import { readFeature, updateFeatureTitle, updateFeatureIsSearched, updateFeature
 import { findFeatureRequests, associateFeatureRequestsWithFeature } from "~/models/feature-requests.server"
 import { embeddingSearch } from "~/models/embedding-search.server"
 
-
 import FeatureHeader from "~/components/Header/FeatureHeader";
 import { ImSearch } from "react-icons/im"
 import { Outlet, Link, useParams, useMatches } from "@remix-run/react";
@@ -50,8 +49,6 @@ export async function loader({ request, params }){
   
       // // works because of the update above
       // const featureRequests = await findFeatureRequests(featureId)
-      console.log("REDIRECT", featureId)
-      console.log("REDIRECT URL", `/feature/nodepad/${featureId}`)
       return redirect(`/feature/notepad/${featureId}`)
     }
   
@@ -101,13 +98,16 @@ export default function Feature(){
     const descriptionFetcher = useFetcher();
     const transition = useTransition();
 
+    const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
+    const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])
+
+
+    // TITLE EFFECTS
     useEffect(()=>{
         setTitle(loaderData.feature.title)
         setDescription(loaderData.feature.description)
-    }, [loaderData])
-
-    useEffect(()=>{
-        console.log("LOADER DATA", loaderData)
+        setTopLevelStreamDataObj(loaderData.featureRequests)
+        setTopLevelCanvasDataObj(loaderData.featureRequests.map(a => a.featureRequest))
     }, [loaderData])
 
     useEffect(()=>{
@@ -115,6 +115,8 @@ export default function Feature(){
             titleRef.current.focus();
         }
     }, [titleFocused])
+
+
 
     return(
         <>
@@ -165,7 +167,7 @@ export default function Feature(){
                 }
     
                 <div className="pinnedMessagesWrapper">
-                    <p className='pinnedMessagesText'><em>5 pinned messages</em></p>
+                    <p className='pinnedMessagesText'><em>{loaderData.feature._count.featureRequests} pinned {(loaderData.feature._count.featureRequests == 1) ? <span>message</span> : <span>messages</span>}</em></p>
                 </div>
                 <textarea 
                     className='featureDescriptionWrapper' 
@@ -186,7 +188,6 @@ export default function Feature(){
                         </button>
                     }
                 </descriptionFetcher.Form>
-                
     
             <div className='workspaceScaffold'>
                 <div className='workspaceOutletScaffold'>
@@ -207,13 +208,13 @@ export default function Feature(){
                         </Link>
                     </div>
                     <div className='workspaceOutletInnerScaffold'>
-                        <Outlet />
+                        <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData]}/>
                     </div>
                 </div>
                 <div className='messageStreamScaffold'>
                     <div className="messageStreamColumn">
                         <MessageStream
-                            data={loaderData.featureRequests}
+                            data={topLevelStreamDataObj}
                             featureId={loaderData.feature.id} />
                     </div>
                 </div>
