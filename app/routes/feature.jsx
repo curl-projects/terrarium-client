@@ -236,7 +236,7 @@ export default function Feature(){
                         </Link>
                     </div>
                     <div className='workspaceOutletInnerScaffold'>
-                        <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData]}/>
+                        <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed]}/>
                     </div>
                 </div>
                 <div className='messageStreamScaffold'>

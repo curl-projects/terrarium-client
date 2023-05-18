@@ -52,7 +52,11 @@ export default function Discovery(){
     const transition = useTransition();
     const params = useParams();
    
-    const [topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData] = useOutletContext();
+    const [topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed] = useOutletContext();
+    
+    useEffect(()=>{
+      console.log("HEADER COLLAPSED DISCOVERY", headerCollapsed)
+    }, [headerCollapsed])
     
     useEffect(()=>{
         setInnerCanvasData(topLevelCanvasDataObj)
@@ -139,6 +143,7 @@ export default function Discovery(){
                 resetZoomedData={resetZoomedData}
                 dateValue={dateValue}
                 setDateValue={setDateValue}
+                headerCollapsed={headerCollapsed}
                 />
             </div>
       </div>

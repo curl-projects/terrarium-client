@@ -1,6 +1,6 @@
 import { useD3 } from '~/utils/useD3';
 import { useWindowSize } from "~/utils/useWindowSize";
-import React, {useEffect, useRef, useState, useCallback } from 'react';
+import React, {useEffect, useRef, useState, useCallback, useLayoutEffect } from 'react';
 import * as d3 from 'd3';
 
 function usePrevious(value) {
@@ -13,7 +13,7 @@ function usePrevious(value) {
 
 export default function PointField({ data, clusters, searchResults, filterBrushedData,
                                    resetBrushFilter, zoomObject, setZoomObject,
-                                   displayControl, resetZoomedData}) {
+                                   displayControl, resetZoomedData, headerCollapsed}) {
 
   // the weird domains create padding around the svg
   const xDomain = [-0.05, 1.05]
@@ -54,20 +54,20 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
 
   const ref = useD3(
     (svg) => {
+        // rerender the canvas on data, hieght, or width change
     d3.select("#canvas-svg").selectAll("*").remove();
+
       const margin = {top: 0, right: 0, bottom: 0, left: 0};
-      const width = ref.current.clientWidth;
-      const height = ref.current.clientHeight;
 
       // X-AXIS
       var x = d3.scaleLinear()
         .domain(xDomain)
-        .range([0, ref.current.clientWidth]);
+        .range([0, containerWidth]);
 
       // Y-AXIS
       var y = d3.scaleLinear()
         .domain(yDomain)
-        .range([ref.current.clientHeight, 0]);
+        .range([containerHeight, 0]);
 
       const dots = svg.insert("g").attr('id', 'dotlayer')
         .selectAll("dot")
@@ -84,21 +84,21 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
     },
     [data.length, containerHeight, containerWidth]
   );
-  
+
   const measuredRef = useCallback(node => {
     if (node !== null) {
-      setContainerHeight(node.getBoundingClientRect().height);
+      setContainerHeight(node.getBoundingClientRect().height); 
       setContainerWidth(node.getBoundingClientRect().width);
     }
   }, []);
 
   useEffect(()=>{
+    console.log("CONTAINER HEIGHT, CONTAINER WIDTH", containerHeight, containerWidth)
   }, [containerHeight, containerWidth])
 
   return (
     <div className='svgContainer'>
         <svg
-
         viewBox={`0 0 ${containerWidth} ${containerHeight}`}
         preserveAspectRatio="none"
         id="canvas-svg"

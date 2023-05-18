@@ -955,7 +955,7 @@ div.DraftEditor-root {
   justify-content: center;
   font-size: 30px;
   cursor: pointer;
-  transition: all 0.5s ease-in-out;
+  /* transition: all 0.5s ease-in-out; */
 }
 
 .featureDropDownArrow:hover{
@@ -974,7 +974,7 @@ div.DraftEditor-root {
   font-weight: 700;
   font-size: 40px;
   color: #4b5563;
-  transition: all 0.5s ease-in-out;
+  /* transition: all 0.5s ease-in-out; */
 }
 
 .featurePositionWrapper{
@@ -993,7 +993,7 @@ div.DraftEditor-root {
   width: 100%;
   height: 50px;
   padding-top: 10px;
-  transition: all 0.5s ease-in-out;
+  /* transition: all 0.5s ease-in-out; */
 }
 
 .featureDescriptionSave{
@@ -1005,18 +1005,18 @@ div.DraftEditor-root {
 
 .searchIconWrapper{
   padding-right: 2px;
-  transition: all 0.5s ease-in-out;
+  /* transition: all 0.5s ease-in-out; */
 }
 
 .searchIconText{
   color: #77998D;
   height: 40px;
   width: 40px;
-  transition: all 0.5s ease-in-out;
+  /* transition: all 0.5s ease-in-out; */
 }
 
 .pinnedMessagesWrapper{
-  transition: all 0.5s ease-in-out;
+  /* transition: all 0.5s ease-in-out; */
 }
 
 .pinnedMessagesText{
@@ -1148,15 +1148,13 @@ div.DraftEditor-root {
   position: relative;
   width: 100%;
   height: 100%;
-  border: 2px solid black;
   vertical-align: top;
   overflow: hidden;
 }
 
 .svgContentResponsive{
   display: inline-block;
-  /* position: absolute; */
+  position: absolute;
   width: 100%;
   height: 100%;
-  border: 2px solid red;
 }

@@ -106,6 +106,7 @@ export default function PointFieldScaffold(props){
         style={{height: "100%"}}
         filterBrushedData={props.filterBrushedData}
         resetBrushFilter={props.resetBrushFilter}
+        headerCollapsed={props.headerCollapsed}
         />
       <button style={{
         position: 'absolute',
