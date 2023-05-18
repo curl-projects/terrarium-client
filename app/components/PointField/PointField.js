@@ -102,6 +102,7 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
 
   }, [data, displayControl])
 
+
 // DATA INSTANTIATION
   const ref = useD3(
     (svg) => {
@@ -130,6 +131,35 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
         .attr('fill', "rgba(119, 153, 141, 0.5)")
         .attr("stroke", 'rgba(119, 153, 141, 1)')
         .attr("stroke-width", 2)
+    
+    // repaint brush whenever canvas changes
+    function brushed({selection}){
+        let value = [];
+        if (selection){
+          const [[x0, y0], [x1, y1]] = selection;
+          dots.style("fill", "rgba(119, 153, 141, 0.5)")
+              .filter(d => x0 <= x(d.xDim) && x(d.xDim) < x1 && y0 <= y(d.yDim) && y(d.yDim) < y1)
+              .style("fill", "rgba(119, 153, 141, 1)")
+              .data();
+
+        } else {
+          dots.style("#69b3a2")
+        }
+      }
+      
+    const brushLayer = svg.append("g")
+                             .attr("id", "brushlayer")
+
+    const brush = d3.brush()
+                    .on("start brush end", brushed)
+                    .on("end", function({selection}){
+                        filterBrushedStreamData({selection})
+                        if(!selection){
+                        resetBrushFilter()
+                        }
+                    })
+
+    brushLayer.call(brush);
     
     },
     [data.length, containerHeight, containerWidth]
