@@ -2,6 +2,7 @@ import { useD3 } from '~/utils/useD3';
 import { useWindowSize } from "~/utils/useWindowSize";
 import React, {useEffect, useRef, useState, useCallback, useLayoutEffect } from 'react';
 import * as d3 from 'd3';
+import { display } from '@mui/system';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -26,6 +27,34 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
 
   const prevDisplayControl = usePrevious(displayControl)
 
+  // GENERAL FUNCTIONS
+  function renderClusters(x, y){
+
+    const clusterLayer = d3.select("#canvas-svg").insert("g").attr("id", "clusterlayer")
+
+    const clusterNodes = clusterLayer.selectAll('dot')
+        .data(clusters)
+        .join('circle')
+          .attr('class', "clusterNode")
+          .attr("r", 0)
+          .style('opacity', 0)
+          .attr('cx', d => x(d.xDim))
+          .attr('cy', d => y(d.yDim))
+          .attr('fill', "rgba(119, 153, 141, 0.7)")
+          .on("click", function(e){
+            console.log("CLUSTER INFORMATION", e.target.__data__)
+            setZoomObject({"id": e.target.__data__.id, "type": e.target.__data__.type})
+          })
+          .transition(500)
+            .delay(200)
+            .attr("r", 35)
+            .style('opacity', 0.2)
+  }
+
+  useEffect(()=>{
+    console.log("DISPLAY CONTROL", displayControl)
+  , [displayControl]})
+
   useEffect(()=>{
     var x = d3.scaleLinear()
     .domain(xDomain)
@@ -46,30 +75,6 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
              .attr('cy', d => y(d.yDim))
     }
 
-    function renderClusters(){
-
-      const clusterLayer = d3.select("#canvas-svg").insert("g").attr("id", "clusterlayer")
-
-      const clusterNodes = clusterLayer.selectAll('dot')
-          .data(clusters)
-          .join('circle')
-            .attr('class', "clusterNode")
-            .attr("r", 0)
-            .style('opacity', 0)
-            .attr('cx', d => x(d.xDim))
-            .attr('cy', d => y(d.yDim))
-            .attr('fill', "rgba(119, 153, 141, 0.7)")
-            .on("click", function(e){
-              console.log("CLUSTER INFORMATION", e.target.__data__)
-              setZoomObject({"id": e.target.__data__.id, "type": e.target.__data__.type})
-            })
-            .transition(500)
-              .delay(200)
-              .attr("r", 35)
-              .style('opacity', 0.2)
-    }
-
-
     function tearDownClusters(){
       // TEAR DOWN CLUSTER BLOBS
       d3.select(ref.current)
@@ -85,7 +90,7 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
     tearDownClusters()
 
     renderData()
-    displayControl.clusters && renderClusters()
+    displayControl.clusters && renderClusters(x, y)
 
   }, [data, displayControl])
 
@@ -164,30 +169,30 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
         // rerender the canvas on data, hieght, or width change
     d3.select("#canvas-svg").selectAll("*").remove();
 
-      const margin = {top: 0, right: 0, bottom: 0, left: 0};
+    const margin = {top: 0, right: 0, bottom: 0, left: 0};
 
-      // X-AXIS
-      var x = d3.scaleLinear()
-        .domain(xDomain)
-        .range([0, containerWidth]);
+    // X-AXIS
+    var x = d3.scaleLinear()
+      .domain(xDomain)
+      .range([0, containerWidth]);
 
-      // Y-AXIS
-      var y = d3.scaleLinear()
-        .domain(yDomain)
-        .range([containerHeight, 0]);
+    // Y-AXIS
+    var y = d3.scaleLinear()
+      .domain(yDomain)
+      .range([containerHeight, 0]);
 
-      const dots = svg.insert("g").attr('id', 'dotlayer')
-        .selectAll("dot")
-        .data(data)
-        .join('circle')
-          .attr('id', d => `fr-${d.fr_id}`)
-          .attr('class', 'frNode')
-          .attr('cx', d => x(d.xDim))
-          .attr('cy', d => y(d.yDim))
-          .attr('r', 5)
-          .attr('fill', "rgba(119, 153, 141, 0.5)")
-          .attr("stroke", 'rgba(119, 153, 141, 1)')
-          .attr("stroke-width", 2)
+    const dots = svg.insert("g").attr('id', 'dotlayer')
+      .selectAll("dot")
+      .data(data)
+      .join('circle')
+        .attr('id', d => `fr-${d.fr_id}`)
+        .attr('class', 'frNode')
+        .attr('cx', d => x(d.xDim))
+        .attr('cy', d => y(d.yDim))
+        .attr('r', 5)
+        .attr('fill', "rgba(119, 153, 141, 0.5)")
+        .attr("stroke", 'rgba(119, 153, 141, 1)')
+        .attr("stroke-width", 2)
       
       // repaint brush whenever canvas changes
     function brushed({selection}){
@@ -225,6 +230,12 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
                     })
 
     brushLayer.call(brush)
+
+    // re-establish clusters if they exist
+    if(displayControl.clusters){
+      renderClusters(x, y)
+    }
+
     },
     [data.length, containerHeight, containerWidth]
   );
