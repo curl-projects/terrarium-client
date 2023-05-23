@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import PointField from "~/components/PointField/PointField.js"
 import { useEffect, useState } from 'react';
-import _ from "underscore";
+import _, { rest } from "underscore";
 import network from '../../../public/assets/network.svg';
 import refresh from '../../../public/assets/refresh.svg';
 var gaussian = require('gaussian');
@@ -10,6 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+import { CgZoomOut } from "react-icons/cg";
 
 
 export default function PointFieldScaffold(props){
@@ -58,6 +59,7 @@ export default function PointFieldScaffold(props){
   // FULL GENERATORS
   function generateUniform(e){
     // GENERATOR FUNCTIONS
+    props.setZoomObject(null)
 
     const coordsArray = generateUniformCoords(props.data)
     setDataObj(coordsArray)
@@ -92,6 +94,10 @@ export default function PointFieldScaffold(props){
     setClusters(clusterCoordsArray)
     setDisplayControl({data: true, clusters: true})
     }
+  
+  function resetZoom(){
+    props.setZoomObject(null)
+  }
 
   return(
     <>
@@ -118,6 +124,8 @@ export default function PointFieldScaffold(props){
         cursor: 'pointer'
       }}>
     </button>
+      {!props.zoomObject &&
+      <>
       <img
         onClick={generateClusters}
         src={network}
@@ -144,13 +152,31 @@ export default function PointFieldScaffold(props){
             width: '40px',
             cursor: 'pointer'
           }} />
+        </>
+        }
+        {props.zoomObject &&
+          <div 
+          onClick={resetZoom}
+          src={refresh}
+          alt="Reset Zoom"
+          style={{
+            position: 'absolute',
+            bottom: 30,
+            right: 30,
+            zIndex: 100,
+            height: '40px',
+            width: '40px',
+            cursor: 'pointer'}}>
+              <CgZoomOut style={{height: "40px", width: "40px", color: "#CCCCCC"}}/>
+          </div>
+          }
 
         <div style={{
             position: 'absolute',
             left: 10,
             bottom: 10,
           }}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
                 views={['year', 'month']}
                 label="After"
@@ -162,7 +188,7 @@ export default function PointFieldScaffold(props){
                 }}
                 renderInput={(params) => <TextField {...params} helperText={null} />}
               />
-          </LocalizationProvider>
+          </LocalizationProvider> */}
         </div>
     </>
 

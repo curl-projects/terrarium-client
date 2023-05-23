@@ -22,8 +22,6 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
   const [containerHeight, setContainerHeight] = useState(0)  
   const [containerWidth, setContainerWidth] = useState(0)  
 
-  // const xDomain = [0, 1]
-  // const yDomain = [0, 1]
   const [windowWidth, windowHeight] = useWindowSize();
 
   const prevDisplayControl = usePrevious(displayControl)
@@ -61,10 +59,10 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
             .attr('cx', d => x(d.xDim))
             .attr('cy', d => y(d.yDim))
             .attr('fill', "rgba(119, 153, 141, 0.7)")
-            // .on("click", function(e){
-            //   console.log("DATA", e.target.__data__)
-            //   setZoomObject({"id": e.target.__data__.id, "type": e.target.__data__.type})
-            // })
+            .on("click", function(e){
+              console.log("CLUSTER INFORMATION", e.target.__data__)
+              setZoomObject({"id": e.target.__data__.id, "type": e.target.__data__.type})
+            })
             .transition(500)
               .delay(200)
               .attr("r", 35)
@@ -90,6 +88,77 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
     displayControl.clusters && renderClusters()
 
   }, [data, displayControl])
+
+  // ZOOM EFFECTS
+  useEffect(()=>{
+    function zoomed(event){
+      const pointTransform = event.transform;
+
+      d3.select("#dotlayer").attr("transform", pointTransform)
+      d3.select("#regionlayer").attr("transform", pointTransform)
+      d3.select("#clusterlayer").attr("transform", pointTransform)
+      d3.select("#annotationlayer").attr("transform", pointTransform)
+      d3.select("#brushlayer").attr("transform", pointTransform)
+      d3.select("#labellayer").attr("transform", pointTransform)
+    }
+
+    const zoom = d3.zoom()
+    .extent([[0, 0], [containerWidth, containerHeight]])
+    .translateExtent([[0, 0], [containerWidth, containerHeight]])
+    .on("zoom", zoomed);
+
+    if(zoomObject && clusters.length !== 0){
+      var x = d3.scaleLinear()
+      .domain(xDomain)
+      .range([0, containerWidth]);
+
+      // Y-AXIS
+      var y = d3.scaleLinear()
+        .domain(yDomain)
+        .range([containerHeight, 0]);
+
+      let zoomObjectMap = {
+        'cluster': "kmeans_labels",
+        'regionCluster': 'regionCluster'
+      }
+
+      const clusterIdName =  zoomObjectMap[zoomObject.type]
+
+      const transforms = [[]].concat(d3.groups(data, d => d[clusterIdName]).map(([key, data])=> {
+        const [x0, x1] = d3.extent(data, d => d["xDim"]).map(x);
+        const [y1, y0] = d3.extent(data, d => d['yDim']).map(y);
+        let margin = 10
+        const k = 0.1*Math.min(containerWidth / (x1+2*margin - x0), containerHeight / (y1+2*margin - y0));
+        const tx = (containerWidth - k * (x0 + x1)) / 2;
+        const ty = (containerHeight - k * (y0 + y1)) / 2;
+        return [data[0][clusterIdName], d3.zoomIdentity.translate(tx, ty).scale(k)];
+      }))
+
+      const transform = transforms.find((el) => el[0] === zoomObject.id)
+
+      d3.select('svg').transition().duration(1000).call(zoom.transform, transform[1]);
+    }
+    else{
+      d3.select('svg').transition().duration(1000).call(zoom.transform, d3.zoomIdentity.scale(1));
+    }
+  }, [zoomObject, displayControl])
+
+   // INNER SEARCH
+   useEffect(()=>{
+    console.log("SEARCH RESULTS", searchResults)
+    if(searchResults && searchResults.length !== 0){
+      const stringSearchResults = searchResults.map(a => `#fr-${a}`)
+      const activePoints = d3.select(ref.current)
+        .selectAll(stringSearchResults.join(","))
+          .classed("searchSelected", true)
+    }
+    if(searchResults && searchResults.length === 0){
+      d3.select(ref.current)
+        .selectAll('.searchSelected')
+        .classed("searchSelected", false)
+    }
+  }, [searchResults])
+
 
   const ref = useD3(
     (svg) => {
@@ -121,7 +190,7 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
           .attr("stroke", 'rgba(119, 153, 141, 1)')
           .attr("stroke-width", 2)
       
-          // repaint brush whenever canvas changes
+      // repaint brush whenever canvas changes
     function brushed({selection}){
       let value = [];
       if (selection){

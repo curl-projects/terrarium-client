@@ -54,13 +54,14 @@ export default function Discovery(){
    
     const [topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed] = useOutletContext();
     
-    useEffect(()=>{
-      console.log("HEADER COLLAPSED DISCOVERY", headerCollapsed)
-    }, [headerCollapsed])
+   useEffect(()=>{
+    console.log("LOADER DATA FEATURE REQUESTS:", loaderData.featureRequests)
+   }, [loaderData])
     
     useEffect(()=>{
         setInnerCanvasData(topLevelCanvasDataObj)
     }, [topLevelCanvasDataObj])
+
     // useEffect(()=>{
     //     const dateFilteredArray = []
     //     if(topLevelStreamDataObj[0]){
@@ -77,13 +78,13 @@ export default function Discovery(){
     // }, [dateValue])
 
 
-//   useEffect(()=>{
-//     if(searchFetcher.data && searchFetcher.data.featureRequests){
-//       const featureRequests = searchFetcher.data.featureRequests;
-//       setTopLevelStreamDataObj(featureRequests);
-//       setSearchResults(featureRequests.map(a => a.featureRequestId));
-//     }
-//   }, [searchFetcher.data])
+  useEffect(()=>{
+    if(searchFetcher.data && searchFetcher.data.featureRequests){
+      const featureRequests = searchFetcher.data.featureRequests;
+      setTopLevelStreamDataObj(featureRequests);
+      setSearchResults(featureRequests.map(a => a.featureRequestId));
+    }
+  }, [searchFetcher.data])
 
   function resetSearchData(){
     setTopLevelStreamDataObj(loaderData.featureRequests)
@@ -103,7 +104,9 @@ export default function Discovery(){
     }
 
     const clusterIdName =  zoomObjectMap[zoomObject.type]
-    const filteredData = loaderData.data.filter(obj => obj[clusterIdName] === zoomObject.id)
+    console.log("FEATURE REQUESTS:", loaderData.featureRequests)
+    const filteredData = loaderData.featureRequests.filter(obj => obj["kmeans_labels"] === zoomObject.id)
+
   }
   
   function resetZoomedData(e, changeParam){

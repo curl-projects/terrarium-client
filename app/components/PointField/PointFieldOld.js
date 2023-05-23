@@ -139,7 +139,6 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
       d3.select("#annotationlayer").attr("transform", pointTransform)
       d3.select("#brushlayer").attr("transform", pointTransform)
       d3.select("#labellayer").attr("transform", pointTransform)
-
     }
 
     const zoom = d3.zoom()
