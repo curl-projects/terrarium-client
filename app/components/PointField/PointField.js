@@ -141,11 +141,10 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
     else{
       d3.select('svg').transition().duration(1000).call(zoom.transform, d3.zoomIdentity.scale(1));
     }
-  }, [zoomObject, displayControl])
+  }, [zoomObject, displayControl, containerHeight, containerWidth])
 
    // INNER SEARCH
    useEffect(()=>{
-    console.log("SEARCH RESULTS", searchResults)
     if(searchResults && searchResults.length !== 0){
       const stringSearchResults = searchResults.map(a => `#fr-${a}`)
       const activePoints = d3.select(ref.current)
