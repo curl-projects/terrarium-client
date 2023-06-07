@@ -97,6 +97,8 @@ export default function Feature(){
     const descriptionFetcher = useFetcher();
     const transition = useTransition();
 
+    const [zoomObject, setZoomObject] = useState(null)
+
     const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
     const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])
 
@@ -236,7 +238,7 @@ export default function Feature(){
                         </Link>
                     </div>
                     <div className='workspaceOutletInnerScaffold'>
-                        <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed]}/>
+                        <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed, zoomObject, setZoomObject]}/>
                     </div>
                 </div>
                 <div className='messageStreamScaffold'>

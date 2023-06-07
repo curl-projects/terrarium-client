@@ -25,6 +25,7 @@ import { filterSearchedData } from "~/utils/filterSearchedData"
 // COMPONENTS
 import PointFieldSearch from "~/components/PointField/PointFieldSearch";
 import PointFieldScaffold from "~/components/PointField/PointFieldScaffold.js";
+import { zoom } from "d3";
 
 export async function action({ request }){
     const formData = await request.formData()
@@ -44,7 +45,6 @@ export async function action({ request }){
 export default function Discovery(){
     const actionData = useActionData();
     const [searchResults, setSearchResults] = useState([])
-    const [zoomObject, setZoomObject] = useState(null)
     const [dateValue, setDateValue] = useState(null);
     const searchFetcher = useFetcher();
     const [innerCanvasData, setInnerCanvasData] = useState([]) 
@@ -52,7 +52,9 @@ export default function Discovery(){
     const transition = useTransition();
     const params = useParams();
    
-    const [topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed] = useOutletContext();
+    const [topLevelCanvasDataObj, topLevelStreamDataObj, 
+      setTopLevelCanvasDataObj, setTopLevelStreamDataObj, 
+      loaderData, headerCollapsed, zoomObject, setZoomObject] = useOutletContext();
     
    useEffect(()=>{
     console.log("LOADER DATA FEATURE REQUESTS:", loaderData.featureRequests)
@@ -61,6 +63,10 @@ export default function Discovery(){
     useEffect(()=>{
         setInnerCanvasData(topLevelCanvasDataObj)
     }, [topLevelCanvasDataObj])
+  
+    useEffect(()=>{
+      console.log("ZOOM OBJECT:", zoomObject)
+    }, [zoomObject])
 
     // useEffect(()=>{
     //     const dateFilteredArray = []
@@ -106,7 +112,6 @@ export default function Discovery(){
     const clusterIdName =  zoomObjectMap[zoomObject.type]
     console.log("FEATURE REQUESTS:", loaderData.featureRequests)
     const filteredData = loaderData.featureRequests.filter(obj => obj["kmeans_labels"] === zoomObject.id)
-
   }
   
   function resetZoomedData(e, changeParam){
