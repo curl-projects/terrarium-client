@@ -39,7 +39,7 @@ export async function loader({ request, params }){
       const updatedFeature = await updateFeatureTitle(featureId, searchTerm)
   
       // conduct search
-      const knnIDs = await embeddingSearch(searchTerm); // get sorted scores
+      const knnIDs = await embeddingSearch(searchTerm, featureId); // get sorted scores
   
       // update all feature requests for easier future recall
       const updatedFeatures = await associateFeatureRequestsWithFeature(knnIDs, featureId)
@@ -111,7 +111,9 @@ export default function Feature(){
 
     useEffect(()=>{
         setTopLevelStreamDataObj(loaderData.featureRequests)
-        setTopLevelCanvasDataObj(loaderData.featureRequests.map(a => a.featureRequest))
+        
+        // adding cluster to stream data
+        setTopLevelCanvasDataObj(loaderData.featureRequests.map(a => ({...a.featureRequest, cluster: a.cluster})))
     }, [loaderData.featureRequests])
 
     useEffect(()=>{

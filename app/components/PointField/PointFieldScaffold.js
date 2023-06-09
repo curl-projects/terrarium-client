@@ -22,6 +22,10 @@ export default function PointFieldScaffold(props){
   const [displayControl, setDisplayControl] = useState({data: true, clusters: false})
 
   useEffect(()=>{
+    console.log("CLUSTER FORMATION:", props.data)
+  }, [props.data])
+
+  useEffect(()=>{
     setDataObj(generateUniformCoords(props.data))
   }, [props.data])
 

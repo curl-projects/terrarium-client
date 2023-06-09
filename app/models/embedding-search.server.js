@@ -43,11 +43,13 @@ export async function filterEmbeddings(knnIDs){
     return dataIDs
   }
 
-export async function initialiseClusterAnalysis(searchVector){
+export async function initialiseClusterAnalysis(searchVector, featureId){
   let url = "https://finnianmacken--terrarium-machine-learning-process-clusters-dev.modal.run"
+  // let url = "https://finnianmacken--terrarium-machine-learning-process-clusters.modal.run/"
 
   let data = {
-    'search_vector': searchVector
+    'search_vector': searchVector,
+    'terrarium_feature_id': featureId
   }
 
   const res = await fetch(url, {
@@ -58,15 +60,15 @@ export async function initialiseClusterAnalysis(searchVector){
     body: JSON.stringify(data)
   })
 
-  return res.json()
+  return res
 }
 
-export async function embeddingSearch(searchString){
+export async function embeddingSearch(searchString, featureId){
   const searchVectorRes = await generateSearchVector(searchString)
   const searchVector = searchVectorRes.data && searchVectorRes.data[0]['embedding']
 
   // asynchronous processing
-  const clusterRes = await initialiseClusterAnalysis(searchVector)
+  const clusterRes = await initialiseClusterAnalysis(searchVector, featureId)
   console.log("CLUSTER INFO:", clusterRes)
   // end asynchronous processing
 

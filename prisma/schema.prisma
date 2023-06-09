@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["interactiveTransactions", "filteredRelationCount"]
+  previewFeatures = ["filteredRelationCount"]
 }
 
 datasource db {
@@ -27,8 +27,8 @@ model NotionAuth {
   workspaceName        String
   userId               String
   guildName            String?
-  user                 User          @relation(fields: [userId], references: [id])
   discordUsers         DiscordUser[]
+  user                 User          @relation(fields: [userId], references: [id])
 }
 
 model DiscordUser {
@@ -38,15 +38,16 @@ model DiscordUser {
 }
 
 model Feature {
-  id              Int                 @id @default(sequence())
-  title           String
-  description     String @default("")
-  userId          String
-  columnState     Int
-  rankState       Int
-  isSearched      Boolean             @default(false)
-  user            User                @relation(fields: [userId], references: [id])
-  featureRequests FeatureRequestMap[]
+  id                Int                 @id @default(sequence())
+  title             String
+  description       String              @default("")
+  userId            String
+  columnState       Int
+  rankState         Int
+  isSearched        Boolean             @default(false)
+  clustersGenerated Boolean             @default(false)
+  user              User                @relation(fields: [userId], references: [id])
+  featureRequests   FeatureRequestMap[]
 }
 
 model FeatureRequest {
@@ -67,9 +68,9 @@ model FeatureRequestMap {
   featureId        Int
   featureRequestId String
   pinned           Boolean        @default(false)
+  cluster          Int            @default(-1)
   feature          Feature        @relation(fields: [featureId], references: [id], onDelete: Cascade)
   featureRequest   FeatureRequest @relation(fields: [featureRequestId], references: [fr_id], onDelete: Cascade)
-  cluster          Int            @default(1)
 
   @@id([featureId, featureRequestId])
 }

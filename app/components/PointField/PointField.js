@@ -52,10 +52,6 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
   }
 
   useEffect(()=>{
-    console.log("DISPLAY CONTROL", displayControl)
-  , [displayControl]})
-
-  useEffect(()=>{
     var x = d3.scaleLinear()
     .domain(xDomain)
     .range([0, ref.current.clientWidth]);
@@ -246,10 +242,6 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
       setContainerWidth(node.getBoundingClientRect().width);
     }
   }, []);
-
-  useEffect(()=>{
-    console.log("CONTAINER HEIGHT, CONTAINER WIDTH", containerHeight, containerWidth)
-  }, [containerHeight, containerWidth])
 
   return (
     <div className='svgContainer'>
