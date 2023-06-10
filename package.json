@@ -45,6 +45,7 @@
     "react-expanding-textarea": "^2.3.6",
     "react-icons": "^4.6.0",
     "react-tooltip": "^4.5.1",
+    "react-use-websocket": "^4.3.1",
     "remix-auth": "^3.3.0",
     "remix-auth-socials": "^1.0.2",
     "remix-utils": "^4.1.0",

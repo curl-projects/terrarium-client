@@ -1,5 +1,7 @@
 // REACT-REMIX IMPORTS
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import useWebSocket, { ReadyState } from "react-use-websocket";
+
 import { redirect } from "@remix-run/node"
 import { useLoaderData, useActionData, Form, useFetcher, useTransition } from "@remix-run/react";
 import { ClientOnly } from "remix-utils";
@@ -102,6 +104,47 @@ export default function Feature(){
     const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
     const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])
 
+    // websocket client
+    const [socketUrl, setSocketUrl] = useState("");
+    const [messageHistory, setMessageHistory] = useState([]);
+
+    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+
+    const handleClickSendMessage = useCallback(() => sendMessage('Hello'), []);
+
+    useEffect(()=>{
+        if(typeof window!== 'undefined'){
+            setSocketUrl(window.ENV.WEBSOCKETS_URL)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (lastMessage !== null) {
+          setMessageHistory((prev) => prev.concat(lastMessage));
+        }
+      }, [lastMessage, setMessageHistory]);
+    
+    const connectionStatus = {
+        [ReadyState.CONNECTING]: 'Connecting',
+        [ReadyState.OPEN]: 'Open',
+        [ReadyState.CLOSING]: 'Closing',
+        [ReadyState.CLOSED]: 'Closed',
+        [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+    }[readyState];
+
+    useEffect(()=>{
+        console.log("WEBSOCKETS CONNECTION STATUS:", connectionStatus)
+    }, [connectionStatus])
+
+    useEffect(()=>{
+        console.log("WEBSOCKETS MESSAGE HISTORY:", messageHistory)
+    }, [messageHistory])
+
+    useEffect(()=>{
+        console.log("LAST MESSAGEZ:", lastMessage)
+    }, [lastMessage])
+
+
 
     // TITLE EFFECTS
     useEffect(()=>{
@@ -125,7 +168,6 @@ export default function Feature(){
     useEffect(()=>{
         console.log("STREAM OBJ", topLevelStreamDataObj)
     }, [topLevelStreamDataObj])
-
 
 
     return(
@@ -252,6 +294,8 @@ export default function Feature(){
                 </div>
             </div>
             </div>
+            <button style={{position: 'absolute', top: 0, left: 0, height: "200px", width: "200px", backgroundColor: 'pink'}}
+                onClick={handleClickSendMessage}></button>
         </>
     )
 }
