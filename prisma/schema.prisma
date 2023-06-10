@@ -45,7 +45,6 @@ model Feature {
   columnState       Int
   rankState         Int
   isSearched        Boolean             @default(false)
-  clustersGenerated Boolean             @default(false)
   user              User                @relation(fields: [userId], references: [id])
   featureRequests   FeatureRequestMap[]
 }

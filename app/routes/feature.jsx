@@ -1,11 +1,12 @@
 // REACT-REMIX IMPORTS
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { redirect } from "@remix-run/node"
-import { useLoaderData, useActionData, Form, useFetcher, useNavigate, useTransition, useSubmit } from "@remix-run/react";
+import { useLoaderData, useActionData, Form, useFetcher, useNavigate, useTransition, useSubmit, useRevalidator } from "@remix-run/react";
 import { ClientOnly } from "remix-utils";
 import ContentEditable from 'react-contenteditable';
 import LinearProgress from '@mui/material/LinearProgress';
+import useWebSocket, { ReadyState } from "react-use-websocket";
 
 // MODULE IMPORTS
 import { authenticator } from "~/models/auth.server.js";
@@ -20,8 +21,6 @@ import cn from 'classnames'
 import MessageStream from "~/components/MessageStream/MessageStream.js"
 import {IoIosArrowDropdown} from "react-icons/io"
 
-import { WebSocketContext } from "~/root";
-
 export async function loader({ request, params }){
     const user = await authenticator.isAuthenticated(request, {
       failureRedirect: "/",
@@ -31,13 +30,6 @@ export async function loader({ request, params }){
   
     const featureId = params["*"]
     const feature = await readFeature(featureId)
-
-    // deals with the case where the machine learning engine didn't successfully generate the clusters
-    if(!feature.clusterGenerated){
-        const searchVectorRes = await generateSearchVector(feature.title)
-        const searchVector = searchVectorRes.data && searchVectorRes.data[0]['embedding']
-        const clusterAnalysis = await initialiseClusterAnalysis(searchVector, featureId)
-    }
   
     // make sure the right user is looking at the feature information
     if(feature.userId !== user.id){
@@ -83,8 +75,6 @@ export async function loader({ request, params }){
         const featureId = formData.get("featureId")
         const featureDescription = formData.get('featureDescription')
 
-        console.log("FEATUREID", featureId)
-        console.log("DESCRIPTION", featureDescription)
         const updatedFeature = await updateFeatureDescription(featureId, featureDescription)   
         return {updatedFeature}
     }
@@ -115,35 +105,72 @@ export default function Feature(){
     const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
     const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])
 
-    const websocket = useContext(WebSocketContext)
+    const revalidator = useRevalidator();
 
-    const [clustersGenerated, setClustersGenerated] = useState(false)
+    const [clustersGenerated, setClustersGenerated] = useState("incomplete")
 
-    useEffect(()=>{
-        console.log("WEBSOCKET:", websocket)
-        // websocket?.connectionStatus && console.log("WEBSOCKETS CONNECTION STATUS:", websocket.connectionStatus)
-        // websocket?.lastMessage && console.log("LAST MESSAGES:", websocket.lastMessage)
-    }, [websocket])
-
-    // useEffect(()=>{
-    //     console.log("LOADER DATA:", loaderData)
-    // }, [loaderData])
-
-    // // RELOAD LOADER DATA WHEN THE CLUSTER ANALYSIS IS COMPLETE
-    // useEffect(()=>{
-    //     if(websocket && websocket.lastMessage && websocket?.lastMessage.data){
-    //         const data = JSON.parse(websocket.lastMessage.data)
-    //         if(data.type == 'cluster_generation' && data.status == 'completed'){
-    //             console.log("REVALIDATING!")
-    //             // clusterFetcher.load()
-    //         }
-    //     }
-    // }, [websocket])
+    const [socketUrl, setSocketUrl] = useState("");
+    const [messageHistory, setMessageHistory] = useState([]);
 
     useEffect(()=>{
-        console.log("FEATURE:", loaderData.feature)
-        loaderData.feature && setClustersGenerated(loaderData.feature.clustersGenerated)
+        setSocketUrl(window.ENV.WEBSOCKETS_URL)
+      }, [])
+
+    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+
+    const connectionStatus = {
+        [ReadyState.CONNECTING]: 'Connecting',
+        [ReadyState.OPEN]: 'Open',
+        [ReadyState.CLOSING]: 'Closing',
+        [ReadyState.CLOSED]: 'Closed',
+        [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+    }[readyState];
+
+    useEffect(() => {
+        if (lastMessage !== null) {
+          setMessageHistory((prev) => prev.concat(lastMessage));
+        }
+      }, [lastMessage, setMessageHistory]);
+
+    
+    // determine if clusters have been processed and update the state
+    useEffect(()=>{
+        (
+            (loaderData.featureRequests && loaderData.featureRequests[0].cluster != -1) 
+            ? setClustersGenerated("completed")
+            : setClustersGenerated("incomplete")
+
+            // TODO should we automatically trigger this if they're false?
+        )
     }, [loaderData])
+
+    // LISTEN TO WEBSOCKET TO FIGURE OUT WHETHER THE CLUSTERS HAVE BEEN GENERATED
+    useEffect(()=>{
+        console.log("INNER LAST MESSAGE!", lastMessage)
+        if(lastMessage && lastMessage.data){
+            console.log("LAST MESSAGE DATA!", lastMessage.data)
+            const data = JSON.parse(lastMessage.data)
+
+            if(data.type === 'cluster_generation' && data.status === 'initiated'){
+                console.log("CLUSTER ANALYSIS INITIALISING")
+                setClustersGenerated("initiated")
+            }
+            else if(data.type === 'cluster_generation' && data.status === 'completed'){
+                console.log("CLUSTER ANALYSIS COMPLETED")
+                setClustersGenerated("complete")
+                
+                // reload data to load new clusters
+                revalidator.revalidate()
+
+            }
+            else{
+                console.log("UNEXPECTED WEBSOCKET RESPONSE")
+            }
+        }
+        else{
+            console.log("NO LAST MESSAGE DATA")
+        }
+    }, [lastMessage])
 
     useEffect(()=>{
         console.log("CLUSTERS GENERATED?", clustersGenerated)
@@ -157,8 +184,6 @@ export default function Feature(){
 
     useEffect(()=>{
         setTopLevelStreamDataObj(loaderData.featureRequests)
-        
-        // adding cluster to stream data
         setTopLevelCanvasDataObj(loaderData.featureRequests.map(a => ({...a.featureRequest, cluster: a.cluster})))
     }, [loaderData.featureRequests])
 
@@ -168,13 +193,14 @@ export default function Feature(){
         }
     }, [titleFocused])
 
-    useEffect(()=>{
-        console.log("STREAM OBJ", topLevelStreamDataObj)
-    }, [topLevelStreamDataObj])
+    // useEffect(()=>{
+    //     console.log("STREAM OBJ", topLevelStreamDataObj)
+    // }, [topLevelStreamDataObj])
 
     useEffect(()=>{
         console.log("CANVAS OBJ", topLevelCanvasDataObj)
     }, [topLevelCanvasDataObj])
+
     return(
         <>
         <FeatureHeader />
@@ -295,7 +321,7 @@ export default function Feature(){
                         <MessageStream
                             data={topLevelStreamDataObj}
                             featureId={loaderData.feature.id}
-                            clustersGenerated={clustersGenerated}
+                            // clustersGenerated={clustersGenerated}
                             />
                     </div>
                 </div>

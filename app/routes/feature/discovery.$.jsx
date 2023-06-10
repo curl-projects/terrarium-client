@@ -56,18 +56,11 @@ export default function Discovery(){
       setTopLevelCanvasDataObj, setTopLevelStreamDataObj, 
       loaderData, headerCollapsed, zoomObject, setZoomObject] = useOutletContext();
     
-   useEffect(()=>{
-    console.log("LOADER DATA FEATURE REQUESTS:", loaderData.featureRequests)
-   }, [loaderData])
-    
+
     useEffect(()=>{
         setInnerCanvasData(topLevelCanvasDataObj)
     }, [topLevelCanvasDataObj])
   
-    useEffect(()=>{
-      console.log("ZOOM OBJECT:", zoomObject)
-    }, [zoomObject])
-
     // useEffect(()=>{
     //     const dateFilteredArray = []
     //     if(topLevelStreamDataObj[0]){
