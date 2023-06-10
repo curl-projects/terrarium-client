@@ -77,6 +77,7 @@ export default function MessageStream(props) {
           setIsExpanded={setIsExpanded}
           scrollToTop={scrollToTop}
           paneRef={paneRef}
+          clustersGenerated={props.clustersGenerated}
         />
         <div className="pl-10 pr-8 flex flex-col gap-2">
           {pinnedCards.map((cardData, idx) => (

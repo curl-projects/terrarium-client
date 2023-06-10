@@ -55,10 +55,22 @@ export default function App() {
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(data.ENV.WEBSOCKETS_URL);
 
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: 'Connecting',
+    [ReadyState.OPEN]: 'Open',
+    [ReadyState.CLOSING]: 'Closing',
+    [ReadyState.CLOSED]: 'Closed',
+    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+}[readyState];
+
+
   useEffect(()=>{
-    if(typeof window!== 'undefined'){
-        setSocketUrl(window.ENV.WEBSOCKETS_URL)
-    }
+    console.log("LAST MESSAGE", lastMessage)
+    console.log("CONNECTION STATUS:", connectionStatus)
+  }, [lastMessage, connectionStatus])
+
+  useEffect(()=>{
+    setSocketUrl(window.ENV.WEBSOCKETS_URL)
   }, [])
 
   useEffect(() => {
@@ -66,16 +78,6 @@ export default function App() {
       setMessageHistory((prev) => prev.concat(lastMessage));
     }
   }, [lastMessage, setMessageHistory]);
-
-  const connectionStatus = {
-      [ReadyState.CONNECTING]: 'Connecting',
-      [ReadyState.OPEN]: 'Open',
-      [ReadyState.CLOSING]: 'Closing',
-      [ReadyState.CLOSED]: 'Closed',
-      [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-  }[readyState];
-
-
   return (
     <html lang="en">
       <head>

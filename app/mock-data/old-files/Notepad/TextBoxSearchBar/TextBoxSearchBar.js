@@ -1,4 +1,4 @@
-import { Form, useSubmit, useTransition, useFetcher } from "@remix-run/react";
+import { Form, useSubmit, useNavigate, useFetcher } from "@remix-run/react";
 import { useState, useEffect } from "react";
 import cn from "classnames";
 // IMAGES
@@ -7,7 +7,7 @@ import cn from "classnames";
 
 export default function TextBoxSearchBar({ feature, resetSearchData, isSubmitted, setSubmitted, setFocus, data }) {
   const submit = useSubmit();
-  const transition = useTransition()
+  const transition = useNavigate()
   const fetcher = useFetcher();
   const [searchTerm, setSearchTerm] = useState(feature.title);
 

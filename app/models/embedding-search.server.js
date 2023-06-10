@@ -1,3 +1,5 @@
+import { db } from "./db.server";
+
 const { Configuration, OpenAIApi } = require("openai");
 
 export async function generateSearchVector(searchString){
@@ -44,6 +46,17 @@ export async function filterEmbeddings(knnIDs){
   }
 
 export async function initialiseClusterAnalysis(searchVector, featureId){
+
+  // set cluster analysis completion flag to false
+  // const feature = await db.feature.update({
+  //   where: {
+  //     id: parseInt(featureId)
+  //   },
+  //   data: {
+  //     clustersGenerated: false
+  //   }
+  // })
+
   let url = process.env.MACHINE_LEARNING_URL
 
   let data = {

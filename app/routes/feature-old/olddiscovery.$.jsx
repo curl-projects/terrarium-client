@@ -12,7 +12,7 @@ dayjs.extend(utc)
 
 // REACT & REMIX
 import { useState, useEffect } from "react";
-import { useLoaderData, useActionData, useOutletContext, useFetcher, useTransition } from "@remix-run/react";
+import { useLoaderData, useActionData, useOutletContext, useFetcher, useNavigate } from "@remix-run/react";
 import { json, redirect } from '@remix-run/node';
 
 
@@ -107,7 +107,7 @@ export default function Discovery() {
   const [dateValue, setDateValue] = useState(null);
   const searchFetcher = useFetcher();
   const fetcher = useFetcher();
-  const transition = useTransition();
+  const transition = useNavigate();
 
   useEffect(()=>{
     const dateFilteredArray = []

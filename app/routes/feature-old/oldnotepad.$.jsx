@@ -1,7 +1,7 @@
 // REACT-REMIX IMPORTS
 import { useState, useEffect } from "react";
 import { redirect } from "@remix-run/node"
-import { useLoaderData, useActionData, Form, useFetcher, useTransition } from "@remix-run/react";
+import { useLoaderData, useActionData, Form, useFetcher, useNavigate } from "@remix-run/react";
 import { ClientOnly } from "remix-utils";
 
 // MODULE IMPORTS
@@ -75,7 +75,7 @@ export default function FeatureNotepad(){
   const loaderData = useLoaderData();
   const actionData = useActionData();
   const fetcher = useFetcher();
-  const transition = useTransition();
+  const transition = useNavigate();
 
   return(
     <>

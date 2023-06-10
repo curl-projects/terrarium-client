@@ -12,7 +12,7 @@ dayjs.extend(utc)
 
 // REACT & REMIX
 import { useState, useEffect } from "react";
-import { useLoaderData, useActionData, useOutletContext, useFetcher, useTransition, useParams } from "@remix-run/react";
+import { useLoaderData, useActionData, useOutletContext, useFetcher, useNavigate, useParams } from "@remix-run/react";
 import { json, redirect } from '@remix-run/node';
 
 
@@ -49,7 +49,7 @@ export default function Discovery(){
     const searchFetcher = useFetcher();
     const [innerCanvasData, setInnerCanvasData] = useState([]) 
     const fetcher = useFetcher();
-    const transition = useTransition();
+    const transition = useNavigate();
     const params = useParams();
    
     const [topLevelCanvasDataObj, topLevelStreamDataObj, 

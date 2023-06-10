@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect, useContext } from "react";
 
 import { redirect } from "@remix-run/node"
-import { useLoaderData, useActionData, Form, useFetcher, useTransition } from "@remix-run/react";
+import { useLoaderData, useActionData, Form, useFetcher, useNavigate, useTransition, useSubmit } from "@remix-run/react";
 import { ClientOnly } from "remix-utils";
 import ContentEditable from 'react-contenteditable';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -11,7 +11,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { authenticator } from "~/models/auth.server.js";
 import { readFeature, updateFeatureTitle, updateFeatureIsSearched, updateFeatureDescription } from "~/models/kanban.server"
 import { findFeatureRequests, associateFeatureRequestsWithFeature } from "~/models/feature-requests.server"
-import { embeddingSearch } from "~/models/embedding-search.server"
+import { embeddingSearch, generateSearchVector, initialiseClusterAnalysis } from "~/models/embedding-search.server"
 
 import FeatureHeader from "~/components/Header/FeatureHeader";
 import { ImSearch } from "react-icons/im"
@@ -31,6 +31,13 @@ export async function loader({ request, params }){
   
     const featureId = params["*"]
     const feature = await readFeature(featureId)
+
+    // deals with the case where the machine learning engine didn't successfully generate the clusters
+    if(!feature.clusterGenerated){
+        const searchVectorRes = await generateSearchVector(feature.title)
+        const searchVector = searchVectorRes.data && searchVectorRes.data[0]['embedding']
+        const clusterAnalysis = await initialiseClusterAnalysis(searchVector, featureId)
+    }
   
     // make sure the right user is looking at the feature information
     if(feature.userId !== user.id){
@@ -81,6 +88,9 @@ export async function loader({ request, params }){
         const updatedFeature = await updateFeatureDescription(featureId, featureDescription)   
         return {updatedFeature}
     }
+    else if(actionType === 'reload'){
+        return {}
+    }
   }
 
 export default function Feature(){
@@ -98,27 +108,46 @@ export default function Feature(){
     const actionData = useActionData();
     const fetcher = useFetcher();
     const descriptionFetcher = useFetcher();
-    const transition = useTransition();
+    const navigate = useTransition();
 
     const [zoomObject, setZoomObject] = useState(null)
 
     const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
     const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])
 
-    const {connectionStatus, messageHistory, lastMessage} = useContext(WebSocketContext)
+    const websocket = useContext(WebSocketContext)
+
+    const [clustersGenerated, setClustersGenerated] = useState(false)
 
     useEffect(()=>{
-        console.log("WEBSOCKETS CONNECTION STATUS:", connectionStatus)
-    }, [connectionStatus])
+        console.log("WEBSOCKET:", websocket)
+        // websocket?.connectionStatus && console.log("WEBSOCKETS CONNECTION STATUS:", websocket.connectionStatus)
+        // websocket?.lastMessage && console.log("LAST MESSAGES:", websocket.lastMessage)
+    }, [websocket])
+
+    // useEffect(()=>{
+    //     console.log("LOADER DATA:", loaderData)
+    // }, [loaderData])
+
+    // // RELOAD LOADER DATA WHEN THE CLUSTER ANALYSIS IS COMPLETE
+    // useEffect(()=>{
+    //     if(websocket && websocket.lastMessage && websocket?.lastMessage.data){
+    //         const data = JSON.parse(websocket.lastMessage.data)
+    //         if(data.type == 'cluster_generation' && data.status == 'completed'){
+    //             console.log("REVALIDATING!")
+    //             // clusterFetcher.load()
+    //         }
+    //     }
+    // }, [websocket])
 
     useEffect(()=>{
-        console.log("WEBSOCKETS MESSAGE HISTORY:", messageHistory)
-    }, [messageHistory])
+        console.log("FEATURE:", loaderData.feature)
+        loaderData.feature && setClustersGenerated(loaderData.feature.clustersGenerated)
+    }, [loaderData])
 
     useEffect(()=>{
-        console.log("LAST MESSAGES:", lastMessage)
-    }, [lastMessage])
-
+        console.log("CLUSTERS GENERATED?", clustersGenerated)
+    }, [clustersGenerated])
 
     // TITLE EFFECTS
     useEffect(()=>{
@@ -143,7 +172,9 @@ export default function Feature(){
         console.log("STREAM OBJ", topLevelStreamDataObj)
     }, [topLevelStreamDataObj])
 
-
+    useEffect(()=>{
+        console.log("CANVAS OBJ", topLevelCanvasDataObj)
+    }, [topLevelCanvasDataObj])
     return(
         <>
         <FeatureHeader />
@@ -201,7 +232,7 @@ export default function Feature(){
                             }}/>
                     </button>
                 </fetcher.Form>
-                {transition.type === "fetchActionRedirect" &&
+                {navigate.type === "fetchActionRedirect" &&
                     <LinearProgress 
                         variant="indeterminate"
                         style={{width: "100%", 
@@ -263,7 +294,9 @@ export default function Feature(){
                     <div className="messageStreamColumn">
                         <MessageStream
                             data={topLevelStreamDataObj}
-                            featureId={loaderData.feature.id} />
+                            featureId={loaderData.feature.id}
+                            clustersGenerated={clustersGenerated}
+                            />
                     </div>
                 </div>
             </div>

@@ -32,7 +32,7 @@ export default function KanbanCard(props){
                     <div className='kanbanCardBookmark' style={{"backgroundColor": props.color}}></div>
                     <div className='kanbanCardContent'>
                         <div className='kanbanCardTitle'>
-                            <Link to={`/feature/notepad/${props.item.id}`} >
+                            <Link to={`/feature/discovery/${props.item.id}`} >
                             <h1 className='kanbanCardTitleText'> {props.item ? props.item.title : "Untitled"}</h1>
                             </Link>
                             <div style={{flex: 1}}/>

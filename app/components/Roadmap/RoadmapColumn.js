@@ -1,7 +1,6 @@
 import { Form } from "@remix-run/react";
 import { Droppable } from "@hello-pangea/dnd";
 import RoadmapCard from '~/components/Roadmap/RoadmapCard.js'
-import plusButton from "../../../public/assets/plus-button.png"
 
 export default function KanbanColumn(props){
   return(

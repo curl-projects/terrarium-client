@@ -16,6 +16,7 @@ export default function MessageStreamMetadata({isExpanded, setIsExpanded, scroll
       >
         {numberWithCommas(props.data.length)} <span className="text-gray-400 font-medium"> Feature Requests</span>
       </p>
+      {props.clustersGenerated ? <p>Clusters Analysed</p> : <p>Clusters Generating</p>}
 
       <div className='flex gap-1'>
 
