@@ -44,8 +44,7 @@ export async function filterEmbeddings(knnIDs){
   }
 
 export async function initialiseClusterAnalysis(searchVector, featureId){
-  let url = "https://finnianmacken--terrarium-machine-learning-process-clusters-dev.modal.run"
-  // let url = "https://finnianmacken--terrarium-machine-learning-process-clusters.modal.run/"
+  let url = process.env.MACHINE_LEARNING_URL
 
   let data = {
     'search_vector': searchVector,

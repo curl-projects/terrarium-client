@@ -1,6 +1,5 @@
 // REACT-REMIX IMPORTS
-import { useState, useRef, useEffect, useCallback } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
+import { useState, useRef, useEffect, useContext } from "react";
 
 import { redirect } from "@remix-run/node"
 import { useLoaderData, useActionData, Form, useFetcher, useTransition } from "@remix-run/react";
@@ -20,6 +19,8 @@ import { Outlet, Link, useParams, useMatches } from "@remix-run/react";
 import cn from 'classnames'
 import MessageStream from "~/components/MessageStream/MessageStream.js"
 import {IoIosArrowDropdown} from "react-icons/io"
+
+import { WebSocketContext } from "~/root";
 
 export async function loader({ request, params }){
     const user = await authenticator.isAuthenticated(request, {
@@ -104,33 +105,7 @@ export default function Feature(){
     const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
     const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])
 
-    // websocket client
-    const [socketUrl, setSocketUrl] = useState("");
-    const [messageHistory, setMessageHistory] = useState([]);
-
-    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
-
-    const handleClickSendMessage = useCallback(() => sendMessage('Hello'), []);
-
-    useEffect(()=>{
-        if(typeof window!== 'undefined'){
-            setSocketUrl(window.ENV.WEBSOCKETS_URL)
-        }
-    }, [])
-
-    useEffect(() => {
-        if (lastMessage !== null) {
-          setMessageHistory((prev) => prev.concat(lastMessage));
-        }
-      }, [lastMessage, setMessageHistory]);
-    
-    const connectionStatus = {
-        [ReadyState.CONNECTING]: 'Connecting',
-        [ReadyState.OPEN]: 'Open',
-        [ReadyState.CLOSING]: 'Closing',
-        [ReadyState.CLOSED]: 'Closed',
-        [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-    }[readyState];
+    const {connectionStatus, messageHistory, lastMessage} = useContext(WebSocketContext)
 
     useEffect(()=>{
         console.log("WEBSOCKETS CONNECTION STATUS:", connectionStatus)
@@ -141,9 +116,8 @@ export default function Feature(){
     }, [messageHistory])
 
     useEffect(()=>{
-        console.log("LAST MESSAGEZ:", lastMessage)
+        console.log("LAST MESSAGES:", lastMessage)
     }, [lastMessage])
-
 
 
     // TITLE EFFECTS
@@ -294,8 +268,6 @@ export default function Feature(){
                 </div>
             </div>
             </div>
-            <button style={{position: 'absolute', top: 0, left: 0, height: "200px", width: "200px", backgroundColor: 'pink'}}
-                onClick={handleClickSendMessage}></button>
         </>
     )
 }
