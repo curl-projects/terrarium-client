@@ -14,7 +14,8 @@ function usePrevious(value) {
 
 export default function PointField({ data, clusters, searchResults, filterBrushedData,
                                    resetBrushFilter, zoomObject, setZoomObject,
-                                   displayControl, resetZoomedData, headerCollapsed}) {
+                                   displayControl, resetZoomedData, headerCollapsed,
+                                  setDataView, setExpandSpecificCard}) {
 
   // the weird domains create padding around the svg
   const xDomain = [-0.05, 1.05]
@@ -36,13 +37,15 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
         .data(clusters)
         .join('circle')
           .attr('class', "clusterNode")
+          .attr('id', d => `cluster-${d.id}`)
           .attr("r", 0)
           .style('opacity', 0)
           .attr('cx', d => x(d.xDim))
           .attr('cy', d => y(d.yDim))
           .attr('fill', "rgba(119, 153, 141, 0.7)")
           .on("click", function(e){
-            console.log("CLUSTER INFORMATION", e.target.__data__)
+            setDataView("clusters")
+            setExpandSpecificCard({cardId: e.target.__data__.id, cardType: "cluster"})
             setZoomObject({"id": e.target.__data__.id, "type": e.target.__data__.type})
           })
           .transition(500)

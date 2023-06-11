@@ -119,6 +119,8 @@ export default function PointFieldScaffold(props){
         filterBrushedData={props.filterBrushedData}
         resetBrushFilter={props.resetBrushFilter}
         headerCollapsed={props.headerCollapsed}
+        setDataView={props.setDataView}
+        setExpandSpecificCard={props.setExpandSpecificCard}
         />
       <button style={{
         position: 'absolute',

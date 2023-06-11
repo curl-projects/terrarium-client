@@ -10,6 +10,7 @@ export default function MessageStreamFeatureRequests(props){
                 cardData={cardData.featureRequest}
                 isExpanded={props.isExpanded}
                 pinCard={props.pinCard}
+                expandSpecificCard={props.expandSpecificCard}
                 isPinned={true}/>
             ))}
             {props.pinnedCards.length > 0 && <h1 className="text-gray-400 text-xs font-medium pl-4">Remaining Feature Requests</h1>}
@@ -19,6 +20,7 @@ export default function MessageStreamFeatureRequests(props){
                 key={cardData.featureRequest.fr_id}
                 cardData={cardData.featureRequest}
                 isExpanded={props.isExpanded}
+                expandSpecificCard={props.expandSpecificCard}
                 pinCard={props.pinCard} />
             ))}
         </div>

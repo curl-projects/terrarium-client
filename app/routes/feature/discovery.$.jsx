@@ -55,7 +55,8 @@ export default function Discovery(){
     const [topLevelCanvasDataObj, topLevelStreamDataObj, 
       setTopLevelCanvasDataObj, setTopLevelStreamDataObj, 
       loaderData, headerCollapsed, zoomObject, setZoomObject,
-      clustersGenerated, triggerClusters, setTriggerClusters] = useOutletContext();
+      clustersGenerated, triggerClusters, setTriggerClusters,
+    setDataView, setExpandSpecificCard] = useOutletContext();
 
     useEffect(()=>{
       console.log("INNER INNER CLUSTERS GENERATED:", clustersGenerated)
@@ -153,6 +154,8 @@ export default function Discovery(){
                 clustersGenerated={clustersGenerated}
                 triggerClusters={triggerClusters}
                 setTriggerClusters={setTriggerClusters}
+                setDataView={setDataView}
+                setExpandSpecificCard={setExpandSpecificCard}
                 />
             </div>
       </div>

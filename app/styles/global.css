@@ -774,6 +774,10 @@ div.DraftEditor-root {
   r: 20 !important;
 }
 
+.mouseOverCluster{
+  opacity: 0.6 !important;
+}
+
 .notepadPadding {
   padding: 8rem;
   padding-left: 14rem;

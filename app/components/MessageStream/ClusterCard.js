@@ -1,30 +1,60 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import cn from "classnames";
 import MessageCard from "~/components/MessageStream/MessageCard";
-
+import * as d3 from 'd3';
 
 export default function ClusterCard(props) {
 
   const [isCardExpanded, setIsCardExpanded] = useState(false);
   // const [isPinned, setIsPinned] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const clusterCardRef = useRef();
 
   function handleClusterCardClick(){
     if(!isCardExpanded){
         props.setZoomObject({id: props.clusterData[0].cluster, type: "cluster"})
     }
     setIsCardExpanded(!isCardExpanded)
+  }
+
+  function handleMouseOver(event, clusterId){
+    console.log("CLUSTER MOUSED OVER:", clusterId)
+    d3.select(`#cluster-${clusterId}`)
+      .classed("mouseOverCluster", true)
+      .transition()
+      .duration(200)
+      .ease(d3.easeCubicInOut)
+      .attr('fill', 'rgba(119, 153, 141)')
+      
 
   }
+
+  function handleMouseOut(event, clusterId){
+    d3.select(`#cluster-${clusterId}`)
+      .classed("mouseOverCluster", false)
+      .transition()
+      .duration(200)
+      .ease(d3.easeCubicInOut)
+      .attr('fill', "rgba(119, 153, 141, 0.7)")
+  }
+
+  useEffect(()=>{
+    console.log("EXPAND SPECIFIC CARD:", props.expandSpecificCard)
+    if(props.expandSpecificCard && props.expandSpecificCard.cardType === 'cluster' && props.expandSpecificCard.cardId === props.clusterData[0].cluster){
+        clusterCardRef.current.scrollIntoView({block: "start", behaviour: "smooth"})
+        setIsCardExpanded(true)
+    }
+  }, [props.expandSpecificCard])
 
 
   return (
     <div 
         className='clusterCard relative' 
-        // onMouseOver={()=>props.setZoomObject({id: props.clusterIndex, type: "cluster"})}
-        // onMouseOut={()=>props.setZoomObject(null)}
+        onMouseOver={event => handleMouseOver(event, props.clusterData[0].cluster)}
+        onMouseOut={event => handleMouseOut(event, props.clusterData[0].cluster)}
         >
       <div
+        ref={clusterCardRef}
         onClick={handleClusterCardClick}
         className={cn(
           'bg-white px-1 py-1 cursor-pointer tracking-tight  leading-5 text-sm text-gray-600 font-medium',

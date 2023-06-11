@@ -27,6 +27,7 @@ export default function MessageStreamClusters(props){
                     clusterData={clusterData}
                     pinCard={props.pinCard}
                     setZoomObject={props.setZoomObject}
+                    expandSpecificCard={props.expandSpecificCard}
                 />
             ))
             }

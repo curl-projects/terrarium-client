@@ -11,7 +11,6 @@ export default function MessageStream(props) {
   const pinnedFetcher = useFetcher();
   const [pinnedCards, setPinnedCards] = useState([])
   const [remainingCards, setRemainingCards] = useState([])
-  const [dataView, setDataView] = useState("featureRequests")
   const [clusterData, setClusterData] = useState([])
 
   useEffect(() => {
@@ -62,7 +61,6 @@ export default function MessageStream(props) {
       pane.removeEventListener('scroll', () => {
         console.log("scrolling")
       })
-
     }
   }, [])
 
@@ -94,7 +92,7 @@ export default function MessageStream(props) {
           clustersGenerated={props.clustersGenerated}
           clusterData={clusterData}
           setClustersGenerated={props.setClustersGenerated}
-          setDataView={setDataView}
+          setDataView={props.setDataView}
           clusterFetcher={props.clusterFetcher}
           featureTitle={props.featureTitle}
           setTriggerClusters={props.setTriggerClusters}
@@ -105,7 +103,9 @@ export default function MessageStream(props) {
                                   pinnedCards={pinnedCards} 
                                   remainingCards={remainingCards} 
                                   pinCard={pinCard} 
-                                  isExpanded={isExpanded} />,
+                                  isExpanded={isExpanded}
+                                  expandSpecificCard={props.expandSpecificCard}
+                                  />,
             "clusters": <MessageStreamClusters 
                             clustersGenerated={props.clustersGenerated}
                             clusterData={clusterData}
@@ -113,8 +113,9 @@ export default function MessageStream(props) {
                             isExpanded={isExpanded}
                             pinCard={pinCard}
                             setZoomObject={props.setZoomObject}
+                            expandSpecificCard={props.expandSpecificCard}
                         />
-          }[dataView]
+          }[props.dataView]
         }
       </div>
     </>

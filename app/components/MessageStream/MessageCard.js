@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import cn from "classnames";
 
@@ -10,6 +10,7 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
   const [isCardExpanded, setIsCardExpanded] = useState(false);
   // const [isPinned, setIsPinned] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const messageCardRef = useRef();
 
 
   const options = {day: 'numeric', month: "long", year: "numeric"};
@@ -46,11 +47,22 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
     console.log(props.cardData);
   }
 
+  useEffect(()=>{
+
+    if(props.expandSpecificCard && props.expandSpecificCard.cardType === 'featureRequest' && props.expandSpecificCard.cardId === props.cardData.fr_id){
+        messageCardRef.current.scrollIntoView()
+        setIsCardExpanded(true)
+
+    }
+  }, [props.expandSpecificCard])
+
+
   return (
     <div
       className='messageCard relative'
       onMouseOver={event => handleMouseOver(event, props.cardData.fr_id)}
       onMouseOut={event => handleMouseOut(event, props.cardData.fr_id)}
+      ref={messageCardRef}
     >
       <div
         onClick={() => setIsCardExpanded(!isCardExpanded)}
