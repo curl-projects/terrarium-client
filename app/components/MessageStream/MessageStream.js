@@ -12,10 +12,24 @@ export default function MessageStream(props) {
   const [pinnedCards, setPinnedCards] = useState([])
   const [remainingCards, setRemainingCards] = useState([])
   const [dataView, setDataView] = useState("featureRequests")
+  const [clusterData, setClusterData] = useState([])
 
   useEffect(() => {
     setPinned(props.data.filter(d => d.pinned === true).map(e => e.featureRequestId))
   }, [props.data])
+
+  useEffect(()=>{
+      console.log("MESSAGE STREAM CLUSTERS DATA", props.data)
+
+      const organisedData = props.data.reduce((group, featureRequest) => {
+          const { cluster } = featureRequest;
+          group[cluster] = group[cluster] ?? [];
+          group[cluster].push(featureRequest)
+          return group
+      }, {});
+
+        setClusterData(Object.values(organisedData))
+    }, [props.data])
 
 
   const pinCard = (fr_id) => {
@@ -78,10 +92,12 @@ export default function MessageStream(props) {
           scrollToTop={scrollToTop}
           paneRef={paneRef}
           clustersGenerated={props.clustersGenerated}
+          clusterData={clusterData}
           setClustersGenerated={props.setClustersGenerated}
           setDataView={setDataView}
           clusterFetcher={props.clusterFetcher}
           featureTitle={props.featureTitle}
+          setTriggerClusters={props.setTriggerClusters}
         />
         {
           {
@@ -92,6 +108,11 @@ export default function MessageStream(props) {
                                   isExpanded={isExpanded} />,
             "clusters": <MessageStreamClusters 
                             clustersGenerated={props.clustersGenerated}
+                            clusterData={clusterData}
+                            setClusterData={setClusterData}
+                            isExpanded={isExpanded}
+                            pinCard={pinCard}
+                            setZoomObject={props.setZoomObject}
                         />
           }[dataView]
         }

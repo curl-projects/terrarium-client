@@ -12,11 +12,6 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
   const [isHovered, setIsHovered] = useState(false);
 
 
-
-  if (props.cardData.fr == "Wider Page") {
-    console.log(props.cardData);
-  }
-
   const options = {day: 'numeric', month: "long", year: "numeric"};
   const date = props.cardData.created_at ? new Date(props.cardData.created_at).toLocaleDateString('default', options ) : "n.d.";
 

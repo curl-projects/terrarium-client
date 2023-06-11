@@ -603,6 +603,16 @@ body {
   text-overflow: clip;
 }
 
+
+.clusterCard {
+  background-color: #fafafa;
+  border: 1px solid #e7e7e7;
+  border-radius: 0px;
+  padding: 3px;
+  text-overflow: clip;
+}
+
+
 /* SEARCH BOX CLASSES */
 
 .searchBarWrapper{

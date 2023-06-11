@@ -103,6 +103,7 @@ export default function Feature(){
     const navigate = useTransition();
 
     const [zoomObject, setZoomObject] = useState(null)
+    const [triggerClusters, setTriggerClusters] = useState(false)
 
     const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
     const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])
@@ -164,7 +165,7 @@ export default function Feature(){
             if(data.type === 'cluster_generation' && data.status === 'initiated'){
                 console.log("CLUSTER ANALYSIS INITIALISING")
             }
-            
+
             if(data.type === 'cluster_generation' && data.status === 'completed'){
                 console.log("CLUSTER ANALYSIS COMPLETED")
                 setClustersGenerated("completed")
@@ -203,9 +204,25 @@ export default function Feature(){
         }
     }, [titleFocused])
 
+    // useEffect(()=>{
+    //     console.log("UPPER ZOOM OBJECT", zoomObject)
+    //     if(zoomObject){
+    //         const clusterOutput = loaderData.featureRequests.filter(fr => fr.cluster===zoomObject.id)
+    //         setTopLevelStreamDataObj(clusterOutput)
+    //     }
+    //     else{
+    //         setTopLevelStreamDataObj(loaderData.featureRequests)
+    //     }
+    // }, [zoomObject])
+
     useEffect(()=>{
         console.log("CANVAS OBJ", topLevelCanvasDataObj)
     }, [topLevelCanvasDataObj])
+
+
+    useEffect(()=>{
+        console.log("STREAM OBJ", topLevelStreamDataObj)
+    }, [topLevelStreamDataObj])
 
 
     function handleTitleSearch(){
@@ -328,7 +345,7 @@ export default function Feature(){
                         </Link>
                     </div>
                     <div className='workspaceOutletInnerScaffold'>
-                        <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed, zoomObject, setZoomObject, clustersGenerated]}/>
+                        <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed, zoomObject, setZoomObject, clustersGenerated, triggerClusters, setTriggerClusters]}/>
                     </div>
                 </div>
                 <div className='messageStreamScaffold'>
@@ -340,7 +357,8 @@ export default function Feature(){
                             clustersGenerated={clustersGenerated}
                             clusterFetcher={clusterFetcher}
                             setClustersGenerated={setClustersGenerated}
-                            
+                            setTriggerClusters={setTriggerClusters}
+                            setZoomObject={setZoomObject}
                             />
                     </div>
                 </div>

@@ -5,6 +5,7 @@ import {AiOutlineArrowUp} from 'react-icons/ai';
 import CircularProgress from '@mui/material/CircularProgress';
 import { ImCross } from "react-icons/im";
 
+
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -14,6 +15,7 @@ const params = useParams()
 
 function handleClusterClick(e){
   props.setDataView('clusters')
+  props.setTriggerClusters(true)
   if(props.clustersGenerated === "incomplete"){
     props.setClustersGenerated('initiated')
     props.clusterFetcher.submit({featureId: params["*"], searchString: props.featureTitle}, 
@@ -27,7 +29,7 @@ function handleClusterClick(e){
            onClick={()=>props.setDataView('featureRequests')}>
         <p className='messageStreamMetadataText'>
           <span className="messageStreamMetadataIcon">{numberWithCommas(props.data.length)}</span>
-          Feature Requests
+          {props.data.length == 1 ? "Feature Request" : "Feature Requests"}
         </p>
       </div>
       <div className='messageStreamMetadataSection'
@@ -43,12 +45,11 @@ function handleClusterClick(e){
                                 sx={{
                                   color: 'rgb(31, 41, 55)'
                                 }}/>,
-                'completed': <span>20</span>
-                // 'completed': <span>20</span>
+                'completed': <span>{props.clusterData.length}</span>
               }[props.clustersGenerated]
             }
           </span>
-          Clusters
+          {props.clusterData.length == 1 ? "Cluster" : "Clusters"}
         </p>
       </div>
 

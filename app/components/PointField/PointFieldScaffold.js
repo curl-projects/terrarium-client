@@ -99,6 +99,12 @@ export default function PointFieldScaffold(props){
     props.setZoomObject(null)
   }
 
+
+  useEffect(()=>{
+    (props.triggerClusters && !displayControl.clusters) && generateClusters()
+    props.setTriggerClusters(false)
+  }, [props.triggerClusters])
+
   return(
     <>
       <PointField
@@ -139,7 +145,7 @@ export default function PointFieldScaffold(props){
             width: '40px',
             cursor: 'pointer'
           }} />
-      {props.clustersGenerated === 'complete' &&
+      {props.clustersGenerated === 'completed' &&
         <img
           onClick={generateClusters}
           src={network}
