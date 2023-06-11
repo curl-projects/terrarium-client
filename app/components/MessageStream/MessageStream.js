@@ -80,7 +80,6 @@ export default function MessageStream(props) {
           clustersGenerated={props.clustersGenerated}
           setDataView={setDataView}
         />
-        <div className="pl-10 pr-8 flex flex-col gap-2">
         {
           {
             "featureRequests": <MessageStreamFeatureRequests 
@@ -91,7 +90,6 @@ export default function MessageStream(props) {
             "clusters": <MessageStreamClusters />
           }[dataView]
         }
-        </div>
       </div>
     </>
   )

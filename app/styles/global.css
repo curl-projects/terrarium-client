@@ -1195,5 +1195,19 @@ div.DraftEditor-root {
 .messageStreamMetadataIcon{
   color: rgb(31, 41, 55);
   font-weight: 700;
-  margin-right: 2px;
+  margin-right: 4px;
+}
+
+.messageStreamMetadataText{
+  display: flex;
+  align-items: center;
+}
+
+.messageStreamClustersLoaderWrapper{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }

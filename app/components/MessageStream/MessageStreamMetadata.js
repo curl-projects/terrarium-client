@@ -1,5 +1,6 @@
 import { IoExpand, IoContract } from 'react-icons/io5';
 import {AiOutlineArrowUp} from 'react-icons/ai';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -13,15 +14,29 @@ export default function MessageStreamMetadata({isExpanded, setIsExpanded, scroll
     <div className='messageStreamMetadataWrapper'>
       <div className='messageStreamMetadataSection'
            onClick={()=>props.setDataView('featureRequests')}>
-        <p>
+        <p className='messageStreamMetadataText'>
           <span className="messageStreamMetadataIcon">{numberWithCommas(props.data.length)}</span>
           Feature Requests
         </p>
       </div>
       <div className='messageStreamMetadataSection'
            onClick={()=>props.setDataView('clusters')}>
-      <p>
-          <span className='messageStreamMetadataIcon'>20</span>
+      <p className='messageStreamMetadataText'>
+          <span className='messageStreamMetadataIcon'>
+            {
+              {
+                'incomplete': <span>0</span>,
+                'initiated': <CircularProgress size="10.5px"/>,
+                'completed': <CircularProgress 
+                                size="9px"
+                                thickness={8}
+                                sx={{
+                                  color: 'rgb(31, 41, 55)'
+                                }}/>
+                // 'completed': <span>20</span>
+              }[props.clustersGenerated]
+            }
+          </span>
           Clusters
         </p>
         {/* {
