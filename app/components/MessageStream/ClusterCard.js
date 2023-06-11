@@ -22,7 +22,7 @@ export default function ClusterCard(props) {
     d3.select(`#cluster-${clusterId}`)
       .classed("mouseOverCluster", true)
       .transition()
-      .duration(200)
+      .duration(100)
       .ease(d3.easeCubicInOut)
       .attr('fill', 'rgba(119, 153, 141)')
       
@@ -33,7 +33,7 @@ export default function ClusterCard(props) {
     d3.select(`#cluster-${clusterId}`)
       .classed("mouseOverCluster", false)
       .transition()
-      .duration(200)
+      .duration(100)
       .ease(d3.easeCubicInOut)
       .attr('fill', "rgba(119, 153, 141, 0.7)")
   }

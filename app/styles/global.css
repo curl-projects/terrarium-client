@@ -775,6 +775,7 @@ div.DraftEditor-root {
 }
 
 .mouseOverCluster{
+  transition: all 0.1s ease-in-out;
   opacity: 0.6 !important;
 }
 
