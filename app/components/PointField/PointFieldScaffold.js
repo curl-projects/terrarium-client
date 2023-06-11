@@ -88,8 +88,8 @@ export default function PointFieldScaffold(props){
     }
 
     // generate uniformly distributed cluster coordinates
-    const clusterCoordsArray = generateClusterCoords(props.data, 'kmeans_labels')
-    const clusterUnitsArray = generateClusterUnitCoords(props.data, 'kmeans_labels', clusterCoordsArray, false)
+    const clusterCoordsArray = generateClusterCoords(props.data, 'cluster')
+    const clusterUnitsArray = generateClusterUnitCoords(props.data, 'cluster', clusterCoordsArray, false)
     setDataObj(clusterUnitsArray)
     setClusters(clusterCoordsArray)
     setDisplayControl({data: true, clusters: true})
@@ -127,22 +127,23 @@ export default function PointFieldScaffold(props){
       {!props.zoomObject &&
       <>
       <img
-        onClick={generateClusters}
-        src={network}
-        alt="Generate Clusters"
-        style={{
-          position: 'absolute',
-          bottom: 30,
-          right: 30,
-          zIndex: 100,
-          height: '40px',
-          width: '40px',
-          cursor: 'pointer'
-        }} />
-        <img
           onClick={generateUniform}
           src={refresh}
           alt="Redistribute Data"
+          style={{
+            position: 'absolute',
+            bottom: 30,
+            right: 30,
+            zIndex: 100,
+            height: '40px',
+            width: '40px',
+            cursor: 'pointer'
+          }} />
+      {props.clustersGenerated === 'complete' &&
+        <img
+          onClick={generateClusters}
+          src={network}
+          alt="Generate Clusters"
           style={{
             position: 'absolute',
             bottom: 30,
@@ -152,6 +153,7 @@ export default function PointFieldScaffold(props){
             width: '40px',
             cursor: 'pointer'
           }} />
+      }
         </>
         }
         {props.zoomObject &&

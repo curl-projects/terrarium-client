@@ -54,7 +54,8 @@ export default function Discovery(){
    
     const [topLevelCanvasDataObj, topLevelStreamDataObj, 
       setTopLevelCanvasDataObj, setTopLevelStreamDataObj, 
-      loaderData, headerCollapsed, zoomObject, setZoomObject] = useOutletContext();
+      loaderData, headerCollapsed, zoomObject, setZoomObject,
+      clustersGenerated] = useOutletContext();
     
 
     useEffect(()=>{
@@ -145,6 +146,7 @@ export default function Discovery(){
                 dateValue={dateValue}
                 setDateValue={setDateValue}
                 headerCollapsed={headerCollapsed}
+                clustersGenerated={clustersGenerated}
                 />
             </div>
       </div>

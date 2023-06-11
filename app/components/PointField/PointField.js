@@ -119,7 +119,7 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
         .range([containerHeight, 0]);
 
       let zoomObjectMap = {
-        'cluster': "kmeans_labels",
+        'cluster': "cluster",
         'regionCluster': 'regionCluster'
       }
 
