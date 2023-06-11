@@ -27,6 +27,7 @@ export async function loader({ request, params }){
     })
     const url = new URL(request.url)
     const searchTerm = url.searchParams.get("searchTerm")
+    const clusters = url.searchParams.get("clusters")
   
     const featureId = params["*"]
     const feature = await readFeature(featureId)
@@ -51,12 +52,12 @@ export async function loader({ request, params }){
   
       // // works because of the update above
       // const featureRequests = await findFeatureRequests(featureId)
-      return redirect(`/feature/discovery/${featureId}`)
+      return redirect(`/feature/discovery/${featureId}?clusters=True`)
     }
   
     if(feature.isSearched){
       const featureRequests = await findFeatureRequests(featureId); // get associated data objects
-      return { feature: feature, featureRequests: featureRequests}
+      return { feature: feature, featureRequests: featureRequests, clustersLoading: clusters ? true : false}
     }
   
     return { feature: feature, featureRequests: [] }
@@ -132,23 +133,26 @@ export default function Feature(){
         console.log("CONNECTION STATUS:", connectionStatus)
     }, [connectionStatus])
 
+    useEffect(()=>{
+        console.log("MESSAGE HISTORY:", messageHistory)
+    }, [messageHistory])
+
     useEffect(() => {
         if (lastMessage !== null) {
           setMessageHistory((prev) => prev.concat(lastMessage));
         }
       }, [lastMessage, setMessageHistory]);
 
-    
     // determine if clusters have been processed and update the state
     useEffect(()=>{
-        (
-            (loaderData.featureRequests && loaderData.featureRequests[0].cluster != -1) 
+            ((loaderData.featureRequests && loaderData.featureRequests[0].cluster != -1) 
             ? setClustersGenerated("completed")
-            : setClustersGenerated("incomplete")
+            : setClustersGenerated("incomplete"))
+
+            loaderData.clustersLoading && setClustersGenerated('initiated')
 
             // TODO should we automatically trigger this if clusters are incomplete?
-        )
-    }, [loaderData])
+        }, [loaderData])
 
     // LISTEN TO WEBSOCKET TO FIGURE OUT WHETHER THE CLUSTERS HAVE BEEN GENERATED
     useEffect(()=>{
@@ -159,9 +163,9 @@ export default function Feature(){
 
             if(data.type === 'cluster_generation' && data.status === 'initiated'){
                 console.log("CLUSTER ANALYSIS INITIALISING")
-                setClustersGenerated("initiated")
             }
-            else if(data.type === 'cluster_generation' && data.status === 'completed'){
+            
+            if(data.type === 'cluster_generation' && data.status === 'completed'){
                 console.log("CLUSTER ANALYSIS COMPLETED")
                 setClustersGenerated("completed")
                 
@@ -203,11 +207,17 @@ export default function Feature(){
         console.log("CANVAS OBJ", topLevelCanvasDataObj)
     }, [topLevelCanvasDataObj])
 
+
+    function handleTitleSearch(){
+        fetcher.submit({'searchTerm': title, 'featureId': params["*"], actionType: "featureSearch"}, 
+                       {method: "post"})
+    }
+
     return(
         <>
         <FeatureHeader />
             <div className="featureScaffold">
-                <fetcher.Form className="featureTitleWrapper" method='post'>
+                <div className="featureTitleWrapper">
                     {titleFocused
                      ? (
                         <>
@@ -251,7 +261,10 @@ export default function Feature(){
                     <input type='hidden' name='searchTerm' value={title} />
                     <input type='hidden' name='featureId' value={params["*"]}/>
                     <input type='hidden' name='actionType' value='featureSearch' />
-                    <button className='searchIconWrapper'>
+                    <button 
+                        className='searchIconWrapper'
+                        onClick={handleTitleSearch}
+                        >
                         <ImSearch 
                             className='searchIconText'
                             style={{
@@ -259,7 +272,7 @@ export default function Feature(){
                                 height: headerCollapsed ? "20px" : "40px",
                             }}/>
                     </button>
-                </fetcher.Form>
+                </div>
                 {navigate.type === "fetchActionRedirect" &&
                     <LinearProgress 
                         variant="indeterminate"

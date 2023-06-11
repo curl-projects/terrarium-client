@@ -17,7 +17,7 @@ function handleClusterClick(e){
   if(props.clustersGenerated === "incomplete"){
     props.setClustersGenerated('initiated')
     props.clusterFetcher.submit({featureId: params["*"], searchString: props.featureTitle}, 
-                                {method: "post", action: "/utils/regenerate-clusters"})
+                                {method: "get", action: "/utils/regenerate-clusters"})
   }
 }
 
