@@ -79,7 +79,8 @@ export async function loader({ request, params }){
         return {updatedFeature}
     }
     else if(actionType === 'reload'){
-        return {}
+        const featureId = formData.get("featureId")
+        return redirect(`/feature/discovery/${featureId}`)
     }
   }
 
@@ -105,7 +106,7 @@ export default function Feature(){
     const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
     const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])
 
-    const revalidator = useRevalidator();
+    const clusterSubmit = useSubmit();
 
     const [clustersGenerated, setClustersGenerated] = useState("incomplete")
 
@@ -157,10 +158,10 @@ export default function Feature(){
             }
             else if(data.type === 'cluster_generation' && data.status === 'completed'){
                 console.log("CLUSTER ANALYSIS COMPLETED")
-                setClustersGenerated("complete")
+                setClustersGenerated("completed")
                 
                 // reload data to load new clusters
-                revalidator.revalidate()
+                clusterSubmit({actionType: "reload", featureId: params["*"]}, {method: "post"})
 
             }
             else{
@@ -192,10 +193,6 @@ export default function Feature(){
             titleRef.current.focus();
         }
     }, [titleFocused])
-
-    // useEffect(()=>{
-    //     console.log("STREAM OBJ", topLevelStreamDataObj)
-    // }, [topLevelStreamDataObj])
 
     useEffect(()=>{
         console.log("CANVAS OBJ", topLevelCanvasDataObj)
@@ -321,7 +318,7 @@ export default function Feature(){
                         <MessageStream
                             data={topLevelStreamDataObj}
                             featureId={loaderData.feature.id}
-                            // clustersGenerated={clustersGenerated}
+                            clustersGenerated={clustersGenerated}
                             />
                     </div>
                 </div>

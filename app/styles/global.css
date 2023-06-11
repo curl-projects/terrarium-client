@@ -1158,3 +1158,42 @@ div.DraftEditor-root {
   width: 100%;
   height: 100%;
 }
+
+.messageStreamMetadataWrapper{
+  --tw-backgroup-blur: blur(4px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+
+  font-size: .75rem;
+  line-height: 1rem;
+
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: #f3f4f6e6;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 10;
+  top: 0;
+  position: sticky;
+}
+
+.messageStreamMetadataSection{
+  margin-right: 20px;
+  cursor: pointer;
+  color: rgb(156, 163, 175);
+  font-weight: 500;
+}
+
+.messageStreamMetadataSection:hover{
+  color: rgb(31, 41, 55);
+}
+
+.messageStreamMetadataIcon{
+  color: rgb(31, 41, 55);
+  font-weight: 700;
+  margin-right: 2px;
+}

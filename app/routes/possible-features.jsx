@@ -8,6 +8,7 @@ export default function PossibleFeatures(){
                 <li>Interactive Search History</li>
                 <li>Editable Cluster Labels</li>
                 <li>JSON File Upload</li>
+                <li>Don't reload after pinning cards</li>
             </ol>
         </div>
         </>

@@ -10,15 +10,32 @@ export default function MessageStreamMetadata({isExpanded, setIsExpanded, scroll
 
   
   return (
-    <div className='flex w-full justify-between items-center sticky top-0 px-4 py-2 z-10 bg-gray-100/90 backdrop-blur-sm text-xs'>
-      <p
-        className="text-gray-800 font-bold"
-      >
-        {numberWithCommas(props.data.length)} <span className="text-gray-400 font-medium"> Feature Requests</span>
-      </p>
-      {props.clustersGenerated ? <p>Clusters Analysed</p> : <p>Clusters Generating</p>}
+    <div className='messageStreamMetadataWrapper'>
+      <div className='messageStreamMetadataSection'
+           onClick={()=>props.setDataView('featureRequests')}>
+        <p>
+          <span className="messageStreamMetadataIcon">{numberWithCommas(props.data.length)}</span>
+          Feature Requests
+        </p>
+      </div>
+      <div className='messageStreamMetadataSection'
+           onClick={()=>props.setDataView('clusters')}>
+      <p>
+          <span className='messageStreamMetadataIcon'>20</span>
+          Clusters
+        </p>
+        {/* {
+          {
+            "incomplete": <p>Clusters Incomplete</p>,
+            'initiated': <p>Clusters Generating</p>,
+            'completed': <p>Clusters Completed</p>
+          }[props.clustersGenerated]
+        } */}
+      </div>
 
-      <div className='flex gap-1'>
+      <div style={{flex: 1}}/>
+
+      <div style={{display: 'flex'}}>
 
         <AiOutlineArrowUp 
         size = {20}

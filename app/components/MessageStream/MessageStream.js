@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useFetcher } from "@remix-run/react";
 import MessageStreamMetadata from "~/components/MessageStream/MessageStreamMetadata";
-import MessageCard from "~/components/MessageStream/MessageCard";
-
+import MessageStreamFeatureRequests from "~/components/MessageStream/MessageStreamFeatureRequests";
+import MessageStreamClusters from "~/components/MessageStream/MessageStreamClusters";
 export default function MessageStream(props) {
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -11,11 +11,11 @@ export default function MessageStream(props) {
   const pinnedFetcher = useFetcher();
   const [pinnedCards, setPinnedCards] = useState([])
   const [remainingCards, setRemainingCards] = useState([])
+  const [dataView, setDataView] = useState("featureRequests")
 
   useEffect(() => {
     setPinned(props.data.filter(d => d.pinned === true).map(e => e.featureRequestId))
   }, [props.data])
-
 
 
   const pinCard = (fr_id) => {
@@ -78,26 +78,19 @@ export default function MessageStream(props) {
           scrollToTop={scrollToTop}
           paneRef={paneRef}
           clustersGenerated={props.clustersGenerated}
+          setDataView={setDataView}
         />
         <div className="pl-10 pr-8 flex flex-col gap-2">
-          {pinnedCards.map((cardData, idx) => (
-            <MessageCard
-              idx={idx}
-              key={cardData.featureRequest.fr_id}
-              cardData={cardData.featureRequest}
-              isExpanded={isExpanded}
-              pinCard={pinCard}
-              isPinned={true}/>
-          ))}
-          {pinnedCards.length > 0 && <h1 className="text-gray-400 text-xs font-medium pl-4">Remaining Feature Requests</h1>}
-          {remainingCards.map((cardData, idx) => (
-            <MessageCard
-              idx={idx}
-              key={cardData.featureRequest.fr_id}
-              cardData={cardData.featureRequest}
-              isExpanded={isExpanded}
-              pinCard={pinCard} />
-          ))}
+        {
+          {
+            "featureRequests": <MessageStreamFeatureRequests 
+                                  pinnedCards={pinnedCards} 
+                                  remainingCards={remainingCards} 
+                                  pinCard={pinCard} 
+                                  isExpanded={isExpanded} />,
+            "clusters": <MessageStreamClusters />
+          }[dataView]
+        }
         </div>
       </div>
     </>
