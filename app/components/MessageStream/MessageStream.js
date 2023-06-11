@@ -78,7 +78,10 @@ export default function MessageStream(props) {
           scrollToTop={scrollToTop}
           paneRef={paneRef}
           clustersGenerated={props.clustersGenerated}
+          setClustersGenerated={props.setClustersGenerated}
           setDataView={setDataView}
+          clusterFetcher={props.clusterFetcher}
+          featureTitle={props.featureTitle}
         />
         {
           {
@@ -87,7 +90,9 @@ export default function MessageStream(props) {
                                   remainingCards={remainingCards} 
                                   pinCard={pinCard} 
                                   isExpanded={isExpanded} />,
-            "clusters": <MessageStreamClusters />
+            "clusters": <MessageStreamClusters 
+                            clustersGenerated={props.clustersGenerated}
+                        />
           }[dataView]
         }
       </div>

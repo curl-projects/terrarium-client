@@ -107,6 +107,7 @@ export default function Feature(){
     const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])
 
     const clusterSubmit = useSubmit();
+    const clusterFetcher = useFetcher();
 
     const [clustersGenerated, setClustersGenerated] = useState("incomplete")
 
@@ -127,6 +128,10 @@ export default function Feature(){
         [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
     }[readyState];
 
+    useEffect(()=>{
+        console.log("CONNECTION STATUS:", connectionStatus)
+    }, [connectionStatus])
+
     useEffect(() => {
         if (lastMessage !== null) {
           setMessageHistory((prev) => prev.concat(lastMessage));
@@ -141,7 +146,7 @@ export default function Feature(){
             ? setClustersGenerated("completed")
             : setClustersGenerated("incomplete")
 
-            // TODO should we automatically trigger this if they're false?
+            // TODO should we automatically trigger this if clusters are incomplete?
         )
     }, [loaderData])
 
@@ -318,7 +323,11 @@ export default function Feature(){
                         <MessageStream
                             data={topLevelStreamDataObj}
                             featureId={loaderData.feature.id}
+                            featureTitle={loaderData.feature.title}
                             clustersGenerated={clustersGenerated}
+                            clusterFetcher={clusterFetcher}
+                            setClustersGenerated={setClustersGenerated}
+                            
                             />
                     </div>
                 </div>
