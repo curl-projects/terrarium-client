@@ -14,6 +14,10 @@ export default function ClusterCard(props) {
     if(!isCardExpanded){
         props.setZoomObject({id: props.clusterData[0].cluster.internalClusterId, type: "cluster"})
     }
+    else if(isCardExpanded && (Object.values(props.allCardsStatus).map(a => a.expanded)).filter((v)=> (v === true)).length === 1){
+        props.setZoomObject(null)
+    }
+
     setIsCardExpanded(!isCardExpanded)
   }
 
@@ -24,7 +28,7 @@ export default function ClusterCard(props) {
       .transition()
       .duration(100)
       .ease(d3.easeCubicInOut)
-      .attr('fill', 'rgba(119, 153, 141)')
+      .attr('fill', 'rgb(176, 191, 185)')
     
     setIsHovered(true)
       
@@ -51,6 +55,10 @@ export default function ClusterCard(props) {
         setIsCardExpanded(false)
     }
   }, [props.expandSpecificCard])
+
+  useEffect(()=>{
+    props.setAllCardsStatus(prevState => ({...prevState, [props.clusterIndex]: {expanded: isCardExpanded}}))
+  }, [isCardExpanded])
 
 
   return (

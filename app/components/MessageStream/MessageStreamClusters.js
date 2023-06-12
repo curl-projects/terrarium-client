@@ -6,6 +6,22 @@ export default function MessageStreamClusters(props){
     useEffect(()=>{
         console.log("EXPAND SPECIFIC CARD:", props.expandSpecificCard)
     }, [props.expandSpecificCard])
+
+    const [allCardsStatus, setAllCardsStatus] = useState([])
+
+    useEffect(()=>{
+        console.log("CLUSTER STATUS", props.clusterData)
+        let tempObject = {}
+        props.clusterData && props.clusterData.map((clusterData, idx) => (
+            tempObject[idx] = {expanded: false}
+        ))
+
+        setAllCardsStatus(tempObject)
+    }, [props.clusterData])
+
+    useEffect(()=>{
+        console.log('ALL CARDS STATUS:', allCardsStatus)
+    }, [allCardsStatus])
     
     return(
         <>
@@ -28,6 +44,8 @@ export default function MessageStreamClusters(props){
                     pinCard={props.pinCard}
                     setZoomObject={props.setZoomObject}
                     expandSpecificCard={props.expandSpecificCard}
+                    setAllCardsStatus={setAllCardsStatus}
+                    allCardsStatus={allCardsStatus}
                 />
             ))
             }
