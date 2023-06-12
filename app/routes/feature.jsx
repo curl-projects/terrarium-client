@@ -314,7 +314,7 @@ export default function Feature(){
                     className='featureDescriptionWrapper' 
                     value={(description == "" && !descriptionFocused) ? "No Description" : description}
                     onFocus={()=>setDescriptionFocused(true)}
-                    onBlur={()=>setDescriptionFocused(false)}
+    
                     onChange={(e)=>setDescription(e.target.value)}
                     />
                 
@@ -322,10 +322,9 @@ export default function Feature(){
                     <input type='hidden' name='actionType' value='saveDescription' />
                     <input type='hidden' name='featureId' value={params["*"]} />
                     <input type="hidden" name="featureDescription" value={description} />
-                    <button className='featureDescriptionSave' type="submit" display={descriptionFocused ? "block" : "none"}>
-                        <p>Save</p>
+                    <button className='featureDescriptionSave' type="submit" style={{fontSize: descriptionFocused ? "16px" : "0px"}}>
+                        <p onClick={()=>setDescriptionFocused(false)}>Save</p>
                     </button>
-
                 </descriptionFetcher.Form>
     
             <div className='workspaceScaffold'>

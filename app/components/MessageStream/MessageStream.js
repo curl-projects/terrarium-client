@@ -23,7 +23,7 @@ export default function MessageStream(props) {
 
   useEffect(()=>{
       console.log("MESSAGE STREAM CLUSTERS DATA", props.data)
-
+    if(props.data){
       const organisedData = props.data.reduce((group, featureRequest) => {
           const { internalClusterId } = featureRequest.cluster;
           group[internalClusterId] = group[internalClusterId] ?? [];
@@ -32,6 +32,7 @@ export default function MessageStream(props) {
       }, {});
 
         setClusterData(Object.values(organisedData))
+    }
     }, [props.data])
 
 

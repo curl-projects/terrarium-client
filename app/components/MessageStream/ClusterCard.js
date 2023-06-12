@@ -11,6 +11,7 @@ export default function ClusterCard(props) {
   const [isHovered, setIsHovered] = useState(false);
   const [descriptionText, setDescriptionText] = useState("")
   const clusterCardRef = useRef();
+  const clusterDescriptionFetcher = useFetcher();
 
   function handleClusterCardClick(){
     if(!isCardExpanded){
@@ -33,8 +34,7 @@ export default function ClusterCard(props) {
       .attr('fill', 'rgb(176, 191, 185)')
     
     setIsHovered(true)
-      
-
+    
   }
 
   function handleMouseOut(event, clusterId){
@@ -92,6 +92,10 @@ export default function ClusterCard(props) {
           className={cn(
             "flex flex-col gap-2 px-3 py-2 text-sm tracking-tight text-gray-600/90 font-normal",
           )}>
+          <textarea 
+            className='mt-2'
+            value={descriptionText || "No topics identified"}
+          />
           <p className='mt-2'>{descriptionText || "No topics identified" }</p>
           <div className="pl-10 pr-8 flex flex-col gap-2" style={{backgroundColor: "rgb(243, 244, 246)"}}>
             {props.clusterData.map((cardData, idx) => (
