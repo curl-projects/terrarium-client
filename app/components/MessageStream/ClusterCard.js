@@ -97,12 +97,12 @@ export default function ClusterCard(props) {
         <clusterDescriptionFetcher.Form method='get' action="/utils/set-cluster-description" className='clusterDescriptionWrapper'>
             <textarea 
                 className='mt-2'
-                value={descriptionText || "No topics identified"}
+                value={(descriptionText == "" && !descriptionFocused) ? "No Topics Identified" : descriptionText}
                 onChange={(e)=>setDescriptionText(e.target.value)}
                 onFocus={()=>setDescriptionFocused(true)}
             />
             <input type='hidden' name='clusterId' value={props.clusterData[0].cluster.clusterId}/>
-            <input type='hidden' name='description' value={description}/>
+            <input type='hidden' name='description' value={descriptionText}/>
             <div className='clusterDescriptionSubmitWrapper'>
                 <button type="submit" style={{fontSize: descriptionFocused ? "16px" : "0px"}}>
                     <p onClick={()=>setDescriptionFocused(false)} 
