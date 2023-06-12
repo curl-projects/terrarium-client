@@ -314,7 +314,6 @@ export default function Feature(){
                     className='featureDescriptionWrapper' 
                     value={(description == "" && !descriptionFocused) ? "No Description" : description}
                     onFocus={()=>setDescriptionFocused(true)}
-    
                     onChange={(e)=>setDescription(e.target.value)}
                     />
                 

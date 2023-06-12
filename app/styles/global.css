@@ -1224,5 +1224,17 @@ div.DraftEditor-root {
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
+.clusterDescriptionWrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+.clusterDescriptionWrapper{
+  display: flex;
+}
+
+.clusterDescriptionSaveWrapper{
+  font-size: 10px;
 }

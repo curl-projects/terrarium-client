@@ -3,6 +3,7 @@ import { useFetcher } from "@remix-run/react";
 import cn from "classnames";
 import MessageCard from "~/components/MessageStream/MessageCard";
 import * as d3 from 'd3';
+import { AiOutlineSave } from "react-icons/ai"
 
 export default function ClusterCard(props) {
 
@@ -10,6 +11,7 @@ export default function ClusterCard(props) {
   // const [isPinned, setIsPinned] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const [descriptionText, setDescriptionText] = useState("")
+  const [descriptionFocused, setDescriptionFocused] = useState(false)
   const clusterCardRef = useRef();
   const clusterDescriptionFetcher = useFetcher();
 
@@ -92,11 +94,26 @@ export default function ClusterCard(props) {
           className={cn(
             "flex flex-col gap-2 px-3 py-2 text-sm tracking-tight text-gray-600/90 font-normal",
           )}>
-          <textarea 
-            className='mt-2'
-            value={descriptionText || "No topics identified"}
-          />
-          <p className='mt-2'>{descriptionText || "No topics identified" }</p>
+        <clusterDescriptionFetcher.Form method='get' action="/utils/set-cluster-description" className='clusterDescriptionWrapper'>
+            <textarea 
+                className='mt-2'
+                value={descriptionText || "No topics identified"}
+                onChange={(e)=>setDescriptionText(e.target.value)}
+                onFocus={()=>setDescriptionFocused(true)}
+            />
+            <input type='hidden' name='clusterId' value={props.clusterData[0].cluster.clusterId}/>
+            <input type='hidden' name='description' value={description}/>
+            <div className='clusterDescriptionSubmitWrapper'>
+                <button type="submit" style={{fontSize: descriptionFocused ? "16px" : "0px"}}>
+                    <p onClick={()=>setDescriptionFocused(false)} 
+                       className='clusterDescriptionSaveWrapper'
+                       style={{fontWeight: 'bold', fontSize: descriptionFocused ? "12px" : "0px", color: "#B0BFB9"}}>
+                        Save
+                    </p>
+                </button>
+                <div style={{flex: 1 }}/>
+            </div>
+          </clusterDescriptionFetcher.Form>
           <div className="pl-10 pr-8 flex flex-col gap-2" style={{backgroundColor: "rgb(243, 244, 246)"}}>
             {props.clusterData.map((cardData, idx) => (
                 <MessageCard
