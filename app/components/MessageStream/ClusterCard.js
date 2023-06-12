@@ -43,9 +43,12 @@ export default function ClusterCard(props) {
   }
 
   useEffect(()=>{
-    if(props.expandSpecificCard && props.expandSpecificCard.cardType === 'cluster' && props.expandSpecificCard.cardId === props.clusterData[0].cluster){
+    if(props.expandSpecificCard && props.expandSpecificCard.cardType === 'cluster' && props.expandSpecificCard.cardId === props.clusterData[0].cluster.internalClusterId){
         clusterCardRef.current.scrollIntoView({block: "start", behaviour: "smooth"})
         setIsCardExpanded(true)
+    }
+    else if(props.expandSpecificCard && props.expandSpecificCard.cardType ==='cluster'){
+        setIsCardExpanded(false)
     }
   }, [props.expandSpecificCard])
 

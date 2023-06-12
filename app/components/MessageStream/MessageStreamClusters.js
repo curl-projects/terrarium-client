@@ -4,8 +4,8 @@ import ClusterCard from "~/components/MessageStream/ClusterCard"
 
 export default function MessageStreamClusters(props){
     useEffect(()=>{
-        console.log("CLUSTER DATA:", props.clusterData)
-    }, [props.clusterData])
+        console.log("EXPAND SPECIFIC CARD:", props.expandSpecificCard)
+    }, [props.expandSpecificCard])
     
     return(
         <>
