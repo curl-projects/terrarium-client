@@ -18,12 +18,16 @@ export default function MessageStream(props) {
   }, [props.data])
 
   useEffect(()=>{
+    console.log('CLUSTER DATA:', clusterData)
+  }, [clusterData])
+
+  useEffect(()=>{
       console.log("MESSAGE STREAM CLUSTERS DATA", props.data)
 
       const organisedData = props.data.reduce((group, featureRequest) => {
-          const { cluster } = featureRequest;
-          group[cluster] = group[cluster] ?? [];
-          group[cluster].push(featureRequest)
+          const { internalClusterId } = featureRequest.cluster;
+          group[internalClusterId] = group[internalClusterId] ?? [];
+          group[internalClusterId].push(featureRequest)
           return group
       }, {});
 

@@ -4,7 +4,8 @@ export async function findFeatureRequests(featureId){
   const featureRequests = await db.featureRequestMap.findMany({
     where: { featureId: parseInt(featureId)},
     include: {
-      featureRequest: true
+      featureRequest: true,
+      cluster: true
     }
   })
 

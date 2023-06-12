@@ -95,23 +95,6 @@ export default function Discovery(){
     setTopLevelStreamDataObj(loaderData.featureRequests)
     setSearchResults([])
   }
-
-  useEffect(()=>{
-    if(zoomObject){
-      filterZoomedData(zoomObject)
-    }
-  }, [zoomObject])
-
-  function filterZoomedData(zoomObject){
-    let zoomObjectMap = {
-      'cluster': "kmeans_labels",
-      'regionCluster': 'regionCluster'
-    }
-
-    const clusterIdName =  zoomObjectMap[zoomObject.type]
-    console.log("FEATURE REQUESTS:", loaderData.featureRequests)
-    const filteredData = loaderData.featureRequests.filter(obj => obj["kmeans_labels"] === zoomObject.id)
-  }
   
   function resetZoomedData(e, changeParam){
     setZoomObject(null)

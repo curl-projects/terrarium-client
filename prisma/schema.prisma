@@ -47,6 +47,7 @@ model Feature {
   isSearched        Boolean             @default(false)
   user              User                @relation(fields: [userId], references: [id])
   featureRequests   FeatureRequestMap[]
+  clusters Cluster[]
 }
 
 model FeatureRequest {
@@ -67,10 +68,12 @@ model FeatureRequestMap {
   featureId        Int
   featureRequestId String
   pinned           Boolean        @default(false)
-  cluster          Int            @default(-1)
+  oldCluster          Int            @default(-1)
   feature          Feature        @relation(fields: [featureId], references: [id], onDelete: Cascade)
   featureRequest   FeatureRequest @relation(fields: [featureRequestId], references: [fr_id], onDelete: Cascade)
-
+  cluster          Cluster? @relation(fields: [clusterId], references: [clusterId], onDelete: SetNull)
+  clusterId        Int?
+  
   @@id([featureId, featureRequestId])
 }
 
@@ -89,4 +92,12 @@ model DiscordMessage {
   messageUser    String
   messageContent String
   thread         Thread @relation(fields: [threadId], references: [ticketNumber])
+}
+
+model Cluster {
+  clusterId Int @id @default(sequence())
+  internalClusterId Int @default(-1)
+  feature Feature? @relation(fields: [featureId], references: [id], onDelete: Cascade)
+  featureId Int?
+  featureRequestMaps FeatureRequestMap[]
 }

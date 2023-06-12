@@ -132,13 +132,13 @@ export default function Feature(){
         [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
     }[readyState];
 
-    useEffect(()=>{
-        console.log("CONNECTION STATUS:", connectionStatus)
-    }, [connectionStatus])
+    // useEffect(()=>{
+    //     console.log("CONNECTION STATUS:", connectionStatus)
+    // }, [connectionStatus])
 
-    useEffect(()=>{
-        console.log("MESSAGE HISTORY:", messageHistory)
-    }, [messageHistory])
+    // useEffect(()=>{
+    //     console.log("MESSAGE HISTORY:", messageHistory)
+    // }, [messageHistory])
 
     useEffect(() => {
         if (lastMessage !== null) {
@@ -159,7 +159,6 @@ export default function Feature(){
 
     // LISTEN TO WEBSOCKET TO FIGURE OUT WHETHER THE CLUSTERS HAVE BEEN GENERATED
     useEffect(()=>{
-        console.log("INNER LAST MESSAGE!", lastMessage)
         if(lastMessage && lastMessage.data){
             console.log("LAST MESSAGE DATA!", lastMessage.data)
             const data = JSON.parse(lastMessage.data)
@@ -197,7 +196,7 @@ export default function Feature(){
 
     useEffect(()=>{
         setTopLevelStreamDataObj(loaderData.featureRequests)
-        setTopLevelCanvasDataObj(loaderData.featureRequests.map(a => ({...a.featureRequest, cluster: a.cluster})))
+        setTopLevelCanvasDataObj(loaderData.featureRequests)
     }, [loaderData.featureRequests])
 
     useEffect(()=>{
@@ -206,24 +205,13 @@ export default function Feature(){
         }
     }, [titleFocused])
 
-    // useEffect(()=>{
-    //     console.log("UPPER ZOOM OBJECT", zoomObject)
-    //     if(zoomObject){
-    //         const clusterOutput = loaderData.featureRequests.filter(fr => fr.cluster===zoomObject.id)
-    //         setTopLevelStreamDataObj(clusterOutput)
-    //     }
-    //     else{
-    //         setTopLevelStreamDataObj(loaderData.featureRequests)
-    //     }
-    // }, [zoomObject])
-
     useEffect(()=>{
-        console.log("CANVAS OBJ", topLevelCanvasDataObj)
+        console.log("TOP LEVEL CANVAS OBJ", topLevelCanvasDataObj)
     }, [topLevelCanvasDataObj])
 
 
     useEffect(()=>{
-        console.log("STREAM OBJ", topLevelStreamDataObj)
+        console.log("TOP LEVEL STREAM OBJ", topLevelStreamDataObj)
     }, [topLevelStreamDataObj])
 
 

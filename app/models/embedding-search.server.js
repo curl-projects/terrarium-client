@@ -89,3 +89,79 @@ export async function embeddingSearch(searchString, featureId){
   const filteredEmbeddings = await filterEmbeddings(knnIDs)
   return filteredEmbeddings
 }
+
+// DELETE EXISTING CLUSTERS BELONGING TO A SPECIFIED FEATURE
+export async function deleteClusters(featureId){
+  const result = await db.feature.update({
+    where: {
+      id: featureId
+    },
+    data: {
+      clusters: {
+        deleteMany: {}
+      }
+    }
+  })
+}
+
+// CREATE CLUSTERS AND ATTACH ALL RELEVANT FEATURE REQUESTS
+// export async function attachClusters(featureId){
+//   const result = await db.feature.update({
+//     where: {
+//       id: featureId
+//     },
+//     data: {
+//       feature: {
+//         connect: {
+//           id: 
+//         }
+//       }
+//     }
+//   })
+// }
+
+export async function createCluster(clusterId, featureId, featureRequestId){
+  const result = await db.cluster.create({
+    data: {
+      clusterId: clusterId,
+      feature: {
+        connect: {
+          id: featureId
+        }
+      },
+      featureRequestMaps: {
+        connect: [
+          {
+            "featureId_featureRequestId": {
+              "featureId": int(feature_id),
+              "featureRequestId": featureRequestId,
+          }
+          }
+        ]
+      }
+    }
+  })
+}
+
+
+// result = await db.cluster.create(
+//   data={
+//     clusterId: 1,
+//     feature: {
+//       connect: {
+//         id: 17
+//       }
+//     },
+//     featureRequestMaps: {
+//       connect: [
+//         {
+//           "featureId_featureRequestId": {
+//             "featureId": 17,
+//             "featureRequestId": "10007167454405100125570276001011828521",
+//           }
+//         }
+//       ]
+//     }
+//   })
+
+// CONNECT ALL CLUSTERS AT ONCE

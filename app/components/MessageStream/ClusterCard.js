@@ -12,7 +12,7 @@ export default function ClusterCard(props) {
 
   function handleClusterCardClick(){
     if(!isCardExpanded){
-        props.setZoomObject({id: props.clusterData[0].cluster, type: "cluster"})
+        props.setZoomObject({id: props.clusterData[0].cluster.internalClusterId, type: "cluster"})
     }
     setIsCardExpanded(!isCardExpanded)
   }
@@ -25,6 +25,8 @@ export default function ClusterCard(props) {
       .duration(100)
       .ease(d3.easeCubicInOut)
       .attr('fill', 'rgba(119, 153, 141)')
+    
+    setIsHovered(true)
       
 
   }
@@ -36,10 +38,11 @@ export default function ClusterCard(props) {
       .duration(100)
       .ease(d3.easeCubicInOut)
       .attr('fill', "rgba(119, 153, 141, 0.7)")
+
+    setIsHovered(false)
   }
 
   useEffect(()=>{
-    console.log("EXPAND SPECIFIC CARD:", props.expandSpecificCard)
     if(props.expandSpecificCard && props.expandSpecificCard.cardType === 'cluster' && props.expandSpecificCard.cardId === props.clusterData[0].cluster){
         clusterCardRef.current.scrollIntoView({block: "start", behaviour: "smooth"})
         setIsCardExpanded(true)
@@ -50,8 +53,8 @@ export default function ClusterCard(props) {
   return (
     <div 
         className='clusterCard relative' 
-        onMouseOver={event => handleMouseOver(event, props.clusterData[0].cluster)}
-        onMouseOut={event => handleMouseOut(event, props.clusterData[0].cluster)}
+        onMouseOver={event => handleMouseOver(event, props.clusterData[0].cluster.internalClusterId)}
+        onMouseOut={event => handleMouseOut(event, props.clusterData[0].cluster.internalClusterId)}
         >
       <div
         ref={clusterCardRef}
@@ -61,7 +64,7 @@ export default function ClusterCard(props) {
           {"text-gray-800": isHovered}
         )}
       >
-        Cluster {props.clusterData[0].cluster}
+        Cluster {props.clusterData[0].cluster.internalClusterId}
       </div>
 
       {(isCardExpanded || props.isExpanded) && (

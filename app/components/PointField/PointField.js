@@ -12,7 +12,7 @@ function usePrevious(value) {
   return ref.current;
 }
 
-export default function PointField({ data, clusters, searchResults, filterBrushedData,
+export default function PointField({data, clusters, searchResults, filterBrushedData,
                                    resetBrushFilter, zoomObject, setZoomObject,
                                    displayControl, resetZoomedData, headerCollapsed,
                                   setDataView, setExpandSpecificCard}) {
@@ -47,6 +47,7 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
             setDataView("clusters")
             setExpandSpecificCard({cardId: e.target.__data__.id, cardType: "cluster"})
             setZoomObject({"id": e.target.__data__.id, "type": e.target.__data__.type})
+            console.log("ZOOM OBJECT:", {"id": e.target.__data__.id, "type": e.target.__data__.type})
           })
           .transition(500)
             .delay(200)
@@ -127,16 +128,19 @@ export default function PointField({ data, clusters, searchResults, filterBrushe
       }
 
       const clusterIdName =  zoomObjectMap[zoomObject.type]
+      console.log("CLUSTER ID NAME:", clusterIdName)
+      console.log("MY DATA:", data)
 
-      const transforms = [[]].concat(d3.groups(data, d => d[clusterIdName]).map(([key, data])=> {
+      const transforms = [[]].concat(d3.groups(data, d => d.cluster.internalClusterId).map(([key, data])=> {
         const [x0, x1] = d3.extent(data, d => d["xDim"]).map(x);
         const [y1, y0] = d3.extent(data, d => d['yDim']).map(y);
         let margin = 10
         const k = 0.1*Math.min(containerWidth / (x1+2*margin - x0), containerHeight / (y1+2*margin - y0));
         const tx = (containerWidth - k * (x0 + x1)) / 2;
         const ty = (containerHeight - k * (y0 + y1)) / 2;
-        return [data[0][clusterIdName], d3.zoomIdentity.translate(tx, ty).scale(k)];
+        return [data[0].cluster.internalClusterId, d3.zoomIdentity.translate(tx, ty).scale(k)];
       }))
+
 
       const transform = transforms.find((el) => el[0] === zoomObject.id)
 

@@ -39,19 +39,18 @@ export default function PointFieldScaffold(props){
 
     return coordsArray
   }
-  function generateClusterUnitCoords(data, labelName, clusterCoordsArray, region, dispersionFactor=10000){
+  function generateClusterUnitCoords(data, clusterCoordsArray, dispersionFactor=10000){
     const clusterUnits = []
 
     for(let idx in data){
-      let cluster = data[idx][labelName]
-      let xGauss = gaussian(0, (xMax-xMin)/dispersionFactor)
-      let yGauss = gaussian(0, (yMax-yMin)/dispersionFactor)
+      let cluster = data[idx].cluster.internalClusterId
 
       let obj = {...data[idx],
-                 "xDim": clusterCoordsArray.find(clus => clus.id === cluster)['xDim'] + xGauss.random(1)[0],
-                 "yDim": clusterCoordsArray.find(clus => clus.id === cluster)['yDim'] + yGauss.random(1)[0],
+                 "xDim": clusterCoordsArray.find(clus => clus.id === cluster)['xDim'] + gaussian(0, (xMax-xMin)/dispersionFactor).random()[0],
+                 "yDim": clusterCoordsArray.find(clus => clus.id === cluster)['yDim'] + gaussian(0, (yMax-yMin)/dispersionFactor).random()[0],
                 }
       clusterUnits.push(obj)
+
     }
     return clusterUnits
   }
@@ -71,8 +70,8 @@ export default function PointFieldScaffold(props){
     props.setZoomObject(null)
 
     // GENERATOR FUNCTIONS
-    function generateClusterCoords(data, labelName){
-      const labels = data.map(a => a[labelName])
+    function generateClusterCoords(data){
+      const labels = data.map(a => a.cluster.internalClusterId)
       const clusterLabels = Array.from(new Set(labels))
       const clusterCoordsArray = []
 
@@ -88,8 +87,8 @@ export default function PointFieldScaffold(props){
     }
 
     // generate uniformly distributed cluster coordinates
-    const clusterCoordsArray = generateClusterCoords(props.data, 'cluster')
-    const clusterUnitsArray = generateClusterUnitCoords(props.data, 'cluster', clusterCoordsArray, false)
+    const clusterCoordsArray = generateClusterCoords(props.data)
+    const clusterUnitsArray = generateClusterUnitCoords(props.data, clusterCoordsArray)
     setDataObj(clusterUnitsArray)
     setClusters(clusterCoordsArray)
     setDisplayControl({data: true, clusters: true})
