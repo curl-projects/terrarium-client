@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { useFetcher } from "@remix-run/react";
 import cn from "classnames";
 import MessageCard from "~/components/MessageStream/MessageCard";
 import * as d3 from 'd3';
@@ -8,6 +9,7 @@ export default function ClusterCard(props) {
   const [isCardExpanded, setIsCardExpanded] = useState(false);
   // const [isPinned, setIsPinned] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const [descriptionText, setDescriptionText] = useState("")
   const clusterCardRef = useRef();
 
   function handleClusterCardClick(){
@@ -47,6 +49,10 @@ export default function ClusterCard(props) {
   }
 
   useEffect(()=>{
+    console.log("CLUSTER CARD DATA:", props.clusterData)
+  }, [props.clusterData])
+
+  useEffect(()=>{
     if(props.expandSpecificCard && props.expandSpecificCard.cardType === 'cluster' && props.expandSpecificCard.cardId === props.clusterData[0].cluster.internalClusterId){
         clusterCardRef.current.scrollIntoView({block: "start", behaviour: "smooth"})
         setIsCardExpanded(true)
@@ -60,6 +66,9 @@ export default function ClusterCard(props) {
     props.setAllCardsStatus(prevState => ({...prevState, [props.clusterIndex]: {expanded: isCardExpanded}}))
   }, [isCardExpanded])
 
+  useEffect(()=>{
+    props.clusterData[0] && setDescriptionText(props.clusterData[0].cluster.description)
+  }, [props.clusterData])
 
   return (
     <div 
@@ -83,7 +92,7 @@ export default function ClusterCard(props) {
           className={cn(
             "flex flex-col gap-2 px-3 py-2 text-sm tracking-tight text-gray-600/90 font-normal",
           )}>
-          <p className='mt-2'>Topic: Multiple whiteboards</p>
+          <p className='mt-2'>{descriptionText || "No topics identified" }</p>
           <div className="pl-10 pr-8 flex flex-col gap-2" style={{backgroundColor: "rgb(243, 244, 246)"}}>
             {props.clusterData.map((cardData, idx) => (
                 <MessageCard

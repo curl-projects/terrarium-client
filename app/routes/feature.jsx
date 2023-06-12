@@ -66,6 +66,8 @@ export async function loader({ request, params }){
   export async function action({ request }){
     const formData = await request.formData()
     const actionType = formData.get('actionType')
+
+    console.log("HI START ACTION!!!")
   
     if(actionType === 'featureSearch'){
         const featureId = formData.get("featureId")
@@ -73,6 +75,7 @@ export async function loader({ request, params }){
       return redirect(`/feature/discovery/${featureId}?searchTerm=${searchTerm}`)
     }
     else if(actionType === "saveDescription"){
+        console.log("HI!!!")
         const featureId = formData.get("featureId")
         const featureDescription = formData.get('featureDescription')
 
@@ -214,10 +217,21 @@ export default function Feature(){
         console.log("TOP LEVEL STREAM OBJ", topLevelStreamDataObj)
     }, [topLevelStreamDataObj])
 
+    useEffect(()=>{
+        console.log("LOADER DATA:", loaderData)
+    }, [loaderData])
 
     function handleTitleSearch(){
         fetcher.submit({'searchTerm': title, 'featureId': params["*"], actionType: "featureSearch"}, 
                        {method: "post"})
+    }
+
+    function handleDescriptionSubmit(){
+        descriptionFetcher.submit(
+            {actionType: "saveDescription", featureId: params["*"], featureDescription: description}, 
+            {method: 'post'})
+            
+        setDescriptionFocused(false)
     }
 
     return(
@@ -298,8 +312,7 @@ export default function Feature(){
                         height: headerCollapsed ? "0px" : "50px",
                     }}
                     className='featureDescriptionWrapper' 
-                    defaultValue={"No Description"}
-                    value={description == "" ? null : description}
+                    value={(description == "" && !descriptionFocused) ? "No Description" : description}
                     onFocus={()=>setDescriptionFocused(true)}
                     onBlur={()=>setDescriptionFocused(false)}
                     onChange={(e)=>setDescription(e.target.value)}
@@ -309,11 +322,10 @@ export default function Feature(){
                     <input type='hidden' name='actionType' value='saveDescription' />
                     <input type='hidden' name='featureId' value={params["*"]} />
                     <input type="hidden" name="featureDescription" value={description} />
-                    {descriptionFocused &&
-                        <button className='featureDescriptionSave' type='submit'>
-                            <p>Save</p>
-                        </button>
-                    }
+                    <button className='featureDescriptionSave' type="submit" display={descriptionFocused ? "block" : "none"}>
+                        <p>Save</p>
+                    </button>
+
                 </descriptionFetcher.Form>
     
             <div className='workspaceScaffold'>

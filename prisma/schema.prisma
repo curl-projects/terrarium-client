@@ -99,5 +99,7 @@ model Cluster {
   internalClusterId Int @default(-1)
   feature Feature? @relation(fields: [featureId], references: [id], onDelete: Cascade)
   featureId Int?
+  description String @default("")
   featureRequestMaps FeatureRequestMap[]
+
 }
