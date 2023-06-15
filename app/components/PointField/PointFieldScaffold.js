@@ -65,9 +65,9 @@ export default function PointFieldScaffold(props){
     setDisplayControl({data: true, clusters: false})
   }
 
-  function generateClusters(e){
+  function generateClusters(resetZoom){
     // RESET THE ZOOM SO THE CLUSTERS RENDER PROPERLY
-    props.setZoomObject(null)
+    resetZoom && props.setZoomObject(null)
 
     // GENERATOR FUNCTIONS
     function generateClusterCoords(data){
@@ -120,6 +120,7 @@ export default function PointFieldScaffold(props){
         headerCollapsed={props.headerCollapsed}
         setDataView={props.setDataView}
         setExpandSpecificCard={props.setExpandSpecificCard}
+        generateClusters={generateClusters}
         />
       <button style={{
         position: 'absolute',
@@ -148,7 +149,7 @@ export default function PointFieldScaffold(props){
           }} />
       {props.clustersGenerated === 'completed' &&
         <img
-          onClick={generateClusters}
+          onClick={() => generateClusters(false)}
           src={network}
           alt="Generate Clusters"
           style={{

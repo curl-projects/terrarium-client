@@ -18,8 +18,6 @@ export default function ClusterCard(props) {
 
   useEffect(()=>{
     if(props.clusterData[0]){
-        console.log("INPUT:", props.clusterData[0].cluster.description)
-        console.log("EXPERIMENT:", JSON.parse(props.clusterData[0].cluster.description.replaceAll('\'', "\"")).join("; "))
         try{
             setDescriptionText(JSON.parse(props.clusterData[0].cluster.description.replaceAll('\'', "\"")).join("; "))
         }

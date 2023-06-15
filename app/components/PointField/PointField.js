@@ -15,7 +15,11 @@ function usePrevious(value) {
 export default function PointField({data, clusters, searchResults, filterBrushedData,
                                    resetBrushFilter, zoomObject, setZoomObject,
                                    displayControl, resetZoomedData, headerCollapsed,
-                                  setDataView, setExpandSpecificCard}) {
+                                  setDataView, setExpandSpecificCard, generateClusters}) {
+
+  useEffect(()=>{
+    console.log("POINT FIELD DATA:", data)
+  }, [data])
 
   // the weird domains create padding around the svg
   const xDomain = [-0.05, 1.05]
@@ -112,7 +116,12 @@ export default function PointField({data, clusters, searchResults, filterBrushed
     .translateExtent([[0, 0], [containerWidth, containerHeight]])
     .on("zoom", zoomed);
 
+
     if(zoomObject && clusters.length !== 0){
+      console.log("HI!")
+      !displayControl.clusters && generateClusters(false)
+
+
       var x = d3.scaleLinear()
       .domain(xDomain)
       .range([0, containerWidth]);
@@ -128,8 +137,6 @@ export default function PointField({data, clusters, searchResults, filterBrushed
       }
 
       const clusterIdName =  zoomObjectMap[zoomObject.type]
-      console.log("CLUSTER ID NAME:", clusterIdName)
-      console.log("MY DATA:", data)
 
       const transforms = [[]].concat(d3.groups(data, d => d.cluster.internalClusterId).map(([key, data])=> {
         const [x0, x1] = d3.extent(data, d => d["xDim"]).map(x);
@@ -187,8 +194,8 @@ export default function PointField({data, clusters, searchResults, filterBrushed
     const dots = svg.insert("g").attr('id', 'dotlayer')
       .selectAll("dot")
       .data(data)
-      .join('circle')
-        .attr('id', d => `fr-${d.fr_id}`)
+    .join('circle')
+        .attr('id', d => `fr-${d.featureRequestId}`)
         .attr('class', 'frNode')
         .attr('cx', d => x(d.xDim))
         .attr('cy', d => y(d.yDim))
