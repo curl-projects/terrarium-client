@@ -3,6 +3,7 @@ import { useFetcher } from "@remix-run/react";
 import MessageStreamMetadata from "~/components/MessageStream/MessageStreamMetadata";
 import MessageStreamFeatureRequests from "~/components/MessageStream/MessageStreamFeatureRequests";
 import MessageStreamClusters from "~/components/MessageStream/MessageStreamClusters";
+import MessageStreamFilters from "~/components/MessageStream/MessageStreamFilters";
 export default function MessageStream(props) {
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -23,7 +24,7 @@ export default function MessageStream(props) {
 
   useEffect(()=>{
       console.log("MESSAGE STREAM CLUSTERS DATA", props.data)
-    if(props.data){
+    if(props.data && props.data[0] && props.data[0].cluster){
       const organisedData = props.data.reduce((group, featureRequest) => {
           const { internalClusterId } = featureRequest.cluster;
           group[internalClusterId] = group[internalClusterId] ?? [];
@@ -119,7 +120,8 @@ export default function MessageStream(props) {
                             pinCard={pinCard}
                             setZoomObject={props.setZoomObject}
                             expandSpecificCard={props.expandSpecificCard}
-                        />
+                        />,
+            "filters": <MessageStreamFilters />
           }[props.dataView]
         }
       </div>

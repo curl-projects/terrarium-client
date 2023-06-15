@@ -59,11 +59,6 @@ export default function Discovery(){
     setDataView, setExpandSpecificCard] = useOutletContext();
 
     useEffect(()=>{
-      console.log("INNER INNER CLUSTERS GENERATED:", clustersGenerated)
-    }, [clustersGenerated])
-    
-
-    useEffect(()=>{
         setInnerCanvasData(topLevelCanvasDataObj)
     }, [topLevelCanvasDataObj])
   

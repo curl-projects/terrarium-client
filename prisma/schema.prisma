@@ -97,6 +97,7 @@ model DiscordMessage {
 model Cluster {
   clusterId Int @id @default(sequence())
   internalClusterId Int @default(-1)
+  type String @default("localKMeans")
   feature Feature? @relation(fields: [featureId], references: [id], onDelete: Cascade)
   featureId Int?
   description String @default("")

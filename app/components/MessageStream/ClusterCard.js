@@ -4,6 +4,7 @@ import cn from "classnames";
 import MessageCard from "~/components/MessageStream/MessageCard";
 import * as d3 from 'd3';
 import { AiOutlineSave } from "react-icons/ai"
+import TextareaAutosize from 'react-textarea-autosize';
 
 export default function ClusterCard(props) {
 
@@ -14,6 +15,20 @@ export default function ClusterCard(props) {
   const [descriptionFocused, setDescriptionFocused] = useState(false)
   const clusterCardRef = useRef();
   const clusterDescriptionFetcher = useFetcher();
+
+  useEffect(()=>{
+    if(props.clusterData[0]){
+        console.log("INPUT:", props.clusterData[0].cluster.description)
+        console.log("EXPERIMENT:", JSON.parse(props.clusterData[0].cluster.description.replaceAll('\'', "\"")).join("; "))
+        try{
+            setDescriptionText(JSON.parse(props.clusterData[0].cluster.description.replaceAll('\'', "\"")).join("; "))
+        }
+        catch{
+            console.log("REGEX DIDN'T WORK")
+            setDescriptionText(props.clusterData[0].cluster.description)
+        }
+    }
+  }, [props.clusterData])
 
   function handleClusterCardClick(){
     if(!isCardExpanded){
@@ -27,7 +42,6 @@ export default function ClusterCard(props) {
   }
 
   function handleMouseOver(event, clusterId){
-    console.log("CLUSTER MOUSED OVER:", clusterId)
     d3.select(`#cluster-${clusterId}`)
       .classed("mouseOverCluster", true)
       .transition()
@@ -51,10 +65,6 @@ export default function ClusterCard(props) {
   }
 
   useEffect(()=>{
-    console.log("CLUSTER CARD DATA:", props.clusterData)
-  }, [props.clusterData])
-
-  useEffect(()=>{
     if(props.expandSpecificCard && props.expandSpecificCard.cardType === 'cluster' && props.expandSpecificCard.cardId === props.clusterData[0].cluster.internalClusterId){
         clusterCardRef.current.scrollIntoView({block: "start", behaviour: "smooth"})
         setIsCardExpanded(true)
@@ -67,10 +77,6 @@ export default function ClusterCard(props) {
   useEffect(()=>{
     props.setAllCardsStatus(prevState => ({...prevState, [props.clusterIndex]: {expanded: isCardExpanded}}))
   }, [isCardExpanded])
-
-  useEffect(()=>{
-    props.clusterData[0] && setDescriptionText(props.clusterData[0].cluster.description)
-  }, [props.clusterData])
 
   return (
     <div 
@@ -95,8 +101,8 @@ export default function ClusterCard(props) {
             "flex flex-col gap-2 px-3 py-2 text-sm tracking-tight text-gray-600/90 font-normal",
           )}>
         <clusterDescriptionFetcher.Form method='get' action="/utils/set-cluster-description" className='clusterDescriptionWrapper'>
-            <textarea 
-                className='mt-2'
+            <p className='mt-2'>Relevant Topics:</p>
+            <TextareaAutosize 
                 value={(descriptionText == "" && !descriptionFocused) ? "No Topics Identified" : descriptionText}
                 onChange={(e)=>setDescriptionText(e.target.value)}
                 onFocus={()=>setDescriptionFocused(true)}
@@ -111,7 +117,7 @@ export default function ClusterCard(props) {
                         Save
                     </p>
                 </button>
-                <div style={{flex: 1 }}/>
+                <div style={{flex: 1}}/>
             </div>
           </clusterDescriptionFetcher.Form>
           <div className="pl-10 pr-8 flex flex-col gap-2" style={{backgroundColor: "rgb(243, 244, 246)"}}>

@@ -45,6 +45,7 @@
     "react-expanding-textarea": "^2.3.6",
     "react-icons": "^4.6.0",
     "react-router-dom": "^6.12.1",
+    "react-textarea-autosize": "^8.4.1",
     "react-tooltip": "^4.5.1",
     "react-use-websocket": "^4.3.1",
     "remix-auth": "^3.3.0",

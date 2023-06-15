@@ -151,7 +151,7 @@ export default function Feature(){
 
     // determine if clusters have been processed and update the state
     useEffect(()=>{
-            ((loaderData.featureRequests && loaderData.featureRequests[0].cluster != -1) 
+            ((loaderData.featureRequests && loaderData.featureRequests[0].cluster !== null) 
             ? setClustersGenerated("completed")
             : setClustersGenerated("incomplete"))
 

@@ -14,8 +14,9 @@ export default function MessageStreamMetadata({isExpanded, setIsExpanded, scroll
 const params = useParams()
 
 function handleClusterClick(e){
+  console.log("CLUSTERS GENERATED:", props.clustersGenerated)
   props.setDataView('clusters')
-  props.setTriggerClusters(true)
+  props.clustersGenerated === 'completed' && props.setTriggerClusters(true)
   if(props.clustersGenerated === "incomplete"){
     props.setClustersGenerated('initiated')
     props.clusterFetcher.submit({featureId: params["*"], searchString: props.featureTitle}, 
@@ -52,6 +53,14 @@ function handleClusterClick(e){
           {props.clusterData.length == 1 ? "Cluster" : "Clusters"}
         </p>
       </div>
+      <div className='messageStreamMetadataSection'
+           onClick={()=>props.setDataView('filters')}>
+        <p className='messageStreamMetadataText'>
+          <span className="messageStreamMetadataIcon">0</span>
+          Filters
+        </p>
+      </div>
+          
 
       <div style={{flex: 1}}/>
 

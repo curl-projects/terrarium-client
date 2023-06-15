@@ -45,23 +45,15 @@ export async function filterEmbeddings(knnIDs){
     return dataIDs
   }
 
-export async function initialiseClusterAnalysis(searchVector, featureId){
-
-  // set cluster analysis completion flag to false
-  // const feature = await db.feature.update({
-  //   where: {
-  //     id: parseInt(featureId)
-  //   },
-  //   data: {
-  //     clustersGenerated: false
-  //   }
-  // })
+export async function initialiseClusterAnalysis(searchVector, featureId, searchString){
 
   let url = process.env.MACHINE_LEARNING_URL
 
   let data = {
     'search_vector': searchVector,
-    'terrarium_feature_id': featureId
+    'terrarium_feature_id': featureId,
+    'feature_title': searchString
+
   }
 
   const res = await fetch(url, {
@@ -80,7 +72,7 @@ export async function embeddingSearch(searchString, featureId){
   const searchVector = searchVectorRes.data && searchVectorRes.data[0]['embedding']
 
   // asynchronous processing
-  const clusterRes = await initialiseClusterAnalysis(searchVector, featureId)
+  const clusterRes = await initialiseClusterAnalysis(searchVector, featureId, searchString)
   console.log("CLUSTER INFO:", clusterRes)
   // end asynchronous processing
 
@@ -89,79 +81,3 @@ export async function embeddingSearch(searchString, featureId){
   const filteredEmbeddings = await filterEmbeddings(knnIDs)
   return filteredEmbeddings
 }
-
-// DELETE EXISTING CLUSTERS BELONGING TO A SPECIFIED FEATURE
-export async function deleteClusters(featureId){
-  const result = await db.feature.update({
-    where: {
-      id: featureId
-    },
-    data: {
-      clusters: {
-        deleteMany: {}
-      }
-    }
-  })
-}
-
-// CREATE CLUSTERS AND ATTACH ALL RELEVANT FEATURE REQUESTS
-// export async function attachClusters(featureId){
-//   const result = await db.feature.update({
-//     where: {
-//       id: featureId
-//     },
-//     data: {
-//       feature: {
-//         connect: {
-//           id: 
-//         }
-//       }
-//     }
-//   })
-// }
-
-export async function createCluster(clusterId, featureId, featureRequestId){
-  const result = await db.cluster.create({
-    data: {
-      clusterId: clusterId,
-      feature: {
-        connect: {
-          id: featureId
-        }
-      },
-      featureRequestMaps: {
-        connect: [
-          {
-            "featureId_featureRequestId": {
-              "featureId": int(feature_id),
-              "featureRequestId": featureRequestId,
-          }
-          }
-        ]
-      }
-    }
-  })
-}
-
-
-// result = await db.cluster.create(
-//   data={
-//     clusterId: 1,
-//     feature: {
-//       connect: {
-//         id: 17
-//       }
-//     },
-//     featureRequestMaps: {
-//       connect: [
-//         {
-//           "featureId_featureRequestId": {
-//             "featureId": 17,
-//             "featureRequestId": "10007167454405100125570276001011828521",
-//           }
-//         }
-//       ]
-//     }
-//   })
-
-// CONNECT ALL CLUSTERS AT ONCE
