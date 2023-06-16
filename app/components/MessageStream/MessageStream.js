@@ -122,7 +122,9 @@ export default function MessageStream(props) {
                             setZoomObject={props.setZoomObject}
                             expandSpecificCard={props.expandSpecificCard}
                         />,
-            "authors": <MessageStreamAuthors />,
+            "authors": <MessageStreamAuthors 
+                          data={props.data}
+                        />,
             "filters": <MessageStreamFilters />
           }[props.dataView]
         }
