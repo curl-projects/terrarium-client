@@ -66,8 +66,6 @@ export async function loader({ request, params }){
   export async function action({ request }){
     const formData = await request.formData()
     const actionType = formData.get('actionType')
-
-    console.log("HI START ACTION!!!")
   
     if(actionType === 'featureSearch'){
         const featureId = formData.get("featureId")
@@ -138,10 +136,6 @@ export default function Feature(){
     // useEffect(()=>{
     //     console.log("CONNECTION STATUS:", connectionStatus)
     // }, [connectionStatus])
-
-    // useEffect(()=>{
-    //     console.log("MESSAGE HISTORY:", messageHistory)
-    // }, [messageHistory])
 
     useEffect(() => {
         if (lastMessage !== null) {

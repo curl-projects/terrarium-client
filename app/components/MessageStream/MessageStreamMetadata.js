@@ -54,12 +54,20 @@ function handleClusterClick(e){
         </p>
       </div>
       <div className='messageStreamMetadataSection'
+           onClick={()=>props.setDataView('authors')}>
+        <p className='messageStreamMetadataText'>
+          <span className="messageStreamMetadataIcon">0</span>
+          Authors
+        </p>
+      </div>
+      <div className='messageStreamMetadataSection'
            onClick={()=>props.setDataView('filters')}>
         <p className='messageStreamMetadataText'>
           <span className="messageStreamMetadataIcon">0</span>
           Filters
         </p>
       </div>
+  
           
 
       <div style={{flex: 1}}/>

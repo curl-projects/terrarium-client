@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import cn from "classnames";
-
+import { BiMessageSquareDetail } from "react-icons/bi";
 import { AiOutlinePushpin } from "react-icons/ai";
 
 
@@ -10,7 +10,15 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
   const [isCardExpanded, setIsCardExpanded] = useState(false);
   // const [isPinned, setIsPinned] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const [messageDate, setMessageDate] = useState("")
   const messageCardRef = useRef();
+
+  useEffect(()=>{
+    if(props.cardData?.created_at){
+      const d = new Date(props.cardData.created_at)
+      setMessageDate(`${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`) 
+    }
+  }, [props.cardData])
 
 
   const options = {day: 'numeric', month: "long", year: "numeric"};
@@ -63,30 +71,37 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
       onMouseOver={event => handleMouseOver(event, props.cardData.fr_id)}
       onMouseOut={event => handleMouseOut(event, props.cardData.fr_id)}
       ref={messageCardRef}
+      onClick={() => setIsCardExpanded(!isCardExpanded)}
     >
+
+      <div className='messageCardMetadata'>
+        <p className='messageCardMetadataText'>@{props.cardData && props.cardData.author}</p>
+        <div className='messageCardDivider'></div>
+        <p className='messageCardMetadataText'>{messageDate}</p>
+      </div>
       <div
-        onClick={() => setIsCardExpanded(!isCardExpanded)}
-        className={cn(
-          'bg-white px-1 py-1 cursor-pointer tracking-tight  leading-5 text-sm text-gray-600 font-medium',
-          {"text-gray-800": isHovered}
-        )}
+  
+        className="messageCardInner"
       >
-        {props.cardData && cleanSummary}
+        <p className='messageCardInnerText'>{props.cardData && cleanSummary}</p>
         {props.cardData?.score && <b> [{parseFloat(props.cardData.score).toPrecision(3)}]</b>}
       </div>
 
       {(isCardExpanded || isExpanded) && (
         <div
-          className={cn(
-            "flex flex-col gap-2 px-3 py-2 text-sm tracking-tight text-gray-600/90 font-normal",
-          )}>
-          <p className='mt-2'><span className='text-gray-400'>@</span>{props.cardData && props.cardData.author}</p>
-          <p className=' text-gray-700 leading-5'>{props.cardData.message}</p>
-
-
-          <p><b>Metadata:</b></p>
-          <p>Index: {props.idx}</p>
-          <p>Feature Request Id: {props.cardData.fr_id}</p>
+            className={cn(
+              "flex flex-col gap-2 px-3 py-2 text-sm tracking-tight text-gray-600/90 font-normal",
+            )}>
+          <div className='messageCardInnerWrapper'>
+              <div className='messageCardTextIconWrapper'>
+                <BiMessageSquareDetail style={{color: 'rgba(31, 41, 55, 0.6)', fontSize: "20px"}}/>
+              </div>
+              <div className='messageCardExpandedTextWrapper'>
+                <p className='messageCardExpandedText'>{props.cardData.message}</p>
+              </div>
+          </div>
+          
+            
         </div>
       )}
 

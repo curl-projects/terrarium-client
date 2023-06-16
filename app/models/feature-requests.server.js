@@ -5,7 +5,11 @@ export async function findFeatureRequests(featureId){
     where: { featureId: parseInt(featureId)},
     include: {
       featureRequest: true,
-      cluster: true
+      cluster: {
+        include: {
+          clusterTags: true
+        }
+      }
     }
   })
 

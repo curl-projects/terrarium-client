@@ -3,6 +3,7 @@ import { useFetcher } from "@remix-run/react";
 import MessageStreamMetadata from "~/components/MessageStream/MessageStreamMetadata";
 import MessageStreamFeatureRequests from "~/components/MessageStream/MessageStreamFeatureRequests";
 import MessageStreamClusters from "~/components/MessageStream/MessageStreamClusters";
+import MessageStreamAuthors from "~/components/MessageStream/MessageStreamAuthors";
 import MessageStreamFilters from "~/components/MessageStream/MessageStreamFilters";
 export default function MessageStream(props) {
 
@@ -121,6 +122,7 @@ export default function MessageStream(props) {
                             setZoomObject={props.setZoomObject}
                             expandSpecificCard={props.expandSpecificCard}
                         />,
+            "authors": <MessageStreamAuthors />,
             "filters": <MessageStreamFilters />
           }[props.dataView]
         }

@@ -96,10 +96,11 @@ export default function Discovery(){
   }
 
   function filterBrushedData(brushedData){
-    let dataIds = brushedData.map(a => a.fr_id)
+    console.log('BRUSHED DATA:', brushedData)
+    let dataIds = brushedData.map(a => a.featureRequestId)
 
-    const filteredData = loaderData.featureRequests.filter(({ featureRequestId}) => dataIds.includes(featureRequestId))
-    console.log(filteredData)
+    const filteredData = loaderData.featureRequests.filter(({ featureRequestId }) => dataIds.includes(featureRequestId))
+    console.log("FILTERED DATA:", filteredData)
 
     setTopLevelStreamDataObj(filteredData)
   }

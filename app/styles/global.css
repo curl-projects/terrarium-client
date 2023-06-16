@@ -598,18 +598,133 @@ body {
 .messageCard {
   background-color: #fafafa;
   border: 1px solid #e7e7e7;
-  border-radius: 0px;
+  border-radius: 1px;
   padding: 3px;
   text-overflow: clip;
+  display: flex;
+  flex-direction: column;
 }
 
+.messageCardMetadata{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.messageCardMetadataText{
+  font-size: 14px;
+  color: rgba(75, 85, 99, 0.62);
+  font-weight: 400;
+}
+
+.messageCardDivider{
+  border-radius: 100%;
+  background-color: #b5b0b0;
+  height: 2px;
+  width: 2px;
+}
+
+.messageCardInner{
+  /* line-height: 1.25rem; */
+  padding: 0.5rem;
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+  padding-top: unset;
+}
+
+.messageCardInner:hover{
+  color: rgb(31, 41, 55);
+}
+
+.messageCardInnerText{
+  font-size: 15px;
+  font-weight: 450;
+  color: rgba(75, 85, 99, 0.85);
+  display: block;
+  letter-spacing: -0.05em;
+}
+
+.messageCardExpandedTextWrapper{
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.messageCardExpandedText{
+  color: #4B5563E6;
+  line-height: 1.25;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.25;
+
+}
 
 .clusterCard {
   background-color: #fafafa;
   border: 1px solid #e7e7e7;
   border-radius: 0px;
-  padding: 3px;
+  padding: 12px;
   text-overflow: clip;
+}
+
+.clusterCardInner{
+  letter-spacing: -.025rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  font-size: 14px;
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+  display: flex;
+}
+
+.clusterCardOuter{
+  color: rgba(31, 41, 55, 0.7);
+}
+
+.clusterCardOuter:hover{
+  color: rgba(31, 41, 55, 0.95) !important;
+}
+
+.clusterCardTitle{
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  display: block;
+}
+
+.clusterCardMetadataWrapper{
+
+}
+
+.clusterCardTitleMetadata{
+  font-size: 12px;
+  letter-spacing: -0.01em;
+  color: rgba(75, 85, 99, 0.5);
+}
+
+.clusterCardExternalNotesWrapper{
+  margin-top: 4px;
+}
+
+.clusterCardExternalNotes{
+  color: rgba(75, 85, 99, 0.3);
+}
+
+.clusterCardTitleSeparator{
+  border-top: 0.5px solid #D9D9D9;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+
+
+.clusterCardTagsWrapper{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 
@@ -988,6 +1103,7 @@ div.DraftEditor-root {
 .featureTitleText{
   font-weight: 700;
   font-size: 40px;
+  letter-spacing: -0.03em;
   color: #4b5563;
   /* transition: all 0.5s ease-in-out; */
 }
@@ -1102,7 +1218,8 @@ div.DraftEditor-root {
 
 .notepadTabLabel {
   font-size: 16px;
-  color: rgba(75, 85, 99, 0.6)
+  color: rgba(75, 85, 99, 0.6);
+  letter-spacing: -0.03em;
 }
 
 .textEditorScaffold{
@@ -1229,12 +1346,57 @@ div.DraftEditor-root {
 .clusterDescriptionWrapper{
   display: flex;
   flex-direction: column;
+  padding-top: 4px;
 }
 
-.clusterDescriptionWrapper{
+.clusterDescriptionIcon{
+  border-right: 0.5px solid #d9d9d9;
+  padding-right: 6px;
+  margin-right: 6px;
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clusterDescriptionContentWrapper{
+  display: flex;
+  flex-direction: row;
+}
+
+.clusterDescriptionInnerWrapper{
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .clusterDescriptionSaveWrapper{
   font-size: 10px;
+}
+
+.messageCardInnerWrapper{
+  display: flex;
+}
+
+.messageCardTextIconWrapper{
+  border-right: 0.5px solid #d9d9d9;
+  padding-right: 6px;
+  margin-right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.altTagText{
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(75, 85, 99, 0.7);
+  display: block;
+  letter-spacing: -0.03em;
+}
+
+.altTagSeparator{
+  border-radius: 100%;
+  background-color: #b5b0b0;
+  height: 3px;
+  width: 3px;
 }

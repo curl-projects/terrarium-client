@@ -102,5 +102,12 @@ model Cluster {
   featureId Int?
   description String @default("")
   featureRequestMaps FeatureRequestMap[]
+  clusterTags ClusterTag[]
+}
 
+model ClusterTag {
+  clusterTagId Int @id @default(sequence())
+  cluster Cluster @relation(fields: [clusterId], references: [clusterId], onDelete: Cascade)
+  clusterId Int
+  tagContent String
 }

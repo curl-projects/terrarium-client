@@ -5,6 +5,9 @@ import MessageCard from "~/components/MessageStream/MessageCard";
 import * as d3 from 'd3';
 import { AiOutlineSave } from "react-icons/ai"
 import TextareaAutosize from 'react-textarea-autosize';
+import { ToWords } from 'to-words';
+import TopicTag from "~/components/MessageStream/TopicTag";
+import { MdNotes } from 'react-icons/md';
 
 export default function ClusterCard(props) {
 
@@ -15,20 +18,11 @@ export default function ClusterCard(props) {
   const [descriptionFocused, setDescriptionFocused] = useState(false)
   const clusterCardRef = useRef();
   const clusterDescriptionFetcher = useFetcher();
+  const toWords = new ToWords()
 
-  useEffect(()=>{
-    if(props.clusterData[0]){
-        try{
-            setDescriptionText(JSON.parse(props.clusterData[0].cluster.description.replaceAll('\'', "\"")).join("; "))
-        }
-        catch{
-            console.log("REGEX DIDN'T WORK")
-            setDescriptionText(props.clusterData[0].cluster.description)
-        }
-    }
-  }, [props.clusterData])
 
   function handleClusterCardClick(){
+    console.log("PROPS.CLUSTER DATA", props.clusterData[0])
     if(!isCardExpanded){
         props.setZoomObject({id: props.clusterData[0].cluster.internalClusterId, type: "cluster"})
     }
@@ -82,15 +76,32 @@ export default function ClusterCard(props) {
         onMouseOver={event => handleMouseOver(event, props.clusterData[0].cluster.internalClusterId)}
         onMouseOut={event => handleMouseOut(event, props.clusterData[0].cluster.internalClusterId)}
         >
-      <div
-        ref={clusterCardRef}
-        onClick={handleClusterCardClick}
-        className={cn(
-          'bg-white px-1 py-1 cursor-pointer tracking-tight  leading-5 text-sm text-gray-600 font-medium',
-          {"text-gray-800": isHovered}
-        )}
-      >
-        Cluster {props.clusterData[0].cluster.internalClusterId}
+        <div onClick={handleClusterCardClick} style={{cursor: 'pointer'}} className='clusterCardOuter'>
+        <div ref={clusterCardRef} className='clusterCardInner' >
+            <p className='clusterCardTitle'>Cluster {toWords.convert(props.clusterData[0].cluster.internalClusterId+1)}</p>
+            <div style={{flex: 1}}/>
+            <div className='clusterCardTitleMetadataWrapper'>
+                <p className='clusterCardTitleMetadata'>5 Feature Requests</p>
+            </div>
+        </div>
+
+        <div className='clusterCardTitleSeparator'/>
+
+        <div className='clusterCardTagsWrapper'>
+            {props.clusterData[0].cluster.clusterTags.map((clusterTag, idx) => (
+                <TopicTag 
+                    key={idx}
+                    idx={idx}
+                    clusterTag={clusterTag}
+                    />
+            ))
+            }
+        </div>
+        {descriptionText && !(isCardExpanded || props.isExpanded) && 
+            <div className='clusterCardExternalNotesWrapper'>
+                <p className='clusterCardExternalNotes'>{descriptionText}</p>
+            </div>
+        }
       </div>
 
       {(isCardExpanded || props.isExpanded) && (
@@ -99,12 +110,19 @@ export default function ClusterCard(props) {
             "flex flex-col gap-2 px-3 py-2 text-sm tracking-tight text-gray-600/90 font-normal",
           )}>
         <clusterDescriptionFetcher.Form method='get' action="/utils/set-cluster-description" className='clusterDescriptionWrapper'>
-            <p className='mt-2'>Relevant Topics:</p>
-            <TextareaAutosize 
-                value={(descriptionText == "" && !descriptionFocused) ? "No Topics Identified" : descriptionText}
-                onChange={(e)=>setDescriptionText(e.target.value)}
-                onFocus={()=>setDescriptionFocused(true)}
-            />
+            <div className='clusterDescriptionContentWrapper'>
+                <div className='clusterDescriptionIcon'>
+                    <MdNotes style={{color: 'rgba(31, 41, 55, 0.6)', fontSize: "24px"}}/>
+                </div>
+                <div className='clusterDescriptionInnerWrapper'>
+                <TextareaAutosize 
+                    style={{width: '100%', fontSize: "14px"}}
+                    value={(descriptionText == "" && !descriptionFocused) ? "No Notes" : descriptionText}
+                    onChange={(e)=>setDescriptionText(e.target.value)}
+                    onFocus={()=>setDescriptionFocused(true)}
+                />
+                </div>
+            </div>
             <input type='hidden' name='clusterId' value={props.clusterData[0].cluster.clusterId}/>
             <input type='hidden' name='description' value={descriptionText}/>
             <div className='clusterDescriptionSubmitWrapper'>
