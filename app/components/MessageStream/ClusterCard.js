@@ -21,6 +21,10 @@ export default function ClusterCard(props) {
   const toWords = new ToWords()
 
 
+  useEffect(()=>{
+    props.clusterData[0] && setDescriptionText(props.clusterData[0].cluster.description)
+  }, [props.clusterData])
+
   function handleClusterCardClick(){
     console.log("PROPS.CLUSTER DATA", props.clusterData[0])
     if(!isCardExpanded){

@@ -21,6 +21,10 @@ import cn from 'classnames'
 import MessageStream from "~/components/MessageStream/MessageStream.js"
 import {IoIosArrowDropdown} from "react-icons/io"
 
+import { GoTelescope } from 'react-icons/go'
+import { BiNotepad } from 'react-icons/bi'
+import Tooltip from '@mui/material/Tooltip';
+
 export async function loader({ request, params }){
     const user = await authenticator.isAuthenticated(request, {
       failureRedirect: "/",
@@ -324,18 +328,26 @@ export default function Feature(){
                 <div className='workspaceOutletScaffold'>
                     <div className='workspaceOutletControls'>
                         <Link to={`/feature/discovery/${params["*"]}`}>
-                            <div className={cn('notepadTab discovery',
-                                                {"notepadTabActive": matches[2] ? matches[2].pathname.includes('discovery') : false}
-                                                )}>
-                                <p className="notepadTabLabel">Discovery</p>
-                            </div>
+                            <Tooltip title="Discovery" placement='top' arrow>
+                                <div className={cn('notepadTab discovery',
+                                                    {"notepadTabActive": matches[2] ? matches[2].pathname.includes('discovery') : false}
+                                                    )}>
+                                    <p className="notepadTabLabel">
+                                        <GoTelescope />
+                                    </p>
+                                </div>
+                            </Tooltip>
                         </Link>
                         <Link to={`/feature/notepad/${params["*"]}`}>
-                            <div className={cn('notepadTab writing',
-                                                {"notepadTabActive": matches[2] ? matches[2].pathname.includes('notepad') : false}
-                                                )}>
-                                <p className="notepadTabLabel">Notepad</p>
-                            </div>
+                            <Tooltip title="Notepad" placement='top' arrow>
+                                <div className={cn('notepadTab writing',
+                                                    {"notepadTabActive": matches[2] ? matches[2].pathname.includes('notepad') : false}
+                                                    )}>
+                                    <p className="notepadTabLabel">
+                                        <BiNotepad />
+                                    </p>
+                                </div>
+                            </Tooltip>
                         </Link>
                     </div>
                     <div className='workspaceOutletInnerScaffold'>

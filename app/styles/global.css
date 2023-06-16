@@ -709,7 +709,8 @@ body {
 }
 
 .clusterCardExternalNotes{
-  color: rgba(75, 85, 99, 0.3);
+  color: rgba(75, 85, 99, 0.5);
+  letter-spacing: -0.03em; 
 }
 
 .clusterCardTitleSeparator{
@@ -1173,6 +1174,7 @@ div.DraftEditor-root {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  padding-top: 14px;
 }
 
 .workspaceOutletInnerScaffold{
@@ -1193,16 +1195,17 @@ div.DraftEditor-root {
 
 .workspaceOutletControls{
   width: 100%;
-  height: 30px;
+  height: 40px;
   display: flex;
+  margin-bottom: 8px;
 }
 
 
 .notepadTab {
   height: 100%;
-  width: 10vw;
+  /* width: 10vw; */
   min-width: 60px;
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 1px;
   text-align: center;
   margin-right: 8px;
   display: flex;
@@ -1217,7 +1220,7 @@ div.DraftEditor-root {
 }
 
 .notepadTabLabel {
-  font-size: 16px;
+  font-size: 24px;
   color: rgba(75, 85, 99, 0.6);
   letter-spacing: -0.03em;
 }
