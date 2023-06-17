@@ -104,17 +104,3 @@ export default function DataSources(){
     )
 }
 
-
-// const bucketName = "terrarium-fr-datasets";
-
-// const cloudStorage = new Storage({
-//     projectId: process.env.GOOGLE_STORAGE_PROJECT_ID,
-//     scopes: 'https://www.googleapis.com/auth/cloud-platform',
-//     credentials: {
-//         client_email: process.env.GOOGLE_STORAGE_EMAIL,
-//         private_key: process.env.GOOGLE_STORAGE_PRIVATE_KEY
-//     }
-// });
-// const cloudStorage = new Storage({
-//     keyFilename: "terrarium-390113-2ac7824ead09.json"
-// });
