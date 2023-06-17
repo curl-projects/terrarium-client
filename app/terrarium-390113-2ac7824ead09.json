@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "terrarium-390113",
+  "private_key_id": "2ac7824ead09b61abb6355fbe4d9769249db22cd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDnc4akT1GP9H4Q\nfCDq2eRtDQJ+vkHyJhFprcLSKMZ3YrY8i5UBvZtLZlIMcz406TjI7lbt+22cFncn\nuvYnJuehRKtff2blDeppbmkaMx6Abp/oOC+UgUp5/hBoFgq0ixXXhnSn9IsDBD34\nM9O7nUozq/PRgpvq6VNdGj8+RQWm++V8cM5NagJ6tV5A3lcf81r04/tX78xeNfaf\n/GWK6SWQ5qa64gNbrNHPJ3ZzTJ+IeWZUQBZgTNA7PcxRkwrS+lYJA1TJfKGF5DDy\nl8gpRRQDJvEWV1Ye42/B8rkK80gYf6ZmGRUO2wgO57eISEL9aHhEulC7CxeJt9Ep\nkgfN9QZDAgMBAAECggEAGXWaxO44sZYaW+Pblxnax6gbsydoh6NqXO6RNJ7pne5M\nz4InJObfcz7RHa97k0RoS6n0A/+ZQgcymjs1on7kEdhE5Z9VCTMrqudLRmeDHmuM\nyXWMvlAuihbJZTmvecam42tV37fFptJLosbIrqWRqPdsPYqZbhC2a9JcTJQ5F/H9\n7+QAVJs8AL58/wGcPQlTPCeFbz2siYZV4syWYuvP4+7Xq1n1M+ME7nJCJw6abyy/\nc68Lia9BlRggvKF+TWMBF9n7f9Nj8Soo/Bo402hxmC54hmKiMkbqJNrWzkRyFL3X\n5Zc91h2QKnIbVBnWUfCnh2mAOCrWeL8swyFrGgoHeQKBgQD3z/+oKoCTvlyR7xrU\nlaI4USnzuaSYLDmNZEdKciJZUyDbggElEZpkuGTGD3pC+8F6TpgLVeZ26r0Iv91g\nyf+4KFrMjimtp+3Arhs4MdLObLTYvaf6hUHUxVTbiw+LyGbK48f7etYTlS8RuNM0\ny5gpa1s45G2skuGpst+t0a58twKBgQDvGSTT3vV8FrSRdbcJbJwN4k5Wx/risKip\nQU0od2ghucmASWeBycw6HSVRWdD1iie5cFmOOn0+fbgPklc09YIKDLmZvtx+36DH\nwfnG/IzntZ9GlkqOdI29XqnhS6TMJOsPlqjnY2Pv9xn95/1VFTFOz60EiDRINqmj\n/Y/Kd/TO1QKBgQCkw8Dh2NCAaxM1XFrkeVDQTPatvAK5wr3JSqEz2EsKRQEVsYx9\nTwTubsNiBKxvmN/9KABjmQuQiWaCSL8yOVwy33Hvi54efgbQE3K5nDbjVNexO/hR\n0wQAKevPxNfjQq1FvMkcZYGsp4YSLGcRNUTIVT7jxs087rPnlqyt7zoqZQKBgFqQ\ns5ptQZ8XGp5ecE5pjVLU/cdxSF7Fe51g1tEVKaRcsy6cn1BSF8GLeK8vzi6zfgiH\nveRZ00bwZ9++FrpApFkaKNNLsEl+e3Au0WXGE7lQ2lvqYaNEEsxAJyjndiy9bywg\nbSn4Q8qJVpcOYK7xsBOiJm8pCGSyD9/GE8klVt1hAoGBALCu3UMKcaUE5YUKEXaM\nb3XL1I2ujlwTxleE5yznBTlZcq27KLyY0BgnapVnMKfujhDXSVc3n9ozVGuEMB2r\ntpTwyboZvj+m+864R27DJuY1UB4yAyBGviihGJTiNwwerrzEYvXuX5/jOPV4YgnI\nLXhndQnAF9viPNAqpBVTUQgy\n-----END PRIVATE KEY-----\n",
+  "client_email": "terrarium-service-account@terrarium-390113.iam.gserviceaccount.com",
+  "client_id": "107539628559361615298",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/terrarium-service-account%40terrarium-390113.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

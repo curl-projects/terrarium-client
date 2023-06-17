@@ -15,6 +15,7 @@ model User {
   features        Feature[]
   featureRequests FeatureRequest[]
   notionAuths     NotionAuth[]
+  datasets Dataset[]
 }
 
 model NotionAuth {
@@ -110,4 +111,13 @@ model ClusterTag {
   cluster Cluster @relation(fields: [clusterId], references: [clusterId], onDelete: Cascade)
   clusterId Int
   tagContent String
+}
+
+model Dataset {
+  datasetId Int @id @default(sequence())
+  uniqueFileName String
+  size String?
+  status String @default("unprocessed")
+  user User @relation(fields: [userId], references: [id])
+  userId String
 }

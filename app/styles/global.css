@@ -1403,3 +1403,49 @@ div.DraftEditor-root {
   height: 3px;
   width: 3px;
 }
+
+.dataTableOuterWrapper{
+  width: 100vw;
+  height: 100vh;
+  border: 2px solid pink;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dataTableInnerWrapper{
+  border: 2px solid green;
+  height: 80%;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dataTableHeader{
+  border: 2px solid black;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #ededed;
+}
+
+.dataTableColumnHeader{
+  height: 100%;
+  border-right: 1px solid black;
+  border-left: 1px solid green;
+  display: flex;
+  padding-left: 40px;
+  padding-right: 10%;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.fileUploadWrapper{
+  border: 2px solid pink;
+  margin-top: 60px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
