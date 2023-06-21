@@ -7,16 +7,10 @@ import { authenticator } from "~/models/auth.server.js";
 import { usePapaParse } from 'react-papaparse';
 
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import DatasetRow from "~/components/Datasets/DatasetRow";
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
-import DatasetRow from "~/components/Datasets/DatasetRow"
+import { BsUpload } from "react-icons/bs";
+import { BsX } from "react-icons/bs";
 
 export async function loader({ request }){
     const user = await authenticator.isAuthenticated(request, {
@@ -48,7 +42,7 @@ export async function action({request}){
     }
     return { outputData }
 }
-  
+
 export default function DataSources(){
     const loaderData = useLoaderData();
     const actionData = useActionData();
@@ -57,6 +51,7 @@ export default function DataSources(){
 
     const [fileRef, setFileRef] = useState(Date.now())
     const [submitIsOpen, setSubmitIsOpen] = useState(false)
+    const [file, setFile] = useState();
     const [fileError, setFileError] = useState("")
     const [socketUrl, setSocketUrl] = useState("");
     const [messageHistory, setMessageHistory] = useState([]);
@@ -68,7 +63,6 @@ export default function DataSources(){
       }, [])
 
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
-
 
     const connectionStatus = {
         [ReadyState.CONNECTING]: 'Connecting',
@@ -113,6 +107,7 @@ export default function DataSources(){
                     console.log(results.data)
                     if(['text', 'author', 'id', 'created_at'].every(i => results.data[0].includes(i))){
                         setSubmitIsOpen(true)
+                        setFile(file)
                     }
                     else{
                         setFileError("The dataset should contain the fields 'text', 'author', 'id' and 'created at' If it doesn't, it might not have been generated correctly.")
@@ -130,46 +125,60 @@ export default function DataSources(){
     }
 
     const resetFile = () => {
+        setFile("")
         setFileError("")
         setSubmitIsOpen(false)
         setFileRef(Date.now())
     }
 
+    useEffect(()=>{
+        console.log("FILE!", file)
+    }, [file])
+
     return(
         <>
         <Header />
         <div className='dataTableOuterWrapper'>
-
-            <div className='dataTableInnerWrapper'>
-                <TableContainer component={Paper} >
-                    <Table sx={{ width: "100%", minWidth: "100%", border: "2px solid black" }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                {columnDefs.map((column, idx) => (
-                                    <TableCell key={idx} align="left">{column.field}</TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {loaderData.datasets.map((row, idx) => (
-                            <DatasetRow 
-                                idx={idx} row={row} key={idx}
-                                lastMessage={lastMessage}
-                                deleteFetcher={deleteFetcher}
-                                />
-                        ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <div className='fileUploadWrapper'>
-                <Form method="post" encType="multipart/form-data">
-                    <input type="file" name="upload" onChange={handleFileChange} key={fileRef}/>
-                    {setSubmitIsOpen && <button>upload</button>}
+                <Form method="post" encType="multipart/form-data" className='fileUploadRectangle'>
+                    <BsUpload style={{fontSize: "30px"}}/>
+                    {file 
+                    ? <p className='fileUploadText'>{file.name}</p>
+                    :
+                    <>
+                        <label htmlFor='datasetFiles' className='fileUploadText' style={{cursor: 'pointer'}}>Choose file to upload</label>
+                    </>
+                    }
+                    <input id='datasetFiles' style={{display: "none"}} type="file" name="upload" onChange={handleFileChange} key={fileRef}/>
+                    {fileError 
+                    ? <p className='fileUploadSpecifier' style={{color: "rgba(146, 0, 0, 0.7)"}}>{fileError}</p>
+                    : (file && submitIsOpen 
+                        ? <p className='fileUploadSpecifier' 
+                             onClick={resetFile} 
+                             style={{color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}>Remove File</p>
+                        : <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>(csv files generated from discord)</p>
+                        )}
+                {file && submitIsOpen && 
+                    <>
+                    <div style={{height: "20px"}}/>
+                    <div className='fileSubmitWrapper'>
+                        <button className='fileSubmit' onClick={resetFile}>Upload</button>
+                    </div>
+                    </>
+                }
                 </Form>
+                <div className="uploadedFilesWrapper">
+                    <p className='datasetsLabelText'>Datasets</p>
+                    {loaderData.datasets.map((row, idx) => (
+                        <DatasetRow 
+                            idx={idx} row={row} key={idx}
+                            lastMessage={lastMessage}
+                            deleteFetcher={deleteFetcher}
+                        />
+                    ))
+
+                    }
                 </div>
-                {fileError && <p>{fileError}</p>}
-                <button onClick={resetFile}>Remove File</button>
-            </div>
+
         </div>
         </>
     )

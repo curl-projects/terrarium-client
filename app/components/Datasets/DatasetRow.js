@@ -1,10 +1,6 @@
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
 import { useState, useEffect, useReducer } from "react";
-
-import { BiDotsHorizontalRounded } from "react-icons/bi"
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { BsFileArrowUp} from "react-icons/bs";
+import { BsX } from "react-icons/bs";
 
 
 function reducer(state, action){
@@ -30,21 +26,9 @@ function reducer(state, action){
     }
 }
 
- 
 export default function DatasetRow(props){
     const [state, dispatch] = useReducer(reducer, { datasetStatus: "Request Initiated", datasetSize: ""});
-    const [datasetSize, setDatasetSize] = useState("")
-
-    const [anchorEl, setAnchorEl] = useState(null);
-    const menuOpen = Boolean(anchorEl);
-
-    const handleClick = (e) => {
-        setAnchorEl(e.currentTarget);
-    };
-    
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    const [datasetSize, setDatasetSize] = useState("");
 
     useEffect(()=>{
         props.lastMessage?.data && dispatch({ type: JSON.parse(props.lastMessage.data).type})
@@ -61,19 +45,29 @@ export default function DatasetRow(props){
         props.row?.size && setDatasetSize(props.row.size)
     }, [props.row])
 
+
+
     return(
-        <TableRow key={props.idx} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-            <TableCell align="left">{props.row.uniqueFileName.split("-").slice(1).join("-") || `Untitled (${props.idx})`}</TableCell>
-            <TableCell align="left">{datasetSize || ""}</TableCell>
-            <TableCell align="left">{state.datasetStatus || ""}</TableCell>
-            <TableCell align="center">
-                <BiDotsHorizontalRounded onClick={handleClick} style={{cursor: "pointer"}}/>
-                <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleClose}>
-                    <MenuItem onClick={handleClose}>
-                        <button onClick={()=>props.deleteFetcher.submit({datasetId: props.row.datasetId, uniqueFileName: props.row.uniqueFileName}, {method: "post", action: "/utils/delete-dataset"})}><p>Delete Dataset</p></button>
-                    </MenuItem>
-                </Menu>
-            </TableCell>
-        </TableRow>
+        <div className='fileOuterWrapper' >
+                    <div className='fileIconWrapper'>
+                        <BsFileArrowUp style={{fontSize: "26px", color: "rgba(75, 85, 99, 0.85)"}}/>
+                    </div>
+                    <div className='fileContentWrapper'>
+                        <div className='fileTitleWrapper'>
+                            <p className='fileTitle'>{props.row.uniqueFileName.split("-").slice(1).join("-") || `Untitled (${props.idx})`}</p>
+                        </div>
+                        <div className='fileMetadataWrapper'>
+                            <p className='fileMetadata'>{datasetSize ? String(datasetSize).concat(" Feature Requests") : "Unknown Size"}</p>
+                            <div className='fileMetadataDivider' />
+                            <p className='fileMetadata'>{state.datasetStatus || ""}</p>
+                        </div>
+                    </div>
+                    <div style={{flex: 1}}/>
+                    <div className='fileRemoveWrapper'>
+                        <BsX 
+                            onClick={()=>props.deleteFetcher.submit({datasetId: props.row.datasetId, uniqueFileName: props.row.uniqueFileName}, {method: "post", action: "/utils/delete-dataset"})}
+                            style={{fontSize: "28px", color: "rgba(75, 85, 99, 0.95)", cursor: "pointer"}}/>
+                    </div>
+            </div>
     )
 }

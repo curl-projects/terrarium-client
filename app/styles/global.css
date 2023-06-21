@@ -1407,10 +1407,12 @@ div.DraftEditor-root {
 .dataTableOuterWrapper{
   width: 100vw;
   height: 100vh;
-  border: 2px solid pink;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding-top: 60px;
+  box-sizing: border-box;
 }
 
 .dataTableInnerWrapper{
@@ -1437,15 +1439,120 @@ div.DraftEditor-root {
   display: flex;
   padding-left: 40px;
   padding-right: 10%;
-  justify-content: flex-start;
   align-items: center;
 }
 
 .fileUploadWrapper{
-  border: 2px solid pink;
   margin-top: 60px;
   height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.fileUploadRectangle{
+  border: 2px dashed rgba(75, 85, 99, 0.4);
+  height: 300px;
+  width: 50%;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.fileUploadText{
+  font-size: 20px;
+  letter-spacing: -0.03em;
+  color: rgb(75, 85, 99);
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.fileUploadSpecifier{
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: rgba(75, 85, 99, 0.6);
+}
+
+.uploadedFilesWrapper{
+  margin-top: 30px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fileOuterWrapper{
+  background-color: #ededed;
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.fileTitleWrapper{
+
+}
+
+.fileTitle{
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  color: rgb(75, 85, 99);
+  font-weight: 600;
+}
+
+.fileMetadataWrapper{
+  display: flex;
+  align-items: center;
+}
+
+.fileMetadata{
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: rgba(75, 85, 99, 0.7);
+}
+
+.fileMetadataDivider{
+  border-radius: 100%;
+  background-color: rgba(75, 85, 99, 0.8);
+  height: 3px;
+  width: 3px;
+  margin-left: 6px;
+  margin-right: 6px;
+
+}
+
+.fileRemoveWrapper{
+  display: flex;
+  padding-right: 8px;
+  position: relative;
+  bottom: 4px;
+  justify-content: center;
+}
+
+.fileIconWrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.fileContentWrapper{
+  scroll-padding-right: 10px;
+}
+
+.fileSubmit{
+  letter-spacing: -0.03em;
+  color: #7e988e;
+  font-weight: 600;
+  font-size: 16px;
+
+}
+
+.datasetsLabelText{
+  font-size: 18px;
+  letter-spacing: -0.04em;
+  color: rgb(75, 85, 99);
+  font-weight: 600;
 }
