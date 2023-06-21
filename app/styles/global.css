@@ -1473,6 +1473,7 @@ div.DraftEditor-root {
   font-weight: 400;
   letter-spacing: -0.03em;
   color: rgba(75, 85, 99, 0.6);
+  text-align: center;
 }
 
 .uploadedFilesWrapper{

@@ -161,7 +161,7 @@ export default function DataSources(){
                     <>
                     <div style={{height: "20px"}}/>
                     <div className='fileSubmitWrapper'>
-                        <button className='fileSubmit' onClick={resetFile}>Upload</button>
+                        <button className='fileSubmit'>Upload</button>
                     </div>
                     </>
                 }
