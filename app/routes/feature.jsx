@@ -137,9 +137,9 @@ export default function Feature(){
         [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
     }[readyState];
 
-    // useEffect(()=>{
-    //     console.log("CONNECTION STATUS:", connectionStatus)
-    // }, [connectionStatus])
+    useEffect(()=>{
+        console.log("CONNECTION STATUS:", connectionStatus)
+    }, [connectionStatus])
 
     useEffect(() => {
         if (lastMessage !== null) {

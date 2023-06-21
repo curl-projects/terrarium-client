@@ -37,7 +37,7 @@ export default function KanbanCard(props){
                             </Link>
                             <div style={{flex: 1}}/>
                             <div className='kanbanCardMenu'>
-                                <BiDotsHorizontalRounded onClick={handleClick}/>
+                                <BiDotsHorizontalRounded onClick={handleClick} style={{cursor: "pointer"}}/>
                                 <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleClose}>
                                     <MenuItem onClick={handleClose}>
                                         <Form method='post' >

@@ -32,13 +32,15 @@ export async function createDatasetObject(fileName, userId){
   return dataset
 }
 
-export async function initiateDatasetProcessing(fileName){
+export async function initiateDatasetProcessing(fileName, datasetId, userId){
     console.log("Initiated Dataset Processing")
 
     let url = process.env.DATASET_PROCESSING_URL
 
     let data = {
-      'file_name': fileName
+      'file_name': fileName,
+      'dataset_id': datasetId,
+      'user_id': userId
     }
   
     const res = await fetch(url, {
@@ -52,6 +54,24 @@ export async function initiateDatasetProcessing(fileName){
     return res
   }
 
+export const deleteDatasetStorage = async(uniqueFileName) => {
+
+    const bucketName = "terrarium-fr-datasets";
+    const cloudStorage = new Storage({
+        projectId: process.env.GOOGLE_STORAGE_PROJECT_ID,
+        scopes: 'https://www.googleapis.com/auth/cloud-platform',
+        credentials: {
+            client_email: process.env.GOOGLE_STORAGE_EMAIL,
+            private_key: process.env.GOOGLE_STORAGE_PRIVATE_KEY
+        }
+    });
+
+    async function deleteFile(){
+        await cloudStorage.bucket(bucketName).file(uniqueFileName).delete()
+    }
+
+    deleteFile().catch(console.error)
+}
 
 const uploadStreamToCloudStorage = async (stream, fileName) => {
     const bucketName = "terrarium-fr-datasets";
@@ -87,6 +107,17 @@ const uploadStreamToCloudStorage = async (stream, fileName) => {
 export const googleUploadHandler = async ({ filename, data }) => {
   const stream = Readable.from(data)
   const upload = await uploadStreamToCloudStorage(stream, filename);
-  console.log("UPLOAD:", upload)
   return upload
 };
+
+export async function deleteDataset(datasetId){
+    console.log("DATASET ID:", datasetId)
+
+    const response = await db.dataset.delete({
+        where: {
+            datasetId: parseInt(datasetId)
+        }
+    })
+
+    return response
+}

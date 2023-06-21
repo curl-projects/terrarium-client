@@ -57,12 +57,12 @@ model FeatureRequest {
   message       String
   created_at    String
   author        String
-  label         String
   fr            String
-  kmeans_labels Int
   userId        String
   user          User                @relation(fields: [userId], references: [id])
   features      FeatureRequestMap[]
+  dataset       Dataset?             @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
+  datasetId     Int?      
 }
 
 model FeatureRequestMap {
@@ -120,4 +120,5 @@ model Dataset {
   status String @default("unprocessed")
   user User @relation(fields: [userId], references: [id])
   userId String
+  featureRequests FeatureRequest[]
 }
