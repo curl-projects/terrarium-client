@@ -36,23 +36,31 @@ export async function createDatasetObject(fileName, userId){
 export async function initiateDatasetProcessing(fileName, datasetId, userId){
     console.log("Initiated Dataset Processing")
 
-    let url = process.env.DATASET_PROCESSING_URL
+    // let url = process.env.DATASET_PROCESSING_URL
+    let url = "https://finnianmacken--terrarium-dataset-upload-process-new-/"
 
     let data = {
       'file_name': fileName,
       'dataset_id': datasetId,
       'user_id': userId
     }
-  
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data)
-    })
-  
-    return res
+    try{
+        const res = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+        })
+
+        console.log("SERVER RES:", res)
+    
+        return res
+    }
+    catch(exc){
+        console.error("Server Exception:", exc)
+        return { status: "404"}
+    }
   }
 
 const uploadStreamToCloudStorage = async (stream, fileName) => {

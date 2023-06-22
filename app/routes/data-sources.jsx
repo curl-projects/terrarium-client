@@ -13,6 +13,8 @@ import PageTitle from "~/components/Header/PageTitle.js"
 import { BsUpload } from "react-icons/bs";
 import { BsX } from "react-icons/bs";
 
+import Snackbar from '@mui/material/Snackbar';
+
 export async function loader({ request }){
     const user = await authenticator.isAuthenticated(request, {
         failureRedirect: "/",
@@ -39,9 +41,9 @@ export async function action({request}){
         const datasetObj = await createDatasetObject(jsonData.uniqueFileName, user.id)
         const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, datasetObj.datasetId, user.id)
         console.log("RESPONSE", response)
-        return jsonData;
+        return { jsonData: jsonData, response: response.status};
     }
-    return { outputData }
+    return { jsonData: jsonData }
 }
 
 export default function DataSources(){
@@ -56,6 +58,7 @@ export default function DataSources(){
     const [fileError, setFileError] = useState("")
     const [socketUrl, setSocketUrl] = useState("");
     const [messageHistory, setMessageHistory] = useState([]);
+    const [activelyDeletingFile, setActivelyDeletingFile] = useState("")
 
     const { readString } = usePapaParse();
 
@@ -136,7 +139,7 @@ export default function DataSources(){
     }
 
     useEffect(()=>{
-        if(actionData?.fileName){
+        if(actionData?.jsonData?.fileName){
             resetFile()
         }
     }, [actionData])
@@ -184,13 +187,21 @@ export default function DataSources(){
                             idx={idx} row={row} key={idx}
                             lastMessage={lastMessage}
                             deleteFetcher={deleteFetcher}
+                            activelyDeletingFile={activelyDeletingFile}
+                            setActivelyDeletingFile={setActivelyDeletingFile}
                         />
                     ))
 
                     }
                 </div>
-
         </div>
+        <Snackbar  
+            open={actionData?.response === "404"}
+            autoHideDuration={4000}
+            message="Error Contacting Server"
+            anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+
+        />
         </>
     )
 }
