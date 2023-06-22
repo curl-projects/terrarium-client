@@ -48,6 +48,8 @@ export async function loader({ request, params }){
   
       // conduct search
       const knnIDs = await embeddingSearch(searchTerm, featureId); // get sorted scores
+
+      console.log("KNN IDS:", knnIDs)
   
       // update all feature requests for easier future recall
       const updatedFeatures = await associateFeatureRequestsWithFeature(knnIDs, featureId)
@@ -145,6 +147,10 @@ export default function Feature(){
         }
       }, [lastMessage, setMessageHistory]);
 
+    useEffect(()=>{
+        console.log("LAST MESSAGE:", lastMessage)
+    }, [lastMessage])
+
     // determine if clusters have been processed and update the state
     useEffect(()=>{
             ((loaderData.featureRequests && loaderData.featureRequests[0]?.cluster !== null) 
@@ -165,13 +171,16 @@ export default function Feature(){
                 console.log("CLUSTER ANALYSIS INITIALISING")
             }
 
-            if(data.type === 'cluster_generation' && data.status === 'completed'){
+            else if(data.type === 'cluster_generation' && data.status === 'completed'){
                 console.log("CLUSTER ANALYSIS COMPLETED")
                 setClustersGenerated("completed")
                 
                 // reload data to load new clusters
                 clusterSubmit({actionType: "reload", featureId: params["*"]}, {method: "post"})
 
+            }
+            else if(data.type === 'error' && data.status === 'cluster_generation'){
+                setClustersGenerated("error")
             }
             else{
                 console.log("UNEXPECTED WEBSOCKET RESPONSE")

@@ -77,9 +77,7 @@ export async function embeddingSearch(searchString, featureId){
   // end asynchronous processing
 
   const knn = await getKNNfromSearchVector(searchVector, topK=100)
-  console.log("KNN:", knn)
   const knnIDs = knn.matches
-  console.log("KNN IDS:", knnIDs)
   const filteredEmbeddings = await filterEmbeddings(knnIDs)
   return filteredEmbeddings
 }

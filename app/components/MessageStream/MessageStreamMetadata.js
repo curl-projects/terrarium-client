@@ -4,7 +4,7 @@ import { IoExpand, IoContract } from 'react-icons/io5';
 import {AiOutlineArrowUp} from 'react-icons/ai';
 import CircularProgress from '@mui/material/CircularProgress';
 import { ImCross } from "react-icons/im";
-
+import { BsX } from "react-icons/bs";
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -46,7 +46,9 @@ function handleClusterClick(e){
                                 sx={{
                                   color: 'rgb(31, 41, 55)'
                                 }}/>,
-                'completed': <span>{props.clusterData.length}</span>
+                'completed': <span>{props.clusterData.length}</span>,
+                'error': <BsX style={{fontSize: "18px", color: 'rgb(31, 41, 55)',
+                                      position: "relative", left: "2px", bottom: "1px"}}/>
               }[props.clustersGenerated]
             }
           </span>

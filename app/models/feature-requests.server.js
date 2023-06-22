@@ -45,7 +45,6 @@ export async function associateFeatureRequestsWithFeature(knnIDs, featureId){
     }
   })
 
-  console.log("DELETED CONNECTIONS:", deletedConnections)
   const connectionArray = []
 
   for(let fr of knnIDs){

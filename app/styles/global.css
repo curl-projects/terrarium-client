@@ -984,7 +984,8 @@ div.DraftEditor-root {
   font-size: 18px;
   letter-spacing: -0.02em;
   color: #4b5563;
-  font-weight: 350; 
+  font-weight: 350;
+  text-align: center; 
 }
 
 /* SEARCH BAR */
