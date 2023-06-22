@@ -36,8 +36,7 @@ export async function createDatasetObject(fileName, userId){
 export async function initiateDatasetProcessing(fileName, datasetId, userId){
     console.log("Initiated Dataset Processing")
 
-    // let url = process.env.DATASET_PROCESSING_URL
-    let url = "https://finnianmacken--terrarium-dataset-upload-process-new-/"
+    let url = process.env.DATASET_PROCESSING_URL
 
     let data = {
       'file_name': fileName,
