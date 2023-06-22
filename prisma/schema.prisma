@@ -61,8 +61,8 @@ model FeatureRequest {
   userId        String
   user          User                @relation(fields: [userId], references: [id])
   features      FeatureRequestMap[]
-  dataset       Dataset?             @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
-  datasetId     Int?      
+  dataset       Dataset             @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
+  datasetId     Int      
 }
 
 model FeatureRequestMap {

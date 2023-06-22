@@ -17,6 +17,9 @@ export default function Header(){
         <Link to ='/possible-features' style={{textDecoration: "none"}}>
         <h3 className='navigationText'>Possible Features</h3>
         </Link>
+        <Link to ='/current-bugs' style={{textDecoration: "none"}}>
+          <h3 className='navigationText'>Bugs</h3>
+        </Link>
       </div>
       <div style={{flex: 1}}/>
       <Form action="/logout" method="post">

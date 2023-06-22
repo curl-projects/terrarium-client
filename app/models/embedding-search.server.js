@@ -8,8 +8,8 @@ export async function generateSearchVector(searchString){
   });
 
   const openai = new OpenAIApi(configuration);
-  const response = await openai.createEmbedding({
-    "model": "text-search-babbage-query-001",
+  const response = await openai.createEmbedding({ 
+    "model": "text-embedding-ada-002",
     "input": searchString,
     "user": "Terrarium"
   })
@@ -77,7 +77,9 @@ export async function embeddingSearch(searchString, featureId){
   // end asynchronous processing
 
   const knn = await getKNNfromSearchVector(searchVector, topK=100)
+  console.log("KNN:", knn)
   const knnIDs = knn.matches
+  console.log("KNN IDS:", knnIDs)
   const filteredEmbeddings = await filterEmbeddings(knnIDs)
   return filteredEmbeddings
 }

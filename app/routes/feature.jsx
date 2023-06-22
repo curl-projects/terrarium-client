@@ -15,6 +15,7 @@ import { findFeatureRequests, associateFeatureRequestsWithFeature } from "~/mode
 import { embeddingSearch, generateSearchVector, initialiseClusterAnalysis } from "~/models/embedding-search.server"
 
 import FeatureHeader from "~/components/Header/FeatureHeader";
+import OutletPlaceholder from "~/components/Feature/OutletPlaceholder";
 import { ImSearch } from "react-icons/im"
 import { Outlet, Link, useParams, useMatches } from "@remix-run/react";
 import cn from 'classnames'
@@ -105,6 +106,7 @@ export default function Feature(){
     const actionData = useActionData();
     const fetcher = useFetcher();
     const descriptionFetcher = useFetcher();
+    const noResultsFetcher = useFetcher();
     const navigate = useTransition();
 
     const [zoomObject, setZoomObject] = useState(null)
@@ -137,10 +139,6 @@ export default function Feature(){
         [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
     }[readyState];
 
-    useEffect(()=>{
-        console.log("CONNECTION STATUS:", connectionStatus)
-    }, [connectionStatus])
-
     useEffect(() => {
         if (lastMessage !== null) {
           setMessageHistory((prev) => prev.concat(lastMessage));
@@ -161,7 +159,6 @@ export default function Feature(){
     // LISTEN TO WEBSOCKET TO FIGURE OUT WHETHER THE CLUSTERS HAVE BEEN GENERATED
     useEffect(()=>{
         if(lastMessage && lastMessage.data){
-            console.log("LAST MESSAGE DATA!", lastMessage.data)
             const data = JSON.parse(lastMessage.data)
 
             if(data.type === 'cluster_generation' && data.status === 'initiated'){
@@ -184,10 +181,6 @@ export default function Feature(){
             console.log("NO LAST MESSAGE DATA")
         }
     }, [lastMessage])
-
-    useEffect(()=>{
-        console.log("CLUSTERS GENERATED?", clustersGenerated)
-    }, [clustersGenerated])
 
     // TITLE EFFECTS
     useEffect(()=>{
@@ -351,7 +344,10 @@ export default function Feature(){
                         </Link>
                     </div>
                     <div className='workspaceOutletInnerScaffold'>
-                        <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed, zoomObject, setZoomObject, clustersGenerated, triggerClusters, setTriggerClusters, setDataView, setExpandSpecificCard]}/>
+                        {(Array.isArray(loaderData.featureRequests) && loaderData.featureRequests.length === 0)
+                            ? <OutletPlaceholder isSearched={loaderData.feature.isSearched}/>
+                            : <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed, zoomObject, setZoomObject, clustersGenerated, triggerClusters, setTriggerClusters, setDataView, setExpandSpecificCard]}/>
+                        }
                     </div>
                 </div>
                 <div className='messageStreamScaffold'>

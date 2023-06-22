@@ -5,6 +5,8 @@ import { BsX } from "react-icons/bs";
 
 function reducer(state, action){
     switch(action.type){
+        case "deleting_file":
+            return {...state, datasetStatus: "Deleting File..."}
         case 'unprocessed':
             return {...state, datasetStatus: "Dataset Unprocessed"}
         case 'request_initiated':
@@ -44,6 +46,10 @@ export default function DatasetRow(props){
     useEffect(()=>{
         props.row?.size && setDatasetSize(props.row.size)
     }, [props.row])
+
+    useEffect(()=>{
+        props.deleteFetcher.state === 'submitting' && dispatch({type: "deleting_file"})
+    }, [props.deleteFetcher.state])
 
 
 

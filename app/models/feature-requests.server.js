@@ -45,13 +45,14 @@ export async function associateFeatureRequestsWithFeature(knnIDs, featureId){
     }
   })
 
-
+  console.log("DELETED CONNECTIONS:", deletedConnections)
   const connectionArray = []
 
   for(let fr of knnIDs){
     connectionArray.push({ featureRequestId: fr, featureId: parseInt(featureId)})
   }
 
+  // console.log("NEW CONNECTION:", connectionArray)
   // always explicitly edit the connection model, rather than using nested writes
   const newMap = await db.featureRequestMap.createMany({
     data: connectionArray

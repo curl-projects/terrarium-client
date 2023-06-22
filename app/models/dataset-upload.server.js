@@ -4,6 +4,7 @@ import { PassThrough } from "stream";
 import { writeAsyncIterableToWritable } from "@remix-run/node"; // `writeAsyncIterableToWritable` is a Node-only utility
 import { json } from "@remix-run/node"
 import { Readable } from "stream"
+import { PineconeClient } from "@pinecone-database/pinecone";
 
 
 export async function getDatasets(userId){
@@ -54,25 +55,6 @@ export async function initiateDatasetProcessing(fileName, datasetId, userId){
     return res
   }
 
-export const deleteDatasetStorage = async(uniqueFileName) => {
-
-    const bucketName = "terrarium-fr-datasets";
-    const cloudStorage = new Storage({
-        projectId: process.env.GOOGLE_STORAGE_PROJECT_ID,
-        scopes: 'https://www.googleapis.com/auth/cloud-platform',
-        credentials: {
-            client_email: process.env.GOOGLE_STORAGE_EMAIL,
-            private_key: process.env.GOOGLE_STORAGE_PRIVATE_KEY
-        }
-    });
-
-    async function deleteFile(){
-        await cloudStorage.bucket(bucketName).file(uniqueFileName).delete()
-    }
-
-    deleteFile().catch(console.error)
-}
-
 const uploadStreamToCloudStorage = async (stream, fileName) => {
     const bucketName = "terrarium-fr-datasets";
     const filePath = "/"
@@ -120,4 +102,48 @@ export async function deleteDataset(datasetId){
     })
 
     return response
+}
+
+export const deleteDatasetStorage = async(uniqueFileName) => {
+
+    const bucketName = "terrarium-fr-datasets";
+    const cloudStorage = new Storage({
+        projectId: process.env.GOOGLE_STORAGE_PROJECT_ID,
+        scopes: 'https://www.googleapis.com/auth/cloud-platform',
+        credentials: {
+            client_email: process.env.GOOGLE_STORAGE_EMAIL,
+            private_key: process.env.GOOGLE_STORAGE_PRIVATE_KEY
+        }
+    });
+
+    async function deleteFile(){
+        await cloudStorage.bucket(bucketName).file(uniqueFileName).delete()
+    }
+
+    deleteFile().catch(console.error)
+}
+
+export async function deleteDatasetEmbeddings(datasetId){
+    const featureRequests = await db.featureRequest.findMany({
+        where: {
+            datasetId: parseInt(datasetId)
+        }
+    })
+
+    const datasetFRs = featureRequests.map(i => i.fr_id)
+
+    let pinecone = new PineconeClient();
+
+    await pinecone.init({
+        environment: "us-west1-gcp",
+        apiKey: process.env.PINECONE_KEY
+    })
+
+    const index = pinecone.Index('terrarium');
+
+    const deletedVectors  = await index.delete1({
+        ids: datasetFRs
+    })
+
+    return { deletedVectors }
 }

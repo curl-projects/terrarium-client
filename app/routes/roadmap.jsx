@@ -11,6 +11,8 @@ import { getFeatures, createFeature, deleteFeature, updateAllFeaturePositions } 
 import { processCardState } from "~/utils/processCardState"
 import cn from "classnames";
 
+import PageTitle from "~/components/Header/PageTitle.js"
+
 export async function loader({ request }){
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/",
@@ -54,12 +56,7 @@ export default function RoadmapRoute(){
         <>
             <Header />
             <div className='kanbanRoadmapWrapper'>
-                    <div className='kanbanRoadmapTitle'>
-                        <h1 className='kanbanRoadmapTitleText'>Roadmap</h1>
-                    </div>
-                    <div className='kanbanRoadmapDescription'>
-                        <p className='kanbanRoadmapDescriptionText'>Use this space to create and organise features.</p>
-                    </div>
+                    <PageTitle title='Roadmap' description="Create and organise features."/>
                     <div className='kanbanRoadmapColumns'>
                         <Roadmap features={loaderData.features} />
                     </div>

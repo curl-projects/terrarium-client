@@ -8,6 +8,7 @@ import { usePapaParse } from 'react-papaparse';
 
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import DatasetRow from "~/components/Datasets/DatasetRow";
+import PageTitle from "~/components/Header/PageTitle.js"
 
 import { BsUpload } from "react-icons/bs";
 import { BsX } from "react-icons/bs";
@@ -72,6 +73,9 @@ export default function DataSources(){
         [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
     }[readyState];
 
+    useEffect(()=>{
+        console.log("ACTION DATA:", actionData)
+    }, [actionData])
     useEffect(() => {
         if (lastMessage !== null) {
           setMessageHistory((prev) => prev.concat(lastMessage));
@@ -132,6 +136,12 @@ export default function DataSources(){
     }
 
     useEffect(()=>{
+        if(actionData?.fileName){
+            resetFile()
+        }
+    }, [actionData])
+
+    useEffect(()=>{
         console.log("FILE!", file)
     }, [file])
 
@@ -139,6 +149,7 @@ export default function DataSources(){
         <>
         <Header />
         <div className='dataTableOuterWrapper'>
+        <PageTitle title="Data Sources" padding={true} description="Upload datasets for analysis and visualisation."/>
                 <Form method="post" encType="multipart/form-data" className='fileUploadRectangle'>
                     <BsUpload style={{fontSize: "30px"}}/>
                     {file 
