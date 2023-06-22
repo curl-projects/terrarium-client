@@ -52,14 +52,14 @@ function handleClusterClick(e){
               }[props.clustersGenerated]
             }
           </span>
-          {props.clusterData.length == 1 ? "Cluster" : "Clusters"}
+          {props.clusterData.length === 1 ? "Cluster" : "Clusters"}
         </p>
       </div>
       <div className='messageStreamMetadataSection'
            onClick={()=>props.setDataView('authors')}>
         <p className='messageStreamMetadataText'>
-          <span className="messageStreamMetadataIcon">0</span>
-          Authors
+          <span className="messageStreamMetadataIcon">{props.authorData.length}</span>
+          {props.authorData.length === 1 ? "Author" : "Authors"}
         </p>
       </div>
       <div className='messageStreamMetadataSection'

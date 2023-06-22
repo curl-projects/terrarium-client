@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import cn from "classnames";
-import { BiMessageSquareDetail } from "react-icons/bi";
+import { BsChatLeftText } from "react-icons/bs";
 import { AiOutlinePushpin } from "react-icons/ai";
-
+import { BiMessageSquareDetail } from 'react-icons/bi'
 
 export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) {
 
@@ -71,9 +71,8 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
       onMouseOver={event => handleMouseOver(event, props.cardData.fr_id)}
       onMouseOut={event => handleMouseOut(event, props.cardData.fr_id)}
       ref={messageCardRef}
-      onClick={() => setIsCardExpanded(!isCardExpanded)}
     >
-
+      <div className='messageCardOuter' onClick={() => setIsCardExpanded(!isCardExpanded)}>
       <div className='messageCardMetadata'>
         <p className='messageCardMetadataText'>@{props.cardData && props.cardData.author}</p>
         <div className='messageCardDivider'></div>
@@ -104,8 +103,8 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
             
         </div>
       )}
-
-      <div className='absolute top-1 -left-8'>
+    </div>
+    <div className='absolute top-1 -left-8'>
           <AiOutlinePushpin
             size={22}
             onClick = {() => pinCard(props.cardData.fr_id)}
@@ -114,7 +113,6 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
               {"visible": isHovered || isPinned},
               {"invisible": !isHovered && !isPinned}
             )} />
-
       </div>
     </div>
   )

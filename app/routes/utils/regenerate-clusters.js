@@ -9,7 +9,7 @@ export async function loader({ request }){
     const searchVectorRes = await generateSearchVector(searchString)
     const searchVector = searchVectorRes.data && searchVectorRes.data[0]['embedding']
     
-    const initialisedClusters = await initialiseClusterAnalysis(searchVector, featureId)
+    const initialisedClusters = await initialiseClusterAnalysis(searchVector, featureId, searchString)
 
     return {initialisedClusters}
 }

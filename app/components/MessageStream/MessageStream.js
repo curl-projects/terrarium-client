@@ -14,27 +14,38 @@ export default function MessageStream(props) {
   const [pinnedCards, setPinnedCards] = useState([])
   const [remainingCards, setRemainingCards] = useState([])
   const [clusterData, setClusterData] = useState([])
+  const [authorData, setAuthorData] = useState([])
 
   useEffect(() => {
     setPinned(props.data.filter(d => d.pinned === true).map(e => e.featureRequestId))
   }, [props.data])
 
   useEffect(()=>{
-    console.log('CLUSTER DATA:', clusterData)
-  }, [clusterData])
-
-  useEffect(()=>{
-      console.log("MESSAGE STREAM CLUSTERS DATA", props.data)
     if(props.data && props.data[0] && props.data[0].cluster){
-      const organisedData = props.data.reduce((group, featureRequest) => {
+      const organisedClusterData = props.data.reduce((group, featureRequest) => {
           const { internalClusterId } = featureRequest.cluster;
           group[internalClusterId] = group[internalClusterId] ?? [];
           group[internalClusterId].push(featureRequest)
           return group
       }, {});
 
-        setClusterData(Object.values(organisedData))
+        setClusterData(Object.values(organisedClusterData))
     }
+
+    if(props.data && props.data[0] && props.data[0].featureRequest){
+      const organisedAuthorData = props.data.reduce((group, featureRequest) => {
+          const { author } = featureRequest.featureRequest;
+          group[author] = group[author] ?? [];
+          group[author].push(featureRequest)
+          return group
+      }, {});
+
+
+      const sortedAuthorData = Object.values(organisedAuthorData).sort((a, b) => b.length - a.length)
+
+      setAuthorData(sortedAuthorData)
+    }
+
     }, [props.data])
 
 
@@ -98,6 +109,7 @@ export default function MessageStream(props) {
           paneRef={paneRef}
           clustersGenerated={props.clustersGenerated}
           clusterData={clusterData}
+          authorData={authorData}
           setClustersGenerated={props.setClustersGenerated}
           setDataView={props.setDataView}
           clusterFetcher={props.clusterFetcher}
@@ -119,11 +131,15 @@ export default function MessageStream(props) {
                             setClusterData={setClusterData}
                             isExpanded={isExpanded}
                             pinCard={pinCard}
+                            pinnedCards={pinnedCards}
                             setZoomObject={props.setZoomObject}
                             expandSpecificCard={props.expandSpecificCard}
                         />,
             "authors": <MessageStreamAuthors 
-                          data={props.data}
+                          authorData={authorData}
+                          isExpanded={isExpanded}
+                          pinCard={pinCard}
+                          pinnedCards={pinnedCards}
                         />,
             "filters": <MessageStreamFilters />
           }[props.dataView]

@@ -53,8 +53,9 @@ export async function initialiseClusterAnalysis(searchVector, featureId, searchS
     'search_vector': searchVector,
     'terrarium_feature_id': featureId,
     'feature_title': searchString
-
   }
+
+  console.log("DATA:", data)
 
   const res = await fetch(url, {
     method: "POST",

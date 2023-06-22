@@ -26,7 +26,6 @@ export default function ClusterCard(props) {
   }, [props.clusterData])
 
   function handleClusterCardClick(){
-    console.log("PROPS.CLUSTER DATA", props.clusterData[0])
     if(!isCardExpanded){
         props.setZoomObject({id: props.clusterData[0].cluster.internalClusterId, type: "cluster"})
     }
@@ -85,7 +84,7 @@ export default function ClusterCard(props) {
             <p className='clusterCardTitle'>Cluster {toWords.convert(props.clusterData[0].cluster.internalClusterId+1)}</p>
             <div style={{flex: 1}}/>
             <div className='clusterCardTitleMetadataWrapper'>
-                <p className='clusterCardTitleMetadata'>5 Feature Requests</p>
+                <p className='clusterCardTitleMetadata'>{props.clusterData.length} {props.clusterData.length === 1 ? "Feature Request" : "Feature Requests"}</p>
             </div>
         </div>
 
@@ -147,7 +146,9 @@ export default function ClusterCard(props) {
                 key={cardData.featureRequest.fr_id}
                 cardData={cardData.featureRequest}
                 isExpanded={props.isExpanded}
+                isPinned={props.pinnedCards.map(i => i.featureRequestId).includes(cardData.featureRequestId)}
                 pinCard={props.pinCard} />
+
             ))}
           </div>
         </div>

@@ -11,6 +11,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { CgZoomOut } from "react-icons/cg";
+import Tooltip from '@mui/material/Tooltip';
 
 
 export default function PointFieldScaffold(props){
@@ -134,6 +135,7 @@ export default function PointFieldScaffold(props){
     </button>
       {!props.zoomObject &&
       <>
+      <Tooltip title="Distribute" placement='top' arrow>
       <img
           onClick={generateUniform}
           src={refresh}
@@ -147,7 +149,9 @@ export default function PointFieldScaffold(props){
             width: '40px',
             cursor: 'pointer'
           }} />
+        </Tooltip>
       {props.clustersGenerated === 'completed' &&
+      <Tooltip title="Cluster" placement='top' arrow>
         <img
           onClick={() => generateClusters(false)}
           src={network}
@@ -161,10 +165,12 @@ export default function PointFieldScaffold(props){
             width: '40px',
             cursor: 'pointer'
           }} />
+        </Tooltip>
       }
         </>
         }
         {props.zoomObject &&
+        <Tooltip title="Reset Zoom" placement='top' arrow>
           <div 
           onClick={resetZoom}
           src={refresh}
@@ -179,6 +185,7 @@ export default function PointFieldScaffold(props){
             cursor: 'pointer'}}>
               <CgZoomOut style={{height: "40px", width: "40px", color: "#CCCCCC"}}/>
           </div>
+          </Tooltip>
           }
 
         <div style={{

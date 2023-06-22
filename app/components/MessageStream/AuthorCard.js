@@ -1,0 +1,38 @@
+import { useState, useEffect, useRef } from "react";
+import MessageCard from "~/components/MessageStream/MessageCard";
+
+export default function AuthorCard(props){
+    const [isCardExpanded, setIsCardExpanded] = useState(false);
+    const authorCardRef = useRef();
+
+    return(
+        <div className='authorCard relative'>
+            <div onClick={() => setIsCardExpanded(!isCardExpanded)} style={{cursor: 'pointer'}} className='clusterCardOuter'>
+                <div ref={authorCardRef} className='authorCardInner' >
+                    <p className='authorCardTitle'>@{props.authorData[0].featureRequest.author}</p>
+                    <div style={{flex: 1}}/>
+                    <div>
+                        <p className='clusterCardTitleMetadata'>{props.authorData.length} {props.authorData.length === 1 ? "Feature Request" : "Feature Requests"}</p>
+                    </div>
+                </div>
+            </div>
+
+            {(isCardExpanded || props.isExpanded) && (
+            <div className={"flex flex-col gap-2 px-3 py-2 text-sm tracking-tight text-gray-600/90 font-normal"}>
+                <div className="pl-10 pr-8 flex flex-col gap-2" style={{backgroundColor: "rgb(243, 244, 246)"}}>
+                    {props.authorData.map((cardData, idx) => (
+                    <MessageCard
+                        idx={idx}
+                        key={cardData.featureRequest.fr_id}
+                        cardData={cardData.featureRequest}
+                        isExpanded={props.isExpanded}
+                        pinCard={props.pinCard}
+                        isPinned={props.pinnedCards.map(i => i.featureRequestId).includes(cardData.featureRequestId)}
+                    />
+                    ))}
+                </div>
+            </div>
+            )}
+        </div>
+    )
+}

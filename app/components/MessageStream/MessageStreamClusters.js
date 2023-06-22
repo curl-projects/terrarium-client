@@ -3,14 +3,10 @@ import LinearProgress from '@mui/material/LinearProgress';
 import ClusterCard from "~/components/MessageStream/ClusterCard"
 
 export default function MessageStreamClusters(props){
-    useEffect(()=>{
-        console.log("EXPAND SPECIFIC CARD:", props.expandSpecificCard)
-    }, [props.expandSpecificCard])
 
     const [allCardsStatus, setAllCardsStatus] = useState([])
 
     useEffect(()=>{
-        console.log("CLUSTER STATUS", props.clusterData)
         let tempObject = {}
         props.clusterData && props.clusterData.map((clusterData, idx) => (
             tempObject[idx] = {expanded: false}
@@ -19,9 +15,6 @@ export default function MessageStreamClusters(props){
         setAllCardsStatus(tempObject)
     }, [props.clusterData])
 
-    useEffect(()=>{
-        console.log('ALL CARDS STATUS:', allCardsStatus)
-    }, [allCardsStatus])
     
     return(
         <>
@@ -46,6 +39,7 @@ export default function MessageStreamClusters(props){
                     expandSpecificCard={props.expandSpecificCard}
                     setAllCardsStatus={setAllCardsStatus}
                     allCardsStatus={allCardsStatus}
+                    pinnedCards={props.pinnedCards}
                 />
             ))
             }
