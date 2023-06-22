@@ -26,6 +26,9 @@ import { GoTelescope } from 'react-icons/go'
 import { BiNotepad } from 'react-icons/bi'
 import Tooltip from '@mui/material/Tooltip';
 
+import dayjs from 'dayjs';
+
+
 export async function loader({ request, params }){
     const user = await authenticator.isAuthenticated(request, {
       failureRedirect: "/",
@@ -113,7 +116,7 @@ export default function Feature(){
 
     const [zoomObject, setZoomObject] = useState(null)
     const [triggerClusters, setTriggerClusters] = useState(false)
-    const [dataView, setDataView] = useState("featureRequests")
+    const [dataView, setDataView] = useState("filters")
     const [expandSpecificCard, setExpandSpecificCard] = useState({cardId: null, cardType: null})
 
     const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
@@ -226,13 +229,17 @@ export default function Feature(){
                        {method: "post"})
     }
 
-    function handleDescriptionSubmit(){
-        descriptionFetcher.submit(
-            {actionType: "saveDescription", featureId: params["*"], featureDescription: description}, 
-            {method: 'post'})
-            
-        setDescriptionFocused(false)
-    }
+    function filterDateData(afterDate){
+        const filteredData = loaderData.featureRequests.filter(fr => dayjs.utc(fr.featureRequest.created_at).isAfter(dayjs.utc(afterDate)))
+        setTopLevelStreamDataObj(filteredData)
+        setTopLevelCanvasDataObj(filteredData)
+      }
+  
+      function resetDateData(){
+        setTopLevelStreamDataObj(loaderData.featureRequests)
+        setTopLevelCanvasDataObj(loaderData.featureRequests)
+      }
+  
 
     return(
         <>
@@ -373,6 +380,8 @@ export default function Feature(){
                             dataView={dataView}
                             setDataView={setDataView}
                             expandSpecificCard={expandSpecificCard}
+                            filterDateData={filterDateData}
+                            resetDateData={resetDateData}
                             />
                     </div>
                 </div>

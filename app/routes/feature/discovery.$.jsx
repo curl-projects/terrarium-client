@@ -45,7 +45,6 @@ export async function action({ request }){
 export default function Discovery(){
     const actionData = useActionData();
     const [searchResults, setSearchResults] = useState([])
-    const [dateValue, setDateValue] = useState(null);
     const searchFetcher = useFetcher();
     const [innerCanvasData, setInnerCanvasData] = useState([]) 
     const fetcher = useFetcher();
@@ -56,7 +55,7 @@ export default function Discovery(){
       setTopLevelCanvasDataObj, setTopLevelStreamDataObj, 
       loaderData, headerCollapsed, zoomObject, setZoomObject,
       clustersGenerated, triggerClusters, setTriggerClusters,
-    setDataView, setExpandSpecificCard] = useOutletContext();
+    setDataView, setExpandSpecificCard, dateValue, setDateValue] = useOutletContext();
 
     useEffect(()=>{
         setInnerCanvasData(topLevelCanvasDataObj)
@@ -74,10 +73,10 @@ export default function Discovery(){
     //     console.log("TOP LEVEL STREAM", topLevelStreamDataObj)
     //     console.log("DATE FILTERED", dateFilteredArray)
     //     setTopLevelStreamDataObj(dateFilteredArray)
-    //     setSearchResults(dateFilteredArray.map(a => a.featureRequestId))
+    //     // setSearchResults(dateFilteredArray.map(a => a.featureRequestId))
     // }, [dateValue])
 
-
+  // SEARCHING
   useEffect(()=>{
     if(searchFetcher.data && searchFetcher.data.featureRequests){
       const featureRequests = searchFetcher.data.featureRequests;
@@ -85,6 +84,7 @@ export default function Discovery(){
       setSearchResults(featureRequests.map(a => a.featureRequestId));
     }
   }, [searchFetcher.data])
+
 
   function resetSearchData(){
     setTopLevelStreamDataObj(loaderData.featureRequests)
@@ -96,12 +96,8 @@ export default function Discovery(){
   }
 
   function filterBrushedData(brushedData){
-    console.log('BRUSHED DATA:', brushedData)
     let dataIds = brushedData.map(a => a.featureRequestId)
-
     const filteredData = loaderData.featureRequests.filter(({ featureRequestId }) => dataIds.includes(featureRequestId))
-    console.log("FILTERED DATA:", filteredData)
-
     setTopLevelStreamDataObj(filteredData)
   }
 

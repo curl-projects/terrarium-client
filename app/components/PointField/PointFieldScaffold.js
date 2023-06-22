@@ -5,11 +5,6 @@ import _, { rest } from "underscore";
 import network from '../../../public/assets/network.svg';
 import refresh from '../../../public/assets/refresh.svg';
 var gaussian = require('gaussian');
-import TextField from '@mui/material/TextField';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
 import { CgZoomOut } from "react-icons/cg";
 import Tooltip from '@mui/material/Tooltip';
 
@@ -193,19 +188,7 @@ export default function PointFieldScaffold(props){
             left: 10,
             bottom: 10,
           }}>
-          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-                views={['year', 'month']}
-                label="After"
-                minDate={dayjs('2012-03-01')}
-                maxDate={dayjs('2023-06-01')}
-                value={props.dateValue}
-                onChange={(newValue) => {
-                  props.setDateValue(newValue);
-                }}
-                renderInput={(params) => <TextField {...params} helperText={null} />}
-              />
-          </LocalizationProvider> */}
+      
         </div>
     </>
 

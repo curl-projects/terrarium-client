@@ -21,7 +21,7 @@ export default function MessageStream(props) {
   }, [props.data])
 
   useEffect(()=>{
-    if(props.data && props.data[0] && props.data[0].cluster){
+    if(props.data){
       const organisedClusterData = props.data.reduce((group, featureRequest) => {
           const { internalClusterId } = featureRequest.cluster;
           group[internalClusterId] = group[internalClusterId] ?? [];
@@ -32,15 +32,14 @@ export default function MessageStream(props) {
         setClusterData(Object.values(organisedClusterData))
     }
 
-    if(props.data && props.data[0] && props.data[0].featureRequest){
+    if(props.data){
       const organisedAuthorData = props.data.reduce((group, featureRequest) => {
           const { author } = featureRequest.featureRequest;
           group[author] = group[author] ?? [];
           group[author].push(featureRequest)
           return group
       }, {});
-
-
+      
       const sortedAuthorData = Object.values(organisedAuthorData).sort((a, b) => b.length - a.length)
 
       setAuthorData(sortedAuthorData)
@@ -141,7 +140,10 @@ export default function MessageStream(props) {
                           pinCard={pinCard}
                           pinnedCards={pinnedCards}
                         />,
-            "filters": <MessageStreamFilters />
+            "filters": <MessageStreamFilters 
+                          filterDateData={props.filterDateData}
+                          resetDateData={props.resetDateData}
+                          />
           }[props.dataView]
         }
       </div>
