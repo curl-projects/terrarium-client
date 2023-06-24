@@ -118,7 +118,7 @@ export default function Feature(){
 
     const [zoomObject, setZoomObject] = useState(null)
     const [triggerClusters, setTriggerClusters] = useState(false)
-    const [dataView, setDataView] = useState("filters")
+    const [dataView, setDataView] = useState("featureRequests")
     const [expandSpecificCard, setExpandSpecificCard] = useState({cardId: null, cardType: null})
     const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
     const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])

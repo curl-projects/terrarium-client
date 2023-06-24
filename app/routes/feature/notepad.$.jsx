@@ -1,4 +1,4 @@
-import RichTextEditor from "~/components/TextEditor/RichTextEditor.tsx"
+import RichTextEditor from "~/components/TextEditor/RichTextEditor"
 import { ClientOnly } from "remix-utils";
 import { useParams } from "@remix-run/react";
 

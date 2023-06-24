@@ -68,7 +68,7 @@ export default function Discovery(){
 
 
   function resetSearchData(){
-    setTriggerFilters(s => !s)
+    setTopLevelStreamDataObj(topLevelFilteredData)
     setSearchResults([])
   }
   

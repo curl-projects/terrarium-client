@@ -49,7 +49,7 @@ const StyleButton = (props) => {
 }
 
 
-const Toolbar = (props) => {
+export default function Toolbar(props){
     const {editorState, setEditorState} = props
     const inlineStyle = editorState && editorState.getCurrentInlineStyle()
     const blockType = editorState && editorState
@@ -65,8 +65,7 @@ const Toolbar = (props) => {
     }
 
     return (
-        <div id="editor-toolbar" className="flex gap-2 bg-white"
-             style={{position: "absolute", bottom: "10px", right: "10px"}}>
+        <div id="editor-toolbar" className="editorToolbar">
             <div className="flex gap-0">
                 {INLINE_STYLES.map(({label, style, icon, shortcut}) => (
                     <StyleButton
@@ -92,5 +91,3 @@ const Toolbar = (props) => {
         </div>
     )
 }
-
-export default Toolbar
