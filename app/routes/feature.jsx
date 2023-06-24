@@ -169,7 +169,7 @@ export default function Feature(){
             ? setClustersGenerated("completed")
             : setClustersGenerated("incomplete"))
 
-            loaderData.clusters === '200' && setClustersGenerated('initiated')
+            loaderData.clusters === '202' && setClustersGenerated('initiated')
             loaderData.clusters === '404' && setClustersGenerated('error')
 
             // TODO should we automatically trigger this if clusters are incomplete?
@@ -182,6 +182,7 @@ export default function Feature(){
 
             if(data.type === 'cluster_generation' && data.status === 'initiated'){
                 console.log("CLUSTER ANALYSIS INITIALISING")
+                setClustersGenerated('initiated')
             }
 
             else if(data.type === 'cluster_generation' && data.status === 'completed'){

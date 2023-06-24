@@ -38,8 +38,8 @@ const [columns, setColumns] = useState(columnsFromBackend);
         3: {
         name: "Rejects",
         items: columnThree,
-        color: "rgba(237, 237, 237, 1)",
-        backgroundColor: "rgba(237, 237, 237, 0.6)"
+        color: "rgba(75, 85, 99, 0.3)",
+        backgroundColor: "rgba(75, 85, 99, 0.1)"
         },
 
       }
