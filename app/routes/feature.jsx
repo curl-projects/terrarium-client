@@ -14,7 +14,7 @@ import { readFeature, updateFeatureTitle, updateFeatureIsSearched, updateFeature
 import { findFeatureRequests, associateFeatureRequestsWithFeature } from "~/models/feature-requests.server"
 import { embeddingSearch, generateSearchVector, initialiseClusterAnalysis } from "~/models/embedding-search.server"
 
-import FeatureHeader from "~/components/Header/FeatureHeader";
+import Header from "~/components/Header/Header";
 import OutletPlaceholder from "~/components/Feature/OutletPlaceholder";
 import { ImSearch } from "react-icons/im"
 import { Outlet, Link, useParams, useMatches } from "@remix-run/react";
@@ -308,7 +308,7 @@ export default function Feature(){
 
     return(
         <>
-        <FeatureHeader />
+            <Header headerCollapsed={headerCollapsed}/>
             <div className="featureScaffold">
                 <div className="featureTitleWrapper">
                     {titleFocused

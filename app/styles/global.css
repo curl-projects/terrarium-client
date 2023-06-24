@@ -197,11 +197,20 @@ body {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding-right: 8px;
     z-index: 100;
+    padding-left: 10px;
+    padding-top: 10px;
 
 }
 
+.featureHeaderNavigationTextWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  flex-direction: column;
+  
+}
 .headerTerrariumWrapper{
   display: flex;
   margin-left: 10px;
@@ -222,6 +231,7 @@ body {
   flex-direction: row;
   gap: 30px;
   text-decoration: none;
+  margin-right: 20px;
 }
 
 .navigationText {
@@ -232,6 +242,24 @@ body {
   letter-spacing: -0.01em;
 }
 
+.headerOptionsWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4B5563 !important;
+}
+
+.headerOptionsButton{
+  color: #4B5563 !important;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.headerOptionsText{
+  color: #4b5563;
+  font-weight: 400; 
+}
+
 .featureNavigationText{
   border-radius: 7px;
   border: 0;
@@ -239,6 +267,18 @@ body {
   cursor: pointer;
   color: rgba(119, 153, 141, 0.7);
   font-weight: bold;
+}
+
+.featureHeaderNavigationText{
+  border-radius: 7px;
+  border: 0;
+  font-size: 16px;
+  cursor: pointer;
+  color: #7e998e;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* INTEGRATIONS */
@@ -1961,7 +2001,7 @@ div.DraftEditor-root {
 }
 
 .invisibleFrNode{
-  opacity: 0.3;
+    opacity: 0.3;
 }
 
 .highlightedFeatureRequestText{

@@ -1,8 +1,27 @@
 import { Form, Link } from "@remix-run/react";
 import { RiPlantLine} from "react-icons/ri";
 import { HiMenuAlt4 } from "react-icons/hi";
+import { RiLogoutBoxRLine } from "react-icons/ri"
 
-export default function Header(){
+import { useState } from "react"
+
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+
+export default function Header(props){
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
   return(
     <div className='header'>
       <div className='headerTerrariumWrapper'>
@@ -14,6 +33,7 @@ export default function Header(){
         </Link>
       </div>
       <div style={{flex: 1}}/>
+      {!props.headerCollapsed &&
       <div className="navigationTextWrapper">
         <Link to ='/roadmap' style={{textDecoration: "none"}}>
         <h3 className='navigationText'>Roadmap</h3>
@@ -30,12 +50,30 @@ export default function Header(){
         <Link to ='/current-bugs' style={{textDecoration: "none"}}>
           <h3 className='navigationText'>Bugs</h3>
         </Link>
-        <HiMenuAlt4 />
+        <div className='headerOptionsWrapper'>
+          <div className='headerOptionsButton' onClick={handleMenuClick}>
+            <HiMenuAlt4 />
+          </div>
+        </div>
+
+        <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+          <Form action="/logout" method="post">
+            <MenuItem>
+              <ListItemIcon>
+                <RiLogoutBoxRLine />
+              </ListItemIcon>
+              <ListItemText>
+                <button>
+                  <p className='headerOptionsText' typ='submit'>Logout
+                  </p>
+                </button></ListItemText>
+            </MenuItem>
+          </Form>
+
+        </Menu>
+        
       </div>
-    
-      {/* <Form action="/logout" method="post">
-        <button className='logoutButton'>Logout</button>
-      </Form> */}
+      }
     </div>
   )
 }
