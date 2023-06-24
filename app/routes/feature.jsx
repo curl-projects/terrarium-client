@@ -52,9 +52,9 @@ export async function loader({ request, params }){
       const updatedFeature = await updateFeatureTitle(featureId, searchTerm)
   
       // conduct search
-      const knnIDs = await embeddingSearch(searchTerm, featureId); // get sorted scores
+      const {knnIDs, pipelineResponse} = await embeddingSearch(searchTerm, featureId); // get sorted scores
 
-      console.log("KNN IDS:", knnIDs)
+      console.log("PIPELINE RESPONSE:", pipelineResponse)
   
       // update all feature requests for easier future recall
       const updatedFeatures = await associateFeatureRequestsWithFeature(knnIDs, featureId)
@@ -64,12 +64,12 @@ export async function loader({ request, params }){
   
       // // works because of the update above
       // const featureRequests = await findFeatureRequests(featureId)
-      return redirect(`/feature/discovery/${featureId}?clusters=True`)
+      return redirect(`/feature/discovery/${featureId}?clusters=${pipelineResponse}`)
     }
   
     if(feature.isSearched){
       const featureRequests = await findFeatureRequests(featureId); // get associated data objects
-      return { feature: feature, featureRequests: featureRequests, clustersLoading: clusters ? true : false}
+      return { feature: feature, featureRequests: featureRequests, clusters: clusters}
     }
   
     return { feature: feature, featureRequests: [] }
@@ -138,6 +138,11 @@ export default function Feature(){
         setSocketUrl(window.ENV.WEBSOCKETS_URL)
       }, [])
 
+    useEffect(()=>{
+        console.log("CLUSTER FETCHER DATA", clusterFetcher.data)
+        String(clusterFetcher.data?.clusterResponse) === '404' && setClustersGenerated('error')
+    }, [clusterFetcher.data])
+
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
 
     const connectionStatus = {
@@ -164,7 +169,8 @@ export default function Feature(){
             ? setClustersGenerated("completed")
             : setClustersGenerated("incomplete"))
 
-            loaderData.clustersLoading && setClustersGenerated('initiated')
+            loaderData.clusters === '200' && setClustersGenerated('initiated')
+            loaderData.clusters === '404' && setClustersGenerated('error')
 
             // TODO should we automatically trigger this if clusters are incomplete?
         }, [loaderData.featureRequests])

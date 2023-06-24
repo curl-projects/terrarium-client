@@ -72,6 +72,7 @@ model FeatureRequestMap {
   featureRequestId String
   pinned           Boolean        @default(false)
   oldCluster       Int            @default(-1)
+  score            String?
   feature          Feature        @relation(fields: [featureId], references: [id], onDelete: Cascade)
   featureRequest   FeatureRequest @relation(fields: [featureRequestId], references: [fr_id], onDelete: Cascade)
   cluster          Cluster? @relation(fields: [clusterId], references: [clusterId], onDelete: SetNull)

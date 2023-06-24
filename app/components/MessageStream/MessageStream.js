@@ -24,18 +24,25 @@ export default function MessageStream(props) {
 
   useEffect(()=>{
     if(props.data){
-      const organisedClusterData = props.data.reduce((group, featureRequest) => {
+      if(props.data[0] && props.data[0].cluster){
+        console.log("PROPS DATA:", props.data)
+        const organisedClusterData = props.data.reduce((group, featureRequest) => {
           const { internalClusterId } = featureRequest.cluster;
           group[internalClusterId] = group[internalClusterId] ?? [];
           group[internalClusterId].push(featureRequest)
           return group
       }, {});
 
-        setClusterData(Object.values(organisedClusterData))
-    }
 
-    if(props.data){
-      const organisedAuthorData = props.data.reduce((group, featureRequest) => {
+        setClusterData(Object.values(organisedClusterData))
+      }
+
+      else{
+        setClusterData([])
+      }
+
+      if(props.data[0] && props.data[0].featureRequest?.author){
+        const organisedAuthorData = props.data.reduce((group, featureRequest) => {
           const { author } = featureRequest.featureRequest;
           group[author] = group[author] ?? [];
           group[author].push(featureRequest)
@@ -46,8 +53,11 @@ export default function MessageStream(props) {
 
       setAuthorNames(Object.keys(organisedAuthorData))
       setAuthorData(sortedAuthorData)
+      }
     }
-
+    else{
+      setAuthorData([])
+    }
     }, [props.data])
 
 

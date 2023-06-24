@@ -94,6 +94,9 @@ export async function updateFeatureTitle(featureId, featureTitle){
     },
     data: {
       title: featureTitle,
+      filters: {
+        deleteMany: {},
+      }
     }
   })
   return feature

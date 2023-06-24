@@ -28,6 +28,11 @@ export default function MessageStreamClusters(props){
                 }}/>
         }
         <div className="pl-10 pr-8 flex flex-col gap-2" style={{backgroundColor: "rgb(243, 244, 246)"}}>
+            {props.clustersGenerated === 'error' && 
+                <div className='clusterErrorWrapper'>
+                    <p className='clusterErrorText'>Sorry, something went wrong!</p>
+                </div>
+            }
             {props.clusterData && props.clusterData.map((clusterData, idx) => (
                 <ClusterCard 
                     key={clusterData[0].cluster.internalClusterId}

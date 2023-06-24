@@ -22,6 +22,7 @@ export default function MessageStreamFeatureRequests(props){
                 idx={idx}
                 key={cardData.featureRequest.fr_id}
                 cardData={cardData.featureRequest}
+                cardScore={cardData.score}
                 isExpanded={props.isExpanded}
                 expandSpecificCard={props.expandSpecificCard}
                 pinCard={props.pinCard} />

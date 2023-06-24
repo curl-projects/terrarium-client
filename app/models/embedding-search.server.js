@@ -41,7 +41,9 @@ export async function getKNNfromSearchVector(vector, topK=1){
 export async function filterEmbeddings(knnIDs){
     const filteredResults = knnIDs.filter(a => a['score'] > 0.25)
     const sortedResponses = filteredResults.slice().sort((a,b)=>b-a)
-    const dataIDs = sortedResponses.map(a => a.id)
+    const dataIDs = sortedResponses.map(function(a){
+      return {id: a.id, score: a.score}
+    })
     return dataIDs
   }
 
@@ -55,7 +57,6 @@ export async function initialiseClusterAnalysis(searchVector, featureId, searchS
     'feature_title': searchString
   }
 
-  console.log("DATA:", data)
 
   const res = await fetch(url, {
     method: "POST",
@@ -74,11 +75,10 @@ export async function embeddingSearch(searchString, featureId){
 
   // asynchronous processing
   const clusterRes = await initialiseClusterAnalysis(searchVector, featureId, searchString)
-  console.log("CLUSTER INFO:", clusterRes)
   // end asynchronous processing
 
   const knn = await getKNNfromSearchVector(searchVector, topK=100)
   const knnIDs = knn.matches
   const filteredEmbeddings = await filterEmbeddings(knnIDs)
-  return filteredEmbeddings
+  return {knnIDs: filteredEmbeddings, pipelineResponse: clusterRes.status}
 }

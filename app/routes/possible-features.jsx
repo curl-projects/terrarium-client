@@ -19,6 +19,7 @@ export default function PossibleFeatures(){
                 <li>Fix the roadmap metadata feature request counts</li>
                 <li>Improve possible features page to indicate roadmap for the product. Add thumbs up and thumbs down.</li>
                 <li>Create a form associated with the bugs and requests page so that people can suggest improvements and see the improvements that they've suggested</li>
+                <li>Delete author filters when re-searching</li>
             </ol>
         </div>
         </>

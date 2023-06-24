@@ -580,6 +580,7 @@ body {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
   width: 100%;
+  position: relative;
 }
 
 
@@ -669,7 +670,21 @@ body {
   font-weight: 400;
   line-height: 1.25;
   overflow-wrap: break-word;
+}
 
+.clusterErrorWrapper{
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clusterErrorText{
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: #4b5563;
+  font-weight: 350;
+  text-align: center; 
 }
 
 .clusterCard {

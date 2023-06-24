@@ -76,15 +76,18 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
       <div className='messageCardOuter' onClick={() => setIsCardExpanded(!isCardExpanded)}>
       <div className='messageCardMetadata'>
         <p className='messageCardMetadataText'>@{props.cardData && props.cardData.author}</p>
-        <div className='messageCardDivider'></div>
+        <div className='messageCardDivider' />
         <p className='messageCardMetadataText'>{messageDate}</p>
+        <div className='messageCardDivider' />
+        <p className='messageCardMetadataText'>{parseFloat(props.cardScore).toPrecision(2)*100}% Relevant</p>
+
+
       </div>
       <div
   
         className="messageCardInner"
       >
         <p className='messageCardInnerText'>{props.cardData && cleanSummary}</p>
-        {props.cardData?.score && <b> [{parseFloat(props.cardData.score).toPrecision(3)}]</b>}
       </div>
 
       {(isCardExpanded || isExpanded) && (
