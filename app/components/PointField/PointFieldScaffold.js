@@ -16,6 +16,7 @@ export default function PointFieldScaffold(props){
   const [dataObj, setDataObj] = useState(generateUniformCoords(props.data))
   const [clusters, setClusters] = useState([])
   const [displayControl, setDisplayControl] = useState({data: true, clusters: false})
+  const [stableCoords, setStableCoords] = useState([])
 
   useEffect(()=>{
     setDataObj(generateUniformCoords(props.data))
@@ -106,7 +107,6 @@ export default function PointFieldScaffold(props){
         data={dataObj}
         clusters={clusters}
         displayControl = {displayControl}
-        searchResults={props.searchResults}
         zoomObject={props.zoomObject}
         setZoomObject={props.setZoomObject}
         resetZoomedData={props.resetZoomedData}

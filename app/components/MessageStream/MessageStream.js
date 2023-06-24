@@ -138,6 +138,8 @@ export default function MessageStream(props) {
                                   pinCard={pinCard} 
                                   isExpanded={isExpanded}
                                   expandSpecificCard={props.expandSpecificCard}
+                                  searchText={props.searchText}
+                                  setSearchText={props.setSearchText}
                                   />,
             "clusters": <MessageStreamClusters 
                             clustersGenerated={props.clustersGenerated}

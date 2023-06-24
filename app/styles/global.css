@@ -174,8 +174,11 @@ body {
 .header {
   width: 100vw;
   height: 60px;
-  background-color: rgb(237, 237, 237);
+  /* background-color: rgb(237, 237, 237); */
   position: absolute;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   top: 0;
   left: 0;
   display: flex;
@@ -196,22 +199,37 @@ body {
     align-items: center;
     padding-right: 8px;
     z-index: 100;
+
+}
+
+.headerTerrariumWrapper{
+  display: flex;
+  margin-left: 10px;
+}
+
+.headerTerrariumText{
+  color: #7e988e;
+  font-size: 26px;
+  font-family: Helvetica Neue;
+  font-weight: 700;
+  display: flex;
+  letter-spacing: -0.03em;
+
 }
 
 .navigationTextWrapper {
   display: flex;
   flex-direction: row;
-  gap: 40px;
-  padding-left: 30px;
+  gap: 30px;
   text-decoration: none;
 }
 
 .navigationText {
   color: #4B5563;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 16px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .featureNavigationText{
@@ -1042,7 +1060,6 @@ div.DraftEditor-root {
 }
 
 .discoveryPointFieldWrapper {
-    border: 2px solid green;
     box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 4px;
     border: 1px solid rgba(119, 153, 141, 0.3);
     height: 96%;
@@ -1102,6 +1119,15 @@ div.DraftEditor-root {
   font-size: 60px;
   font-family: "Helvetica Neue";
   font-weight: bold;
+  display: flex;
+  letter-spacing: -0.01em;
+}
+
+.terrarium-plant-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
 }
 
 .terrarium-login {
@@ -1342,6 +1368,7 @@ div.DraftEditor-root {
   font-weight: bold;
   font-size: 50px;
   color: #4B5563;
+  letter-spacing: -0.03em;
 }
 
 .pageTitleDivider{
@@ -1369,6 +1396,7 @@ div.DraftEditor-root {
   justify-content: center;
   padding: 5%;
   flex-direction: column;
+  padding-top: 60px;
 }
 
 .kanbanRoadmapColumns{
@@ -1771,6 +1799,30 @@ div.DraftEditor-root {
   width: 100% !important;
 }
 
+.featureRequestSearchWrapper{
+  display: flex;
+  gap: 10px;
+}
+
+.featureRequestSearchTextField fieldset.MuiOutlinedInput-notchedOutline {
+  border-color: rgba(119, 153, 141, 0.3) !important;
+  border-radius: 0px;
+}
+
+.featureRequestSearchTextField .Mui-focused fieldset.MuiOutlinedInput-notchedOutline {
+  border-color: #77998d !important;
+  border-radius: 0px;
+}
+
+.featureRequestSearchTextField label {
+  color: #9CA3AF !important;
+}
+
+.featureRequestSearchTextField input {
+  color: rgba(55, 65, 81, 1) !important;
+}
+
+
 .datePickerTextField fieldset.MuiOutlinedInput-notchedOutline {
   border-color: #B0BFB9 !important;
 }
@@ -1906,4 +1958,12 @@ div.DraftEditor-root {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.invisibleFrNode{
+  opacity: 0.3;
+}
+
+.highlightedFeatureRequestText{
+  background-color: rgba(176, 191, 185, 0.8);
 }

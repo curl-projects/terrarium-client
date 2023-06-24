@@ -12,7 +12,7 @@ function usePrevious(value) {
   return ref.current;
 }
 
-export default function PointField({data, clusters, searchResults, filterBrushedData,
+export default function PointField({data, clusters, filterBrushedData,
                                    resetBrushFilter, zoomObject, setZoomObject,
                                    displayControl, resetZoomedData, headerCollapsed,
                                   setDataView, setExpandSpecificCard, generateClusters}) {
@@ -157,22 +157,6 @@ export default function PointField({data, clusters, searchResults, filterBrushed
       d3.select('svg').transition().duration(1000).call(zoom.transform, d3.zoomIdentity.scale(1));
     }
   }, [zoomObject, displayControl, containerHeight, containerWidth])
-
-   // INNER SEARCH
-   useEffect(()=>{
-    if(searchResults && searchResults.length !== 0){
-      const stringSearchResults = searchResults.map(a => `#fr-${a}`)
-      const activePoints = d3.select(ref.current)
-        .selectAll(stringSearchResults.join(","))
-          .classed("searchSelected", true)
-    }
-    if(searchResults && searchResults.length === 0){
-      d3.select(ref.current)
-        .selectAll('.searchSelected')
-        .classed("searchSelected", false)
-    }
-  }, [searchResults])
-
 
   const ref = useD3(
     (svg) => {

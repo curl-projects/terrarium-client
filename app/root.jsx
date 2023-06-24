@@ -20,6 +20,7 @@ import { json } from "@remix-run/node";
 
 export function links() {
   return [
+    {rel: 'icon', 'href': '/favicon.svg', type: "image/svg"},
     {rel: "stylesheet", href: styles},
     {rel: 'stylesheet', href: globalStyles},
     {rel: 'stylesheet', href: draftStyles},

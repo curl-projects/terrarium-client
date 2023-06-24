@@ -5,7 +5,7 @@ import { useState, useRef } from 'react';
 import Points3D from '~/components/3DCanvas/Points3D.js';
 import { OrbitControls, Html } from '@react-three/drei';
 import { ClientOnly } from "remix-utils";
-
+import { RiPlantLine} from "react-icons/ri"
 export default function Index(){
   const submit = useSubmit();
   const [titleHovered, setTitleHovered] = useState(false)
@@ -28,16 +28,17 @@ export default function Index(){
                  distanceFactor={0.5}
                  position={[0, 0, 0]}
                  transform
-                 occlude="blending"
+                //  occlude="blending"
                 >
                 <h1 
                   className="terrarium-logo"
                   onPointerOver={()=>setTitleHovered(true)}
                   onPointerOut={()=>setTitleHovered(false)}
                   onClick={handleSubmit}
-                  style={{cursor: "pointer", userSelect: "none"}}
-            
-                >Terrarium</h1>
+                  style={{cursor: "pointer", userSelect: "none"}}>
+                  <div className='terrarium-plant-wrapper'><RiPlantLine/></div>
+                  Terrarium
+                </h1>
                 </Html>
             </Canvas> 
           

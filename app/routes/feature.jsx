@@ -29,6 +29,8 @@ import Tooltip from '@mui/material/Tooltip';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
+import * as d3 from 'd3';
+
 dayjs.extend(utc)
 
 export async function loader({ request, params }){
@@ -124,6 +126,8 @@ export default function Feature(){
     const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])
     const [topLevelFilteredData, setTopLevelFilteredData] = useState([])
     const [invisibleFilters, setInvisibleFilters] = useState([])
+    const [searchText, setSearchText] = useState("")
+    const [searchResults, setSearchResults] = useState([])
 
 
     const clusterSubmit = useSubmit();
@@ -241,8 +245,31 @@ export default function Feature(){
     }
 
     useEffect(()=>{
-        console.debug("INVISIBLE FILTERS", invisibleFilters)
-    }, [invisibleFilters])
+        if(searchText){
+            setSearchResults(topLevelFilteredData.filter(x => x.featureRequest.fr.toLowerCase().includes(searchText.toLowerCase())).map(fr => fr.featureRequest.fr_id))
+            setTopLevelStreamDataObj(topLevelFilteredData.filter(x => x.featureRequest.fr.toLowerCase().includes(searchText.toLowerCase())))
+            
+        }
+        else{
+            setSearchResults([])
+            setTopLevelStreamDataObj(topLevelFilteredData)
+        }
+    }, [searchText])
+
+    useEffect(()=>{
+        console.log("SEARCH RESULTS", searchResults)
+        d3.selectAll(".frNode")
+          .classed("invisibleFrNode", false)
+
+        if(searchText){
+            d3.selectAll(".frNode").classed("invisibleFrNode", true)
+
+            for(let fr_id of searchResults){
+                d3.select(`#fr-${fr_id}`)
+                  .classed("invisibleFrNode", false)
+            }
+        }
+    }, [searchResults])
    
 
     useEffect(()=>{
@@ -421,6 +448,8 @@ export default function Feature(){
                             expandSpecificCard={expandSpecificCard}
                             invisibleFilters={invisibleFilters}
                             setInvisibleFilters={setInvisibleFilters}
+                            searchText={searchText}
+                            setSearchText={setSearchText}
                             />
                     </div>
                 </div>

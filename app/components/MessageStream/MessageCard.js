@@ -4,6 +4,7 @@ import cn from "classnames";
 import { BsChatLeftText } from "react-icons/bs";
 import { AiOutlinePushpin } from "react-icons/ai";
 import { BiMessageSquareDetail } from 'react-icons/bi'
+import Highlighter from "react-highlight-words";
 
 export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) {
 
@@ -87,7 +88,15 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
   
         className="messageCardInner"
       >
-        <p className='messageCardInnerText'>{props.cardData && cleanSummary}</p>
+          <p className='messageCardInnerText'> 
+            <Highlighter 
+              searchWords={[props.searchText]} 
+              textToHighlight={props.cardData && cleanSummary}
+              highlightClassName="highlightedFeatureRequestText"
+              >
+
+            </Highlighter>
+          </p>
       </div>
 
       {(isCardExpanded || isExpanded) && (

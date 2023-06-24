@@ -46,6 +46,7 @@
     "react-contenteditable": "^3.3.7",
     "react-dom": "^18.2.0",
     "react-expanding-textarea": "^2.3.6",
+    "react-highlight-words": "^0.20.0",
     "react-icons": "^4.6.0",
     "react-papaparse": "^4.1.0",
     "react-router-dom": "^6.12.1",

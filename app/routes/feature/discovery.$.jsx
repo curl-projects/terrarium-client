@@ -13,39 +13,11 @@ dayjs.extend(utc)
 // REACT & REMIX
 import { useState, useEffect } from "react";
 import { useLoaderData, useActionData, useOutletContext, useFetcher, useNavigate, useParams } from "@remix-run/react";
-import { json, redirect } from '@remix-run/node';
 
-
-// MODELS
-import { embeddingSearch } from "~/models/embedding-search.server";
-
-// UTILITIES
-import { filterSearchedData } from "~/utils/filterSearchedData"
-
-// COMPONENTS
-import PointFieldSearch from "~/components/PointField/PointFieldSearch";
 import PointFieldScaffold from "~/components/PointField/PointFieldScaffold.js";
-import { zoom } from "d3";
-
-export async function action({ request }){
-    const formData = await request.formData()
-    const filterType = formData.get('filterType')
-
-    if(filterType && filterType === 'search'){
-      const searchString = formData.get('searchString');
-      const knnIDs = await embeddingSearch(searchString)
-      const data = {
-        knnIDs: knnIDs,
-        filterType: filterType
-      }
-      return json(data)
-    }
-  }
 
 export default function Discovery(){
     const actionData = useActionData();
-    const [searchResults, setSearchResults] = useState([])
-    const searchFetcher = useFetcher();
     const [innerCanvasData, setInnerCanvasData] = useState([]) 
     const fetcher = useFetcher();
     const transition = useNavigate();
@@ -57,20 +29,6 @@ export default function Discovery(){
         setInnerCanvasData(topLevelCanvasDataObj)
     }, [topLevelCanvasDataObj])
 
-  // SEARCHING
-  useEffect(()=>{
-    if(searchFetcher.data && searchFetcher.data.featureRequests){
-      const featureRequests = searchFetcher.data.featureRequests;
-      setTopLevelStreamDataObj(featureRequests);
-      setSearchResults(featureRequests.map(a => a.featureRequestId));
-    }
-  }, [searchFetcher.data])
-
-
-  function resetSearchData(){
-    setTopLevelStreamDataObj(topLevelFilteredData)
-    setSearchResults([])
-  }
   
   function resetZoomedData(e, changeParam){
     setZoomObject(null)
@@ -88,17 +46,9 @@ export default function Discovery(){
 
     return(
         <div className='discoveryPointComponentsWrapper'>
-            <div className='discoverySearchWrapper'>
-            <PointFieldSearch
-                searchFetcher={searchFetcher}
-                featureId={params["*"]}
-                resetSearchData={resetSearchData}
-                />
-            </div>
             <div className='discoveryPointFieldWrapper'>
             <PointFieldScaffold
                 data={innerCanvasData}
-                searchResults={searchResults}
                 filterBrushedData={filterBrushedData}
                 resetBrushFilter={resetBrushFilter}
                 zoomObject={zoomObject}
