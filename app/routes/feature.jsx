@@ -27,7 +27,9 @@ import { BiNotepad } from 'react-icons/bi'
 import Tooltip from '@mui/material/Tooltip';
 
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
+dayjs.extend(utc)
 
 export async function loader({ request, params }){
     const user = await authenticator.isAuthenticated(request, {
@@ -118,9 +120,11 @@ export default function Feature(){
     const [triggerClusters, setTriggerClusters] = useState(false)
     const [dataView, setDataView] = useState("filters")
     const [expandSpecificCard, setExpandSpecificCard] = useState({cardId: null, cardType: null})
-
     const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
     const [topLevelStreamDataObj, setTopLevelStreamDataObj] = useState([])
+    const [topLevelFilteredData, setTopLevelFilteredData] = useState([])
+    const [invisibleFilters, setInvisibleFilters] = useState([])
+
 
     const clusterSubmit = useSubmit();
     const clusterFetcher = useFetcher();
@@ -163,7 +167,7 @@ export default function Feature(){
             loaderData.clustersLoading && setClustersGenerated('initiated')
 
             // TODO should we automatically trigger this if clusters are incomplete?
-        }, [loaderData])
+        }, [loaderData.featureRequests])
 
     // LISTEN TO WEBSOCKET TO FIGURE OUT WHETHER THE CLUSTERS HAVE BEEN GENERATED
     useEffect(()=>{
@@ -229,17 +233,44 @@ export default function Feature(){
                        {method: "post"})
     }
 
-    function filterDateData(afterDate){
-        const filteredData = loaderData.featureRequests.filter(fr => dayjs.utc(fr.featureRequest.created_at).isAfter(dayjs.utc(afterDate)))
+    useEffect(()=>{
+        console.debug("INVISIBLE FILTERS", invisibleFilters)
+    }, [invisibleFilters])
+   
+
+    useEffect(()=>{
+        const filteredData = loaderData.featureRequests.filter(function(fr){
+            const filterConditions = []
+            for(let filter of loaderData.feature.filters){
+                if(filter.type === "date" && !invisibleFilters.includes(filter.filterId)){
+                    if(filter.dateVariant === 'before'){
+                        filterConditions.push(dayjs.utc(fr.featureRequest.created_at).isBefore(dayjs(filter.date)))
+                    }
+                    else if(filter.dateVariant === 'during'){
+                        filterConditions.push(dayjs.utc(fr.featureRequest.created_at).isSame(dayjs(filter.date), 'year'))
+                    }
+                    else if(filter.dateVariant === 'after'){
+                        filterConditions.push(dayjs.utc(fr.featureRequest.created_at).isAfter(dayjs(filter.date)))
+                    }
+                    else{
+                        console.error("Unexpected Date Variant")
+                    }
+                }
+                else if(filter.type === 'author'){
+                    filterConditions.push(fr.featureRequest.author === filter.author)
+                }
+                else{
+                    console.error("Unexpected Filter Type")
+                }
+            }
+            return filterConditions.every(Boolean) 
+        })
+
         setTopLevelStreamDataObj(filteredData)
         setTopLevelCanvasDataObj(filteredData)
-      }
-  
-      function resetDateData(){
-        setTopLevelStreamDataObj(loaderData.featureRequests)
-        setTopLevelCanvasDataObj(loaderData.featureRequests)
-      }
-  
+        setTopLevelFilteredData(filteredData)
+
+    }, [loaderData.feature, invisibleFilters])
 
     return(
         <>
@@ -362,7 +393,7 @@ export default function Feature(){
                     <div className='workspaceOutletInnerScaffold'>
                         {(Array.isArray(loaderData.featureRequests) && loaderData.featureRequests.length === 0)
                             ? <OutletPlaceholder isSearched={loaderData.feature.isSearched}/>
-                            : <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed, zoomObject, setZoomObject, clustersGenerated, triggerClusters, setTriggerClusters, setDataView, setExpandSpecificCard]}/>
+                            : <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed, zoomObject, setZoomObject, clustersGenerated, triggerClusters, setTriggerClusters, setDataView, setExpandSpecificCard, topLevelFilteredData]}/>
                         }
                     </div>
                 </div>
@@ -372,6 +403,7 @@ export default function Feature(){
                             data={topLevelStreamDataObj}
                             featureId={loaderData.feature.id}
                             featureTitle={loaderData.feature.title}
+                            filters={loaderData.feature.filters}
                             clustersGenerated={clustersGenerated}
                             clusterFetcher={clusterFetcher}
                             setClustersGenerated={setClustersGenerated}
@@ -380,8 +412,8 @@ export default function Feature(){
                             dataView={dataView}
                             setDataView={setDataView}
                             expandSpecificCard={expandSpecificCard}
-                            filterDateData={filterDateData}
-                            resetDateData={resetDateData}
+                            invisibleFilters={invisibleFilters}
+                            setInvisibleFilters={setInvisibleFilters}
                             />
                     </div>
                 </div>

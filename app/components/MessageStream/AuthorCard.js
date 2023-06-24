@@ -18,7 +18,7 @@ export default function AuthorCard(props){
             </div>
 
             {(isCardExpanded || props.isExpanded) && (
-            <div className={"flex flex-col gap-2 px-3 py-2 text-sm tracking-tight text-gray-600/90 font-normal"}>
+            <div className="authorCardColumn">
                 <div className="pl-10 pr-8 flex flex-col gap-2" style={{backgroundColor: "rgb(243, 244, 246)"}}>
                     {props.authorData.map((cardData, idx) => (
                     <MessageCard

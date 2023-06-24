@@ -5,6 +5,7 @@ export default function MessageStreamFeatureRequests(props){
         <div className="pl-10 pr-8 flex flex-col gap-2" style={{backgroundColor: "rgb(243, 244, 246)"}}>
             {props.pinnedCards.map((cardData, idx) => (
                 <MessageCard
+                style={{boxShadow: "1px 1px 10px 1px #0000001a"}}
                 idx={idx}
                 key={cardData.featureRequest.fr_id}
                 cardData={cardData.featureRequest}
@@ -16,6 +17,8 @@ export default function MessageStreamFeatureRequests(props){
             {props.pinnedCards.length > 0 && <h1 className="text-gray-400 text-xs font-medium pl-4">Remaining Feature Requests</h1>}
             {props.remainingCards.map((cardData, idx) => (
                 <MessageCard
+                style={{boxShadow: "1px 1px 10px 1px #0000001a"}}
+                pushPinStyle={{boxShadow: "1px 1px 10px 1px #0000001a"}}
                 idx={idx}
                 key={cardData.featureRequest.fr_id}
                 cardData={cardData.featureRequest}

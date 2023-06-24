@@ -45,10 +45,11 @@ model Feature {
   userId            String
   columnState       Int
   rankState         Int
+  filters           FeatureFilter[]
   isSearched        Boolean             @default(false)
   user              User                @relation(fields: [userId], references: [id])
   featureRequests   FeatureRequestMap[]
-  clusters Cluster[]
+  clusters          Cluster[]
 }
 
 model FeatureRequest {
@@ -62,14 +63,15 @@ model FeatureRequest {
   user          User                @relation(fields: [userId], references: [id])
   features      FeatureRequestMap[]
   dataset       Dataset             @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
-  datasetId     Int      
+  datasetId     Int
+
 }
 
 model FeatureRequestMap {
   featureId        Int
   featureRequestId String
   pinned           Boolean        @default(false)
-  oldCluster          Int            @default(-1)
+  oldCluster       Int            @default(-1)
   feature          Feature        @relation(fields: [featureId], references: [id], onDelete: Cascade)
   featureRequest   FeatureRequest @relation(fields: [featureRequestId], references: [fr_id], onDelete: Cascade)
   cluster          Cluster? @relation(fields: [clusterId], references: [clusterId], onDelete: SetNull)
@@ -121,4 +123,14 @@ model Dataset {
   user User @relation(fields: [userId], references: [id])
   userId String
   featureRequests FeatureRequest[]
+}
+
+model FeatureFilter {
+  filterId Int @id @default(sequence())
+  type String
+  dateVariant String?
+  date  String?
+  author String?
+  feature Feature @relation(fields: [featureId], references: [id])
+  featureId Int
 }

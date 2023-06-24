@@ -71,6 +71,7 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
       onMouseOver={event => handleMouseOver(event, props.cardData.fr_id)}
       onMouseOut={event => handleMouseOut(event, props.cardData.fr_id)}
       ref={messageCardRef}
+      style={props.style && {...props.style}}
     >
       <div className='messageCardOuter' onClick={() => setIsCardExpanded(!isCardExpanded)}>
       <div className='messageCardMetadata'>
@@ -108,6 +109,7 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
           <AiOutlinePushpin
             size={22}
             onClick = {() => pinCard(props.cardData.fr_id)}
+            style={props.pushPinStyle && {...props.pushPinStyle}}
             className={cn(
               "bg-slate-200 cursor-pointer hover:bg-slate-300 rounded-full m-1 p-1",
               {"visible": isHovered || isPinned},

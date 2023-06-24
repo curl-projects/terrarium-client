@@ -5,6 +5,7 @@ import MessageStreamFeatureRequests from "~/components/MessageStream/MessageStre
 import MessageStreamClusters from "~/components/MessageStream/MessageStreamClusters";
 import MessageStreamAuthors from "~/components/MessageStream/MessageStreamAuthors";
 import MessageStreamFilters from "~/components/MessageStream/MessageStreamFilters";
+import { ProvidedColumnGroup } from "ag-grid-community";
 export default function MessageStream(props) {
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -15,6 +16,7 @@ export default function MessageStream(props) {
   const [remainingCards, setRemainingCards] = useState([])
   const [clusterData, setClusterData] = useState([])
   const [authorData, setAuthorData] = useState([])
+  const [authorNames, setAuthorNames] = useState([])
 
   useEffect(() => {
     setPinned(props.data.filter(d => d.pinned === true).map(e => e.featureRequestId))
@@ -42,6 +44,7 @@ export default function MessageStream(props) {
       
       const sortedAuthorData = Object.values(organisedAuthorData).sort((a, b) => b.length - a.length)
 
+      setAuthorNames(Object.keys(organisedAuthorData))
       setAuthorData(sortedAuthorData)
     }
 
@@ -109,11 +112,13 @@ export default function MessageStream(props) {
           clustersGenerated={props.clustersGenerated}
           clusterData={clusterData}
           authorData={authorData}
+          filters={props.filters}
           setClustersGenerated={props.setClustersGenerated}
           setDataView={props.setDataView}
           clusterFetcher={props.clusterFetcher}
           featureTitle={props.featureTitle}
           setTriggerClusters={props.setTriggerClusters}
+          invisibleFilters={props.invisibleFilters}
         />
         {
           {
@@ -141,9 +146,12 @@ export default function MessageStream(props) {
                           pinnedCards={pinnedCards}
                         />,
             "filters": <MessageStreamFilters 
-                          filterDateData={props.filterDateData}
-                          resetDateData={props.resetDateData}
+                          filters={props.filters}
+                          authorNames={authorNames}
+                          invisibleFilters={props.invisibleFilters}
+                          setInvisibleFilters={props.setInvisibleFilters}
                           />
+                      
           }[props.dataView]
         }
       </div>

@@ -167,6 +167,7 @@ export async function readFeature(featureId){
       id: parseInt(featureId)
     },
     include: {
+      filters: true,
       _count: {
         select: {
           featureRequests: {
@@ -175,8 +176,60 @@ export async function readFeature(featureId){
               }
             }
           }
-        }
+        },
     }
   })
   return feature
+}
+
+export async function addFilter(featureId, type, filterArgs){
+  if(type === 'date'){
+    const filter = await db.featureFilter.create({
+      data: {
+        type: type,
+        dateVariant: filterArgs.dateVariant,
+        date: filterArgs.date,
+        feature: {
+          connect: {
+            id: parseInt(featureId)
+          }
+        }
+      } 
+    })
+
+    return filter
+  }
+  else if(type === 'author'){
+    const filter = await db.featureFilter.create({
+      data: {
+        type: type,
+        author: filterArgs.author,
+        feature: {
+          connect: {
+            id: parseInt(featureId)
+          }
+        }
+      } 
+    })
+
+    return filter
+  }
+  else{
+    return "Error"
+  }
+}
+
+export async function deleteFilter(filterId){
+  try{
+    const filter = await db.featureFilter.delete({
+      where: {
+        filterId: parseInt(filterId)
+      }
+    })
+  
+    return filter
+  }
+  catch(exc){
+    console.log("Exception:", exc)
+  }
 }

@@ -31,6 +31,7 @@ function handleClusterClick(e){
         <p className='messageStreamMetadataText'>
           <span className="messageStreamMetadataIcon">{numberWithCommas(props.data.length)}</span>
           {props.data.length == 1 ? "Feature Request" : "Feature Requests"}
+          {props.filters.length > props.invisibleFilters.length && " (Filtered)"}
         </p>
       </div>
       <div className='messageStreamMetadataSection'
@@ -65,8 +66,8 @@ function handleClusterClick(e){
       <div className='messageStreamMetadataSection'
            onClick={()=>props.setDataView('filters')}>
         <p className='messageStreamMetadataText'>
-          <span className="messageStreamMetadataIcon">0</span>
-          Filters
+          <span className="messageStreamMetadataIcon">{props.filters.length}</span>
+          {props.filters.length === 1 ? "Filter" : "Filters"}
         </p>
       </div>
   
