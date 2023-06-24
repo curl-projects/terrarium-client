@@ -64,21 +64,25 @@ export default function DatasetRow(props){
                     <div className='fileIconWrapper'>
                         <BsFileArrowUp style={{fontSize: "26px", color: "rgba(75, 85, 99, 0.85)"}}/>
                     </div>
-                    <div className='fileContentWrapper'>
-                        <div className='fileTitleWrapper'>
-                            <p className='fileTitle'>{props.row.uniqueFileName.split("-").slice(1).join("-") || `Untitled (${props.idx})`}</p>
+                    <div className='fileInnerWrapper'>
+                        <div className='fileTitleRow'>
+                            <div className='fileTitleWrapper'>
+                                <p className='fileTitle'>{props.row.uniqueFileName.split("-").slice(1).join("-") || `Untitled (${props.idx})`}</p>
+                            </div>
+                            <div style={{flex: 1}}/>
+                            <div className='fileRemoveWrapper'>
+                                <BsX 
+                                    onClick={handleDelete}
+                                    style={{fontSize: "28px", color: "rgba(75, 85, 99, 0.95)", cursor: "pointer"}}/>
+                            </div>
                         </div>
-                        <div className='fileMetadataWrapper'>
-                            <p className='fileMetadata'>{datasetSize ? String(datasetSize).concat(" Feature Requests") : "Unknown Size"}</p>
-                            <div className='fileMetadataDivider' />
-                            <p className='fileMetadata'>{state.datasetStatus || ""}</p>
+                        <div className='fileMetadataRow'>
+                            <div className='fileMetadataWrapper'>
+                                <p className='fileMetadata'>{datasetSize ? String(datasetSize).concat(" Feature Requests") : "Unknown Size"}</p>
+                                <div className='fileMetadataDivider' />
+                                <p className='fileMetadata'>{state.datasetStatus || ""}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div style={{flex: 1}}/>
-                    <div className='fileRemoveWrapper'>
-                        <BsX 
-                            onClick={handleDelete}
-                            style={{fontSize: "28px", color: "rgba(75, 85, 99, 0.95)", cursor: "pointer"}}/>
                     </div>
             </div>
     )

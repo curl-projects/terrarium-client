@@ -386,7 +386,7 @@ body {
 }
 
 .kanbanColumnHeader{
-  height: 36px;
+  height: 50px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -401,12 +401,13 @@ body {
 }
 
 .kanbanColumnHeaderTextWrapper{
-  border-radius: 4px;
+  border-radius: 2px;
   background-color: #B7CEC6;
   padding: 8px;
   line-height: 1;
   box-sizing: border-box;
   margin-right: 4px;
+  box-shadow: 4px 4px 11px -1px #0000001a;
 
 }
 
@@ -502,6 +503,7 @@ body {
   display: flex;
   flex-direction: row;
   margin-top: 20px;
+  box-shadow: 4px 4px 11px -1px #0000001a;
 }
 
 .kanbanCardBookmark {
@@ -1581,10 +1583,6 @@ div.DraftEditor-root {
   padding-bottom: 10px;
 }
 
-.fileTitleWrapper{
-
-}
-
 .fileTitle{
   font-size: 16px;
   letter-spacing: -0.03em;
@@ -1615,10 +1613,8 @@ div.DraftEditor-root {
 
 .fileRemoveWrapper{
   display: flex;
-  padding-right: 8px;
-  position: relative;
-  bottom: 4px;
   justify-content: center;
+  align-items: center;
 }
 
 .fileIconWrapper{
@@ -1626,6 +1622,20 @@ div.DraftEditor-root {
   justify-content: center;
   align-items: center;
   padding: 10px;
+}
+
+.fileInnerWrapper{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.fileTitleRow{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-right: 10px;
+
 }
 
 .fileContentWrapper{

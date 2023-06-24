@@ -1,8 +1,9 @@
 import { Form } from "@remix-run/react";
 import { Droppable } from "@hello-pangea/dnd";
+import { useEffect } from "react";
 import RoadmapCard from '~/components/Roadmap/RoadmapCard.js'
 
-export default function KanbanColumn(props){
+export default function RoadmapColumn(props){
   return(
     <div
       className='kanbanColumnOuter'
@@ -10,7 +11,7 @@ export default function KanbanColumn(props){
     >
         <div className='kanbanColumnHeader'>
             <div className="kanbanColumnHeaderTextWrapper" style={{"backgroundColor": props.column.color}}><p className="kanbanColumnHeaderText">{props.column.name}</p></div>
-            <div className='messageNumberWrapper'><p className="messageNumber">3</p></div>
+            <div className='messageNumberWrapper'><p className="messageNumber">{props.column.items ? props.column.items.length : 0}</p></div>
             <div style={{flex: 1}} />
             <Form method='post'>
                 <input type="hidden" name='actionType' value='create'/>

@@ -26,20 +26,20 @@ const [columns, setColumns] = useState(columnsFromBackend);
         1: {
           name: "Roadmap",
           items: columnOne,
-          color: "#B7CEC6",
-          backgroundColor: "rgba(183, 206, 198, 0.2)"
+          color: "rgba(119, 153, 141, 0.80)",
+          backgroundColor: "rgba(119, 153, 141, 0.3)"
         },
         2: {
             name: "Drafts",
             items: columnTwo,
-            color: "#B7C2CE",
-            backgroundColor: "rgba(183, 194, 206, 0.2)"
+            color: "rgba(119, 153, 141, 0.5)",
+            backgroundColor: "rgba(119, 153, 141, 0.15)"
           },
         3: {
         name: "Rejects",
         items: columnThree,
-        color: "#CEB0A0",
-        backgroundColor: "rgba(206, 176, 160, 0.2)"
+        color: "rgba(237, 237, 237, 1)",
+        backgroundColor: "rgba(237, 237, 237, 0.6)"
         },
 
       }
