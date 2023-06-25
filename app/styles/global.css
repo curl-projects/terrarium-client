@@ -203,14 +203,6 @@ body {
 
 }
 
-.featureHeaderNavigationTextWrapper{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
-  flex-direction: column;
-  
-}
 .headerTerrariumWrapper{
   display: flex;
   margin-left: 10px;
@@ -229,7 +221,7 @@ body {
 .navigationTextWrapper {
   display: flex;
   flex-direction: row;
-  gap: 30px;
+  gap: 35px;
   text-decoration: none;
   margin-right: 20px;
 }
@@ -1626,13 +1618,16 @@ div.DraftEditor-root {
 
 .fileUploadRectangle{
   border: 2px dashed rgba(75, 85, 99, 0.4);
-  height: 300px;
+  padding-top: 60px;
+  padding-bottom: 60px;
   width: 50%;
   margin-top: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .fileUploadText{
@@ -1648,6 +1643,64 @@ div.DraftEditor-root {
   letter-spacing: -0.03em;
   color: rgba(75, 85, 99, 0.6);
   text-align: center;
+}
+
+.filterOptionWrapper{
+  display: flex;
+
+}
+.fileOptionSeparator{
+  border-bottom: 1px dashed rgba(75, 85, 99, 0.4);
+  width: 100%;
+  margin-top: 20px;
+}
+
+
+
+.fileOptionWrapper{
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
+.fileOptionRow{
+  width: 70%;
+  border: 1px solid rgba(119, 153, 141, .3);
+  display: flex;
+  letter-spacing: -0.03em;
+}
+
+.fileOptionLabel{
+  flex: 0.25;
+  border-right: 1px solid rgba(119, 153, 141, .3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fileOptionLabelText{
+  color: #4b556399;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+
+.fileOptionInputWrapper{
+  flex: 0.75;
+  max-height: 30px;
+}
+
+.fileOptionInputSelect{
+  width: 100%;
+  height: 100%;
+}
+
+.fileOptionInputText{
+  flex: 0.75;
 }
 
 .uploadedFilesWrapper{

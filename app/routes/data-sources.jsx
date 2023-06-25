@@ -13,6 +13,9 @@ import PageTitle from "~/components/Header/PageTitle.js"
 import { BsUpload } from "react-icons/bs";
 import { BsX } from "react-icons/bs";
 
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+
 import Snackbar from '@mui/material/Snackbar';
 
 export async function loader({ request }){
@@ -53,12 +56,14 @@ export default function DataSources(){
     const deleteFetcher = useFetcher();
 
     const [fileRef, setFileRef] = useState(Date.now())
-    const [submitIsOpen, setSubmitIsOpen] = useState(false)
+    const [fileFormIsOpen, setFileFormIsOpen] = useState(false)
     const [file, setFile] = useState();
     const [fileError, setFileError] = useState("")
     const [socketUrl, setSocketUrl] = useState("");
     const [messageHistory, setMessageHistory] = useState([]);
     const [activelyDeletingFile, setActivelyDeletingFile] = useState("")
+
+    const [columnValues, setColumnValues] = useState({'text': "",'author': "", "created_at": "", "id": ""})
 
     const { readString } = usePapaParse();
 
@@ -103,17 +108,16 @@ export default function DataSources(){
 
     const handleFileChange = (e) => {
         setFileError("")
-        setSubmitIsOpen(false)
+        setFileFormIsOpen(false)
         const file = e?.target?.files[0]
         
         if(file && file.type === 'text/csv'){
             readString(file, {
                 preview: 1,
                 complete: function (results) {
-                    console.log("HI!")
                     console.log(results.data)
                     if(['text', 'author', 'id', 'created_at'].every(i => results.data[0].includes(i))){
-                        setSubmitIsOpen(true)
+                        setFileFormIsOpen(true)
                         setFile(file)
                     }
                     else{
@@ -134,7 +138,7 @@ export default function DataSources(){
     const resetFile = () => {
         setFile("")
         setFileError("")
-        setSubmitIsOpen(false)
+        setFileFormIsOpen(false)
         setFileRef(Date.now())
     }
 
@@ -145,8 +149,8 @@ export default function DataSources(){
     }, [actionData])
 
     useEffect(()=>{
-        console.log("FILE!", file)
-    }, [file])
+        console.log("COLUMN VALUES:", columnValues)
+    }, [columnValues])
 
     return(
         <>
@@ -165,18 +169,41 @@ export default function DataSources(){
                     <input id='datasetFiles' style={{display: "none"}} type="file" name="upload" onChange={handleFileChange} key={fileRef}/>
                     {fileError 
                     ? <p className='fileUploadSpecifier' style={{color: "rgba(146, 0, 0, 0.7)"}}>{fileError}</p>
-                    : (file && submitIsOpen 
+                    : (file && fileFormIsOpen 
                         ? <p className='fileUploadSpecifier' 
                              onClick={resetFile} 
                              style={{color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}>Remove File</p>
                         : <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>(csv files generated from discord)</p>
                         )}
-                {file && submitIsOpen && 
+                {/* {file && fileFormIsOpen &&  */}
+                {true && 
                     <>
-                    <div style={{height: "20px"}}/>
+                    <div className='fileOptionSeparator'/>
+                    <div className='fileOptionWrapper'>
+                        {['text', 'author', 'id', 'created_at'].map((field, idx) => 
+                            <div className='fileOptionRow' key={idx}>
+                                <div className='fileOptionLabel'>
+                                    <p className='fileOptionLabelText'>{field}</p>
+                                </div>
+                                <div className='fileOptionInputWrapper'>
+                                    <Select 
+                                        className='fileOptionInputSelect'
+                                        onChange={function(e){
+                                            setColumnValues((prevState) => ({...prevState, [field]: e.target.value}))
+                                        }}
+                                    >
+                                        <MenuItem value="Option One">Option One</MenuItem>
+                                        <MenuItem value="Option Two">Option Two</MenuItem>
+                                        <MenuItem value="Option Three">Option Three</MenuItem>
+                                    </Select>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    {/* <div style={{height: "20px"}}/>
                     <div className='fileSubmitWrapper'>
                         <button className='fileSubmit'>Upload</button>
-                    </div>
+                    </div> */}
                     </>
                 }
                 </Form>
