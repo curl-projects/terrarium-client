@@ -229,8 +229,8 @@ body {
 .navigationText {
   color: #4B5563;
   text-decoration: none;
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 17px;
   letter-spacing: -0.01em;
 }
 
@@ -1444,6 +1444,7 @@ div.DraftEditor-root {
 }
 
 
+
 /* SVG */
 .svgContainer{
   display: inline-block;
@@ -1682,8 +1683,19 @@ div.DraftEditor-root {
   justify-content: center;
 }
 
+.fileOptionIconWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(75, 85, 99, 0.6);
+  font-weight: 600;
+  font-size: 18px;
+  padding-right: 6px;
+  padding-left: 6px
+}
+
 .fileOptionLabelText{
-  color: #4b556399;
+  color: rgba(75, 85, 99, 0.6);
   font-weight: 400;
   font-size: 14px;
 }
@@ -1697,6 +1709,35 @@ div.DraftEditor-root {
 .fileOptionInputSelect{
   width: 100%;
   height: 100%;
+  border-radius: 0px !important;
+  /* border: 1px solid rgba(119, 153, 141, 0.3) !important; */
+  border: unset;
+  color: #4b5563e0 !important;
+  font-weight: 400 !important;
+}
+
+.fileSelectMenuItem{
+  color: #4b5563 !important;
+  font-weight: 400 !important;
+  background: #ffffff;
+}
+
+.fileSelectMenuItem:hover{
+  background-color: rgba(176, 191, 185, 0.4) !important;
+}
+
+.fileOptionInputSelect fieldset{
+  border: 0px;
+}
+
+
+.fileOptionInputSelect input {
+  color: green;
+}
+
+
+.fileOptionInputSelect .Mui-focused{
+  color: #77998d !important;
 }
 
 .fileOptionInputText{

@@ -18,6 +18,12 @@ import Select from '@mui/material/Select';
 
 import Snackbar from '@mui/material/Snackbar';
 
+import { BiMessageSquareDetail } from 'react-icons/bi'
+import { BsPerson } from "react-icons/bs"
+import { BiCalendar } from "react-icons/bi"; 
+import { BsHash } from "react-icons/bs";
+
+
 export async function loader({ request }){
     const user = await authenticator.isAuthenticated(request, {
         failureRedirect: "/",
@@ -29,24 +35,33 @@ export async function loader({ request }){
 }
 
 export async function action({request}){
+
     const user = await authenticator.isAuthenticated(request, {
         failureRedirect: "/",
       })
 
-    console.log("USER:", user)
+    console.log('HELLO', JSON.stringify(request.headers))
+    
+    const formData = await request.formData();
+    const fileData = formData.get('upload');
+    const finnData = await googleUploadHandler(fileData)
+    console.log("OUTPUT:", finnData)
+    
+    const headerMappings = formData.get('headerMappings');
+    console.log("HEADER MAPPINGS:", JSON.parse(headerMappings))
 
-    const formData = await unstable_parseMultipartFormData(request, googleUploadHandler,);
-    const outputData = formData.get('upload');
-    const jsonData = JSON.parse(outputData)
-    console.log("JSON DATA:", jsonData)
+    // const headerMappings = formData.get("headerMappings")
+    // const jsonData = JSON.parse(outputData)
+    // console.log("HEADER MAPPINGS:", headerMappings)
 
-    if(jsonData.completed){
-        const datasetObj = await createDatasetObject(jsonData.uniqueFileName, user.id)
-        const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, datasetObj.datasetId, user.id)
-        console.log("RESPONSE", response)
-        return { jsonData: jsonData, response: response.status};
-    }
-    return { jsonData: jsonData }
+    // if(jsonData.completed){
+    //     const datasetObj = await createDatasetObject(jsonData.uniqueFileName, user.id)
+    //     const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, datasetObj.datasetId, user.id)
+    //     console.log("RESPONSE", response)
+    //     return { jsonData: jsonData, response: response.status};
+    // }
+    // return { jsonData: jsonData }
+    return { }
 }
 
 export default function DataSources(){
@@ -57,15 +72,17 @@ export default function DataSources(){
 
     const [fileRef, setFileRef] = useState(Date.now())
     const [fileFormIsOpen, setFileFormIsOpen] = useState(false)
+    const [fileHeaders, setFileHeaders] = useState([])
     const [file, setFile] = useState();
     const [fileError, setFileError] = useState("")
+    const [fileWarning, setFileWarning] = useState("")
     const [socketUrl, setSocketUrl] = useState("");
     const [messageHistory, setMessageHistory] = useState([]);
     const [activelyDeletingFile, setActivelyDeletingFile] = useState("")
 
-    const [columnValues, setColumnValues] = useState({'text': "",'author': "", "created_at": "", "id": ""})
+    const [columnValues, setColumnValues] = useState({'text': "",'author': "", "created_at": "", "id": "", "searchFor": ""})
 
-    const { readString } = usePapaParse();
+    const { readString, jsonToCSV } = usePapaParse();
 
     useEffect(()=>{
         setSocketUrl(window.ENV.WEBSOCKETS_URL)
@@ -95,33 +112,30 @@ export default function DataSources(){
     }, [connectionStatus, messageHistory])
 
     useEffect(()=>{
-        console.log("Last Message:", lastMessage)
-    }, [lastMessage])
-
-
-    const [columnDefs, setColumnDefs] = useState([
-        {field: "Dataset"},
-        {field: "Size"},
-        {field: "Status"},
-        {field: "Controls"}
-    ])
+        console.log("HEADERS:", fileHeaders)
+    }, [fileHeaders])
 
     const handleFileChange = (e) => {
+        setFileWarning("")
         setFileError("")
         setFileFormIsOpen(false)
         const file = e?.target?.files[0]
+
+        setFile(file)
         
         if(file && file.type === 'text/csv'){
             readString(file, {
                 preview: 1,
                 complete: function (results) {
-                    console.log(results.data)
-                    if(['text', 'author', 'id', 'created_at'].every(i => results.data[0].includes(i))){
-                        setFileFormIsOpen(true)
-                        setFile(file)
-                    }
-                    else{
-                        setFileError("The dataset should contain the fields 'text', 'author', 'id' and 'created at' If it doesn't, it might not have been generated correctly.")
+
+                    console.log(results.data[0])
+                    setFileHeaders(results.data[0])
+                    setFileFormIsOpen(true)
+
+                    for(let header of results.data[0]){
+                        if((header.charAt(0) === "[" && header.charAt(-1) === "]") 
+                          || (/^\d+$/.test(header))
+                        ){ setFileWarning("It seems like these values might not be headers. Make sure your file has appropriate headers for each column.") } 
                     }
                 },
                 error: function(error){
@@ -131,13 +145,15 @@ export default function DataSources(){
             console.log("FILE!!!")
         }
         else{
-            setFileError("The dataset has to be a csv, sorry!")
+            setFileError("Input datasets can only be csv files for now")
         }
     }
 
     const resetFile = () => {
         setFile("")
         setFileError("")
+        setFileHeaders([])
+        setFileWarning("")
         setFileFormIsOpen(false)
         setFileRef(Date.now())
     }
@@ -166,44 +182,69 @@ export default function DataSources(){
                         <label htmlFor='datasetFiles' className='fileUploadText' style={{cursor: 'pointer'}}>Choose file to upload</label>
                     </>
                     }
+                    <input type='hidden' name='headerMappings' value={JSON.stringify(columnValues)}/>
                     <input id='datasetFiles' style={{display: "none"}} type="file" name="upload" onChange={handleFileChange} key={fileRef}/>
-                    {fileError 
-                    ? <p className='fileUploadSpecifier' style={{color: "rgba(146, 0, 0, 0.7)"}}>{fileError}</p>
-                    : (file && fileFormIsOpen 
-                        ? <p className='fileUploadSpecifier' 
-                             onClick={resetFile} 
-                             style={{color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}>Remove File</p>
-                        : <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>(csv files generated from discord)</p>
-                        )}
+                    {!file && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>(csv files generated from discord)</p>}
+                    {file && <p className='fileUploadSpecifier' onClick={resetFile} style={{color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}>Remove File</p>}
+                    
+                    {fileError && <p className='fileUploadSpecifier' style={{color: "rgba(146, 0, 0, 0.7)"}}>{fileError}</p>}
                 {/* {file && fileFormIsOpen &&  */}
                 {true && 
                     <>
                     <div className='fileOptionSeparator'/>
                     <div className='fileOptionWrapper'>
-                        {['text', 'author', 'id', 'created_at'].map((field, idx) => 
+                    {!(fileHeaders.length === 0) && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Found headers: {fileHeaders.join(", ")}</p>}
+                    {fileWarning && <p className='fileUploadSpecifier' style={{color: "#7E998E"}}>{fileWarning}</p>}
+                        {[{name: 'text', icon: <BiMessageSquareDetail />}, 
+                          {name: 'author', icon: <BsPerson />}, 
+                          {name: 'id', icon: <BsHash />}, 
+                          {name: 'created_at', icon: <BiCalendar />}].map((field, idx) => 
                             <div className='fileOptionRow' key={idx}>
                                 <div className='fileOptionLabel'>
-                                    <p className='fileOptionLabelText'>{field}</p>
+                                    {/* <div className='fileOptionIconWrapper'>
+                                        {/* {field.icon && field.icon} */}
+                                    {/* </div> */}
+                                    <p className='fileOptionLabelText'>{field.name}</p>
                                 </div>
                                 <div className='fileOptionInputWrapper'>
                                     <Select 
                                         className='fileOptionInputSelect'
                                         onChange={function(e){
-                                            setColumnValues((prevState) => ({...prevState, [field]: e.target.value}))
+                                            setColumnValues((prevState) => ({...prevState, [field.name]: e.target.value}))
                                         }}
                                     >
-                                        <MenuItem value="Option One">Option One</MenuItem>
-                                        <MenuItem value="Option Two">Option Two</MenuItem>
-                                        <MenuItem value="Option Three">Option Three</MenuItem>
+                                        {fileHeaders && fileHeaders.map((column, idx) => 
+                                            <MenuItem className='fileSelectMenuItem' value={column}>{column}</MenuItem>
+                                        )}
                                     </Select>
                                 </div>
                             </div>
                         )}
+                        <div className='fileOptionRow' style={{marginTop: "14px"}}>
+                            <div className='fileOptionLabel'>
+                                <p className='fileOptionLabelText'>Search For:</p>
+                            </div>
+                            <div className='fileOptionInputWrapper'>
+                                <Select 
+                                    className='fileOptionInputSelect' 
+                                    onChange={function(e){
+                                            setColumnValues((prevState) => ({...prevState, 'searchFor': e.target.value}))
+                                        }}>
+                                    <MenuItem className='fileSelectMenuItem' value="featureRequests">Feature Requests</MenuItem>
+                                    <MenuItem className='fileSelectMenuItem' value="bugReports">Bug Reports</MenuItem>
+                                </Select>
+                            </div>
+                        </div>
                     </div>
-                    {/* <div style={{height: "20px"}}/>
-                    <div className='fileSubmitWrapper'>
-                        <button className='fileSubmit'>Upload</button>
-                    </div> */}
+                    {/* {Object.values(columnValues).every(Boolean) && */}
+                    {true &&
+                        <>
+                        <div style={{height: "20px"}}/>
+                        <div className='fileSubmitWrapper'>
+                            <button className='fileSubmit'>Upload</button>
+                        </div>
+                        </>
+                    }
                     </>
                 }
                 </Form>

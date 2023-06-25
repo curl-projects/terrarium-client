@@ -1,11 +1,12 @@
 import { db } from "./db.server";
 import { Storage } from '@google-cloud/storage';
+import stream from "stream";
+
 import { PassThrough } from "stream";
 import { writeAsyncIterableToWritable } from "@remix-run/node"; // `writeAsyncIterableToWritable` is a Node-only utility
 import { json } from "@remix-run/node"
 import { Readable } from "stream"
 import { PineconeClient } from "@pinecone-database/pinecone";
-
 
 export async function getDatasets(userId){
     const datasets = await db.dataset.findMany({
@@ -62,7 +63,7 @@ export async function initiateDatasetProcessing(fileName, datasetId, userId){
     }
   }
 
-const uploadStreamToCloudStorage = async (stream, fileName) => {
+const uploadStreamToCloudStorage = async (fileData, fileName) => {
     const bucketName = "terrarium-fr-datasets";
     const filePath = "/"
 
@@ -81,10 +82,19 @@ const uploadStreamToCloudStorage = async (stream, fileName) => {
 
     const file = cloudStorage.bucket(bucketName).file(uniqueFileName);
 
+    const text = await fileData.text()
+
+    const passthroughStream = new stream.PassThrough();
+    passthroughStream.write(text);
+    passthroughStream.end();
+
+
+
     async function fileUpload(){
-        stream.pipe(file.createWriteStream()).on('finish', () => {
+        passthroughStream.pipe(file.createWriteStream()).on('finish', () => {
             console.log("COMPLETED!")
         });
+        file.create
     }
 
     fileUpload().catch(console.log)
@@ -93,9 +103,35 @@ const uploadStreamToCloudStorage = async (stream, fileName) => {
     return JSON.stringify({fileName: fileName, uniqueFileName: uniqueFileName, completed: true})
 };
 
-export const googleUploadHandler = async ({ filename, data }) => {
-  const stream = Readable.from(data)
-  const upload = await uploadStreamToCloudStorage(stream, filename);
+export const googleUploadHandler = async (requestData) => {
+    console.log("REQUEST DATA!!!:", requestData)
+    // if(requestData.name === 'headerMappings'){
+    //     console.log("REQUEST DATA (1):", requestData)
+
+    //     async function toArray(asyncIterator){ 
+    //         const arr=[]; 
+    //         for await(const i of asyncIterator) arr.push(i); 
+    //         return arr;
+    //     }
+    
+    // // const headerMappingsArray = await toArray(requestData.data)
+
+    // console.log('HEADER MAPPINGS ARRAY:', headerMappingsArray)
+    // }
+
+    // else if(requestData.name === 'upload'){
+    //     console.log("REQUEST DATA (2):", requestData)
+    // }
+
+  console.log("NAME:", requestData.name)
+
+  const filename = requestData.name
+  const file = requestData
+
+  console.log("STREAM:", file)
+  console.log("FILENAME:", filename)
+//   const stream = Readable.from(data)
+  const upload = await uploadStreamToCloudStorage(file, filename);
   return upload
 };
 
