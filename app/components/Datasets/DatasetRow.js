@@ -33,8 +33,9 @@ export default function DatasetRow(props){
     const [datasetSize, setDatasetSize] = useState("");
 
     useEffect(()=>{
-        props.lastMessage?.data && dispatch({ type: JSON.parse(props.lastMessage.data).type})
-        if(props.lastMessage?.data && JSON.parse(props.lastMessage.data).type === 'frs_generated'){
+        console.log("LAST MESSAGE:", props.lastMessage)
+        props.lastMessage?.data && JSON.parse(props.lastMessage.data).dataset === props.row.uniqueFileName &&  dispatch({ type: JSON.parse(props.lastMessage.data).type})
+        if(props.lastMessage?.data && JSON.parse(props.lastMessage.data).dataset === props.row.uniqueFileName && JSON.parse(props.lastMessage.data).type === 'frs_generated'){
             setDatasetSize(JSON.parse(props.lastMessage.data).status)
         }
     }, [props.lastMessage])
@@ -49,7 +50,7 @@ export default function DatasetRow(props){
 
     useEffect(()=>{
         console.log("DELETE FETCHER SUBMISSION:", props.activelyDeletingFile)
-        props.deleteFetcher.state === 'submitting' && props.row.uniqueFileName === props.activelyDeletingFile && dispatch({type: "deleting_file"})
+        props.deleteFetcher.state === 'submitting' && (props.row.uniqueFileName === props.activelyDeletingFile) && dispatch({type: "deleting_file"})
     }, [props.deleteFetcher])
 
     function handleDelete(){

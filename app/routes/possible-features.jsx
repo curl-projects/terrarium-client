@@ -16,6 +16,8 @@ export default function PossibleFeatures(){
                 <li>Discord dataset converter</li>
                 <li>Adjust prompt and specify the four columns: any dataset (JSON or csv) (Bug Reports/Feature Requests/Favourite Features)</li>
                 <li>Add in local feature request keyword search</li>
+                <li>Dataset status updates all datasets</li>
+                <li>Make sure websockets don't interact with every client</li>
             </ol>
         </div>
         </>

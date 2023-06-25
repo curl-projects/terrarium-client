@@ -44,24 +44,21 @@ export async function action({request}){
     
     const formData = await request.formData();
     const fileData = formData.get('upload');
-    const finnData = await googleUploadHandler(fileData)
-    console.log("OUTPUT:", finnData)
+    const fileOutputData = await googleUploadHandler(fileData)
+    console.log("OUTPUT:", fileOutputData)
     
-    const headerMappings = formData.get('headerMappings');
-    console.log("HEADER MAPPINGS:", JSON.parse(headerMappings))
+    const headerMapping = formData.get('headerMappings');
+    console.log("HEADER MAPPING:", JSON.parse(headerMapping))
 
-    // const headerMappings = formData.get("headerMappings")
-    // const jsonData = JSON.parse(outputData)
-    // console.log("HEADER MAPPINGS:", headerMappings)
+    const jsonData = JSON.parse(fileOutputData)
 
-    // if(jsonData.completed){
-    //     const datasetObj = await createDatasetObject(jsonData.uniqueFileName, user.id)
-    //     const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, datasetObj.datasetId, user.id)
-    //     console.log("RESPONSE", response)
-    //     return { jsonData: jsonData, response: response.status};
-    // }
-    // return { jsonData: jsonData }
-    return { }
+    if(jsonData.completed){
+        const datasetObj = await createDatasetObject(jsonData.uniqueFileName, user.id, JSON.parse(headerMapping))
+        const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, datasetObj.datasetId, user.id, headerMapping)
+        console.log("RESPONSE", response)
+        return { jsonData: jsonData, response: response.status};
+    }
+    return { jsonData: jsonData }
 }
 
 export default function DataSources(){
@@ -188,8 +185,7 @@ export default function DataSources(){
                     {file && <p className='fileUploadSpecifier' onClick={resetFile} style={{color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}>Remove File</p>}
                     
                     {fileError && <p className='fileUploadSpecifier' style={{color: "rgba(146, 0, 0, 0.7)"}}>{fileError}</p>}
-                {/* {file && fileFormIsOpen &&  */}
-                {true && 
+                {file && fileFormIsOpen && 
                     <>
                     <div className='fileOptionSeparator'/>
                     <div className='fileOptionWrapper'>
@@ -236,8 +232,7 @@ export default function DataSources(){
                             </div>
                         </div>
                     </div>
-                    {/* {Object.values(columnValues).every(Boolean) && */}
-                    {true &&
+                    {Object.values(columnValues).every(Boolean) &&
                         <>
                         <div style={{height: "20px"}}/>
                         <div className='fileSubmitWrapper'>

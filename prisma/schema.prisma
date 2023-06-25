@@ -124,6 +124,18 @@ model Dataset {
   user User @relation(fields: [userId], references: [id])
   userId String
   featureRequests FeatureRequest[]
+  datasetMapping DatasetMapping?
+}
+
+model DatasetMapping {
+  datasetMappingId Int @id @default(sequence())
+  dataset Dataset @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
+  datasetId Int @unique
+  text String?
+  author String?
+  id String?
+  createdAt String?
+  searchFor String?
 }
 
 model FeatureFilter {

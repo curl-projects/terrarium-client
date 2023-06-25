@@ -19,7 +19,7 @@ export async function getDatasets(userId){
     return datasets
 }
 
-export async function createDatasetObject(fileName, userId){
+export async function createDatasetObject(fileName, userId, headerMapping){
   const dataset = await db.dataset.create({
     data: {
         uniqueFileName: fileName,
@@ -27,14 +27,24 @@ export async function createDatasetObject(fileName, userId){
             connect: {
                 id: userId
             }
-        }
-    }
+        },
+        datasetMapping: {
+            create: {
+                text: headerMapping.text,
+                author: headerMapping.author,
+                createdAt: headerMapping.created_at,
+                id: headerMapping.id,
+                searchFor: headerMapping.searchFor
+    
+            }
+        },
+    },
   })
 
   return dataset
 }
 
-export async function initiateDatasetProcessing(fileName, datasetId, userId){
+export async function initiateDatasetProcessing(fileName, datasetId, userId, headerMapping){
     console.log("Initiated Dataset Processing")
 
     let url = process.env.DATASET_PROCESSING_URL
@@ -42,7 +52,8 @@ export async function initiateDatasetProcessing(fileName, datasetId, userId){
     let data = {
       'file_name': fileName,
       'dataset_id': datasetId,
-      'user_id': userId
+      'user_id': userId,
+      header_mapping: headerMapping
     }
     try{
         const res = await fetch(url, {
