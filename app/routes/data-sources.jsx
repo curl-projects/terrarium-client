@@ -2,11 +2,12 @@ import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { unstable_parseMultipartFormData, json } from '@remix-run/node';
 import { useLoaderData, useActionData, Form, useFetcher } from "@remix-run/react";
 import Header from "~/components/Header/Header"
-import { googleUploadHandler, createDatasetObject, initiateDatasetProcessing, getDatasets } from '~/models/dataset-upload.server';
+import { googleUploadHandler, createDatasetObject, initiateDatasetProcessing, getDatasets, getBaseDatasets } from '~/models/dataset-upload.server';
 import { authenticator } from "~/models/auth.server.js";
 import { usePapaParse } from 'react-papaparse';
 
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import BaseDatasetRow from "~/components/Datasets/BaseDatasetRow";
 import DatasetRow from "~/components/Datasets/DatasetRow";
 import PageTitle from "~/components/Header/PageTitle.js"
 
@@ -29,9 +30,10 @@ export async function loader({ request }){
         failureRedirect: "/",
       })
 
+    const baseDatasets = await getBaseDatasets()
     const datasets = await getDatasets(user.id)
 
-    return { datasets }
+    return { datasets: datasets, baseDatasets: baseDatasets }
 }
 
 export async function action({request}){
@@ -171,7 +173,7 @@ export default function DataSources(){
         <div className='dataTableOuterWrapper'>
         <PageTitle title="Data Sources" padding={true} description="Upload datasets for analysis and visualisation."/>
                 <Form method="post" encType="multipart/form-data" className='fileUploadRectangle'>
-                    <BsUpload style={{fontSize: "30px"}}/>
+                    <BsUpload style={{fontSize: "30px", color: "#4b5563"}}/>
                     {file 
                     ? <p className='fileUploadText'>{file.name}</p>
                     :
@@ -191,10 +193,10 @@ export default function DataSources(){
                     <div className='fileOptionWrapper'>
                     {!(fileHeaders.length === 0) && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Found headers: {fileHeaders.join(", ")}</p>}
                     {fileWarning && <p className='fileUploadSpecifier' style={{color: "#7E998E"}}>{fileWarning}</p>}
-                        {[{name: 'text', icon: <BiMessageSquareDetail />}, 
-                          {name: 'author', icon: <BsPerson />}, 
-                          {name: 'id', icon: <BsHash />}, 
-                          {name: 'created_at', icon: <BiCalendar />}].map((field, idx) => 
+                        {[{value: 'text', name: "Text", icon: <BiMessageSquareDetail />}, 
+                          {value: 'author', name: "Author", icon: <BsPerson />}, 
+                          {value: 'id', name: "ID", icon: <BsHash />}, 
+                          {value: 'created_at', name: "Created Date", icon: <BiCalendar />}].map((field, idx) => 
                             <div className='fileOptionRow' key={idx}>
                                 <div className='fileOptionLabel'>
                                     {/* <div className='fileOptionIconWrapper'>
@@ -206,7 +208,7 @@ export default function DataSources(){
                                     <Select 
                                         className='fileOptionInputSelect'
                                         onChange={function(e){
-                                            setColumnValues((prevState) => ({...prevState, [field.name]: e.target.value}))
+                                            setColumnValues((prevState) => ({...prevState, [field.value]: e.target.value}))
                                         }}
                                     >
                                         {fileHeaders && fileHeaders.map((column, idx) => 
@@ -227,7 +229,7 @@ export default function DataSources(){
                                             setColumnValues((prevState) => ({...prevState, 'searchFor': e.target.value}))
                                         }}>
                                     <MenuItem className='fileSelectMenuItem' value="featureRequests">Feature Requests</MenuItem>
-                                    <MenuItem className='fileSelectMenuItem' value="bugReports">Bug Reports</MenuItem>
+                                    <MenuItem className='fileSelectMenuItem' value="bugReports" disabled>Bug Reports (Coming Soon)</MenuItem>
                                 </Select>
                             </div>
                         </div>
@@ -243,6 +245,16 @@ export default function DataSources(){
                     </>
                 }
                 </Form>
+                <div className="uploadedFilesWrapper">
+                    <p className='datasetsLabelText'>Base Datasets</p>
+                    {loaderData.baseDatasets.map((row, idx) => (
+                        <BaseDatasetRow 
+                            idx={idx} row={row} key={idx}
+                        />
+                    ))
+
+                    }
+                </div>
                 <div className="uploadedFilesWrapper">
                     <p className='datasetsLabelText'>Datasets</p>
                     {loaderData.datasets.map((row, idx) => (

@@ -1716,6 +1716,16 @@ div.DraftEditor-root {
   font-weight: 400 !important;
 }
 
+.authUserTextField{
+  width: 100%;
+  height: 100%;
+  border-radius: 0px !important;
+  /* border: 1px solid rgba(119, 153, 141, 0.3) !important; */
+  border: unset;
+  color: #4b5563e0 !important;
+  font-weight: 400 !important;
+}
+
 .fileSelectMenuItem{
   color: #4b5563 !important;
   font-weight: 400 !important;
@@ -1730,15 +1740,39 @@ div.DraftEditor-root {
   border: 0px;
 }
 
+.authUserTextField fieldset{
+  border: 0px;
+}
+
+
+.authUserTextField .MuiInputBase-root{
+  width: 100%;
+  height: 100%;
+}
 
 .fileOptionInputSelect input {
   color: green;
 }
 
+.authUserTextField input {
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 14px;
+  color: #4b5563e0 !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.03em !important;
+}
+
+
 
 .fileOptionInputSelect .Mui-focused{
   color: #77998d !important;
 }
+
 
 .fileOptionInputText{
   flex: 0.75;
@@ -2100,4 +2134,76 @@ div.DraftEditor-root {
 
 .highlightedFeatureRequestText{
   background-color: rgba(176, 191, 185, 0.8);
+}
+
+/* INTEGRATIONS */
+.integrationsFlexWrapper{
+  padding: 10%;
+  margin-top: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column;
+}
+
+.integrationsAuthUserWrapper{
+  display: flex;
+  border: 1px solid grey;
+  height: 50%;
+  width: 50%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px;
+}
+
+.authUserRow{
+  border: 1px solid rgba(119, 153, 141, .3);
+  width: 70%;
+  height: 32px;
+  display: flex;
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+}
+
+.authUserLabel{
+  flex: 0.25;
+  border-right: 1px solid rgba(119, 153, 141, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.authUserInputWrapper{
+  flex: 0.75;
+  max-height: 30px;
+}
+
+.authUploadText{
+  font-size: 20px;
+  letter-spacing: -0.03em;
+  color: rgb(75, 85, 99);
+  font-weight: 600;
+  margin-bottom: 12px;
+  margin-top: 4px;
+}
+
+.authorizedUsersWrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 2px solid green;
+  width: 50%;
+  margin-top: 20px;
+}
+
+.authUserOuterWrapper{
+  background-color: #ededed;
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
 }

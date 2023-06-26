@@ -8,6 +8,11 @@ import { json } from "@remix-run/node"
 import { Readable } from "stream"
 import { PineconeClient } from "@pinecone-database/pinecone";
 
+export async function getBaseDatasets(){
+    const baseDatasets = await db.baseDataset.findMany({
+    })
+    return baseDatasets
+}
 export async function getDatasets(userId){
     const datasets = await db.dataset.findMany({
         where: {
@@ -87,7 +92,7 @@ const uploadStreamToCloudStorage = async (fileData, fileName) => {
         }
     });
 
-    const uniqueId = Math.random().toString(36).slice(2, 5);
+    const uniqueId = Math.random().toString(36).slice(2, 9);
 
     const uniqueFileName = `${uniqueId}-${fileName}`
 
@@ -98,8 +103,6 @@ const uploadStreamToCloudStorage = async (fileData, fileName) => {
     const passthroughStream = new stream.PassThrough();
     passthroughStream.write(text);
     passthroughStream.end();
-
-
 
     async function fileUpload(){
         passthroughStream.pipe(file.createWriteStream()).on('finish', () => {

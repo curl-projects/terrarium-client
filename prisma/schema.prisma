@@ -12,10 +12,20 @@ model User {
   id              String           @id
   email           String
   discordBotAuth  Boolean          @default(false)
+  datasets        Dataset[]
   features        Feature[]
   featureRequests FeatureRequest[]
   notionAuths     NotionAuth[]
-  datasets Dataset[]
+  authorizedUsers AuthorizedUser[]
+}
+
+model AuthorizedUser {
+  authUserId Int @id @default(sequence())
+  platform String
+  community String
+  username String
+  user User @relation(fields: [userId], references: [id])
+  userId String
 }
 
 model NotionAuth {
@@ -39,45 +49,44 @@ model DiscordUser {
 }
 
 model Feature {
-  id                Int                 @id @default(sequence())
-  title             String
-  description       String              @default("")
-  userId            String
-  columnState       Int
-  rankState         Int
-  filters           FeatureFilter[]
-  isSearched        Boolean             @default(false)
-  user              User                @relation(fields: [userId], references: [id])
-  featureRequests   FeatureRequestMap[]
-  clusters          Cluster[]
+  id              Int                 @id @default(sequence())
+  title           String
+  description     String              @default("")
+  userId          String
+  columnState     Int
+  rankState       Int
+  isSearched      Boolean             @default(false)
+  clusters        Cluster[]
+  user            User                @relation(fields: [userId], references: [id])
+  filters         FeatureFilter[]
+  featureRequests FeatureRequestMap[]
 }
 
 model FeatureRequest {
-  fr_id         String              @id
-  message_id    String
-  message       String
-  created_at    String
-  author        String
-  fr            String
-  userId        String
-  user          User                @relation(fields: [userId], references: [id])
-  features      FeatureRequestMap[]
-  dataset       Dataset             @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
-  datasetId     Int
-
+  fr_id      String              @id
+  message_id String
+  message    String
+  created_at String
+  author     String
+  fr         String
+  userId     String
+  datasetId  Int
+  dataset    Dataset             @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
+  user       User                @relation(fields: [userId], references: [id])
+  features   FeatureRequestMap[]
 }
 
 model FeatureRequestMap {
   featureId        Int
   featureRequestId String
   pinned           Boolean        @default(false)
+  clusterId        Int?
   oldCluster       Int            @default(-1)
   score            String?
+  cluster          Cluster?       @relation(fields: [clusterId], references: [clusterId])
   feature          Feature        @relation(fields: [featureId], references: [id], onDelete: Cascade)
   featureRequest   FeatureRequest @relation(fields: [featureRequestId], references: [fr_id], onDelete: Cascade)
-  cluster          Cluster? @relation(fields: [clusterId], references: [clusterId], onDelete: SetNull)
-  clusterId        Int?
-  
+
   @@id([featureId, featureRequestId])
 }
 
@@ -99,51 +108,60 @@ model DiscordMessage {
 }
 
 model Cluster {
-  clusterId Int @id @default(sequence())
-  internalClusterId Int @default(-1)
-  type String @default("localKMeans")
-  feature Feature? @relation(fields: [featureId], references: [id], onDelete: Cascade)
-  featureId Int?
-  description String @default("")
+  clusterId          Int                 @id @default(sequence())
+  featureId          Int?
+  internalClusterId  Int                 @default(-1)
+  description        String              @default("")
+  type               String              @default("localKMeans")
+  feature            Feature?            @relation(fields: [featureId], references: [id], onDelete: Cascade)
+  clusterTags        ClusterTag[]
   featureRequestMaps FeatureRequestMap[]
-  clusterTags ClusterTag[]
 }
 
 model ClusterTag {
-  clusterTagId Int @id @default(sequence())
-  cluster Cluster @relation(fields: [clusterId], references: [clusterId], onDelete: Cascade)
-  clusterId Int
-  tagContent String
+  clusterTagId Int     @id @default(sequence())
+  clusterId    Int
+  tagContent   String
+  cluster      Cluster @relation(fields: [clusterId], references: [clusterId], onDelete: Cascade)
 }
 
 model Dataset {
-  datasetId Int @id @default(sequence())
-  uniqueFileName String
-  size String?
-  status String @default("unprocessed")
-  user User @relation(fields: [userId], references: [id])
-  userId String
+  datasetId       Int              @id @default(sequence())
+  uniqueFileName  String
+  size            String?
+  status          String           @default("unprocessed")
+  userId          String
+  baseDatasetId   Int?
+  BaseDataset     BaseDataset?     @relation(fields: [baseDatasetId], references: [baseDatasetId])
+  user            User             @relation(fields: [userId], references: [id])
+  datasetMapping  DatasetMapping?
   featureRequests FeatureRequest[]
-  datasetMapping DatasetMapping?
 }
 
 model DatasetMapping {
-  datasetMappingId Int @id @default(sequence())
-  dataset Dataset @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
-  datasetId Int @unique
-  text String?
-  author String?
-  id String?
-  createdAt String?
-  searchFor String?
+  datasetMappingId Int     @id @default(sequence())
+  datasetId        Int     @unique
+  text             String?
+  author           String?
+  id               String?
+  createdAt        String?
+  searchFor        String?
+  dataset          Dataset @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
 }
 
 model FeatureFilter {
-  filterId Int @id @default(sequence())
-  type String
+  filterId    Int     @id @default(sequence())
+  type        String
   dateVariant String?
-  date  String?
-  author String?
-  feature Feature @relation(fields: [featureId], references: [id])
-  featureId Int
+  date        String?
+  featureId   Int
+  author      String?
+  feature     Feature @relation(fields: [featureId], references: [id])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BaseDataset {
+  baseDatasetId  Int       @id @default(sequence())
+  uniqueFileName String
+  Dataset        Dataset[]
 }
