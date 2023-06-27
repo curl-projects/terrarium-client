@@ -2,7 +2,7 @@ import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { unstable_parseMultipartFormData, json } from '@remix-run/node';
 import { useLoaderData, useActionData, Form, useFetcher } from "@remix-run/react";
 import Header from "~/components/Header/Header"
-import { googleUploadHandler, createDatasetObject, initiateDatasetProcessing, getDatasets, getBaseDatasets, createBaseDataset } from '~/models/dataset-upload.server';
+import { googleUploadHandler, createDatasetObject, initiateDatasetProcessing, getDatasets, getBaseDatasets } from '~/models/dataset-upload.server';
 import { authenticator } from "~/models/auth.server.js";
 import { usePapaParse } from 'react-papaparse';
 
@@ -23,9 +23,6 @@ import { BiMessageSquareDetail } from 'react-icons/bi'
 import { BsPerson } from "react-icons/bs"
 import { BiCalendar } from "react-icons/bi"; 
 import { BsHash } from "react-icons/bs";
-import UnprocessedDatasets from '~/components/Datasets/UnprocessedDatasets';
-import ProcessedDatasets from '~/components/Datasets/ProcessedDatasets';
-
 
 
 export async function loader({ request }){
@@ -48,40 +45,22 @@ export async function action({request}){
     console.log('HELLO', JSON.stringify(request.headers))
     
     const formData = await request.formData();
+    const fileData = formData.get('upload');
+    const fileOutputData = await googleUploadHandler(fileData)
+    console.log("OUTPUT:", fileOutputData)
     
-    const actionType = formData.get('actionType')
+    const headerMapping = formData.get('headerMappings');
+    console.log("HEADER MAPPING:", JSON.parse(headerMapping))
 
-    if(actionType === 'unprocessedDataset'){
-        const fileData = formData.get('upload');
-        const fileOutputData = await googleUploadHandler(fileData);
-        const jsonData = JSON.parse(fileOutputData)
-        const baseDataset = await createBaseDataset(user.id, jsonData.uniqueFileName, "fileUpload")
-        return { baseDataset }
+    const jsonData = JSON.parse(fileOutputData)
+
+    if(jsonData.completed){
+        const datasetObj = await createDatasetObject(jsonData.uniqueFileName, user.id, JSON.parse(headerMapping))
+        const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, datasetObj.datasetId, user.id, headerMapping)
+        console.log("RESPONSE", response)
+        return { jsonData: jsonData, response: response.status};
     }
-    else if(actionType === 'processedDataset'){
-        // const datasetObj = await createDatasetObject(jsonData.uniqueFileName, user.id, JSON.parse(headerMapping))
-        // const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, datasetObj.datasetId, user.id, headerMapping)
-    }
-
-    else{
-        console.error("Unknown Action Type")
-    }
-    // const fileData = formData.get('upload');
-    // const fileOutputData = await googleUploadHandler(fileData)
-    // console.log("OUTPUT:", fileOutputData)
-    
-    // const headerMapping = formData.get('headerMappings');
-    // console.log("HEADER MAPPING:", JSON.parse(headerMapping))
-
-    // const jsonData = JSON.parse(fileOutputData)
-
-    // if(jsonData.completed){
-    //     const datasetObj = await createDatasetObject(jsonData.uniqueFileName, user.id, JSON.parse(headerMapping))
-    //     const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, datasetObj.datasetId, user.id, headerMapping)
-    //     console.log("RESPONSE", response)
-    //     return { jsonData: jsonData, response: response.status};
-    // }
-    // return { jsonData: jsonData }
+    return { jsonData: jsonData }
 }
 
 export default function DataSources(){
@@ -89,7 +68,6 @@ export default function DataSources(){
     const actionData = useActionData();
 
     const deleteFetcher = useFetcher();
-    const readDatasetFetcher = useFetcher();
 
     const [fileRef, setFileRef] = useState(Date.now())
     const [fileFormIsOpen, setFileFormIsOpen] = useState(false)
@@ -103,7 +81,7 @@ export default function DataSources(){
 
     const [columnValues, setColumnValues] = useState({'text': "",'author': "", "created_at": "", "id": "", "searchFor": ""})
 
-    const { readString } = usePapaParse();
+    const { readString, jsonToCSV } = usePapaParse();
 
     useEffect(()=>{
         setSocketUrl(window.ENV.WEBSOCKETS_URL)
@@ -122,7 +100,6 @@ export default function DataSources(){
     useEffect(()=>{
         console.log("ACTION DATA:", actionData)
     }, [actionData])
-
     useEffect(() => {
         if (lastMessage !== null) {
           setMessageHistory((prev) => prev.concat(lastMessage));
@@ -194,50 +171,12 @@ export default function DataSources(){
         console.log("COLUMN VALUES:", columnValues)
     }, [columnValues])
 
-
-    function handleUnprocessedDatasetClick(fileName){
-        console.log("FILE NAME:", fileName)
-
-        readDatasetFetcher.submit({fileName: fileName}, {'method': 'get', 'action': "utils/read-dataset"})
-    }
-
-    useEffect(()=>{
-        console.log("FETCHER DATA:", readDatasetFetcher.data)
-        if(readDatasetFetcher.data?.fileContents){
-            readString(readDatasetFetcher.data.fileContents, {
-                complete: function (results) {
-                    console.log(results.data[0])
-                    // setFileHeaders(results.data[0])
-                    // setFileFormIsOpen(true)
-
-                    // for(let header of results.data[0]){
-                    //     if((header.charAt(0) === "[" && header.charAt(-1) === "]") 
-                    //       || (/^\d+$/.test(header))
-                    //     ){ setFileWarning("It seems like these values might not be headers. Make sure your file has appropriate headers for each column.") } 
-                    // }
-                },
-                error: function(error){
-                    console.error("File Read Error:", error)
-                }
-            })
-            console.log("FETCHER DATA CONTENTS:", readDatasetFetcher.data.fileContents)
-        }
-    }, [readDatasetFetcher.data])
-
     return(
         <>
         <Header />
         <div className='dataTableOuterWrapper'>
         <PageTitle title="Data Sources" padding={true} description="Upload datasets for analysis and visualisation."/>
-        <div className='dataSourcesInnerSplitter'>
-            <div className='unprocessedDataWrapper'>
-                <UnprocessedDatasets 
-                    baseDatasets={loaderData.baseDatasets}
-                    handleUnprocessedDatasetClick={handleUnprocessedDatasetClick}
-                    />
-            </div>
-            <div className='processedDataWrapper'>
-            <Form method="post" encType="multipart/form-data" className='fileUploadRectangle'>
+                <Form method="post" encType="multipart/form-data" className='fileUploadRectangle'>
                     <BsUpload style={{fontSize: "30px", color: "#4b5563"}}/>
                     {file 
                     ? <p className='fileUploadText'>{file.name}</p>
@@ -259,14 +198,14 @@ export default function DataSources(){
                     {!(fileHeaders.length === 0) && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Found headers: {fileHeaders.join(", ")}</p>}
                     {fileWarning && <p className='fileUploadSpecifier' style={{color: "#7E998E"}}>{fileWarning}</p>}
                         {[{value: 'text', name: "Text", icon: <BiMessageSquareDetail />}, 
-                            {value: 'author', name: "Author", icon: <BsPerson />}, 
-                            {value: 'id', name: "ID", icon: <BsHash />}, 
-                            {value: 'created_at', name: "Created Date", icon: <BiCalendar />}].map((field, idx) => 
+                          {value: 'author', name: "Author", icon: <BsPerson />}, 
+                          {value: 'id', name: "ID", icon: <BsHash />}, 
+                          {value: 'created_at', name: "Created Date", icon: <BiCalendar />}].map((field, idx) => 
                             <div className='fileOptionRow' key={idx}>
                                 <div className='fileOptionLabel'>
-                                    <div className='fileOptionIconWrapper'>
-                                        {field.icon && field.icon}
-                                    </div>
+                                    {/* <div className='fileOptionIconWrapper'>
+                                        {/* {field.icon && field.icon} */}
+                                    {/* </div> */}
                                     <p className='fileOptionLabelText'>{field.name}</p>
                                 </div>
                                 <div className='fileOptionInputWrapper'>
@@ -310,8 +249,20 @@ export default function DataSources(){
                         </>
                     }
                     </>
-                    }
+                }
                 </Form>
+                <div className="uploadedFilesWrapper">
+                    <p className='datasetsLabelText'>Unprocessed Datasets</p>
+                    {loaderData.baseDatasets.map((row, idx) => (
+                        <BaseDatasetRow 
+                            idx={idx} row={row} key={idx}
+                            setFile={setFile}
+                            setFileFormIsOpen={setFileFormIsOpen}
+                        />
+                    ))
+
+                    }
+                </div>
                 <div className="uploadedFilesWrapper">
                     <p className='datasetsLabelText'>Processed Datasets</p>
                     {loaderData.datasets.map((row, idx) => (
@@ -326,9 +277,6 @@ export default function DataSources(){
 
                     }
                 </div>
-            </div>
-        </div>
-                
         </div>
         <Snackbar  
             open={actionData?.response === "404"}

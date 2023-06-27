@@ -12,20 +12,21 @@ model User {
   id              String           @id
   email           String
   discordBotAuth  Boolean          @default(false)
+  authorizedUsers AuthorizedUser[]
+  BaseDataset     BaseDataset[]
   datasets        Dataset[]
   features        Feature[]
   featureRequests FeatureRequest[]
   notionAuths     NotionAuth[]
-  authorizedUsers AuthorizedUser[]
 }
 
 model AuthorizedUser {
-  authUserId Int @id @default(sequence())
-  platform String
-  community String
-  username String
-  user User @relation(fields: [userId], references: [id])
-  userId String
+  authUserId Int    @id @default(sequence())
+  platform   String
+  community  String
+  username   String
+  userId     String
+  user       User   @relation(fields: [userId], references: [id])
 }
 
 model NotionAuth {
@@ -163,5 +164,8 @@ model FeatureFilter {
 model BaseDataset {
   baseDatasetId  Int       @id @default(sequence())
   uniqueFileName String
+  userId         String
+  origin         String?
+  user           User      @relation(fields: [userId], references: [id])
   Dataset        Dataset[]
 }

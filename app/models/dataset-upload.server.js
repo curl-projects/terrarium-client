@@ -8,11 +8,29 @@ import { json } from "@remix-run/node"
 import { Readable } from "stream"
 import { PineconeClient } from "@pinecone-database/pinecone";
 
-export async function getBaseDatasets(){
+export async function createBaseDataset(userId, uniqueFileName, origin){
+    const baseDataset = await db.baseDataset.create({
+        data: {
+            userId: userId,
+            uniqueFileName: uniqueFileName,
+            origin: origin
+        }
+    })
+
+    return baseDataset
+}
+
+export async function getBaseDatasets(userId){
     const baseDatasets = await db.baseDataset.findMany({
+        where: {
+            user: {
+                id: userId
+            }
+        }
     })
     return baseDatasets
 }
+
 export async function getDatasets(userId){
     const datasets = await db.dataset.findMany({
         where: {
@@ -79,6 +97,24 @@ export async function initiateDatasetProcessing(fileName, datasetId, userId, hea
     }
   }
 
+export async function readFile(fileName){
+    const bucketName = "terrarium-fr-datasets";
+
+    const cloudStorage = new Storage({
+        projectId: process.env.GOOGLE_STORAGE_PROJECT_ID,
+        scopes: 'https://www.googleapis.com/auth/cloud-platform',
+        credentials: {
+            client_email: process.env.GOOGLE_STORAGE_EMAIL,
+            private_key: process.env.GOOGLE_STORAGE_PRIVATE_KEY
+        }
+    });
+
+    const contents = await cloudStorage.bucket(bucketName).file(fileName).download()
+
+    return contents
+
+}
+
 const uploadStreamToCloudStorage = async (fileData, fileName) => {
     const bucketName = "terrarium-fr-datasets";
     const filePath = "/"
@@ -94,7 +130,7 @@ const uploadStreamToCloudStorage = async (fileData, fileName) => {
 
     const uniqueId = Math.random().toString(36).slice(2, 9);
 
-    const uniqueFileName = `${uniqueId}-${fileName}`
+    const uniqueFileName = `unprocessed-${uniqueId}-${fileName}`
 
     const file = cloudStorage.bucket(bucketName).file(uniqueFileName);
 
@@ -118,27 +154,6 @@ const uploadStreamToCloudStorage = async (fileData, fileName) => {
 };
 
 export const googleUploadHandler = async (requestData) => {
-    console.log("REQUEST DATA!!!:", requestData)
-    // if(requestData.name === 'headerMappings'){
-    //     console.log("REQUEST DATA (1):", requestData)
-
-    //     async function toArray(asyncIterator){ 
-    //         const arr=[]; 
-    //         for await(const i of asyncIterator) arr.push(i); 
-    //         return arr;
-    //     }
-    
-    // // const headerMappingsArray = await toArray(requestData.data)
-
-    // console.log('HEADER MAPPINGS ARRAY:', headerMappingsArray)
-    // }
-
-    // else if(requestData.name === 'upload'){
-    //     console.log("REQUEST DATA (2):", requestData)
-    // }
-
-  console.log("NAME:", requestData.name)
-
   const filename = requestData.name
   const file = requestData
 

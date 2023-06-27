@@ -1617,12 +1617,33 @@ div.DraftEditor-root {
   justify-content: center;
 }
 
+.dataSourcesInnerSplitter{
+  flex: 1;
+  border: 2px solid green;
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+  display: flex;
+}
+
+.unprocessedDataWrapper{
+  flex: 1;
+  border: 2px solid brown;
+  padding: 30px;
+}
+
+.processedDataWrapper{
+  flex: 1;
+  border: 2px solid blue;
+  padding: 30px;
+}
+
+
 .fileUploadRectangle{
   border: 2px dashed rgba(75, 85, 99, 0.4);
   padding-top: 60px;
   padding-bottom: 60px;
-  width: 50%;
-  margin-top: 40px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1780,7 +1801,7 @@ div.DraftEditor-root {
 
 .uploadedFilesWrapper{
   margin-top: 30px;
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
