@@ -42,13 +42,20 @@ export async function getDatasets(userId){
     return datasets
 }
 
-export async function createDatasetObject(fileName, userId, headerMapping){
+export async function createDatasetObject(fileName, userId, headerMapping, baseDatasetId){
+
+  const uniqueId = Math.random().toString(36).slice(2, 5);
   const dataset = await db.dataset.create({
     data: {
-        uniqueFileName: fileName,
+        uniqueFileName: `${uniqueId}-${fileName}`,
         user: {
             connect: {
                 id: userId
+            }
+        },
+        baseDataset: {
+            connect: {
+                baseDatasetId: parseInt(baseDatasetId)
             }
         },
         datasetMapping: {
@@ -67,13 +74,14 @@ export async function createDatasetObject(fileName, userId, headerMapping){
   return dataset
 }
 
-export async function initiateDatasetProcessing(fileName, datasetId, userId, headerMapping){
+export async function initiateDatasetProcessing(fileName, baseDatasetFileName, datasetId, userId, headerMapping){
     console.log("Initiated Dataset Processing")
 
     let url = process.env.DATASET_PROCESSING_URL
 
     let data = {
       'file_name': fileName,
+      'base_file_name': baseDatasetFileName,
       'dataset_id': datasetId,
       'user_id': userId,
       header_mapping: headerMapping

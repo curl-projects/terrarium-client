@@ -9,7 +9,7 @@ export default function BaseDatasetRow(props){
     }
 
     return(
-        <div className='fileOuterWrapper' onClick={() => props.handleUnprocessedDatasetClick(props.row.uniqueFileName)}>
+        <div className='fileOuterWrapper' onClick={() => props.handleUnprocessedDatasetClick(props.row.uniqueFileName, props.row.baseDatasetId)}>
             {/* <div className='fileIconWrapper'>
                         <BsFileArrowUp style={{fontSize: "26px", color: "rgba(75, 85, 99, 0.85)"}}/>
             </div> */}

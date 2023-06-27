@@ -6,16 +6,7 @@ import { googleUploadHandler, createDatasetObject, initiateDatasetProcessing, ge
 import { authenticator } from "~/models/auth.server.js";
 import { usePapaParse } from 'react-papaparse';
 
-import useWebSocket, { ReadyState } from "react-use-websocket";
-import BaseDatasetRow from "~/components/Datasets/BaseDatasetRow";
-import DatasetRow from "~/components/Datasets/DatasetRow";
 import PageTitle from "~/components/Header/PageTitle.js"
-
-import { BsUpload } from "react-icons/bs";
-import { BsX } from "react-icons/bs";
-
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 
 import Snackbar from '@mui/material/Snackbar';
 
@@ -25,6 +16,7 @@ import { BiCalendar } from "react-icons/bi";
 import { BsHash } from "react-icons/bs";
 import UnprocessedDatasets from '~/components/Datasets/UnprocessedDatasets';
 import ProcessedDatasets from '~/components/Datasets/ProcessedDatasets';
+import { unique } from 'underscore';
 
 
 
@@ -41,14 +33,8 @@ export async function loader({ request }){
 
 export async function action({request}){
 
-    const user = await authenticator.isAuthenticated(request, {
-        failureRedirect: "/",
-      })
-
-    console.log('HELLO', JSON.stringify(request.headers))
-    
-    const formData = await request.formData();
-    
+    const user = await authenticator.isAuthenticated(request, { failureRedirect: "/" })
+    const formData = await request.formData();    
     const actionType = formData.get('actionType')
 
     if(actionType === 'unprocessedDataset'){
@@ -59,18 +45,25 @@ export async function action({request}){
         return { baseDataset }
     }
     else if(actionType === 'processedDataset'){
-        // const datasetObj = await createDatasetObject(jsonData.uniqueFileName, user.id, JSON.parse(headerMapping))
-        // const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, datasetObj.datasetId, user.id, headerMapping)
+        const headerMapping = formData.get('headerMappings');
+        const uniqueFileName = formData.get("uniqueFileName");
+        const baseDatasetId = formData.get("baseDatasetId")
+
+        const datasetObj = await createDatasetObject(uniqueFileName, user.id, JSON.parse(headerMapping), baseDatasetId)
+
+        const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, uniqueFileName, datasetObj.datasetId, user.id, headerMapping)
+        return { datasetObj, response: response.status }
     }
 
     else{
         console.error("Unknown Action Type")
+        return "Unknown Action Type"
     }
     // const fileData = formData.get('upload');
     // const fileOutputData = await googleUploadHandler(fileData)
     // console.log("OUTPUT:", fileOutputData)
     
-    // const headerMapping = formData.get('headerMappings');
+    const headerMapping = formData.get('headerMappings');
     // console.log("HEADER MAPPING:", JSON.parse(headerMapping))
 
     // const jsonData = JSON.parse(fileOutputData)
@@ -88,54 +81,11 @@ export default function DataSources(){
     const loaderData = useLoaderData();
     const actionData = useActionData();
 
-    const deleteFetcher = useFetcher();
     const readDatasetFetcher = useFetcher();
 
-    const [fileRef, setFileRef] = useState(Date.now())
-    const [fileFormIsOpen, setFileFormIsOpen] = useState(false)
-    const [fileHeaders, setFileHeaders] = useState([])
-    const [file, setFile] = useState();
-    const [fileError, setFileError] = useState("")
-    const [fileWarning, setFileWarning] = useState("")
-    const [socketUrl, setSocketUrl] = useState("");
-    const [messageHistory, setMessageHistory] = useState([]);
+    const [baseDatasetId, setBaseDatasetId] = useState("")
     const [activelyDeletingFile, setActivelyDeletingFile] = useState("")
-
-    const [columnValues, setColumnValues] = useState({'text': "",'author': "", "created_at": "", "id": "", "searchFor": ""})
-
-    const { readString } = usePapaParse();
-
-    useEffect(()=>{
-        setSocketUrl(window.ENV.WEBSOCKETS_URL)
-      }, [])
-
-    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
-
-    const connectionStatus = {
-        [ReadyState.CONNECTING]: 'Connecting',
-        [ReadyState.OPEN]: 'Open',
-        [ReadyState.CLOSING]: 'Closing',
-        [ReadyState.CLOSED]: 'Closed',
-        [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-    }[readyState];
-
-    useEffect(()=>{
-        console.log("ACTION DATA:", actionData)
-    }, [actionData])
-
-    useEffect(() => {
-        if (lastMessage !== null) {
-          setMessageHistory((prev) => prev.concat(lastMessage));
-        }
-      }, [lastMessage, setMessageHistory]);
-
-      useEffect(()=>{
-        console.log("Connection Status", connectionStatus)
-    }, [connectionStatus, messageHistory])
-
-    useEffect(()=>{
-        console.log("HEADERS:", fileHeaders)
-    }, [fileHeaders])
+    const [unprocessedFileName, setUnprocessedFileName] = useState("")
 
     useEffect(()=>{
         console.debug('LOADER DATA:', loaderData)
@@ -175,54 +125,19 @@ export default function DataSources(){
         }
     }
 
-    const resetFile = () => {
-        setFile("")
-        setFileError("")
-        setFileHeaders([])
-        setFileWarning("")
-        setFileFormIsOpen(false)
-        setFileRef(Date.now())
-    }
 
-    useEffect(()=>{
-        if(actionData?.jsonData?.fileName){
-            resetFile()
-        }
-    }, [actionData])
+    // useEffect(()=>{
+    //     if(actionData?.jsonData?.fileName){
+    //         resetFile()
+    //     }
+    // }, [actionData])
 
-    useEffect(()=>{
-        console.log("COLUMN VALUES:", columnValues)
-    }, [columnValues])
-
-
-    function handleUnprocessedDatasetClick(fileName){
-        console.log("FILE NAME:", fileName)
-
+    // READING UNPROCESSED DATASETS
+    function handleUnprocessedDatasetClick(fileName, baseDatasetId){
         readDatasetFetcher.submit({fileName: fileName}, {'method': 'get', 'action': "utils/read-dataset"})
+        setUnprocessedFileName(fileName)
+        setBaseDatasetId(baseDatasetId)
     }
-
-    useEffect(()=>{
-        console.log("FETCHER DATA:", readDatasetFetcher.data)
-        if(readDatasetFetcher.data?.fileContents){
-            readString(readDatasetFetcher.data.fileContents, {
-                complete: function (results) {
-                    console.log(results.data[0])
-                    // setFileHeaders(results.data[0])
-                    // setFileFormIsOpen(true)
-
-                    // for(let header of results.data[0]){
-                    //     if((header.charAt(0) === "[" && header.charAt(-1) === "]") 
-                    //       || (/^\d+$/.test(header))
-                    //     ){ setFileWarning("It seems like these values might not be headers. Make sure your file has appropriate headers for each column.") } 
-                    // }
-                },
-                error: function(error){
-                    console.error("File Read Error:", error)
-                }
-            })
-            console.log("FETCHER DATA CONTENTS:", readDatasetFetcher.data.fileContents)
-        }
-    }, [readDatasetFetcher.data])
 
     return(
         <>
@@ -237,95 +152,16 @@ export default function DataSources(){
                     />
             </div>
             <div className='processedDataWrapper'>
-            <Form method="post" encType="multipart/form-data" className='fileUploadRectangle'>
-                    <BsUpload style={{fontSize: "30px", color: "#4b5563"}}/>
-                    {file 
-                    ? <p className='fileUploadText'>{file.name}</p>
-                    :
-                    <>
-                        <label htmlFor='datasetFiles' className='fileUploadText' style={{cursor: 'pointer'}}>Choose file to upload</label>
-                    </>
-                    }
-                    <input type='hidden' name='headerMappings' value={JSON.stringify(columnValues)}/>
-                    <input id='datasetFiles' style={{display: "none"}} type="file" name="upload" onChange={handleFileChange} key={fileRef}/>
-                    {!file && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>(csv files generated from discord)</p>}
-                    {file && <p className='fileUploadSpecifier' onClick={resetFile} style={{color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}>Remove File</p>}
-                    
-                    {fileError && <p className='fileUploadSpecifier' style={{color: "rgba(146, 0, 0, 0.7)"}}>{fileError}</p>}
-                {file && fileFormIsOpen && 
-                    <>
-                    <div className='fileOptionSeparator'/>
-                    <div className='fileOptionWrapper'>
-                    {!(fileHeaders.length === 0) && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Found headers: {fileHeaders.join(", ")}</p>}
-                    {fileWarning && <p className='fileUploadSpecifier' style={{color: "#7E998E"}}>{fileWarning}</p>}
-                        {[{value: 'text', name: "Text", icon: <BiMessageSquareDetail />}, 
-                            {value: 'author', name: "Author", icon: <BsPerson />}, 
-                            {value: 'id', name: "ID", icon: <BsHash />}, 
-                            {value: 'created_at', name: "Created Date", icon: <BiCalendar />}].map((field, idx) => 
-                            <div className='fileOptionRow' key={idx}>
-                                <div className='fileOptionLabel'>
-                                    <div className='fileOptionIconWrapper'>
-                                        {field.icon && field.icon}
-                                    </div>
-                                    <p className='fileOptionLabelText'>{field.name}</p>
-                                </div>
-                                <div className='fileOptionInputWrapper'>
-                                    <Select 
-                                        className='fileOptionInputSelect'
-                                        value={columnValues[`${field.value}`]}
-                                        onChange={function(e){
-                                            setColumnValues((prevState) => ({...prevState, [field.value]: e.target.value}))
-                                        }}
-                                    >
-                                        {fileHeaders && fileHeaders.map((column, idx) => 
-                                            <MenuItem className='fileSelectMenuItem' value={column}>{column}</MenuItem>
-                                        )}
-                                    </Select>
-                                </div>
-                            </div>
-                        )}
-                        <div className='fileOptionRow' style={{marginTop: "14px"}}>
-                            <div className='fileOptionLabel'>
-                                <p className='fileOptionLabelText'>Search For:</p>
-                            </div>
-                            <div className='fileOptionInputWrapper'>
-                                <Select 
-                                    className='fileOptionInputSelect' 
-                                    value={columnValues['searchFor']}
-                                    onChange={function(e){
-                                            setColumnValues((prevState) => ({...prevState, 'searchFor': e.target.value}))
-                                        }}>
-                                    <MenuItem className='fileSelectMenuItem' value="featureRequests">Feature Requests</MenuItem>
-                                    <MenuItem className='fileSelectMenuItem' value="bugReports" disabled>Bug Reports (Coming Soon)</MenuItem>
-                                </Select>
-                            </div>
-                        </div>
-                    </div>
-                    {Object.values(columnValues).every(Boolean) &&
-                        <>
-                        <div style={{height: "20px"}}/>
-                        <div className='fileSubmitWrapper'>
-                            <button className='fileSubmit'>Upload</button>
-                        </div>
-                        </>
-                    }
-                    </>
-                    }
-                </Form>
-                <div className="uploadedFilesWrapper">
-                    <p className='datasetsLabelText'>Processed Datasets</p>
-                    {loaderData.datasets.map((row, idx) => (
-                        <DatasetRow 
-                            idx={idx} row={row} key={idx}
-                            lastMessage={lastMessage}
-                            deleteFetcher={deleteFetcher}
-                            activelyDeletingFile={activelyDeletingFile}
-                            setActivelyDeletingFile={setActivelyDeletingFile}
-                        />
-                    ))
-
-                    }
-                </div>
+                <ProcessedDatasets 
+                    processedDatasets={loaderData.datasets}
+                    activelyDeletingFile={activelyDeletingFile}
+                    setActivelyDeletingFile={setActivelyDeletingFile}
+                    readDatasetFetcher={readDatasetFetcher}
+                    unprocessedFileName={unprocessedFileName}
+                    setUnprocessedFileName={setUnprocessedFileName}
+                    baseDatasetId={baseDatasetId}
+                    setBaseDatasetId={setBaseDatasetId}
+                />
             </div>
         </div>
                 

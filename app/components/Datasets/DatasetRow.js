@@ -49,7 +49,6 @@ export default function DatasetRow(props){
     }, [props.row])
 
     useEffect(()=>{
-        console.log("DELETE FETCHER SUBMISSION:", props.activelyDeletingFile)
         props.deleteFetcher.state === 'submitting' && (props.row.uniqueFileName === props.activelyDeletingFile) && dispatch({type: "deleting_file"})
     }, [props.deleteFetcher])
 
