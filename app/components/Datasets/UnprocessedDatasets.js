@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BsUpload } from "react-icons/bs";
-import { Form } from "@remix-run/react";
+import { Form, useFetcher } from "@remix-run/react";
 import { usePapaParse } from 'react-papaparse';
 import BaseDatasetRow from "~/components/Datasets/BaseDatasetRow";
 
@@ -10,6 +10,7 @@ export default function UnprocessedDatasets(props){
     const [fileHeaders, setFileHeaders] = useState([])
     const [fileWarning, setFileWarning] = useState("")
     const [fileError, setFileError] = useState("")
+    const deleteFetcher = useFetcher()
 
     const { readString } = usePapaParse();
 
@@ -60,6 +61,7 @@ export default function UnprocessedDatasets(props){
                     handleUnprocessedDatasetClick={props.handleUnprocessedDatasetClick}
                     unprocessedFileName={props.unprocessedFileName}
                     setHighlightedProcessedDatasets={props.setHighlightedProcessedDatasets}
+                    deleteFetcher={deleteFetcher}
                 />
             ))
             }

@@ -15,13 +15,14 @@ import Select from '@mui/material/Select';
 
 export default function ProcessedDatasets({  processedDatasets, activelyDeletingFile, setActivelyDeletingFile,
                                             readDatasetFetcher, unprocessedFileName, setUnprocessedFileName, baseDatasetId, setBaseDatasetId,
-                                            fileHeaders, setFileHeaders, highlightedProcessedDatasets}){
+                                            fileHeaders, setFileHeaders, highlightedProcessedDatasets, actionData, handleUnprocessedDatasetClick}){
     const { readString } = usePapaParse();
     const [filteredProcessedDatasets, setFilteredProcessedDatasets] = useState([])
     const [fileWarning, setFileWarning] = useState("")
     const [columnValues, setColumnValues] = useState({'text': "",'author': "", "created_at": "", "id": "", "searchFor": ""})
     const deleteFetcher = useFetcher()
     const [socketUrl, setSocketUrl] = useState(null);
+    const [updateExistingDataset, setUpdateExistingDataset] = useState(false)
 
     function resetFile(){
         setUnprocessedFileName("")
@@ -32,18 +33,27 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
     }
 
     useEffect(()=>{
-        if(highlightedProcessedDatasets?.length === 0){
+        console.log("ACTION DATA:", actionData)
+        // if(actionData?.jsonData?.fileName){
+        //     resetFile()
+        // }
+    }, [actionData])
+
+
+    useEffect(()=>{
+        if(highlightedProcessedDatasets === 'default'){
             setFilteredProcessedDatasets(processedDatasets)
         }
-        else{
-            setFilteredProcessedDatasets(processedDatasets.filter(i => highlightedProcessedDatasets.includes(i.datasetId)))
+        else{ 
+            setFilteredProcessedDatasets(processedDatasets.reduce((acc, element) => {
+                if(highlightedProcessedDatasets.includes(element.datasetId)){
+                    return [element, ...acc]
+                }
+                return [...acc, element];
+            }, []))
         }
     }, [processedDatasets, highlightedProcessedDatasets, fileHeaders])
-    
 
-    useEffect(() => {
-        console.log("FILTERED PROCES")
-    })
     // WEB SOCKET CONNECTION
     useEffect(()=>{
         setSocketUrl(window.ENV.WEBSOCKETS_URL)
@@ -51,7 +61,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
 
     useEffect(()=>{
         setFileWarning("")
-        setColumnValues({'text': "",'author': "", "created_at": "", "id": "", "searchFor": ""})
+        !updateExistingDataset && setColumnValues({'text': "",'author': "", "created_at": "", "id": "", "searchFor": ""})
     }, [unprocessedFileName])
 
     const { lastMessage, readyState } = useWebSocket(socketUrl);
@@ -122,7 +132,9 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                     <input type='hidden' name='headerMappings' value={JSON.stringify(columnValues)} />
                     <input type='hidden' name='baseDatasetId' value={baseDatasetId} />
                     <input type='hidden' name='uniqueFileName' value={unprocessedFileName} />
+                    <input type='hidden' name='updateExistingDataset' value={updateExistingDataset} />
                     {/* {!unprocessedFileName && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Takes around 10 minutes to process</p>} */}
+                    {updateExistingDataset && !(fileHeaders.length === 0) && <p className='fileUploadSpecifier'>Updating Existing Dataset</p>}
                     {!(fileHeaders.length === 0) && <p className='fileUploadSpecifier' onClick={resetFile} style={{color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}>Remove File</p>}
                 
                 {/* {readDatasetFetcher.state === 'submitting' && 
@@ -187,7 +199,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                         <>
                         <div style={{height: "20px"}}/>
                         <div className='fileSubmitWrapper'>
-                            <button className='fileSubmit' onClick={resetFile}>Upload</button>
+                            <button className='fileSubmit'>Upload</button>
                         </div>
                         </>
                     }
@@ -202,6 +214,10 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                         deleteFetcher={deleteFetcher}
                         activelyDeletingFile={activelyDeletingFile}
                         setActivelyDeletingFile={setActivelyDeletingFile}
+                        handleUnprocessedDatasetClick={handleUnprocessedDatasetClick}
+                        highlightedProcessedDatasets={highlightedProcessedDatasets}
+                        setUpdateExistingDataset={setUpdateExistingDataset}
+                        setColumnValues={setColumnValues}
                     />
                 ))
 

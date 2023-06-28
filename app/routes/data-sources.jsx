@@ -36,8 +36,14 @@ export async function action({request}){
     const user = await authenticator.isAuthenticated(request, { failureRedirect: "/" })
     const formData = await request.formData();    
     const actionType = formData.get('actionType')
+    const updateExistingDataset = formData.get("updateExistingDataset")
 
-    if(actionType === 'unprocessedDataset'){
+    if(updateExistingDataset){
+        console.log('updating existing dataset')
+        return {}
+    }
+
+    else if(actionType === 'unprocessedDataset'){
         const fileData = formData.get('upload');
         const fileOutputData = await googleUploadHandler(fileData);
         const jsonData = JSON.parse(fileOutputData)
@@ -87,24 +93,18 @@ export default function DataSources(){
     const [activelyDeletingFile, setActivelyDeletingFile] = useState("")
     const [unprocessedFileName, setUnprocessedFileName] = useState("")
     const [fileHeaders, setFileHeaders] = useState([])
-    const [highlightedProcessedDatasets, setHighlightedProcessedDatasets] = useState([])
+    const [highlightedProcessedDatasets, setHighlightedProcessedDatasets] = useState('default')
 
     useEffect(()=>{
         console.debug('LOADER DATA:', loaderData)
     }, [loaderData])
 
-    // useEffect(()=>{
-    //     if(actionData?.jsonData?.fileName){
-    //         resetFile()
-    //     }
-    // }, [actionData])
-
     // READING UNPROCESSED DATASETS
     function handleUnprocessedDatasetClick(fileName, baseDatasetId){
         setFileHeaders([])
-        readDatasetFetcher.submit({fileName: fileName}, {'method': 'get', 'action': "utils/read-dataset"})
         setUnprocessedFileName(fileName)
         setBaseDatasetId(baseDatasetId)
+        readDatasetFetcher.submit({fileName: fileName}, {'method': 'get', 'action': "utils/read-dataset"})
     }
 
     return(
@@ -135,6 +135,8 @@ export default function DataSources(){
                         fileHeaders={fileHeaders}
                         setFileHeaders={setFileHeaders}
                         highlightedProcessedDatasets={highlightedProcessedDatasets}
+                        actionData={actionData}
+                        handleUnprocessedDatasetClick={handleUnprocessedDatasetClick}
                     />
                 </div>
             </div>

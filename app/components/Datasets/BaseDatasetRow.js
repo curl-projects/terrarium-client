@@ -6,17 +6,18 @@ import { BsX } from "react-icons/bs";
 export default function BaseDatasetRow(props){
 
     function handleDelete(){
-
+        props.deleteFetcher.submit({baseDatasetId: props.row.baseDatasetId, 
+                                    datasets: props.row.datasets, uniqueFileName: props.row.uniqueFileName}, 
+            {method: "post", action: "/utils/delete-base-dataset"})
     }
 
     function handleEnter(){
-        if(props.row?.datasets){
-            props.setHighlightedProcessedDatasets(props.row.datasets.map(i => i.datasetId))
-        }
+
+        props.setHighlightedProcessedDatasets(props.row.datasets.map(i => i.datasetId))
     }
 
     function handleLeave(){
-        props.setHighlightedProcessedDatasets([])
+        props.setHighlightedProcessedDatasets('default')
     }
 
     return(

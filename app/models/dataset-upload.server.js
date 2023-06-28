@@ -42,6 +42,7 @@ export async function getDatasets(userId){
             }
         },
         include: {
+            baseDataset: true,
             datasetMapping: true
         }
     })
@@ -177,6 +178,16 @@ export const googleUploadHandler = async (requestData) => {
   const upload = await uploadStreamToCloudStorage(file, filename);
   return upload
 };
+
+export async function deleteBaseDataset(baseDatasetId){
+    const response = await db.baseDataset.delete({
+        where: {
+            baseDatasetId: parseInt(baseDatasetId)
+        }
+    })
+
+    return response
+}
 
 export async function deleteDataset(datasetId){
     console.log("DATASET ID:", datasetId)

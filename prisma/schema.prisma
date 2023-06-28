@@ -133,7 +133,7 @@ model Dataset {
   status          String           @default("unprocessed")
   userId          String
   baseDatasetId   Int?
-  baseDataset     BaseDataset?     @relation(fields: [baseDatasetId], references: [baseDatasetId], onDelete: Cascade)
+  baseDataset     BaseDataset?     @relation(fields: [baseDatasetId], references: [baseDatasetId])
   user            User             @relation(fields: [userId], references: [id])
   datasetMapping  DatasetMapping?
   featureRequests FeatureRequest[]

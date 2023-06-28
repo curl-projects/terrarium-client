@@ -1,5 +1,6 @@
 import { useState, useEffect, useReducer } from "react";
 import { BsFileArrowUp} from "react-icons/bs";
+import { TbRefreshDot } from "react-icons/tb";
 import { BsX } from "react-icons/bs";
 
 
@@ -47,10 +48,16 @@ export default function DatasetRow(props){
     useEffect(()=>{
         props.row?.size && setDatasetSize(props.row.size)
     }, [props.row])
-
+ 
     useEffect(()=>{
         props.deleteFetcher.state === 'submitting' && (props.row.uniqueFileName === props.activelyDeletingFile) && dispatch({type: "deleting_file"})
     }, [props.deleteFetcher])
+
+    function reprocessClusters(){
+        props.setUpdateExistingDataset(true)
+        props.setColumnValues({'text': props.row.datasetMapping.text,'author': props.row.datasetMapping.author, "created_at": props.row.datasetMapping.createdAt, "id": props.row.datasetMapping.id, "searchFor": props.row.datasetMapping.searchFor})
+        props.handleUnprocessedDatasetClick(props.row.baseDataset.uniqueFileName, props.row.baseDataset.baseDatasetId)
+    }
 
     function handleDelete(){
         props.setActivelyDeletingFile(props.row.uniqueFileName)
@@ -58,9 +65,8 @@ export default function DatasetRow(props){
                                    {method: "post", action: "/utils/delete-dataset"})
     }
 
-
     return(
-        <div className='processedFileOuterWrapper' >
+        <div className='processedFileOuterWrapper' style={{border: props.highlightedProcessedDatasets.includes(props.row.datasetId) && "1px solid green"}}>
             <div className='fileCardBookmark'/>
             <div className='fileInnerWrapper' style={{padding: "10px"}}>
                 <div className='fileTitleRow'>
@@ -69,6 +75,10 @@ export default function DatasetRow(props){
                     </div>
                     <div style={{flex: 1}}/>
                     <div className='fileRemoveWrapper'>
+                        <TbRefreshDot
+                            onClick={reprocessClusters}
+                            style={{fontSize: "20px", color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}
+                        />
                         <BsX 
                             onClick={handleDelete}
                             style={{fontSize: "28px", color: "rgba(75, 85, 99, 0.95)", cursor: "pointer"}}/>
