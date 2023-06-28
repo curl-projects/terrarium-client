@@ -2,7 +2,7 @@ import { useState, useEffect, useReducer } from "react";
 import { BsFileArrowUp} from "react-icons/bs";
 import { TbRefreshDot } from "react-icons/tb";
 import { BsX } from "react-icons/bs";
-
+import Tooltip from '@mui/material/Tooltip';
 
 function reducer(state, action){
     switch(action.type){
@@ -82,13 +82,21 @@ export default function DatasetRow(props){
                     </div>
                     <div style={{flex: 1}}/>
                     <div className='fileRemoveWrapper'>
-                        <TbRefreshDot
-                            onClick={reprocessClusters}
-                            style={{fontSize: "20px", color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}
-                        />
-                        <BsX 
-                            onClick={handleDelete}
-                            style={{fontSize: "28px", color: "rgba(75, 85, 99, 0.95)", cursor: "pointer"}}/>
+                        <Tooltip title="Reprocess Dataset" placement='top' arrow>
+                            <div>
+                                <TbRefreshDot
+                                    onClick={reprocessClusters}
+                                    style={{fontSize: "20px", color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}
+                                />
+                            </div>
+                        </Tooltip>
+                        <Tooltip title="Delete Dataset" placement='top' arrow>
+                            <div>
+                                <BsX 
+                                    onClick={handleDelete}
+                                    style={{fontSize: "28px", color: "rgba(75, 85, 99, 0.95)", cursor: "pointer"}}/>
+                            </div>
+                        </Tooltip>
                     </div>
                 </div>
                 <div>

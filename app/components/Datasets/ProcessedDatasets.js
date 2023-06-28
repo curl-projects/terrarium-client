@@ -117,7 +117,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                         height: !unprocessedFileName && "0px", 
                         padding: !unprocessedFileName && "0px"
                     }}>
-                    <BiCog 
+                    <BiCog
                         style={{fontSize: "26px", 
                                 transition: "color 0.5s ease-in",
                                 color: (readDatasetFetcher.state === 'submitting' || !(fileHeaders.length === 0)) ? 'rgba(119, 153, 141, 0.89)' : "#9ca3af"}} 

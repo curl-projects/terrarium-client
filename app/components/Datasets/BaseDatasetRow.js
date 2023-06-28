@@ -39,7 +39,7 @@ export default function BaseDatasetRow(props){
                     </div>
                     <div style={{flex: 1}}/>
                     <div className='fileRemoveWrapper'>
-                        <Tooltip title="Process Datest" placement='top' arrow>
+                        <Tooltip title="Process Dataset" placement='top' arrow>
                             <div>
                                 <BiCog 
                                     onClick={() => props.handleUnprocessedDatasetClick(props.row.uniqueFileName, props.row.baseDatasetId)}
