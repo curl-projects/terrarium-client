@@ -67,14 +67,14 @@ export default function DatasetRow(props){
     }
 
     return(
-        <div 
-            className='processedFileOuterWrapper' 
-            style={{
-                border: props.highlightedProcessedDatasets.includes(props.row.datasetId) && "2px solid #77998DCC",
-                borderLeft: props.highlightedProcessedDatasets.includes(props.row.datasetId) && "unset",
-                backgroundColor: props.highlightedProcessedDatasets.includes(props.row.datasetId) && "#4b55630d"
-            }}>
-            <div className='fileCardBookmark'/>
+        <div className='processedFileOuterWrapper' style={{
+            opacity: props.highlightedProcessedDatasets !== 'default' && !props.highlightedProcessedDatasets.includes(props.row.datasetId) && "0.7"
+        }}>
+            <div className='fileCardBookmark'
+                style={{
+                    width: props.highlightedProcessedDatasets.includes(props.row.datasetId) && "12px",
+                }}
+            />
             <div className='fileInnerWrapper' style={{padding: "10px"}}>
                 <div className='fileTitleRow'>
                     <div className='fileTitleWrapper'>

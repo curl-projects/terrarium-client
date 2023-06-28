@@ -62,7 +62,7 @@ export default function UnprocessedDatasets(props){
             if (map[val] === 1) {
                 return val;
             } else {
-                return val + "(" + count[index] + ")";
+                return val + " (" + count[index] + ")";
             }
         });
     

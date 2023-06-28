@@ -2,6 +2,8 @@ import { rgba } from "@react-spring/shared";
 import { BsFileArrowUp} from "react-icons/bs";
 import { BsX } from "react-icons/bs";
 import { useFetcher } from "@remix-run/react"
+import { BiCog } from "react-icons/bi"
+import Tooltip from '@mui/material/Tooltip';
 
 export default function BaseDatasetRow(props){
     const deleteFetcher = useFetcher()
@@ -24,7 +26,6 @@ export default function BaseDatasetRow(props){
     return(
         <div 
              className='fileOuterWrapper' 
-             onClick={() => props.handleUnprocessedDatasetClick(props.row.uniqueFileName, props.row.baseDatasetId)}
              onMouseEnter={handleEnter}
              onMouseLeave={handleLeave}
              >
@@ -38,9 +39,21 @@ export default function BaseDatasetRow(props){
                     </div>
                     <div style={{flex: 1}}/>
                     <div className='fileRemoveWrapper'>
-                        <BsX 
-                            onClick={handleDelete}
-                            style={{fontSize: "28px", color: "#9CA3AF", cursor: "pointer"}}/>
+                        <Tooltip title="Process Datest" placement='top' arrow>
+                            <div>
+                                <BiCog 
+                                    onClick={() => props.handleUnprocessedDatasetClick(props.row.uniqueFileName, props.row.baseDatasetId)}
+                                    style={{fontSize: "20px", color: "#9CA3AF", cursor: "pointer"}}
+                                />
+                            </div>
+                        </Tooltip>
+                        <Tooltip title="Delete Dataset" placement='top' arrow>
+                            <div>
+                            <BsX 
+                                onClick={handleDelete}
+                                style={{fontSize: "28px", color: "#9CA3AF", cursor: "pointer"}}/>
+                            </div>
+                        </Tooltip>
                     </div>
                 </div>
                 {/* <div>

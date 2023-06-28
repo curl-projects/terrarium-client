@@ -981,6 +981,10 @@ div.DraftEditor-root {
   animation: spin 1s ease-in-out infinite;
 }
 
+.animate-spin-temp {
+  animation: spin 1s ease-in-out 1s;
+}
+
 /* POINT FIELD */
 .pointFieldWrapper {
   flex: 2;
@@ -1880,7 +1884,6 @@ div.DraftEditor-root {
   border: 1px solid #e7e7e7;
   background-color: #fafafa;
   box-shadow: 4px 4px 11px -1px #0000001a;
-  cursor: pointer;
 }
 
 .processedFileOuterWrapper{
@@ -1897,6 +1900,7 @@ div.DraftEditor-root {
 .fileCardBookmark{
   width: 10px;
   background-color: rgba(119, 153, 141, 0.8);
+  transition: width 0.2s linear;
 }
 
 .fileTitle{
