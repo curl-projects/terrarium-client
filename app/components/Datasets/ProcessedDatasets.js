@@ -130,7 +130,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                         className={readDatasetFetcher.state === 'submitting' && 'animate-spin'}/>
                     {
                         !(fileHeaders.length === 0)
-                        ? <p className='fileUploadText'>{unprocessedFileName}</p>
+                        ? <p className='fileUploadText'>{unprocessedFileName.split("-").slice(1).join("-")}</p>
                         : <></>
                         // : <p className='fileUploadText'>Process Dataset</p>
                     }
@@ -184,7 +184,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                                             setColumnValues((prevState) => ({...prevState, [field.value]: e.target.value}))
                                         }}
                                     >
-                                        {fileHeaders && fileHeaders.map((column, idx) => 
+                                        {fileHeaders && fileHeaders.filter(Boolean).map((column, idx) => 
                                             <MenuItem className='fileSelectMenuItem' key={idx} value={column}>{column}</MenuItem>
                                         )}
                                     </Select>

@@ -25,8 +25,7 @@ export default function UnprocessedDatasets(props){
             readString(fileData, {
                 preview: 1,
                 complete: function (results) {
-
-                    setFileHeaders(results.data[0])
+                    setFileHeaders(results.data[0].filter(Boolean))
 
                     for(let header of results.data[0]){
                         if((header.charAt(0) === "[" && header.charAt(-1) === "]") 
@@ -74,7 +73,6 @@ export default function UnprocessedDatasets(props){
         const nameArray = props.baseDatasets.map(i => i.uniqueFileName.split("-").slice(1).join("-"))
         const outputArray = alterDuplicates(nameArray)
 
-        console.debug("NEW ARRAY:", outputArray)
         setNameArray(outputArray)
 
     }, [props.baseDatasets])
