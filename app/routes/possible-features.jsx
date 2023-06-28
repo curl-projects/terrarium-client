@@ -16,6 +16,7 @@ export default function PossibleFeatures(){
                 <li>JSON conversion support</li>
                 <li>Better type validation for csv upload</li>
                 <li>Remove all empty headers for datasource upload</li>
+                <li>Remove menu when page is sufficiently small (or change from absolute to normal page flow)</li>
             </ol>
         </div>
         </>

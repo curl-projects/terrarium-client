@@ -53,22 +53,34 @@ export default function UnprocessedDatasets(props){
 
     return(
         <>
+        <div className="uploadedFilesWrapper">
+            {props.baseDatasets.map((row, idx) => (
+                <BaseDatasetRow 
+                    idx={idx} row={row} key={idx}
+                    handleUnprocessedDatasetClick={props.handleUnprocessedDatasetClick}
+                    unprocessedFileName={props.unprocessedFileName}
+                    setHighlightedProcessedDatasets={props.setHighlightedProcessedDatasets}
+                />
+            ))
+            }
+
         <Form method="post" encType="multipart/form-data" className='fileUploadRectangle'>
             <input type="hidden" name='actionType' value="unprocessedDataset"/>
-            <BsUpload style={{fontSize: "30px", color: "#4b5563"}}/>
+            {/* <BsUpload style={{fontSize: "20px", color: "#4b5563"}}/> */}
             {file 
-            ? <p className='fileUploadText'>{file.name}</p>
+            ? <p className='fileUploadInitialText'>{file.name}</p>
             :
             <>
-                <label htmlFor='datasetFiles' className='fileUploadText' style={{cursor: 'pointer'}}>Choose file to upload</label>
+                <label htmlFor='datasetFiles' className='fileUploadInitialText' style={{cursor: 'pointer'}}>Upload new file</label>
             </>
             }
             <input id='datasetFiles' style={{display: "none"}} type="file" name="upload" onChange={handleFileChange} key={fileRef}/>
-            {!file && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>(csv files generated from discord)</p>}
+            {!(fileHeaders.length === 0) && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Found headers: {fileHeaders.join(", ")}</p>}
+            {!file && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Accepts csv files with headers</p>}
             {file && <p className='fileUploadSpecifier' onClick={resetFile} style={{color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}>Remove File</p>}
             
             {fileError && <p className='fileUploadSpecifier' style={{color: "rgba(146, 0, 0, 0.7)"}}>{fileError}</p>}
-            {!(fileHeaders.length === 0) && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Found headers: {fileHeaders.join(", ")}</p>}
+
             {!fileError && fileWarning && <p className='fileUploadSpecifier' style={{color: "#7E998E", marginTop: "2px", marginBottom: "2px"}}>{fileWarning}</p>}
             {(file && !fileError) &&
                 <>
@@ -78,17 +90,7 @@ export default function UnprocessedDatasets(props){
                 </div>
                 </>
             }
-        </Form>
-
-        <div className="uploadedFilesWrapper">
-            <p className='datasetsLabelText'>Unprocessed Datasets</p>
-            {props.baseDatasets.map((row, idx) => (
-                <BaseDatasetRow 
-                    idx={idx} row={row} key={idx}
-                    handleUnprocessedDatasetClick={props.handleUnprocessedDatasetClick}
-                />
-            ))
-            }
+            </Form>
         </div>
         </>
 

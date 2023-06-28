@@ -7,16 +7,17 @@ import { BsPerson } from "react-icons/bs"
 import { BiCalendar } from "react-icons/bi"; 
 import { BsHash } from "react-icons/bs";
 import { BsUpload } from "react-icons/bs";
+import { BiCog } from "react-icons/bi"
 import DatasetRow from "~/components/Datasets/DatasetRow";
 
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
 export default function ProcessedDatasets({  processedDatasets, activelyDeletingFile, setActivelyDeletingFile,
-                                            readDatasetFetcher, unprocessedFileName, setUnprocessedFileName, baseDatasetId, setBaseDatasetId}){
+                                            readDatasetFetcher, unprocessedFileName, setUnprocessedFileName, baseDatasetId, setBaseDatasetId,
+                                            fileHeaders, setFileHeaders, highlightedProcessedDatasets}){
     const { readString } = usePapaParse();
-
-    const [fileHeaders, setFileHeaders] = useState([])
+    const [filteredProcessedDatasets, setFilteredProcessedDatasets] = useState([])
     const [fileWarning, setFileWarning] = useState("")
     const [columnValues, setColumnValues] = useState({'text': "",'author': "", "created_at": "", "id": "", "searchFor": ""})
     const deleteFetcher = useFetcher()
@@ -29,7 +30,20 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
         setColumnValues({'text': "",'author': "", "created_at": "", "id": "", "searchFor": ""})
         setBaseDatasetId("")
     }
+
+    useEffect(()=>{
+        if(highlightedProcessedDatasets?.length === 0){
+            setFilteredProcessedDatasets(processedDatasets)
+        }
+        else{
+            setFilteredProcessedDatasets(processedDatasets.filter(i => highlightedProcessedDatasets.includes(i.datasetId)))
+        }
+    }, [processedDatasets, highlightedProcessedDatasets, fileHeaders])
     
+
+    useEffect(() => {
+        console.log("FILTERED PROCES")
+    })
     // WEB SOCKET CONNECTION
     useEffect(()=>{
         setSocketUrl(window.ENV.WEBSOCKETS_URL)
@@ -76,26 +90,55 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
         }
     }, [readDatasetFetcher.data])
 
+    useEffect(()=>{
+        console.log("FETCHER STATE:", readDatasetFetcher.state)
+    }, [readDatasetFetcher.state])
+
     return(
-        <>
-        <Form method="post" encType="multipart/form-data" className='fileUploadRectangle'>
-                    <BsUpload style={{fontSize: "30px", color: "#4b5563"}}/>
-                    {unprocessedFileName
-                    ? <p className='fileUploadText'>{unprocessedFileName}</p>
-                    : <p className='fileUploadText'>Process Dataset</p>
+        <>  
+            <div className='processedDataMetadataRow'>
+                <p className='processedTitleText'><span className='processedTitleHighlightText'>{filteredProcessedDatasets ? filteredProcessedDatasets.length : 0}</span>{filteredProcessedDatasets?.length === 1 ? "Processed Dataset" : "Processed Datasets"}</p>
+            </div>
+
+            <div className="uploadedFilesWrapper">
+                <Form method="post" encType="multipart/form-data" className='fileProcessRectangle' 
+                    style={{
+                        height: !unprocessedFileName && "0px", 
+                        padding: !unprocessedFileName && "0px"
+                    }}>
+                    <BiCog 
+                        style={{fontSize: "26px", 
+                                transition: "color 0.5s ease-in",
+                                color: (readDatasetFetcher.state === 'submitting' || !(fileHeaders.length === 0)) ? 'rgba(119, 153, 141, 0.89)' : "#9ca3af"}} 
+
+                        className={readDatasetFetcher.state === 'submitting' && 'animate-spin'}/>
+                    {
+                        !(fileHeaders.length === 0)
+                        ? <p className='fileUploadText'>{unprocessedFileName}</p>
+                        : <></>
+                        // : <p className='fileUploadText'>Process Dataset</p>
                     }
                     <input type='hidden' name='actionType' value="processedDataset" />
                     <input type='hidden' name='headerMappings' value={JSON.stringify(columnValues)} />
                     <input type='hidden' name='baseDatasetId' value={baseDatasetId} />
                     <input type='hidden' name='uniqueFileName' value={unprocessedFileName} />
-                    {!unprocessedFileName && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Takes around 10 minutes to process</p>}
-                    {unprocessedFileName && <p className='fileUploadSpecifier' onClick={resetFile} style={{color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}>Remove File</p>}
-                    
+                    {/* {!unprocessedFileName && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Takes around 10 minutes to process</p>} */}
+                    {!(fileHeaders.length === 0) && <p className='fileUploadSpecifier' onClick={resetFile} style={{color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}>Remove File</p>}
+                
+                {/* {readDatasetFetcher.state === 'submitting' && 
+                <>
+                 <div className='fileOptionSeparator'/>
+                 <div className='fileOptionWrapper'>
+                    <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Loading...</p>
+                 </div>
+                </>
+
+                } */}
                 {unprocessedFileName && !(fileHeaders.length === 0) && 
                     <>
                     <div className='fileOptionSeparator'/>
                     <div className='fileOptionWrapper'>
-                    <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Found headers: {fileHeaders.join(", ")}</p>
+                    {/* <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Found headers: {fileHeaders.join(", ")}</p> */}
                     {fileWarning && <p className='fileUploadSpecifier' style={{color: "#7E998E"}}>{fileWarning}</p>}
                         {[{value: 'text', name: "Text", icon: <BiMessageSquareDetail />}, 
                             {value: 'author', name: "Author", icon: <BsPerson />}, 
@@ -144,16 +187,15 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                         <>
                         <div style={{height: "20px"}}/>
                         <div className='fileSubmitWrapper'>
-                            <button className='fileSubmit'>Upload</button>
+                            <button className='fileSubmit' onClick={resetFile}>Upload</button>
                         </div>
                         </>
                     }
                     </>
                     }
             </Form>
-            <div className="uploadedFilesWrapper">
-                <p className='datasetsLabelText'>Processed Datasets</p>
-                {processedDatasets && processedDatasets.map((row, idx) => (
+            <div className='processedDatasetsTableWrapper'>
+                {filteredProcessedDatasets && filteredProcessedDatasets.map((row, idx) => (
                     <DatasetRow 
                         idx={idx} row={row} key={idx}
                         lastMessage={lastMessage}
@@ -164,6 +206,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                 ))
 
                 }
+            </div>
             </div>
         </>
     )

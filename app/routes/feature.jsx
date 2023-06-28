@@ -307,7 +307,7 @@ export default function Feature(){
     }, [loaderData.feature, invisibleFilters])
 
     return(
-        <>
+        <div className='pageWrapper'>
             <Header headerCollapsed={headerCollapsed}/>
             <div className="featureScaffold">
                 <div className="featureTitleWrapper">
@@ -455,6 +455,6 @@ export default function Feature(){
                 </div>
             </div>
             </div>
-        </>
+        </div>
     )
 }

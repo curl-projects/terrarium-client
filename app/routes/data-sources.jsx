@@ -86,45 +86,12 @@ export default function DataSources(){
     const [baseDatasetId, setBaseDatasetId] = useState("")
     const [activelyDeletingFile, setActivelyDeletingFile] = useState("")
     const [unprocessedFileName, setUnprocessedFileName] = useState("")
+    const [fileHeaders, setFileHeaders] = useState([])
+    const [highlightedProcessedDatasets, setHighlightedProcessedDatasets] = useState([])
 
     useEffect(()=>{
         console.debug('LOADER DATA:', loaderData)
     }, [loaderData])
-
-    const handleFileChange = (e) => {
-        setFileWarning("")
-        setFileError("")
-        setFileFormIsOpen(false)
-        const file = e?.target?.files[0]
-
-        setFile(file)
-        
-        if(file && file.type === 'text/csv'){
-            readString(file, {
-                preview: 1,
-                complete: function (results) {
-
-                    console.log(results.data[0])
-                    setFileHeaders(results.data[0])
-                    setFileFormIsOpen(true)
-
-                    for(let header of results.data[0]){
-                        if((header.charAt(0) === "[" && header.charAt(-1) === "]") 
-                          || (/^\d+$/.test(header))
-                        ){ setFileWarning("It seems like these values might not be headers. Make sure your file has appropriate headers for each column.") } 
-                    }
-                },
-                error: function(error){
-                    console.log("FILE CHANGE ERROR:", error)
-                }
-            })
-            console.log("FILE!!!")
-        }
-        else{
-            setFileError("Input datasets can only be csv files for now")
-        }
-    }
-
 
     // useEffect(()=>{
     //     if(actionData?.jsonData?.fileName){
@@ -134,34 +101,42 @@ export default function DataSources(){
 
     // READING UNPROCESSED DATASETS
     function handleUnprocessedDatasetClick(fileName, baseDatasetId){
+        setFileHeaders([])
         readDatasetFetcher.submit({fileName: fileName}, {'method': 'get', 'action': "utils/read-dataset"})
         setUnprocessedFileName(fileName)
         setBaseDatasetId(baseDatasetId)
     }
 
     return(
-        <>
+        <div className='pageWrapper'>
         <Header />
         <div className='dataTableOuterWrapper'>
         <PageTitle title="Data Sources" padding={true} description="Upload datasets for analysis and visualisation."/>
         <div className='dataSourcesInnerSplitter'>
-            <div className='unprocessedDataWrapper'>
-                <UnprocessedDatasets 
-                    baseDatasets={loaderData.baseDatasets}
-                    handleUnprocessedDatasetClick={handleUnprocessedDatasetClick}
+            <div className='dataSourcesInnerContainer'>
+                <div className='unprocessedDataWrapper'>
+                    <UnprocessedDatasets 
+                        baseDatasets={loaderData.baseDatasets}
+                        handleUnprocessedDatasetClick={handleUnprocessedDatasetClick}
+                        unprocessedFileName={unprocessedFileName}
+                        setHighlightedProcessedDatasets={setHighlightedProcessedDatasets}
+                        />
+                </div>
+                <div className='processedDataWrapper'>
+                    <ProcessedDatasets 
+                        processedDatasets={loaderData.datasets}
+                        activelyDeletingFile={activelyDeletingFile}
+                        setActivelyDeletingFile={setActivelyDeletingFile}
+                        readDatasetFetcher={readDatasetFetcher}
+                        unprocessedFileName={unprocessedFileName}
+                        setUnprocessedFileName={setUnprocessedFileName}
+                        baseDatasetId={baseDatasetId}
+                        setBaseDatasetId={setBaseDatasetId}
+                        fileHeaders={fileHeaders}
+                        setFileHeaders={setFileHeaders}
+                        highlightedProcessedDatasets={highlightedProcessedDatasets}
                     />
-            </div>
-            <div className='processedDataWrapper'>
-                <ProcessedDatasets 
-                    processedDatasets={loaderData.datasets}
-                    activelyDeletingFile={activelyDeletingFile}
-                    setActivelyDeletingFile={setActivelyDeletingFile}
-                    readDatasetFetcher={readDatasetFetcher}
-                    unprocessedFileName={unprocessedFileName}
-                    setUnprocessedFileName={setUnprocessedFileName}
-                    baseDatasetId={baseDatasetId}
-                    setBaseDatasetId={setBaseDatasetId}
-                />
+                </div>
             </div>
         </div>
                 
@@ -173,7 +148,7 @@ export default function DataSources(){
             anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
 
         />
-        </>
+        </div>
     )
 }
 

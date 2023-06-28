@@ -26,6 +26,9 @@ export async function getBaseDatasets(userId){
             user: {
                 id: userId
             }
+        },
+        include: {
+            datasets: true
         }
     })
     return baseDatasets
@@ -37,6 +40,9 @@ export async function getDatasets(userId){
             user: {
                 id: userId
             }
+        },
+        include: {
+            datasetMapping: true
         }
     })
     return datasets
@@ -138,7 +144,7 @@ const uploadStreamToCloudStorage = async (fileData, fileName) => {
 
     const uniqueId = Math.random().toString(36).slice(2, 9);
 
-    const uniqueFileName = `unprocessed-${uniqueId}-${fileName}`
+    const uniqueFileName = `${uniqueId}-${fileName}`
 
     const file = cloudStorage.bucket(bucketName).file(uniqueFileName);
 

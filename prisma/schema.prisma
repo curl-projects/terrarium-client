@@ -133,7 +133,7 @@ model Dataset {
   status          String           @default("unprocessed")
   userId          String
   baseDatasetId   Int?
-  baseDataset     BaseDataset?     @relation(fields: [baseDatasetId], references: [baseDatasetId])
+  baseDataset     BaseDataset?     @relation(fields: [baseDatasetId], references: [baseDatasetId], onDelete: Cascade)
   user            User             @relation(fields: [userId], references: [id])
   datasetMapping  DatasetMapping?
   featureRequests FeatureRequest[]
@@ -166,6 +166,7 @@ model BaseDataset {
   uniqueFileName String
   userId         String
   origin         String?
+  originUser     String?
   user           User      @relation(fields: [userId], references: [id])
-  dataset        Dataset[]
+  datasets        Dataset[]
 }

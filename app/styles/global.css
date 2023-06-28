@@ -175,10 +175,11 @@ body {
   width: 100vw;
   height: 60px;
   /* background-color: rgb(237, 237, 237); */
-  position: absolute;
-  padding-top: 10px;
+  /* position: absolute; */
+  /* padding-top: 10px; */
   padding-left: 10px;
   padding-right: 10px;
+  padding-top: 10px;
   top: 0;
   left: 0;
   display: flex;
@@ -186,6 +187,7 @@ body {
   align-items: center;
   padding-right: 8px;
   z-index: 100;
+  margin-bottom: 20px;
 }
 
 .featureHeader{
@@ -976,7 +978,7 @@ div.DraftEditor-root {
 }
 
 .animate-spin {
-  animation: spin 1s linear infinite;
+  animation: spin 1s ease-in-out infinite;
 }
 
 /* POINT FIELD */
@@ -1210,14 +1212,24 @@ div.DraftEditor-root {
   color: #4B5563;
 }
 
+.pageWrapper{
+  width: 100vw;
+  height: 100vh;
+  padding-bottom: 5%;
+  display: flex;
+  flex-direction: column;
+}
 /* FEATURE SCAFFOLD */
 .featureScaffold{
   display: flex;
+  padding: 5%;
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  padding: 5%;
-  height: 100vh;
+  /* padding: 5%; */
+  height: 100%;
+  padding-top: 0px;
+  box-sizing: border-box;
 }
 
 .featureTitleWrapper{
@@ -1393,7 +1405,7 @@ div.DraftEditor-root {
   width: 100%;
   text-align: left;
   line-height: 1.1;
-  margin-top: 50px;
+  /* margin-top: 50px; */
 }
 
 .pageTitleText{
@@ -1428,7 +1440,7 @@ div.DraftEditor-root {
   justify-content: center;
   padding: 5%;
   flex-direction: column;
-  padding-top: 60px;
+  padding-top: 0px;
 }
 
 .kanbanRoadmapColumns{
@@ -1573,18 +1585,16 @@ div.DraftEditor-root {
 }
 
 .dataTableOuterWrapper{
-  width: 100vw;
-  height: 100vh;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
-  padding-top: 60px;
+  /* padding-top: 0px; */
   box-sizing: border-box;
 }
 
 .dataTableInnerWrapper{
-  border: 2px solid green;
   height: 80%;
   width: 80%;
   display: flex;
@@ -1619,30 +1629,42 @@ div.DraftEditor-root {
 
 .dataSourcesInnerSplitter{
   flex: 1;
-  border: 2px solid green;
   width: 100%;
   padding-left: 5%;
   padding-right: 5%;
+  padding-top: 30px;
+  padding-bottom: 0px;
   display: flex;
+  overflow: hidden;
+}
+
+.dataSourcesInnerContainer{
+  background-color: #f3f4f6;
+  display: flex;
+  flex: 1;
 }
 
 .unprocessedDataWrapper{
-  flex: 1;
-  border: 2px solid brown;
+  flex: 0.4;
   padding: 30px;
+  overflow: scroll;
 }
 
 .processedDataWrapper{
-  flex: 1;
-  border: 2px solid blue;
+  flex: 0.6;
   padding: 30px;
+  margin: 20px;
+  padding-top: 0px;
+  background: white;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  overflow: scroll;
 }
 
 
 .fileUploadRectangle{
-  border: 2px dashed rgba(75, 85, 99, 0.4);
-  padding-top: 60px;
-  padding-bottom: 60px;
+  border: 2px dashed #e7e7e7;
+  padding-top: 10px;
+  padding-bottom: 10px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -1650,14 +1672,59 @@ div.DraftEditor-root {
   flex-direction: column;
   padding-left: 30px;
   padding-right: 30px;
+  margin-top: 0px;
+}
+
+.fileProcessRectangle{
+  border: 1px solid #e7e7e7;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-top: 0px;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: all 0.3s linear;
 }
 
 .fileUploadText{
-  font-size: 20px;
+  font-size: 16px;
   letter-spacing: -0.03em;
-  color: rgb(75, 85, 99);
+  color: rgba(119, 153, 141, 0.89);
   font-weight: 600;
-  margin-top: 10px;
+}
+
+.fileUploadInitialText{
+    font-size: 16px;
+    letter-spacing: -0.03em;
+    color: rgba(75, 85, 99, 0.7);
+    font-weight: 600;
+}
+
+.processedDataMetadataRow{
+  position: sticky;
+  margin-top: 20px;
+  margin-bottom: 4px;
+}
+
+.processedTitleText{
+  color: #9ca3af;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  font-size: 10.5px;
+}
+
+.processedTitleHighlightText{
+ font-weight: 700; 
+ color: #1f2937;
+ margin-right: 4px;
 }
 
 .fileUploadSpecifier{
@@ -1665,6 +1732,7 @@ div.DraftEditor-root {
   letter-spacing: -0.03em;
   color: rgba(75, 85, 99, 0.6);
   text-align: center;
+  font-size: 12px;
 }
 
 .filterOptionWrapper{
@@ -1718,7 +1786,7 @@ div.DraftEditor-root {
 .fileOptionLabelText{
   color: rgba(75, 85, 99, 0.6);
   font-weight: 400;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 
@@ -1800,7 +1868,6 @@ div.DraftEditor-root {
 }
 
 .uploadedFilesWrapper{
-  margin-top: 30px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -1808,18 +1875,43 @@ div.DraftEditor-root {
 }
 
 .fileOuterWrapper{
-  background-color: #ededed;
   display: flex;
   flex-direction: row;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  border: 1px solid #e7e7e7;
+  background-color: #fafafa;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  cursor: pointer;
+}
+
+.processedFileOuterWrapper{
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #e7e7e7;
+  background-color: #fafafa;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+}
+
+.fileOuterWrapper:hover{
+}
+
+.fileCardBookmark{
+  width: 10px;
+  background-color: rgba(119, 153, 141, 0.8);
 }
 
 .fileTitle{
-  font-size: 16px;
-  letter-spacing: -0.03em;
+  font-size: 15px;
   color: rgb(75, 85, 99);
-  font-weight: 600;
+  font-weight: 500;
+}
+
+.fileCardStatus{
+  color: rgba(119, 153, 141, 0.8);
+  font-size: 12px;
+  position: relative;
+  top: -5px;
+  left: 1px;
+  font-weight: 500px;
 }
 
 .fileMetadataWrapper{
@@ -1831,6 +1923,7 @@ div.DraftEditor-root {
   font-weight: 400;
   letter-spacing: -0.03em;
   color: rgba(75, 85, 99, 0.7);
+  font-size: 13px;
 }
 
 .fileMetadataDivider{
@@ -1860,6 +1953,11 @@ div.DraftEditor-root {
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding: 15px;
+}
+
+.fileInnerWrapper:hover{
+  background-color: rgba(75, 85, 99, 0.05);
 }
 
 .fileTitleRow{
@@ -1882,10 +1980,17 @@ div.DraftEditor-root {
 
 }
 
+.processedDatasetsTableWrapper{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
 .datasetsLabelText{
-  font-size: 18px;
+  font-size: 24px;
   letter-spacing: -0.04em;
-  color: rgb(75, 85, 99);
+  color: rgba(75, 85, 99, 0.9);
   font-weight: 600;
 }
 
@@ -2160,12 +2265,11 @@ div.DraftEditor-root {
 /* INTEGRATIONS */
 .integrationsFlexWrapper{
   padding: 10%;
-  margin-top: 60px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 100vh;
-  width: 100vw;
+  flex: 1;
+  box-sizing: border-box;
   flex-direction: column;
 }
 
@@ -2215,7 +2319,6 @@ div.DraftEditor-root {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border: 2px solid green;
   width: 50%;
   margin-top: 20px;
 }

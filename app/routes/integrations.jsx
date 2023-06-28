@@ -44,7 +44,7 @@ export default function Integrations(){
     }, [loaderData])
 
     return(
-        <div>
+        <div className='pageWrapper'>
             <Header />
             <div className='integrationsFlexWrapper'>
                 <Form className='integrationsAuthUserWrapper' method='post'>
