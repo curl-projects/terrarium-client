@@ -55,6 +55,7 @@ export default function DatasetRow(props){
 
     function reprocessClusters(){
         props.setUpdateExistingDataset(true)
+        props.setExistingDataset(props.row)
         props.setColumnValues({'text': props.row.datasetMapping.text,'author': props.row.datasetMapping.author, "created_at": props.row.datasetMapping.createdAt, "id": props.row.datasetMapping.id, "searchFor": props.row.datasetMapping.searchFor})
         props.handleUnprocessedDatasetClick(props.row.baseDataset.uniqueFileName, props.row.baseDataset.baseDatasetId)
     }
@@ -66,7 +67,13 @@ export default function DatasetRow(props){
     }
 
     return(
-        <div className='processedFileOuterWrapper' style={{border: props.highlightedProcessedDatasets.includes(props.row.datasetId) && "1px solid green"}}>
+        <div 
+            className='processedFileOuterWrapper' 
+            style={{
+                border: props.highlightedProcessedDatasets.includes(props.row.datasetId) && "2px solid #77998DCC",
+                borderLeft: props.highlightedProcessedDatasets.includes(props.row.datasetId) && "unset",
+                backgroundColor: props.highlightedProcessedDatasets.includes(props.row.datasetId) && "#4b55630d"
+            }}>
             <div className='fileCardBookmark'/>
             <div className='fileInnerWrapper' style={{padding: "10px"}}>
                 <div className='fileTitleRow'>

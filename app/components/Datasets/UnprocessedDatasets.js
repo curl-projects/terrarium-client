@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BsUpload } from "react-icons/bs";
 import { Form, useFetcher } from "@remix-run/react";
 import { usePapaParse } from 'react-papaparse';
@@ -10,7 +10,7 @@ export default function UnprocessedDatasets(props){
     const [fileHeaders, setFileHeaders] = useState([])
     const [fileWarning, setFileWarning] = useState("")
     const [fileError, setFileError] = useState("")
-    const deleteFetcher = useFetcher()
+    const [nameArray, setNameArray] = useState([])
 
     const { readString } = usePapaParse();
 
@@ -52,16 +52,43 @@ export default function UnprocessedDatasets(props){
         setFileHeaders([])
     }
 
+    function alterDuplicates(nameArray){
+        var map = {};
+        var count = nameArray.map(function(val) {
+            return map[val] = (typeof map[val] === "undefined") ? 1 : map[val] + 1;
+        });
+
+        var newArray = nameArray.map(function(val, index) {
+            if (map[val] === 1) {
+                return val;
+            } else {
+                return val + "(" + count[index] + ")";
+            }
+        });
+    
+    return newArray
+    }
+
+    useEffect(()=>{
+        console.log("BASE DATASETS:", props.baseDatasets)
+        const nameArray = props.baseDatasets.map(i => i.uniqueFileName.split("-").slice(1).join("-"))
+        const outputArray = alterDuplicates(nameArray)
+
+        console.debug("NEW ARRAY:", outputArray)
+        setNameArray(outputArray)
+
+    }, [props.baseDatasets])
+
     return(
         <>
         <div className="uploadedFilesWrapper">
             {props.baseDatasets.map((row, idx) => (
                 <BaseDatasetRow 
                     idx={idx} row={row} key={idx}
+                    name={nameArray.length > idx ? nameArray[idx] : ""}
                     handleUnprocessedDatasetClick={props.handleUnprocessedDatasetClick}
                     unprocessedFileName={props.unprocessedFileName}
                     setHighlightedProcessedDatasets={props.setHighlightedProcessedDatasets}
-                    deleteFetcher={deleteFetcher}
                 />
             ))
             }

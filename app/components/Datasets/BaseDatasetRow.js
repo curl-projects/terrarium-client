@@ -1,13 +1,14 @@
 import { rgba } from "@react-spring/shared";
 import { BsFileArrowUp} from "react-icons/bs";
 import { BsX } from "react-icons/bs";
-
+import { useFetcher } from "@remix-run/react"
 
 export default function BaseDatasetRow(props){
+    const deleteFetcher = useFetcher()
 
     function handleDelete(){
-        props.deleteFetcher.submit({baseDatasetId: props.row.baseDatasetId, 
-                                    datasets: props.row.datasets, uniqueFileName: props.row.uniqueFileName}, 
+        deleteFetcher.submit({baseDatasetId: props.row.baseDatasetId, 
+                                    datasets: JSON.stringify(props.row.datasets), uniqueFileName: props.row.uniqueFileName}, 
             {method: "post", action: "/utils/delete-base-dataset"})
     }
 
@@ -33,7 +34,7 @@ export default function BaseDatasetRow(props){
             <div className='fileInnerWrapper'>
                 <div className='fileTitleRow'>
                     <div className='fileTitleWrapper'>
-                        <p className='fileTitle'>{props.row.uniqueFileName.split("-").slice(2).join("-") || `Untitled (${props.idx})`}</p>
+                        <p className='fileTitle'>{props.name || props.row.uniqueFileName.split("-").slice(1).join("-")}</p>
                     </div>
                     <div style={{flex: 1}}/>
                     <div className='fileRemoveWrapper'>
@@ -47,7 +48,10 @@ export default function BaseDatasetRow(props){
                 </div> */}
                 <div className='fileMetadataRow'>
                     <div className='fileMetadataWrapper'>
-                        <p className='fileMetadata'>Uploaded by {props.row.originUser ? `@${props.row.originUser}` : 'an unknown user'} from {props.row.origin ? {'discord': "Discord", "fileUpload": "a csv file"}[props.row.origin] : "an unknown platform"}</p>
+                        {(deleteFetcher.state === 'submitting' || deleteFetcher.state === 'loading')
+                        ? <p className='fileMetadata'>Dataset Deleting...</p>
+                        : <p className='fileMetadata'>Uploaded by {props.row.originUser ? `@${props.row.originUser}` : 'an unknown user'} from {props.row.origin ? {'discord': "Discord", "fileUpload": "a csv file"}[props.row.origin] : "an unknown platform"}</p>
+                        }
                     </div>
                 </div>
             </div>

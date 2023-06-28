@@ -16,7 +16,6 @@ import { BiCalendar } from "react-icons/bi";
 import { BsHash } from "react-icons/bs";
 import UnprocessedDatasets from '~/components/Datasets/UnprocessedDatasets';
 import ProcessedDatasets from '~/components/Datasets/ProcessedDatasets';
-import { unique } from 'underscore';
 
 
 
@@ -38,9 +37,14 @@ export async function action({request}){
     const actionType = formData.get('actionType')
     const updateExistingDataset = formData.get("updateExistingDataset")
 
-    if(updateExistingDataset){
-        console.log('updating existing dataset')
-        return {}
+    if(updateExistingDataset === 'true'){
+        const headerMapping = formData.get('headerMappings');
+        const datasetId = formData.get("datasetId")
+        const datasetUniqueFileName = formData.get("datasetUniqueFileName")
+        const baseDatasetUniqueFileName = formData.get("baseDatasetUniqueFileName")
+        const response = await initiateDatasetProcessing(datasetUniqueFileName, baseDatasetUniqueFileName, datasetId, user.id, headerMapping)
+
+        return { response: response.status, fileName: datasetUniqueFileName }
     }
 
     else if(actionType === 'unprocessedDataset'){
@@ -56,9 +60,9 @@ export async function action({request}){
         const baseDatasetId = formData.get("baseDatasetId")
 
         const datasetObj = await createDatasetObject(uniqueFileName, user.id, JSON.parse(headerMapping), baseDatasetId)
-
+        console.log("DATATEST OBJ:", datasetObj)
         const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, uniqueFileName, datasetObj.datasetId, user.id, headerMapping)
-        return { datasetObj, response: response.status }
+        return { datasetObj, response: response.status, fileName: datasetObj.uniqueFileName }
     }
 
     else{

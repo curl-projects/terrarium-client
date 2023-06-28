@@ -23,6 +23,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
     const deleteFetcher = useFetcher()
     const [socketUrl, setSocketUrl] = useState(null);
     const [updateExistingDataset, setUpdateExistingDataset] = useState(false)
+    const [existingDataset, setExistingDataset] = useState({})
 
     function resetFile(){
         setUnprocessedFileName("")
@@ -34,9 +35,9 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
 
     useEffect(()=>{
         console.log("ACTION DATA:", actionData)
-        // if(actionData?.jsonData?.fileName){
-        //     resetFile()
-        // }
+        if(actionData?.fileName){
+            resetFile()
+        }
     }, [actionData])
 
 
@@ -133,6 +134,13 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                     <input type='hidden' name='baseDatasetId' value={baseDatasetId} />
                     <input type='hidden' name='uniqueFileName' value={unprocessedFileName} />
                     <input type='hidden' name='updateExistingDataset' value={updateExistingDataset} />
+                    {updateExistingDataset &&
+                        <>
+                        <input type='hidden' name='datasetUniqueFileName' value={existingDataset.uniqueFileName} />
+                        <input type='hidden' name='datasetId' value={existingDataset.datasetId} />
+                        <input type='hidden' name='baseDatasetUniqueFileName' value={existingDataset.baseDataset.uniqueFileName} />
+                        </>
+                    }
                     {/* {!unprocessedFileName && <p className='fileUploadSpecifier' style={{color: "rgba(75, 85, 99, 0.4)"}}>Takes around 10 minutes to process</p>} */}
                     {updateExistingDataset && !(fileHeaders.length === 0) && <p className='fileUploadSpecifier'>Updating Existing Dataset</p>}
                     {!(fileHeaders.length === 0) && <p className='fileUploadSpecifier' onClick={resetFile} style={{color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}>Remove File</p>}
@@ -199,7 +207,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                         <>
                         <div style={{height: "20px"}}/>
                         <div className='fileSubmitWrapper'>
-                            <button className='fileSubmit'>Upload</button>
+                            <button className='fileSubmit' type="submit">Upload</button>
                         </div>
                         </>
                     }
@@ -218,6 +226,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                         highlightedProcessedDatasets={highlightedProcessedDatasets}
                         setUpdateExistingDataset={setUpdateExistingDataset}
                         setColumnValues={setColumnValues}
+                        setExistingDataset={setExistingDataset}
                     />
                 ))
 
