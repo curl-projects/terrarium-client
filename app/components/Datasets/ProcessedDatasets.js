@@ -109,6 +109,11 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
         <>  
             <div className='processedDataMetadataRow'>
                 <p className='processedTitleText'><span className='processedTitleHighlightText'>{filteredProcessedDatasets ? filteredProcessedDatasets.length : 0}</span>{filteredProcessedDatasets?.length === 1 ? "Processed Dataset" : "Processed Datasets"}</p>
+
+                <p className='processedTitleText'>
+                    <span className='processedTitleHighlightText'>
+                        {filteredProcessedDatasets.reduce((acc, element) => acc + parseInt(element.size), 0)}
+                    </span>{filteredProcessedDatasets.reduce((acc, element) => acc + parseInt(element.size), 0) === 1 ? "Data Point" : "Data Points"}</p>
             </div>
 
             <div className="uploadedFilesWrapper">

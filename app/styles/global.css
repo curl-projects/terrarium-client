@@ -1715,6 +1715,8 @@ div.DraftEditor-root {
   position: sticky;
   margin-top: 20px;
   margin-bottom: 4px;
+  display: flex;
+  gap: 20px;
 }
 
 .processedTitleText{
