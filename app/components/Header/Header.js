@@ -10,6 +10,8 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
+import Tooltip from '@mui/material/Tooltip';
+
 export default function Header(props){
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl);
@@ -23,7 +25,7 @@ export default function Header(props){
   }
 
   return(
-    <div className='header' style={{gridColumn: "1 / 3", gridRow: "1 / 2"}}>
+    <div className='header' style={{gridColumn: "1 / 4", gridRow: "1 / 2"}}>
       <div className='headerTerrariumWrapper'>
         <Link to ='/roadmap'>
           <h1 className='headerTerrariumText'>
@@ -50,28 +52,13 @@ export default function Header(props){
         <Link to ='/current-bugs' style={{textDecoration: "none"}}>
           <h3 className='navigationText'>Bugs</h3>
         </Link>
-        <div className='headerOptionsWrapper'>
-          <div className='headerOptionsButton' onClick={handleMenuClick}>
-            <HiMenuAlt4 />
-          </div>
-        </div>
-
-        <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-          <Form action="/logout" method="post">
-            <MenuItem>
-              <ListItemIcon>
-                <RiLogoutBoxRLine />
-              </ListItemIcon>
-              <ListItemText>
-                <button>
-                  <p className='headerOptionsText' typ='submit'>Logout
-                  </p>
-                </button></ListItemText>
-            </MenuItem>
-          </Form>
-
-        </Menu>
-        
+        <Tooltip title="Logout" placement='bottom' arrow>
+          <button type='submit'>
+            <p className='navigationText'>
+              <RiLogoutBoxRLine />
+            </p>
+          </button>    
+        </Tooltip>    
       </div>
       }
     </div>

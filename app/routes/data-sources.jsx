@@ -112,9 +112,8 @@ export default function DataSources(){
     }
 
     return(
-        <div className='pageWrapper'>
+        <div className='dataSourcesPageWrapper'>
         <Header />
-        <div className='dataTableOuterWrapper'>
         <PageTitle title="Data Sources" padding={true} description="Upload datasets for analysis and visualisation."/>
         <div className='dataSourcesInnerSplitter'>
             <div className='dataSourcesInnerContainer'>
@@ -144,8 +143,6 @@ export default function DataSources(){
                     />
                 </div>
             </div>
-        </div>
-                
         </div>
         <Snackbar  
             open={actionData?.response === "404"}

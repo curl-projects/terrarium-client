@@ -53,14 +53,14 @@ export default function RoadmapRoute(){
     }, [loaderData])
 
     return(
-        <>
+        <div className='roadmapPageWrapper'>
             <Header />
+            <PageTitle title='Roadmap' description="Create and organise features."/>
             <div className='kanbanRoadmapWrapper'>
-                    <PageTitle title='Roadmap' description="Create and organise features."/>
-                    <div className='kanbanRoadmapColumns'>
-                        <Roadmap features={loaderData.features} />
-                    </div>
+                  <div className='kanbanRoadmapColumns'>
+                      <Roadmap features={loaderData.features} />
+                  </div>
             </div>
-        </>
+        </div>
     )
 }

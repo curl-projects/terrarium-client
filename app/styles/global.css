@@ -233,6 +233,12 @@ body {
   font-weight: 500;
   font-size: 16px;
   letter-spacing: -0.06em;
+  transition: all 0.2s ease-in-out;
+}
+
+.navigationText:hover{
+  transform: scale(1.05);
+  color: #7e988e;
 }
 
 .headerOptionsWrapper{
@@ -437,7 +443,7 @@ body {
 }
 
 .kanbanColumnHeader{
-  height: 50px;
+  height: 56px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -453,18 +459,37 @@ body {
 
 .kanbanColumnHeaderTextWrapper{
   border-radius: 2px;
-  background-color: #B7CEC6;
-  padding: 8px;
-  line-height: 1;
   box-sizing: border-box;
-  margin-right: 4px;
+  border: 1px solid #e7e7e7;
+  background-color: #fff !important;
   box-shadow: 4px 4px 11px -1px #0000001a;
-
+  position: relative;
+  height: 56px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 .kanbanColumnHeaderText{
-  color: #4B5563;
-  font-size: 20px;
+  font-size: 30px;
+  letter-spacing: -0.06em;
+  display: flex;
+  color: #4b556399;
+  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.roadmapColumnIcon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4b556399;
+  margin-right: 10px;
 }
 
 .messageNumberWrapper{
@@ -486,13 +511,31 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid #e7e7e7;
+  height: 56px;
+  margin-left: 8px;
+  width: 56px;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  position: relative;
+  cursor: pointer;
+  border-radius: 2px;
+  background-color: #fff !important;
+  box-sizing: border-box;
+  transition: all 0.3s ease-in-out;
+}
+
+.addMessageWrapper:hover{
+  transform: scale(1.05);
 }
 
 .addMessage{
   color: rgba(179, 179, 187, 0.6);
   font-size: 40px;
   font-weight: bold;
+  transition: all 0.3s ease-in-out;
 }
+
+
 
 .kanbanColumnInner {
   width: 100%;
@@ -550,11 +593,17 @@ body {
   height: auto;
   width: 100%;
   border: 1px solid #E7E7E7;
-  background-color: #FAFAFA;
   display: flex;
   flex-direction: row;
   margin-top: 20px;
   box-shadow: 4px 4px 11px -1px #0000001a;
+  transition: all 0.3s ease-in-out;
+  overflow: visible;
+
+}
+
+.kanbanCardWrapper:hover{
+  transform: scale(1.02);
 }
 
 .kanbanCardBookmark {
@@ -659,6 +708,11 @@ body {
   text-overflow: clip;
   display: flex;
   flex-direction: column;
+  transition: all 0.2s ease-in-out;
+}
+
+.messageCard:hover{
+  transform: scale(1.01);
 }
 
 .messageCardOuter{
@@ -745,6 +799,11 @@ body {
   padding: 12px;
   text-overflow: clip;
   box-shadow: 1px 1px 10px 1px #0000001a;
+  transition: all 0.2s ease-in-out;
+}
+
+.clusterCard:hover{
+  transform: scale(1.01);
 }
 
 .clusterCardInner{
@@ -819,8 +878,12 @@ body {
   display: flex;
   flex-direction: column;
   box-shadow: 1px 1px 10px 1px #0000001a;
+  transition: all 0.2s ease-in-out;
 }
 
+.authorCard:hover{
+  transform: scale(1.01);
+}
 .authorCardInner{
   letter-spacing: -.025rem;
   line-height: 1.25rem;
@@ -1225,6 +1288,14 @@ div.DraftEditor-root {
   flex-direction: column;
 }
 
+.roadmapPageWrapper{
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 70px 1fr 70px;
+  grid-template-rows: 100px min-content 1fr 70px;
+}
+
 .featurePageWrapper{
   width: 100vw;
   height: 100vh;
@@ -1232,16 +1303,22 @@ div.DraftEditor-root {
   grid-template-columns: 70px 1fr 70px;
   grid-template-rows: 100px min-content 1fr 70px;
 }
-/* FEATURE SCAFFOLD */
-/* .featureScaffold{
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  height: 100%;
-  padding-top: 0px;
-  box-sizing: border-box;
-} */
+
+.integrationsPageWrapper{
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 70px 1fr 70px;
+  grid-template-rows: 100px min-content 1fr 70px;
+}
+
+.dataSourcesPageWrapper{
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 70px 1fr 70px;
+  grid-template-rows: 100px min-content 1fr 70px;
+}
 
 .featureTitleScaffold{
   grid-row: 2 / 3;
@@ -1399,12 +1476,18 @@ div.DraftEditor-root {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #FFFFFF;
+  background-color: #fff;
+  /* border: 1px solid #e7e7e7; */
+  /* box-shadow: 4px 4px 11px -1px #0000001a; */
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
 }
 
 .notepadTab:hover{
-  background-color: rgba(119, 153, 141, 0.2);
-  cursor: pointer;
+  transform: scale(1.10);
+  color: #b0bfb9;
+  
 }
 
 .notepadTabLabel {
@@ -1459,18 +1542,19 @@ div.DraftEditor-root {
 .kanbanRoadmapWrapper{
   display: flex;
   align-items: flex-start;
-  justify-content: center;
-  padding: 5%;
+  justify-content: flex-start;
   flex-direction: column;
-  padding-top: 0px;
+  padding-top: 30px;
+  grid-row: 3;
+  grid-column: 2;
 }
 
 .kanbanRoadmapColumns{
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-top: 47px;
   gap: 7%;
+  flex: 1;
 }
 
 .MuiLinearProgress-bar {
@@ -1652,12 +1736,11 @@ div.DraftEditor-root {
 .dataSourcesInnerSplitter{
   flex: 1;
   width: 100%;
-  padding-left: 5%;
-  padding-right: 5%;
   padding-top: 30px;
-  padding-bottom: 0px;
   display: flex;
   overflow: hidden;
+  grid-row: 3;
+  grid-column: 2;
 }
 
 .dataSourcesInnerContainer{
@@ -1939,6 +2022,7 @@ div.DraftEditor-root {
   box-shadow: 4px 4px 11px -1px #0000001a;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  border-radius: 2px;
 }
 
 .fileOuterWrapper:hover{
@@ -2104,14 +2188,15 @@ div.DraftEditor-root {
   font-size: 24px;
   color: #4b556399;
   letter-spacing: -0.03em;
-  border: 1px solid rgba(119, 153, 141, 0.3);
-
+  border: 1px solid #e7e7e7;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 4px 4px 11px -1px #0000001a;
 }
 
 .filterOptionButton:hover{
-  color: #77998d;
-  border-color: #77998d;
-  background-color: rgba(176, 191, 185, 0.6) !important;
+  transform: scale(1.05);
+  color: #b0bfb9;
+  transform: scale(1.1);
 }
 
 .filterOptionSeparator{
@@ -2138,10 +2223,12 @@ div.DraftEditor-root {
   justify-content: center;
   padding: 10px;
   min-width: 70px;
+  transition: all 0.3s ease-in-out;
 }
 
 .dateOptionButton:hover{
   background-color: rgba(119, 153, 141, 0.35);
+  transform: scale(1.05);
 }
 
 .dateVariantOptionsText{
@@ -2345,6 +2432,9 @@ div.DraftEditor-root {
   flex: 1;
   box-sizing: border-box;
   flex-direction: column;
+  grid-row: 3;
+  padding-top: 30px;
+  grid-column: 2;
 }
 
 .integrationsAuthUserWrapper{
@@ -2427,6 +2517,7 @@ div.DraftEditor-root {
   box-shadow: 4px 4px 11px -1px #0000001a;
   transition: all 0.3s linear;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .authUserOuterWrapper:hover{
@@ -2438,7 +2529,6 @@ div.DraftEditor-root {
   justify-content: flex-start;
   gap: 20px;
   width: 100%;
-  margin-top: 30px;
 }
 
 

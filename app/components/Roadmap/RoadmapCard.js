@@ -19,6 +19,8 @@ export default function KanbanCard(props){
 
     return(
         <Draggable
+            className='draggableKanbanCard'
+            style={{overflow: "visible"}}
             draggableId={String(props.item.id)}
             key={String(props.item.id)}
             index={props.index}>

@@ -93,7 +93,7 @@ export default function Integrations(){
 
     return(
         <>
-        <div className='pageWrapper'>
+        <div className='integrationsPageWrapper'>
             <Header />
             <PageTitle title="Integrations" padding={false} description="Connect to Discord, Slack and Telegram."/>
             

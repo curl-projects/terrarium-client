@@ -3,6 +3,12 @@ import { useState, useEffect } from 'react';
 import { DragDropContext} from "@hello-pangea/dnd";
 import RoadmapColumn from '~/components/Roadmap/RoadmapColumn.js'
 
+import { GoTelescope } from 'react-icons/go'
+import { MdOutlineLightbulb } from "react-icons/md"
+import { AiTwotoneExperiment } from "react-icons/ai"
+
+import { BiArchive } from "react-icons/bi"
+
 const columnsFromBackend = {};
 
 export default function Roadmap(props){
@@ -27,19 +33,22 @@ const [columns, setColumns] = useState(columnsFromBackend);
           name: "Roadmap",
           items: columnOne,
           color: "rgba(119, 153, 141, 0.80)",
-          backgroundColor: "rgba(119, 153, 141, 0.3)"
+          backgroundColor: "rgba(119, 153, 141, 0.3)",
+          icon: <GoTelescope />,
         },
         2: {
             name: "Drafts",
             items: columnTwo,
             color: "rgba(119, 153, 141, 0.5)",
-            backgroundColor: "rgba(119, 153, 141, 0.15)"
+            backgroundColor: "rgba(119, 153, 141, 0.15)",
+            icon: <MdOutlineLightbulb />,
           },
         3: {
-        name: "Rejects",
+        name: "Archive",
         items: columnThree,
         color: "rgba(75, 85, 99, 0.3)",
-        backgroundColor: "rgba(75, 85, 99, 0.1)"
+        backgroundColor: "rgba(75, 85, 99, 0.1)",
+        icon: <BiArchive />
         },
 
       }
