@@ -3,7 +3,7 @@ import { getAuthorizedUsers, createAuthorizedUser } from "~/models/user.server";
 
 import { useEffect, useState } from 'react';
 import Header from "~/components/Header/Header";
-import { useLoaderData } from "@remix-run/react"
+import { useLoaderData, useActionData } from "@remix-run/react"
 
 import IntegrationsUserForm from "~/components/Integrations/IntegrationsUserForm";
 import AuthorizedUserRow from "~/components/Integrations/AuthorizedUserRow"
@@ -15,6 +15,14 @@ import { FaTelegramPlane } from "react-icons/fa"
 import { BsSlack } from "react-icons/bs"
 
 import Snackbar from '@mui/material/Snackbar';
+
+import TextField from '@mui/material/TextField';
+import { RiFileCopyLine } from 'react-icons/ri'
+import { MdOpenInNew } from "react-icons/md"
+import { MdDoneAll } from "react-icons/md"
+import Tooltip from '@mui/material/Tooltip';
+
+
 
 function titleize(str) {
     let upper = true
@@ -58,13 +66,11 @@ export async function action({ request }){
 
 export default function Integrations(){
     const loaderData = useLoaderData();
+    const actionData = useActionData();
 
     const [clickedIntegration, setClickedIntegration] = useState("")
     const [snackbarOpen, setSnackbarOpen] = useState(false)
-
-    useEffect(()=>{
-        console.log("CLICKED INTEGRATION", clickedIntegration)
-    }, [clickedIntegration])
+    const [copied, setCopied] = useState(false)
 
     function handleInteractionClick(element){
         console.log("ELEMENT:", element)
@@ -99,7 +105,7 @@ export default function Integrations(){
                         className='integrationMainContainer'
                         key={idx}
                         style={{
-                            opacity: element.platform !== 'discord' && 0.6,
+                            opacity: element.platform !== 'discord' ? 0.6 : 1,
                         }}
                         
                         onClick={()=>handleInteractionClick(element)}
@@ -117,9 +123,50 @@ export default function Integrations(){
                         <div className='integrationContainerTitleRow'>
                             <p className='integrationContainerTitle'><span className="integrationContainerTitleIcon">{clickedIntegration?.icon}</span>{titleize(clickedIntegration?.platform || "")}</p>
                         </div>
+                        <p className='authUserTitleText'>Connect to Discord</p>
+                        <div className='authUserRowWrapper' style={{marginBottom: "10px"}}>
+                            <div className='authUserRow' style={{height: "unset"}}>
+                                <div className='integrationsTextFieldInputWrapper'>
+                                    <TextField
+                                        multiline={true}
+                                        disabled
+                                        className='integrationsTextField'
+                                        sx={{color: "green"}}
+                                        style={{width: "100%", height: "100%"}}
+                                        value={"https://discord.com/api/oauth2/authorize?client_id=1038871570808053840&permissions=8&scope=bot"}
+                                        spellCheck="false"
+                                    />
+                                </div>
+                            </div>
+                            <div style={{height: "20px"}}/>
+                            <div className='integrationsUrlCopyButtonsWrapper'>
+                                <div className='fileSubmitWrapper'>
+                                    <button 
+                                        className='fileSubmit' 
+                                        style={{fontSize: '20px'}}
+                                        onClick={() => {setCopied(true); navigator?.clipboard?.writeText("https://discord.com/api/oauth2/authorize?client_id=1038871570808053840&permissions=8&scope=bot")}}
+                                        >
+                                        {copied 
+                                            ? <Tooltip title="Copy Invite Url" placement='top' arrow><span><MdDoneAll /></span></Tooltip>
+                                            : <Tooltip title="Copy Invite Url" placement='top' arrow><span><RiFileCopyLine /></span></Tooltip>
+                                        }
+                                    </button>
+                                </div>
+                                <div className='fileSubmitWrapper'>
+                                    <Tooltip title="Open in New Tab" placement='top' arrow>
+                                    <a 
+                                        className='fileSubmit' 
+                                        href="https://discord.com/api/oauth2/authorize?client_id=1038871570808053840&permissions=8&scope=bot" 
+                                        target="_blank" 
+                                        tyle={{fontSize: '20px', display: "button"}}><MdOpenInNew /></a>
+                                    </Tooltip>
+                                </div>
+                            </div>
+                        </div>
                         <IntegrationsUserForm 
                             platform="discord"
                             user={loaderData.user}
+                            actionData={actionData}
                         />
                     </div>
                     <div className='integrationContainerViewWrapper'>

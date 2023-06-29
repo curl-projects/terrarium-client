@@ -1839,6 +1839,24 @@ div.DraftEditor-root {
   font-weight: 400 !important;
 }
 
+.integrationsTextField{
+    width: 100%;
+    height: 100%;
+    border-radius: 0px !important;
+    /* border: 1px solid rgba(119, 153, 141, 0.3) !important; */
+    border: unset;
+    color: #4b5563e0 !important;
+    font-weight: 400 !important;  
+}
+
+.integrationsTextField .MuiInputBase-root{
+  width: 100%;
+  height: 100%;
+  color: #4b556399 !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.03em !important;
+}
+
 .fileSelectMenuItem{
   color: #4b5563 !important;
   font-weight: 400 !important;
@@ -1854,6 +1872,10 @@ div.DraftEditor-root {
 }
 
 .authUserTextField fieldset{
+  border: 0px;
+}
+
+.integrationsTextField fieldset{
   border: 0px;
 }
 
@@ -1879,6 +1901,17 @@ div.DraftEditor-root {
   font-weight: 400 !important;
   letter-spacing: -0.03em !important;
 }
+
+.integrationsTextField input {
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 14px;
+}
+
 
 
 
@@ -2359,6 +2392,16 @@ div.DraftEditor-root {
   max-height: 30px;
 }
 
+.integrationsTextFieldInputWrapper{
+  width: 100%;
+  overflow: scroll;
+}
+
+.integrationsUrlCopyButtonsWrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 .authUploadText{
   font-size: 20px;
   letter-spacing: -0.03em;
@@ -2443,7 +2486,7 @@ div.DraftEditor-root {
   align-items: center;
   justify-content: flex-start;
   overflow: hidden;
-  transition: all 0.5s linear;
+  transition: all 0.2s linear;
   border: 1px solid #e7e7e7;
   box-shadow: 4px 4px 11px -1px #0000001a;
   margin-top: 20px;

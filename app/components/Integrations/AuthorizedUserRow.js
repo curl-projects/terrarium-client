@@ -6,8 +6,6 @@ import Tooltip from '@mui/material/Tooltip';
 
 export default function AuthorizedUserRow(props){
     const deleteFetcher = useFetcher();
-
-    console.log("PROPS> USER:", props.user)
     
     function handleDelete(){
         deleteFetcher.submit({authUserId: props.user.authUserId}, {method: "post", action: "utils/delete-auth-user"})

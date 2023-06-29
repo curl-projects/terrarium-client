@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "@remix-run/react"
 
 import Select from '@mui/material/Select';
@@ -11,10 +11,16 @@ export default function IntegrationsUserForm(props){
     const [authUserCommunity, setAuthUserCommunity] = useState("")
     const [authUser, setAuthUser] = useState("")
 
-    return(
-    <Form className='integrationsAuthUserWrapper' method='post'>
-        <p className='authUserTitleText'>Connect to Discord</p>
+    useEffect(()=>{
+        if(props.actionData?.authUser){
+            setAuthUserCommunity("")
+            setAuthUser("")
+        }
+    }, [props.actionData])
 
+    return(
+    <Form className='integrati
+    onsAuthUserWrapper' method='post'>
         <p className='authUserTitleText'>Add New Authorized User</p>
         <input type='hidden' name='userId' value={props.user.id}/>
         <input type='hidden' name='platform' value={props.platform}/>
@@ -27,6 +33,7 @@ export default function IntegrationsUserForm(props){
             <div className='authUserInputWrapper'>
                 <TextField
                     className='authUserTextField'
+                    value={authUserCommunity}
                     onChange={(e) => setAuthUserCommunity(e.target.value)}
                     style={{width: "100%", height: "100%"}}
                 />
@@ -41,6 +48,7 @@ export default function IntegrationsUserForm(props){
                     </div>
                     <div className='authUserInputWrapper'>
                         <TextField
+                            value={authUser}
                             className='authUserTextField'
                             onChange={(e) => setAuthUser(e.target.value)}
                             style={{width: "100%", height: "100%"}}
