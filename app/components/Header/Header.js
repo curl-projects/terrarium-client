@@ -1,7 +1,7 @@
 import { Form, Link } from "@remix-run/react";
 import { RiPlantLine} from "react-icons/ri";
 import { HiMenuAlt4 } from "react-icons/hi";
-import { RiLogoutBoxRLine } from "react-icons/ri"
+import { HiLogout } from "react-icons/hi"
 
 import { useState } from "react"
 
@@ -55,7 +55,7 @@ export default function Header(props){
         <Tooltip title="Logout" placement='bottom' arrow>
           <button type='submit'>
             <p className='navigationText'>
-              <RiLogoutBoxRLine />
+              <HiLogout />
             </p>
           </button>    
         </Tooltip>    

@@ -222,7 +222,7 @@ body {
 .navigationTextWrapper {
   display: flex;
   flex-direction: row;
-  gap: 25px;
+  gap: 35px;
   text-decoration: none;
   margin-right: 20px;
 }
@@ -460,21 +460,21 @@ body {
 .kanbanColumnHeaderTextWrapper{
   border-radius: 2px;
   box-sizing: border-box;
-  border: 1px solid #e7e7e7;
+  /* border: 1px solid #e7e7e7; */
   background-color: #fff !important;
-  box-shadow: 4px 4px 11px -1px #0000001a;
+  /* box-shadow: 4px 4px 11px -1px #0000001a; */
   position: relative;
   height: 56px;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1;
 }
 
 .kanbanColumnHeaderText{
-  font-size: 30px;
+  font-size: 44px;
   letter-spacing: -0.06em;
   display: flex;
   color: #4b556399;
@@ -482,6 +482,43 @@ body {
   align-items: center;
   justify-content: center;
   gap: 3px;
+  /* border: 1px solid #e7e7e7; */
+  height: 100%;
+  width: 56px;
+  /* box-shadow: 4px 4px 11px -1px #0000001a; */
+}
+
+.newRoadmapCardWrapper{
+  border: 2px dashed #e7e7e7;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 30px;
+  justify-content: center;
+  margin-top: 20px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.newRoadmapCardWrapper:hover{
+  transform: scale(1.05);
+}
+
+.newRoadmapCardText{
+  font-size: 30px;
+  letter-spacing: -0.03em;
+  color: #4b556399;
+  font-weight: 600;
+}
+
+.newRoadmapCardSpecifier{
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: rgba(75, 85, 9, 0.4);
+  text-align: center;
+  font-size: 12px;
 }
 
 .roadmapColumnIcon{
@@ -515,7 +552,7 @@ body {
   height: 56px;
   margin-left: 8px;
   width: 56px;
-  box-shadow: 4px 4px 11px -1px #0000001a;
+  /* box-shadow: 4px 4px 11px -1px #0000001a; */
   position: relative;
   cursor: pointer;
   border-radius: 2px;
@@ -601,10 +638,10 @@ body {
   overflow: visible;
 
 }
-
+/* 
 .kanbanCardWrapper:hover{
   transform: scale(1.02);
-}
+} */
 
 .kanbanCardBookmark {
   width: 10px;
@@ -631,9 +668,10 @@ body {
 }
 
 .kanbanCardTitleText{
-  color: #4B5563;
-  font-weight: 500;
+  color: rgba(75, 85, 99, 0.7);
+  font-weight: 600;
   font-size: 16px;
+  letter-spacing: -0.05em;
 }
 
 .kanbanCardPinnedText{
@@ -1547,13 +1585,15 @@ div.DraftEditor-root {
   padding-top: 30px;
   grid-row: 3;
   grid-column: 2;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .kanbanRoadmapColumns{
   width: 100%;
   display: flex;
   justify-content: space-between;
-  gap: 7%;
+  gap: 4%;
   flex: 1;
 }
 
@@ -2644,7 +2684,7 @@ div.DraftEditor-root {
 }
 
 .integrationContainerTitle{
-  font-size: 30px;
+  font-size: 24px;
   letter-spacing: -0.06em;
   color: #4b556399;
   display: flex;

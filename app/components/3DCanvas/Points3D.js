@@ -12,7 +12,7 @@ export default function Points3D(props){
     const [sphere] = useState(() => inSphere(new Float32Array(5000), { radius: 1.5 }))
 
     const springs = useSpring({
-        scale: props.titleHovered ? 1.5 : 1,
+        scale: props.titleHovered ? 1 : 1,
     })
 
     useFrame((state, delta) => {
@@ -25,6 +25,7 @@ export default function Points3D(props){
           <AnimatedPoints ref={props.pointsRef} positions={sphere} frustumCulled={false} scale={springs.scale} {...props}>
             <PointMaterial 
                 color={props.titleHovered ? "#7E988E" : "rgba(145, 170, 160, 0.8)"} 
+                // color={props.titleHovered ? "#7E988E" : "white"} 
                 size={0.01} 
                 sizeAttenuation={true} 
                 depthWrite={true} 

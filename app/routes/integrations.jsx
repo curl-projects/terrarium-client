@@ -121,7 +121,12 @@ export default function Integrations(){
                 }}>
                     <div className='integrationContainerCreateWrapper'>
                         <div className='integrationContainerTitleRow'>
-                            <p className='integrationContainerTitle'><span className="integrationContainerTitleIcon">{clickedIntegration?.icon}</span>{titleize(clickedIntegration?.platform || "")}</p>
+                            <p className='integrationContainerTitle'>
+                                <span className="integrationContainerTitleIcon">
+                                    {clickedIntegration?.icon}
+                                </span>
+                            {/* {titleize(clickedIntegration?.platform || "")} */}
+                            </p>
                         </div>
                         <p className='authUserTitleText'>Connect to Discord</p>
                         <div className='authUserRowWrapper' style={{marginBottom: "10px"}}>
