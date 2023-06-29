@@ -23,7 +23,7 @@ export default function Header(props){
   }
 
   return(
-    <div className='header'>
+    <div className='header' style={{gridColumn: "1 / 3", gridRow: "1 / 2"}}>
       <div className='headerTerrariumWrapper'>
         <Link to ='/roadmap'>
           <h1 className='headerTerrariumText'>

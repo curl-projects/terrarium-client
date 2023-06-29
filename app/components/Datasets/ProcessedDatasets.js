@@ -112,7 +112,14 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
 
                 <p className='processedTitleText'>
                     <span className='processedTitleHighlightText'>
-                        {filteredProcessedDatasets.reduce((acc, element) => acc + parseInt(element.size), 0)}
+                        {filteredProcessedDatasets.reduce(function(acc, element){
+                                                                        if(parseInt(element.size)){
+                                                                            return acc + parseInt(element.size)
+                                                                        }
+                                                                        else{
+                                                                            return acc
+                                                                        }
+                                                                        }, 0)}
                     </span>{filteredProcessedDatasets.reduce((acc, element) => acc + parseInt(element.size), 0) === 1 ? "Data Point" : "Data Points"}</p>
             </div>
 

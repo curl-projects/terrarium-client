@@ -307,9 +307,11 @@ export default function Feature(){
     }, [loaderData.feature, invisibleFilters])
 
     return(
-        <div className='pageWrapper'>
-            <Header headerCollapsed={headerCollapsed}/>
-            <div className="featureScaffold">
+        <div className='featurePageWrapper'>
+            <Header 
+                headerCollapsed={headerCollapsed}
+                />
+            <div className="featureTitleScaffold">
                 <div className="featureTitleWrapper">
                     {titleFocused
                      ? (
@@ -397,7 +399,7 @@ export default function Feature(){
                         <p onClick={()=>setDescriptionFocused(false)}>Save</p>
                     </button>
                 </descriptionFetcher.Form>
-    
+            </div>
             <div className='workspaceScaffold'>
                 <div className='workspaceOutletScaffold'>
                     <div className='workspaceOutletControls'>
@@ -454,7 +456,8 @@ export default function Feature(){
                     </div>
                 </div>
             </div>
+            <div style={{gridRow: "2 / 5", gridColumn: "3"}}></div>
             </div>
-        </div>
+
     )
 }

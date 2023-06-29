@@ -172,7 +172,6 @@ body {
 
 /* HEADER */
 .header {
-  width: 100vw;
   height: 60px;
   /* background-color: rgb(237, 237, 237); */
   /* position: absolute; */
@@ -1220,21 +1219,40 @@ div.DraftEditor-root {
   width: 100vw;
   height: 100vh;
   padding-bottom: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
   display: flex;
   flex-direction: column;
 }
+
+.featurePageWrapper{
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 70px 1fr 70px;
+  grid-template-rows: 100px min-content 1fr 70px;
+}
 /* FEATURE SCAFFOLD */
-.featureScaffold{
+/* .featureScaffold{
   display: flex;
-  padding: 5%;
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  /* padding: 5%; */
   height: 100%;
   padding-top: 0px;
   box-sizing: border-box;
+} */
+
+.featureTitleScaffold{
+  grid-row: 2 / 3;
+  grid-column: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 0px;
+  box-sizing: border-box;
 }
+
 
 .featureTitleWrapper{
   display: flex;
@@ -1329,12 +1347,12 @@ div.DraftEditor-root {
 }
 
 .workspaceScaffold{
-  width: 100%;
   margin-top: 25px;
   display: flex;
   flex-direction: row;
+  grid-row: 3;
+  grid-column: 2;
   overflow: hidden;
-  flex: 1;
 }
 
 .workspaceOutletScaffold{
