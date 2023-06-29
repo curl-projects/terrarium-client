@@ -10,7 +10,7 @@ import Header from "~/components/Header/Header";
 
 import NotionIntegration from "~/components/Integrations/NotionIntegration"
 import DiscordIntegration from "~/components/Integrations/DiscordIntegration"
-import UserAuthIntegration from "~/components/Integrations/UserAuthIntegration"
+import UserAuthIntegration from "~/components/Integrations/OldIntegrations/UserAuthIntegration"
 
 const CONTAINER_STYLES = {
   width: "100%",

@@ -28,6 +28,7 @@ export default function BaseDatasetRow(props){
              className='fileOuterWrapper' 
              onMouseEnter={handleEnter}
              onMouseLeave={handleLeave}
+             onClick={() => props.handleUnprocessedDatasetClick(props.row.uniqueFileName, props.row.baseDatasetId)}
              >
             <div 
                 className='fileCardBookmark' 

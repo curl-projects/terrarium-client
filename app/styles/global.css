@@ -222,17 +222,17 @@ body {
 .navigationTextWrapper {
   display: flex;
   flex-direction: row;
-  gap: 35px;
+  gap: 25px;
   text-decoration: none;
   margin-right: 20px;
 }
 
 .navigationText {
-  color: #4B5563;
+  color: #4b556399;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 17px;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.06em;
 }
 
 .headerOptionsWrapper{
@@ -1902,8 +1902,14 @@ div.DraftEditor-root {
   display: flex;
   flex-direction: row;
   border: 1px solid #e7e7e7;
-  background-color: #fafafa;
+  background-color: white;
   box-shadow: 4px 4px 11px -1px #0000001a;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.fileOuterWrapper:hover{
+  transform: scale(1.05);
 }
 
 .processedFileOuterWrapper{
@@ -1912,15 +1918,23 @@ div.DraftEditor-root {
   border: 1px solid #e7e7e7;
   background-color: #fafafa;
   box-shadow: 4px 4px 11px -1px #0000001a;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
-.fileOuterWrapper:hover{
+.processedFileOuterWrapper:hover{
+  transform: scale(1.05);
 }
+
 
 .fileCardBookmark{
   width: 10px;
   background-color: rgba(119, 153, 141, 0.8);
   transition: width 0.2s linear;
+}
+
+.fileTitleWrapper{
+  cursor: pointer;
 }
 
 .fileTitle{
@@ -1935,7 +1949,7 @@ div.DraftEditor-root {
   position: relative;
   top: -5px;
   left: 1px;
-  font-weight: 500px;
+  font-weight: 500;
 }
 
 .fileMetadataWrapper{
@@ -1980,16 +1994,12 @@ div.DraftEditor-root {
   padding: 15px;
 }
 
-.fileInnerWrapper:hover{
-  background-color: rgba(75, 85, 99, 0.05);
-}
-
 .fileTitleRow{
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  width: 100%;
   padding-right: 10px;
-
 }
 
 .fileContentWrapper{
@@ -2000,10 +2010,18 @@ div.DraftEditor-root {
   letter-spacing: -0.03em;
   color: #7e988e;
   font-weight: 600;
-  font-size: 16px;
-
+  font-size: 22px;
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(119, 153, 141, .3);
 }
 
+.fileSubmit:hover{
+  transform: scale(1.1);
+}
 .processedDatasetsTableWrapper{
   display: flex;
   flex-direction: column;
@@ -2288,7 +2306,6 @@ div.DraftEditor-root {
 
 /* INTEGRATIONS */
 .integrationsFlexWrapper{
-  padding: 10%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -2299,22 +2316,34 @@ div.DraftEditor-root {
 
 .integrationsAuthUserWrapper{
   display: flex;
-  border: 1px solid grey;
-  height: 50%;
-  width: 50%;
+  width: 100%;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
-  padding: 40px;
+}
+
+.authUserRowWrapper{
+  width: 100%;
+  display: flex;
+  gap: 4px;
+   
 }
 
 .authUserRow{
   border: 1px solid rgba(119, 153, 141, .3);
-  width: 70%;
+  width: 100%;
   height: 32px;
   display: flex;
   letter-spacing: -0.03em;
   margin-bottom: 6px;
+}
+
+.authUserTitleText{
+  color: #4b556399;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.06em;
+  margin-bottom: 4px;
 }
 
 .authUserLabel{
@@ -2348,10 +2377,150 @@ div.DraftEditor-root {
 }
 
 .authUserOuterWrapper{
-  background-color: #ededed;
   display: flex;
   flex-direction: row;
-  padding-top: 10px;
-  padding-bottom: 10px;
   width: 100%;
+  border: 1px solid #e7e7e7;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  transition: all 0.3s linear;
+  cursor: pointer;
+}
+
+.authUserOuterWrapper:hover{
+  transform: scale(1.05);
+}
+
+.integrationContainersRow{
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+
+/* INTEGRATIONS CONTAINER */
+.integrationMainContainer{
+  border: 1px solid #e7e7e7;
+  background-color: white;
+  flex: 1;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  height: 60px;
+  /* width: 60px; */
+  /* max-width: 60px; */
+  padding-left: 20px;
+  padding-right: 20px;
+  max-width: fit-content;
+  border-radius: 2px;
+  transition: all 0.3s ease-in-out, color 0s, border 0s;
+  overflow: hidden;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4b556399;
+}
+
+.integrationMainContainer:hover{
+  color: #b0bfb9;
+  transform: scale(1.1);
+}
+
+.integrationsMainContainerIcon{
+  font-size: 24px;
+  letter-spacing: -0.03em;
+  display: flex;
+  flex-direction: row;
+
+}
+
+.expandedIntegrationMainContainer{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  transition: all 0.5s linear;
+  border: 1px solid #e7e7e7;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  margin-top: 20px;
+  background-color: #f3f4f6;
+}
+
+.integrationContainerCreateWrapper{
+  display: flex;
+  flex: 1;
+  height: 100%;
+  flex-direction: column;
+  padding: 30px;
+}
+
+.integrationContainerViewWrapper{
+  display: flex;
+  flex: 1;
+  height: 100%;
+  padding: 30px;
+  flex-direction: column;
+}
+
+.integrationMetadataRow{
+  font-size: 0.75rem;
+  line-height: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.integrationMetadataSection{
+  margin-right: 20px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.integrationMetadataText{
+  display: flex;
+  align-items: center;
+}
+
+.integrationMetadataIcon{
+  color: #1f2937;
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.integrationContainerViewPanel{
+  height: 100%;
+  width: 100%;
+  border: 1px solid #e7e7e7;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  background-color: white;
+  overflow: scroll;
+  padding: 40px;
+}
+
+.integrationContainerTitleRow{
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: flex-start;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.integrationContainerTitle{
+  font-size: 30px;
+  letter-spacing: -0.06em;
+  color: #4b556399;
+  display: flex;
+  user-select: none;
+}
+
+.integrationContainerTitleIcon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
 }

@@ -3,13 +3,37 @@ import { getAuthorizedUsers, createAuthorizedUser } from "~/models/user.server";
 
 import { useEffect, useState } from 'react';
 import Header from "~/components/Header/Header";
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
-import { FiUserPlus } from "react-icons/fi";
-import { Form, useLoaderData } from "@remix-run/react"
+import { useLoaderData } from "@remix-run/react"
 
+import IntegrationsUserForm from "~/components/Integrations/IntegrationsUserForm";
 import AuthorizedUserRow from "~/components/Integrations/AuthorizedUserRow"
+
+import PageTitle from "~/components/Header/PageTitle.js"
+
+import { FaDiscord } from "react-icons/fa";
+import { FaTelegramPlane } from "react-icons/fa"
+import { BsSlack } from "react-icons/bs"
+
+import Snackbar from '@mui/material/Snackbar';
+
+function titleize(str) {
+    let upper = true
+    let newStr = ""
+    for (let i = 0, l = str.length; i < l; i++) {
+        // Note that you can also check for all kinds of spaces  with
+        // str[i].match(/\s/)
+        if (str[i] == " ") {
+            upper = true
+            newStr += str[i]
+            continue
+        }
+        newStr += upper ? str[i].toUpperCase() : str[i].toLowerCase()
+        upper = false
+    }
+    return newStr
+}
+
+
 
 export async function loader({ request }){
     const user = await authenticator.isAuthenticated(request, {
@@ -35,91 +59,101 @@ export async function action({ request }){
 export default function Integrations(){
     const loaderData = useLoaderData();
 
-    const [authUserPlatform, setAuthUserPlatform] = useState("")
-    const [authUserCommunity, setAuthUserCommunity] = useState("")
-    const [authUser, setAuthUser] = useState("")
+    const [clickedIntegration, setClickedIntegration] = useState("")
+    const [snackbarOpen, setSnackbarOpen] = useState(false)
 
     useEffect(()=>{
-        console.log("LOADER DATA", loaderData)
-    }, [loaderData])
+        console.log("CLICKED INTEGRATION", clickedIntegration)
+    }, [clickedIntegration])
+
+    function handleInteractionClick(element){
+        console.log("ELEMENT:", element)
+        if(element.platform === 'discord'){
+            if(clickedIntegration){
+                if(clickedIntegration.platform === element.platform){
+                    setClickedIntegration("")
+                }
+                else{
+                    setClickedIntegration(element)
+                }
+            }
+            else{
+                setClickedIntegration(element)
+            }
+        } else{
+            setSnackbarOpen(true)
+        }
+    }
 
     return(
+        <>
         <div className='pageWrapper'>
             <Header />
+            <PageTitle title="Integrations" padding={false} description="Connect to Discord, Slack and Telegram."/>
+            
             <div className='integrationsFlexWrapper'>
-                <Form className='integrationsAuthUserWrapper' method='post'>
-                    <input type='hidden' name='userId' value={loaderData.user.id}/>
-                    <input type='hidden' name='platform' value={authUserPlatform}/>
-                    <input type='hidden' name='community' value={authUserCommunity}/>
-                    <input type='hidden' name='username' value={authUser}/>
-                    <FiUserPlus style={{fontSize: "30px", color: "#4b5563"}}/>
-                    <p className='authUploadText'>Authorize User</p>
-                    <div className='authUserRow'>
-                        <div className="authUserLabel">
-                            <p className='fileOptionLabelText'>Platform</p>
-                        </div>
-                        <div className='authUserInputWrapper'>
-                            <Select
-                                value={authUserPlatform}
-                                className='fileOptionInputSelect'
-                                onChange={(e) => setAuthUserPlatform(e.target.value)}
-                                style={{width: "100%"}}
-                            >
-                                <MenuItem className='fileSelectMenuItem' value='discord'>Discord</MenuItem>
-                                <MenuItem className='fileSelectMenuItem' value='slack' disabled>Slack (Coming Soon)</MenuItem>
-                                <MenuItem className='fileSelectMenuItem' value='telegram' disabled>Telegram (Coming Soon)</MenuItem>
-                            </Select>
-                        </div>
+                <div 
+                className='integrationContainersRow'>
+                {[{platform: 'discord', icon: <FaDiscord />}, {platform: 'telegram', icon: <FaTelegramPlane />}, {platform: 'slack', icon: <BsSlack />}].map((element, idx) => 
+                    <div 
+                        className='integrationMainContainer'
+                        key={idx}
+                        style={{
+                            opacity: element.platform !== 'discord' && 0.6,
+                        }}
+                        
+                        onClick={()=>handleInteractionClick(element)}
+                    >
+                         <p className='integrationContainerTitle' style={{paddingLeft: "20px", paddingRight: "20px"}}><span className="integrationContainerTitleIcon">{element.icon}</span>{titleize(element.platform || "")}</p>   
+                         {/* <p className='integrationsMainContainerIcon'>{element?.icon}</p> */}
                     </div>
-                    {/* {authUserPlatform === 'discord' && */}
-                    {true &&
-                        <div className='authUserRow'>
-                            <div className="authUserLabel">
-                                <p className='fileOptionLabelText'>Guild</p>
-                            </div>
-                            <div className='authUserInputWrapper'>
-                                <TextField
-                                    className='authUserTextField'
-                                    onChange={(e) => setAuthUserCommunity(e.target.value)}
-                                    style={{width: "100%", height: "100%"}}
-                                />
-                            </div>
-                        </div>
-                    }
-                    {/* {authUserCommunity && */}
-                    {true &&
-                    <div className='authUserRow'>
-                        <div className="authUserLabel">
-                            <p className='fileOptionLabelText'>Username</p>
-                        </div>
-                        <div className='authUserInputWrapper'>
-                            <TextField
-                                className='authUserTextField'
-                                onChange={(e) => setAuthUser(e.target.value)}
-                                style={{width: "100%", height: "100%"}}
-                            />
-                        </div>
-                    </div>
-                    }
-                    {true &&
-                        <>
-                        <div style={{height: "20px"}}/>
-                        <div className='fileSubmitWrapper'>
-                            <button className='fileSubmit' type='submit'>Upload</button>
-                        </div>
-                        </>
-                    }
-                </Form>
-                <div className='authorizedUsersWrapper'>
-                    <p className='datasetsLabelText'>Authorized Users</p>
-                    {loaderData.authUsers?.map((user, idx) =>
-                        <AuthorizedUserRow 
-                            key={idx}
-                            user={user}
-                        /> 
-                    )}
+                )}
                 </div>
-            </div>
+                <div className='expandedIntegrationMainContainer' style={{
+                    height: !clickedIntegration && "0px",
+                    borderWidth: !clickedIntegration && "0px"
+                }}>
+                    <div className='integrationContainerCreateWrapper'>
+                        <div className='integrationContainerTitleRow'>
+                            <p className='integrationContainerTitle'><span className="integrationContainerTitleIcon">{clickedIntegration?.icon}</span>{titleize(clickedIntegration?.platform || "")}</p>
+                        </div>
+                        <IntegrationsUserForm 
+                            platform="discord"
+                            user={loaderData.user}
+                        />
+                    </div>
+                    <div className='integrationContainerViewWrapper'>
+                        <div className='integrationMetadataRow'>
+                            <div className='integrationMetadataSection'>
+                                <p className='integrationMetadataText'>
+                                    <span className='integrationMetadataIcon'>{loaderData.authUsers.length}</span>
+                                    {loaderData.authUsers.length === 1 ? "Authorized User" : "Authorized Users"}
+                                </p>
+                            </div>
+
+                        </div>
+                        <div className='integrationContainerViewPanel'>
+                            {loaderData.authUsers?.map((user, idx) =>
+                                <AuthorizedUserRow 
+                                    key={idx}
+                                    user={user}
+                                /> 
+                              )}
+                        </div>
+                    </div>
+                </div>
+
+            </div>            
         </div>
+        <Snackbar
+        sx={{
+            backgroundColor: "white"
+        }}
+         autoHideDuration={6000}
+         open={snackbarOpen}
+         onClose={()=>setSnackbarOpen(false)}
+         message="Coming Soon"
+    />
+        </>
     )
 }

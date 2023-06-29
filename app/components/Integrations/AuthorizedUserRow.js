@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { BsFileArrowUp, BsX} from "react-icons/bs";
 import { useFetcher } from "@remix-run/react"
 import { FiUser } from "react-icons/fi"
+import Tooltip from '@mui/material/Tooltip';
 
 export default function AuthorizedUserRow(props){
     const deleteFetcher = useFetcher();
@@ -17,26 +18,19 @@ export default function AuthorizedUserRow(props){
                     <div className='fileIconWrapper'>
                         <FiUser style={{fontSize: "26px", color: "rgba(75, 85, 99, 0.85)"}}/>
                     </div>
-                    <div className='fileInnerWrapper'>
                         <div className='fileTitleRow'>
                             <div className='fileTitleWrapper'>
-                                <p className='fileTitle'>@{props.user.username || `Untitled (${props.idx})`}</p>
+                                <p className='fileTitle'>@{props.user.username || `Untitled (${props.idx})`} | {props.user?.community ? props.user.community : "Unknown Community"}</p>
                             </div>
                             <div style={{flex: 1}}/>
-                            <div className='fileRemoveWrapper'>
-                                <BsX 
-                                    onClick={handleDelete}
-                                    style={{fontSize: "28px", color: "rgba(75, 85, 99, 0.95)", cursor: "pointer"}}/>
-                            </div>
+                            <Tooltip title="Delete Authorized User" placement='top' arrow>
+                                <div className='fileRemoveWrapper'>
+                                    <BsX 
+                                        onClick={handleDelete}
+                                        style={{fontSize: "28px", color: "rgba(75, 85, 99, 0.95)", cursor: "pointer"}}/>
+                                </div>
+                            </Tooltip>
                         </div>
-                        <div className='fileMetadataRow'>
-                            <div className='fileMetadataWrapper'>
-                                <p className='fileMetadata'>{props.user?.community ? props.user.community : "Unknown Community"}</p>
-                                <div className='fileMetadataDivider' />
-                                <p className='fileMetadata'>{props.user?.platform ? props.user.platform : "Unknown Platform"}</p>
-                            </div>
-                        </div>
-                    </div>
             </div>
     )
 }
