@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react"
 import {useFetcher} from "@remix-run/react"
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js"
 import { TextBox } from "@prisma/client"
-import { ApiResponseDataType } from "../utils/apiResponse"
 
-export const useTextBox = ({featureId}: {featureId: number}) => {
+export const useTextBox = ({featureId}) => {
 
-    const [editorState, setEditorState] = useState<EditorState | null>(null)
+    const [editorState, setEditorState] = useState(null)
 
     const dataFetcher = useFetcher()
     const updateFetcher = useFetcher()
@@ -20,7 +19,7 @@ export const useTextBox = ({featureId}: {featureId: number}) => {
     useEffect(() => {
         if (dataFetcher.data) {
             if (dataFetcher.data.ok) {
-                const textBox = (dataFetcher.data as (ApiResponseDataType<{textBox: TextBox}> | undefined))?.payload?.textBox
+                const textBox = dataFetcher.data?.payload?.textBox
                 if (textBox) {
                     const derivedEditorState = EditorState.createWithContent(
                         convertFromRaw(textBox))
@@ -46,5 +45,5 @@ export const useTextBox = ({featureId}: {featureId: number}) => {
             ? "idle"
             : "syncing"
 
-    return {editorState, setEditorState, syncState: syncState as typeof syncState}
+    return {editorState, setEditorState, syncState: syncState}
 }

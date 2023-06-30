@@ -25,7 +25,6 @@ export default function MessageStream(props) {
   useEffect(()=>{
     if(props.data){
       if(props.data[0] && props.data[0].cluster){
-        console.log("PROPS DATA:", props.data)
         const organisedClusterData = props.data.reduce((group, featureRequest) => {
           const { internalClusterId } = featureRequest.cluster;
           group[internalClusterId] = group[internalClusterId] ?? [];

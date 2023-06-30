@@ -60,6 +60,10 @@ export default function ClusterCard(props) {
   }
 
   useEffect(()=>{
+    !props.isExpanded && setIsCardExpanded(false)
+  }, [props.isExpanded])
+
+  useEffect(()=>{
     if(props.expandSpecificCard && props.expandSpecificCard.cardType === 'cluster' && props.expandSpecificCard.cardId === props.clusterData[0].cluster.internalClusterId){
         clusterCardRef.current.scrollIntoView({block: "start", behaviour: "smooth"})
         setIsCardExpanded(true)
@@ -146,7 +150,7 @@ export default function ClusterCard(props) {
                 key={cardData.featureRequest.fr_id}
                 cardData={cardData.featureRequest}
                 cardScore={cardData.score}
-                isExpanded={props.isExpanded}
+                // isExpanded={props.isExpanded}
                 isPinned={props.pinnedCards.map(i => i.featureRequestId).includes(cardData.featureRequestId)}
                 pinCard={props.pinCard} />
 

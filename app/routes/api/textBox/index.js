@@ -1,14 +1,14 @@
 import {db} from "~/models/db.server";
 import invariant from "tiny-invariant";
 import { convertFromRaw } from 'draft-js';
-import { ApiHandler, apiResponse } from "~/components/TextEditor/apiResponse";
+import { apiResponse } from "~/components/TextEditor/apiResponse";
 import { updateTextBox } from "~/models/text-box.server";
 
 export const loader = () => {
     return apiResponse(400, "must supply id")
 }
 
-export const action: ApiHandler = async ({request}) => {
+export const action = async ({request}) => {
 
     if (request.method !== "POST") {
         return apiResponse(405)

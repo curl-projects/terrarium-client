@@ -5,6 +5,10 @@ export default function AuthorCard(props){
     const [isCardExpanded, setIsCardExpanded] = useState(false);
     const authorCardRef = useRef();
 
+    useEffect(()=>{
+        !props.isExpanded && setIsCardExpanded(false)
+    }, [props.isExpanded])
+
     return(
         <div className='authorCard relative'>
             <div onClick={() => setIsCardExpanded(!isCardExpanded)} style={{cursor: 'pointer'}} className='clusterCardOuter'>
@@ -16,6 +20,7 @@ export default function AuthorCard(props){
                     </div>
                 </div>
             </div>
+
 
             {(isCardExpanded || props.isExpanded) && (
             <div className="authorCardColumn">

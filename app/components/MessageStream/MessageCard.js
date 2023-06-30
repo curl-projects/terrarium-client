@@ -65,6 +65,10 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
     }
   }, [props.expandSpecificCard])
 
+  useEffect(()=>{
+    !isExpanded && setIsCardExpanded(false)
+  }, [isExpanded])
+
 
   return (
     <div

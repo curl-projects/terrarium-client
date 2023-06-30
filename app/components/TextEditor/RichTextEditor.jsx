@@ -1,4 +1,4 @@
-import React, {SyntheticEvent, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import { EditorState, RichUtils } from 'draft-js';
 import Editor from "@draft-js-plugins/editor";
 import { DraftHandleValue } from "draft-js";
@@ -40,21 +40,20 @@ function RichTextEditor(props){
                 className='editorWrapper'>
                 {editorState
                     && (
-                        <>
+                        <div style={{overflow: "scroll"}}>
                             <Editor
-                                style={{border: '2px solid pink'}}
                                 plugins={[
                                     autoListPlugin,
                                 ]}
                                 editorState={editorState}
                                 onChange={setEditorState}
                                 handleKeyCommand={handleKeyCommand}
-                                onTab={handleTab}
+                                // onTab={handleTab}
                                 ref={editorRef}
                                 readOnly={props.readOnly}
                                 placeholder={"Write notes here!"}
                                 />
-                        </>
+                        </div>
             )}
             </div>
             <div className='editorControlsBar'>

@@ -226,18 +226,6 @@ export default function Feature(){
         }
     }, [titleFocused])
 
-    useEffect(()=>{
-        console.log("TOP LEVEL CANVAS OBJ", topLevelCanvasDataObj)
-    }, [topLevelCanvasDataObj])
-
-
-    useEffect(()=>{
-        console.log("TOP LEVEL STREAM OBJ", topLevelStreamDataObj)
-    }, [topLevelStreamDataObj])
-
-    useEffect(()=>{
-        console.log("LOADER DATA:", loaderData)
-    }, [loaderData])
 
     function handleTitleSearch(){
         fetcher.submit({'searchTerm': title, 'featureId': params["*"], actionType: "featureSearch"}, 

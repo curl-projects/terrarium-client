@@ -1,9 +1,7 @@
-import {db} from "~/models/db.server"
-import { TextBox } from "@prisma/client"
-import { apiResponse, ApiHandler } from "~/components/TextEditor/apiResponse"
+import { apiResponse } from "~/components/TextEditor/apiResponse"
 import { findTextBox } from "~/models/text-box.server";
 
-export const loader: ApiHandler<{textBox: TextBox}> = async ({params}) => {
+export const loader = async ({params}) => {
     if (!params.id) {
         return apiResponse(400, "did not receive argument for feature id")
     }

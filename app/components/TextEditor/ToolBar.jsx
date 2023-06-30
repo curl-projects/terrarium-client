@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import { EditorState, RichUtils } from "draft-js"
 import { BiBold, BiItalic, BiUnderline, BiListUl, BiListOl, BiCode } from 'react-icons/bi'
-import ReactTooltip from "react-tooltip";
+import Tooltip from '@mui/material/Tooltip';
 
 const BLOCK_TYPES = [
     {label: 'UL', style: 'unordered-list-item', icon: <BiListUl />},
@@ -24,6 +24,10 @@ const StyleButton = (props) => {
 
     return (
         <>
+            <Tooltip
+                    title={props.shortcut}
+                    arrow
+                    placement="bottom">
             <div
                 className={className}
                 data-tip={true}
@@ -36,14 +40,7 @@ const StyleButton = (props) => {
                     }}>
                 {props.icon}
             </div>
-            {props.shortcut &&
-                <ReactTooltip
-                    id={tipId}
-                    effect="solid"
-                    place="bottom"
-                    type="dark">
-                    <p style={{fontSize: "10px"}}>{props.shortcut}</p>
-                </ReactTooltip>}
+            </Tooltip>
         </>
     )
 }
