@@ -19,7 +19,10 @@ export default function PointFieldScaffold(props){
   const [stableCoords, setStableCoords] = useState([])
 
   useEffect(()=>{
-    setDataObj(generateUniformCoords(props.data))
+    console.log("DISPLAY CONTROL", displayControl)
+    displayControl.clusters 
+      ? generateClusters()
+      : generateUniform()
   }, [props.data])
 
   // SHARED FUNCTIONS
@@ -36,6 +39,25 @@ export default function PointFieldScaffold(props){
 
     return coordsArray
   }
+
+  // GENERATOR FUNCTIONS
+  function generateClusterCoords(data){
+    const labels = data.map(a => a.cluster.internalClusterId)
+    const clusterLabels = Array.from(new Set(labels))
+    const clusterCoordsArray = []
+
+    for(let i in clusterLabels){
+      let obj = {}
+      obj["id"] = clusterLabels[i]
+      obj['xDim'] = (Math.random() * (xMax-xMin)) + xMin
+      obj['yDim'] = (Math.random() * (yMax-yMin)) + yMin
+      obj['type'] = 'cluster'
+      clusterCoordsArray.push(obj)
+    }
+    return clusterCoordsArray
+  }
+
+
   function generateClusterUnitCoords(data, clusterCoordsArray, dispersionFactor=10000){
     const clusterUnits = []
 
@@ -65,23 +87,6 @@ export default function PointFieldScaffold(props){
   function generateClusters(resetZoom){
     // RESET THE ZOOM SO THE CLUSTERS RENDER PROPERLY
     resetZoom && props.setZoomObject(null)
-
-    // GENERATOR FUNCTIONS
-    function generateClusterCoords(data){
-      const labels = data.map(a => a.cluster.internalClusterId)
-      const clusterLabels = Array.from(new Set(labels))
-      const clusterCoordsArray = []
-
-      for(let i in clusterLabels){
-        let obj = {}
-        obj["id"] = clusterLabels[i]
-        obj['xDim'] = (Math.random() * (xMax-xMin)) + xMin
-        obj['yDim'] = (Math.random() * (yMax-yMin)) + yMin
-        obj['type'] = 'cluster'
-        clusterCoordsArray.push(obj)
-      }
-      return clusterCoordsArray
-    }
 
     // generate uniformly distributed cluster coordinates
     const clusterCoordsArray = generateClusterCoords(props.data)

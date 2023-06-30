@@ -145,6 +145,7 @@ export default function ClusterCard(props) {
                 idx={idx}
                 key={cardData.featureRequest.fr_id}
                 cardData={cardData.featureRequest}
+                cardScore={cardData.score}
                 isExpanded={props.isExpanded}
                 isPinned={props.pinnedCards.map(i => i.featureRequestId).includes(cardData.featureRequestId)}
                 pinCard={props.pinCard} />

@@ -68,14 +68,14 @@ export default function MessageStream(props) {
       pinnedFetcher.submit({ fr_id: fr_id,
                              featureId: props.featureId,
                              pinnedStatus: true
-                           }, { method: 'post', action: "/utils/set-pinned"})
+                           }, { method: 'get', action: "/utils/set-pinned"})
     } else {
       // if in pins, remove it
       setPinned(pins.filter(pin => pin !== fr_id));
       pinnedFetcher.submit({ fr_id: fr_id,
                              featureId: props.featureId,
                              pinnedStatus: false
-                           }, { method: 'post', action: "/utils/set-pinned"})
+                           }, { method: 'get', action: "/utils/set-pinned"})
     }
   }
 

@@ -13,8 +13,6 @@ export default function PossibleFeatures(){
                 <li>Make sure websockets don't interact with every client</li>
                 <li>JSON conversion support</li>
                 <li>Better type validation for csv upload</li>
-                <li>Remove menu when page is sufficiently small (or change from absolute to normal page flow)</li>
-                <li>Replace roadmap, drafts, etc. with square boxes</li>
             </ol>
         </div>
         </>

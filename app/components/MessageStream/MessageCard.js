@@ -117,13 +117,13 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
         </div>
       )}
     </div>
-    <div className='absolute top-1 -left-8'>
+    <div className='pushPinWrapper'>
           <AiOutlinePushpin
             size={22}
             onClick = {() => pinCard(props.cardData.fr_id)}
-            style={props.pushPinStyle && {...props.pushPinStyle}}
+            style={props.pushPinStyle && {...props.pushPinStyle }}
             className={cn(
-              "bg-slate-200 cursor-pointer hover:bg-slate-300 rounded-full m-1 p-1",
+              "pushPin",
               {"visible": isHovered || isPinned},
               {"invisible": !isHovered && !isPinned}
             )} />
