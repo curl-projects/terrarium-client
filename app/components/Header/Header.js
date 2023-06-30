@@ -49,9 +49,9 @@ export default function Header(props){
         <Link to ='/possible-features' style={{textDecoration: "none"}}>
         <h3 className='navigationText'>Possible Features</h3>
         </Link>
-        <Link to ='/current-bugs' style={{textDecoration: "none"}}>
+        {/* <Link to ='/curr ent-bugs' style={{textDecoration: "none"}}>
           <h3 className='navigationText'>Bugs</h3>
-        </Link>
+        </Link> */}
         <Tooltip title="Logout" placement='bottom' arrow>
           <button type='submit'>
             <p className='navigationText'>

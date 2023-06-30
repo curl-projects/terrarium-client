@@ -122,11 +122,15 @@ const [columns, setColumns] = useState(columnsFromBackend);
     >
         {Object.entries(columns).map(([columnId, column], index) => {
         return (
+            <>
             <RoadmapColumn key={columnId}
                             columnId={columnId}
                             column={column}
                             index={index}
                             />
+            {/* {index !== Object.entries(columns).length -1 && <div style={{height: "100%", border: "22px dashed #e7e7e7"}}/>} */}
+            </>
+
         );
         })}
     </DragDropContext>

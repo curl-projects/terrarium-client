@@ -14,7 +14,7 @@ export default function AuthorizedUserRow(props){
     return(
         <div className='authUserOuterWrapper' >
                     <div className='fileIconWrapper'>
-                        <FiUser style={{fontSize: "26px", color: "rgba(75, 85, 99, 0.85)"}}/>
+                        <FiUser style={{fontSize: "26px", color: "rgba(75, 85, 99, 0.6)"}}/>
                     </div>
                         <div className='fileTitleRow'>
                             <div className='fileTitleWrapper'>
@@ -25,7 +25,8 @@ export default function AuthorizedUserRow(props){
                                 <div className='fileRemoveWrapper'>
                                     <BsX 
                                         onClick={handleDelete}
-                                        style={{fontSize: "28px", color: "rgba(75, 85, 99, 0.95)", cursor: "pointer"}}/>
+                                        
+                                        style={{fontSize: "28px", color: "rgba(75, 85, 99, 0.6)", cursor: "pointer"}}/>
                                 </div>
                             </Tooltip>
                         </div>

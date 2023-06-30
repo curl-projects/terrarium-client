@@ -684,11 +684,12 @@ body {
 }
 
 .kanbanCardDescriptionText{
- color: #4B5563;
+ color: #4B556399;
  font-size: 12px;
  font-weight: 400; 
  position: relative;
  left: 1px;
+ letter-spacing: -0.03em;
 }
 
 /*  -------- NOTEPAD -------- */
@@ -1784,7 +1785,7 @@ div.DraftEditor-root {
 }
 
 .dataSourcesInnerContainer{
-  background-color: #f3f4f6;
+  background-color: #f3f4f69e;
   display: flex;
   flex: 1;
 }
@@ -2096,7 +2097,7 @@ div.DraftEditor-root {
 
 .fileTitle{
   font-size: 15px;
-  color: rgb(75, 85, 99);
+  color: rgba(75, 85, 99, 0.6);
   font-weight: 500;
 }
 
@@ -2142,6 +2143,7 @@ div.DraftEditor-root {
   justify-content: center;
   align-items: center;
   padding: 10px;
+  color: rgba(75, 85, 99, 0.6);
 }
 
 .fileInnerWrapper{
@@ -2696,4 +2698,20 @@ div.DraftEditor-root {
   align-items: center;
   justify-content: center;
   margin-right: 6px;
+}
+
+/* TOOLTIP CUSTOMISATION */
+.MuiTooltip-tooltip{
+  background: white !important;
+  border: 1px solid #e7e7e7 !important;
+  color: rgba(75, 85, 99, 0.5) !important;
+  font-size: 12px !important;
+  font-family: Inter !important;
+  letter-spacing: -0.06em !important;
+  font-weight: 450 !important;
+}
+
+.MuiTooltip-arrow::before{
+  border: 1px solid #e7e7e7 !important;
+  background: unset !important;
 }

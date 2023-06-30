@@ -120,14 +120,14 @@ export default function Integrations(){
                     borderWidth: !clickedIntegration && "0px"
                 }}>
                     <div className='integrationContainerCreateWrapper'>
-                        <div className='integrationContainerTitleRow'>
+                        {/* <div className='integrationContainerTitleRow'>
                             <p className='integrationContainerTitle'>
                                 <span className="integrationContainerTitleIcon">
                                     {clickedIntegration?.icon}
                                 </span>
-                            {/* {titleize(clickedIntegration?.platform || "")} */}
+                            {titleize(clickedIntegration?.platform || "")}
                             </p>
-                        </div>
+                        </div> */}
                         <p className='authUserTitleText'>Connect to Discord</p>
                         <div className='authUserRowWrapper' style={{marginBottom: "10px"}}>
                             <div className='authUserRow' style={{height: "unset"}}>
