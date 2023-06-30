@@ -8,6 +8,7 @@ export default function MessageStreamFeatureRequests(props){
             <div className='featureRequestSearchWrapper'>
                 <TextField 
                     label="Search" 
+                    InputProps={{ inputProps: { tabIndex: -1 } }} 
                     className='featureRequestSearchTextField'
                     value={props.searchText}
                     onChange={(e)=> {

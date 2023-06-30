@@ -18,6 +18,7 @@ model User {
   features        Feature[]
   featureRequests FeatureRequest[]
   notionAuths     NotionAuth[]
+  possibleFeatures PossibleFeature[]
 }
 
 model AuthorizedUser {
@@ -169,4 +170,15 @@ model BaseDataset {
   originUser     String?
   user           User      @relation(fields: [userId], references: [id])
   datasets        Dataset[]
+}
+
+model PossibleFeature {
+  possibleFeatureId Int @id @default(sequence())
+  type String
+  status String @default("unapproved")
+  title String
+  description String?
+  upvotes Int @default(0)
+  users User[]
+  authorId String @default("")
 }

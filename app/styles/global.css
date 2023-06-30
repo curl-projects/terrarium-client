@@ -1488,6 +1488,127 @@ div.DraftEditor-root {
   overflow: hidden;
 }
 
+.possibleFeaturesScaffold{
+  margin-top: 25px;
+  display: flex;
+  flex-direction: row;
+  grid-row: 3;
+  grid-column: 2;
+  overflow: hidden;
+}
+
+.innerFeaturesScaffold{
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  overflow: scroll;
+
+}
+
+.innerBugsScaffold{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f3f4f69e;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px;
+}
+
+.existingSubmissionsWrapper{
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.bugsScaffoldTitleText{
+    color: #4b556399;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -.06em;
+    margin-bottom: 4px;
+}
+
+
+.newBugForm{
+  border: 2px dashed #e7e7e7;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 30px;
+  justify-content: center;
+  margin-top: 20px;
+  transition: all .3s ease-in-out;
+  cursor: pointer;
+  opacity: .5;
+}
+
+.submissionAddButton:hover{
+  transform: scale(1.15);
+}
+
+.bugSubmit{
+  letter-spacing: -.03em;
+  color: #7e988e;
+  font-weight: 600;
+  font-size: 22px;
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(119, 153, 141, .3);
+  transition: all 0.3s ease-in-out;
+}
+
+.bugSubmit:hover{
+  transform: scale(1.1);
+}
+
+.submissionAddButton{
+  font-size: 30px;
+  letter-spacing: -.03em;
+  color: #4b556399;
+  font-weight: 600;
+}
+
+.bugsRow{
+  border: 1px solid rgba(119, 153, 141, .3);
+  width: 100%;
+  height: 32px;
+  display: flex;
+  letter-spacing: -.03em;
+  margin-bottom: 6px;
+}
+
+.bugsLabel{
+  flex: .25;
+  border-right: 1px solid rgba(119, 153, 141, .3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bugsLabelText{
+  color: #4b556399;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.bugsInputWrapper{
+  flex: .75;
+  max-height: 30px; 
+}
+
+
 .workspaceOutletScaffold{
   flex: 1;
   padding: 26px;
@@ -2738,4 +2859,104 @@ div.DraftEditor-root {
   .navigationTextWrapper {
     display: none
   }
+}
+
+/* POSSIBLE FEATURES */
+.possibleFeatureCard{
+  width: 80%;
+  border: 1px solid #e7e7e7;
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  transition: all 0.3s ease-in-out;
+  height: auto;
+}
+
+.possibleFeatureBookmark{
+  width: 10px;
+  background-color: rgba(119, 153, 141, 0.8);
+}
+
+.possibleFeatureUpvoteWrapper{
+  flex: 0.2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.possibleFeatureUpvote{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  border: 1px solid #e7e7e7;
+  border-radius: 2px;
+}
+
+.possibleFeatureUpvoteText{
+  color: rgba(75, 85, 99, 0.85);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.05em;
+}
+
+.possibleFeatureUpvoteIcon{
+  color: rgba(75, 85, 99, 0.85); 
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.05em;
+  transition: all 0.3s ease-in-out;
+}
+
+.possibleFeatureContent{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.possibleFeatureTitle{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.possibleFeatureTitleText{
+  color: #4b5563b3;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.05em;
+}
+
+.possibleFeatureMetadata{
+
+}
+
+.possibleFeatureMetadataText{
+  font-size: 12px;
+  color: rgba(119, 153, 141, 0.8);
+  position: relative;
+  top: -5px;
+  left: 1px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.possibleFeatureDescription{
+
+}
+
+.possibleFeatureDescriptionText{
+  color: #4b556399;
+  font-size: 12px;
+  font-weight: 400;
+  position: relative;
+  left: 1px;
+  letter-spacing: -.03em;
 }

@@ -60,6 +60,7 @@ const Toolbar = (props) => {
       <button
         key={index}
         title={block.toolTip}
+        style={{cursor: 'pointer'}}
         onMouseDown={(event) => handleBlockStyle(event, block.type)}
         onClick={(event) => event.preventDefault()}
         className={className + " bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-md"}
