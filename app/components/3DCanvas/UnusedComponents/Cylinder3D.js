@@ -18,15 +18,15 @@ export default function Cylinder3D(props){
     <mesh
       {...props}
       ref={ref}
-      scale={1}
+      scale={0.1}
       onClick={(event) => click(!clicked)}
       onPointerOver={(event) => hover(true)}
+      visible='false'
       onPointerOut={(event) => hover(false)}
     >
       <icosahedronGeometry args={[1, 0]} />
       <meshStandardMaterial
-        wireframe={false}
-        color={hovered ? "#4b5563" : "orange"}
+        wireframe={true}
       />
     </mesh>
   )

@@ -2960,3 +2960,59 @@ div.DraftEditor-root {
   left: 1px;
   letter-spacing: -.03em;
 }
+
+/* LANDING PAGE */
+.landingPageIntro{
+  display: flex;
+  width: 100vw;
+  height: 90vh;
+}
+
+.landingPageIntroLeft{
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.landingPageIntroRight{
+  flex: 1;
+}
+
+.landingPageLogoWrapper{
+  display: flex;
+  align-items: column;
+  padding: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.landingPageLogo{
+  color: #7e988e;
+  font-size: 90px;
+  font-family: Helvetica Neue;
+  font-weight: 700;
+  display: flex;
+  letter-spacing: -.03em;
+  position: relative;
+  left: 32px;
+}
+
+.terrariumTagLine{}
+
+.shapeDiv{
+  border: 2px solid black;
+  height: 100vh;
+  width: 100vw;
+  border: 2px solid black;
+  clip-path: polygon(0% 81%, 2% 73%, 3% 71%, 5% 67%, 8% 65%, 12% 63%, 16% 63%, 21% 62%, 26% 62%, 29% 61%, 35% 61%, 43% 58%, 51% 52%, 53% 47%, 56% 43%, 59% 38%, 60% 32%, 61% 25%, 61% 22%, 61% 18%, 61% 15%, 61% 8%, 62% 4%, 63% 1%, 88% 0%, 88% 6%, 87% 11%, 87% 14%, 87% 19%, 87% 28%, 87% 25%, 86% 32%, 86% 35%, 83% 38%, 83% 45%, 80% 47%, 79% 51%, 76% 57%, 74% 59%, 69% 62%, 67% 64%, 64% 67%, 57% 70%, 62% 69%, 53% 74%, 50% 76%, 46% 79%, 43% 80%, 40% 83%, 33% 85%, 37% 84%, 26% 89%, 31% 87%, 24% 90%, 22% 91%, 21% 95%, 20% 98%, 16% 99%, 0% 99%);
+}
+
+.terrariumRiverWrapper{
+  /* clip-path: polygon(100% 96%, 95% 96%, 92% 94%, 90% 93%, 88% 89%, 86% 87%, 81% 83%, 83% 84%, 79% 80%, 77% 77%, 77% 74%, 75% 69%, 70% 68%, 65% 64%, 60% 63%, 55% 63%, 51% 60%, 47% 56%, 47% 53%, 45% 50%, 45% 46%, 44% 39%, 40% 37%, 36% 34%, 32% 34%, 25% 34%, 21% 34%, 19% 32%, 16% 30%, 14% 27%, 14% 24%, 11% 17%, 11% 13%, 10% 7%, 10% 3%, 10% 0%, 39% 1%, 42% 6%, 44% 7%, 48% 9%, 51% 12%, 56% 14%, 57% 15%, 59% 17%, 61% 20%, 63% 24%, 64% 27%, 66% 32%, 70% 34%, 74% 37%, 75% 40%, 77% 42%, 81% 43%, 84% 46%, 86% 49%, 90% 50%, 93% 54%, 96% 58%, 96% 65%, 99% 65%, 100% 65%, 100% 65%); */
+  width: 100%;
+  height: 60%;
+  /* background-color: green; */
+  border: 2px solid black;
+}
