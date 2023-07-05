@@ -21,6 +21,7 @@ import Roadmap from "~/components/Roadmap/Roadmap";
 import PlaceholderRoadmap from "~/components/LandingPage/PlaceholderRoadmap";
 import PlaceholderFeature from "~/components/LandingPage/PlaceholderFeature";
 import { useEffect } from "react";
+import LandingPageWaitListTitle from "~/components/LandingPage/LandingPageWaitListTitle";
 
 const fullSearchText = "Whiteboard"
 const searchTextDelay = 10
@@ -200,6 +201,19 @@ export default function LandingPage(){
                         />
                     </div>
                 </div>
+            </div>
+        </div>
+        <div className='landingPageSection'>
+            <div className='landingPageSectionInner'>
+                <div className='landingPageSectionViewportWrapper' style={{alignItems: "center", justifyContent: "center"}}>
+                <LandingPageWaitListTitle
+                    title="Classify and extract feature requests from Discord"
+                    leftSide={true}
+                    messageStreamIsExpanded={messageStreamIsExpanded}
+                    setMessageStreamIsExpanded={setMessageStreamIsExpanded}
+                />
+                </div>
+                
             </div>
         </div>
 

@@ -3099,6 +3099,10 @@ div.DraftEditor-root {
   transition: all 0.2s ease-in-out;
 }
 
+.pageTitleBoldedDescriptionText:hover{
+  transform: scale(1.05);
+}
+
 
 .landingPageSectionButtonOuterRow{
   padding-left: 14vh;
@@ -3166,3 +3170,12 @@ div.DraftEditor-root {
   justify-content: center;
   margin-right: 6px;
 }
+
+.waitlistCallToAction{
+  transition: all 0.3s ease-in-out;
+}
+
+.waitlistCallToAction:hover{
+  transform: scale(1.05);
+}
+
