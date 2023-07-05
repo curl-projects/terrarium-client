@@ -79,7 +79,7 @@ const [columns, setColumns] = useState(columnsFromBackend);
         }
       });
 
-      fetcher.submit({ columns: JSON.stringify({
+      !placeholder && fetcher.submit({ columns: JSON.stringify({
         ...columns,
         [source.droppableId]: {
           ...sourceColumn,
@@ -106,7 +106,7 @@ const [columns, setColumns] = useState(columnsFromBackend);
         }
       });
 
-      fetcher.submit({ columns: JSON.stringify({
+      !placeholder && fetcher.submit({ columns: JSON.stringify({
         ...columns,
         [source.droppableId]: {
           ...column,
@@ -126,6 +126,7 @@ const [columns, setColumns] = useState(columnsFromBackend);
                             columnId={columnId}
                             column={column}
                             index={index}
+                            placeholder={props.placeholder}
                             />
         );
         })}

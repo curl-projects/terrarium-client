@@ -15,7 +15,8 @@ import Select from '@mui/material/Select';
 
 export default function ProcessedDatasets({  processedDatasets, activelyDeletingFile, setActivelyDeletingFile,
                                             readDatasetFetcher, unprocessedFileName, setUnprocessedFileName, baseDatasetId, setBaseDatasetId,
-                                            fileHeaders, setFileHeaders, highlightedProcessedDatasets, actionData, handleUnprocessedDatasetClick}){
+                                            fileHeaders, setFileHeaders, highlightedProcessedDatasets, actionData, handleUnprocessedDatasetClick,
+                                            placeholder}){
     const { readString } = usePapaParse();
     const [filteredProcessedDatasets, setFilteredProcessedDatasets] = useState([])
     const [fileWarning, setFileWarning] = useState("")
@@ -42,22 +43,22 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
 
 
     useEffect(()=>{
-        if(highlightedProcessedDatasets === 'default'){
-            setFilteredProcessedDatasets(processedDatasets)
-        }
-        else{ 
-            setFilteredProcessedDatasets(processedDatasets.reduce((acc, element) => {
-                if(highlightedProcessedDatasets.includes(element.datasetId)){
-                    return [element, ...acc]
-                }
-                return [...acc, element];
-            }, []))
-        }
+            if(highlightedProcessedDatasets === 'default'){
+                setFilteredProcessedDatasets(processedDatasets)
+            }
+            else{ 
+                setFilteredProcessedDatasets(processedDatasets.reduce((acc, element) => {
+                    if(highlightedProcessedDatasets.includes(element.datasetId)){
+                        return [element, ...acc]
+                    }
+                    return [...acc, element];
+                }, []))
+            }
     }, [processedDatasets, highlightedProcessedDatasets, fileHeaders])
 
     // WEB SOCKET CONNECTION
     useEffect(()=>{
-        setSocketUrl(window.ENV.WEBSOCKETS_URL)
+        !placeholder && setSocketUrl(window.ENV.WEBSOCKETS_URL)
       }, [])
 
     useEffect(()=>{
@@ -81,7 +82,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
 
     
     useEffect(()=>{
-        if(readDatasetFetcher.data?.fileContents){
+        if(!placeholder && readDatasetFetcher.data?.fileContents){
             readString(readDatasetFetcher.data.fileContents, {
                 preview: 1,
                 complete: function (results) {
@@ -219,7 +220,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                         <>
                         <div style={{height: "20px"}}/>
                         <div className='fileSubmitWrapper'>
-                            <button className='fileSubmit' type="submit">Upload</button>
+                            {!placeholder && <button className='fileSubmit' type="submit">Upload</button>}
                         </div>
                         </>
                     }

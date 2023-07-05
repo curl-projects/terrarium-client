@@ -26,43 +26,39 @@ export default function Header(props){
 
   return(
     <div className='header' style={{gridColumn: "1 / 4", gridRow: "1 / 2"}}>
+    <Tooltip title='Your new favourite app' placement='bottom' arrow>
       <div className='headerTerrariumWrapper'>
-        <Link to ='/roadmap'>
           <h1 className='headerTerrariumText'>
             <div className='terrarium-plant-wrapper'><RiPlantLine/></div>
             Terrarium
           </h1>
-        </Link>
       </div>
+      </Tooltip>
       <div style={{flex: 1}}/>
       {!props.headerCollapsed &&
       <div className="navigationTextWrapper">
-        <Link to ='/roadmap' style={{textDecoration: "none"}}>
+        <Tooltip title="Create and organise topics & features" placement='bottom' arrow>
         <h3 className='navigationText'>Roadmap</h3>
-        </Link>
-        <Link to ='/integrations' style={{textDecoration: "none"}}>
+        </Tooltip>
+        <Tooltip title="Connect Discord and Other Platforms" placement='bottom' arrow>
         <h3 className='navigationText'>Integrations</h3>
-        </Link>
-        <Link to ='/data-sources' style={{textDecoration: "none"}}>
+        </Tooltip>
+        <Tooltip title="Upload and work with datasets" placement='bottom' arrow>
         <h3 className='navigationText'>Data Sources</h3>
-        </Link>
-        <Link to ='/possible-features' style={{textDecoration: "none"}}>
+        </Tooltip>
+        <Tooltip title="Bugs, New Features & Requests" placement='bottom' arrow>
         <h3 className='navigationText'>Possible Features</h3>
-        </Link>
+        </Tooltip>
         {/* <Link to ='/curr ent-bugs' style={{textDecoration: "none"}}>
           <h3 className='navigationText'>Bugs</h3>
         </Link> */}
-        
-          <Form method='post' action='/logout'>
-            <Tooltip title="Logout" placement='bottom' arrow>
-              <button type='submit'>
-                <p className='navigationText'>
-                  <HiLogout />
-                </p>
-              </button>  
-            </Tooltip>    
-          </Form>  
-        
+        <Tooltip title="Logout" placement='bottom' arrow>
+          <button type='submit'>
+            <p className='navigationText'>
+              <HiLogout />
+            </p>
+          </button>    
+        </Tooltip>    
       </div>
       }
     </div>

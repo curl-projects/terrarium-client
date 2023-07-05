@@ -65,6 +65,7 @@ export default function RoadmapColumn(props){
                                     index={index}
                                     updateHoveredData={props.updateHoveredData}
                                     color={props.column.color}
+                                    placeholder={props.placeholder}
                                     />
                     );
                 })}
@@ -78,9 +79,15 @@ export default function RoadmapColumn(props){
             <input type="hidden" name='actionType' value='create'/>
             <input type='hidden' name="columnState" value={props.columnId}/>
             <input type='hidden' name="rankState" value={props.column.items ? props.column.items.length + 1: 0}/>
-            <p className='newRoadmapCardText' style={{display: 'button'}}>
+            {props.placeholder ?
+            <p className='newRoadmapCardText'>
                 <BsPlus />
             </p>
+            :
+            <button className='newRoadmapCardText'>
+                <BsPlus />
+            </button>
+            }
             {/* <p className='newRoadmapCardSpecifier'>Create a new feature</p> */}
         </Form>
     </div>

@@ -10,7 +10,7 @@ const AnimatedPoints = animated(Points)
 const AnimatedPointMaterial = animated(PointMaterial)
 
 export default function RiverPoints(props){
-    const [sphere] = useState(() => inSphere(new Float32Array(5001), { radius: 15 }))
+    const [sphere] = useState(() => inSphere(new Float32Array(301), { radius: 30 }))
 
     const springs = useSpring({
         scale: 1
@@ -18,8 +18,10 @@ export default function RiverPoints(props){
 
     useFrame((state, delta) => {
         // console.log("DELTA:", delta)
-        props.pointsRef.current.rotation.y += delta / 30
-        props.outlineRef.current.rotation.y += delta / 30
+        props.pointsRef.current.rotation.y += delta / 20
+        props.outlineRef.current.rotation.y += delta / 20
+        props.pointsRef.current.rotation.x += delta / 20
+        props.outlineRef.current.rotation.x += delta / 20
         // props.pointsRef.current.position.y += delta / 10
     //   props.pointsRef.current.position.y -= delta / 10
         // props.pointsRef.current.rotation.x += delta / 2
@@ -48,10 +50,10 @@ export default function RiverPoints(props){
             frustumCulled={false} 
             scale={springs.scale} {...props}>
             <PointMaterial 
-                color="rgb(190, 203, 198)"
+                color="#d5f7ea"
                 size={10} 
                 sizeAttenuation={false} 
-                depthWrite={true} 
+                depthWrite={false} 
                 transparent={true} 
                 opacity={1}/>
           </AnimatedPoints>

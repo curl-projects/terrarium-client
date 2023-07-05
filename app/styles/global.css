@@ -1440,12 +1440,13 @@ div.DraftEditor-root {
 
 .featureDescriptionWrapper{
   font-size: 16px;
-  color: #4b5563;
+  color: #4b556399;
+  font-weight: 500;
+  letter-spacing: -0.06em;
   outline: none;
   width: 100%;
   height: 50px;
   padding-top: 10px;
-  letter-spacing: -0.02em;
   /* transition: all 0.5s ease-in-out; */
 }
 
@@ -2965,7 +2966,7 @@ div.DraftEditor-root {
 .landingPageIntro{
   display: flex;
   width: 100vw;
-  height: 90vh;
+  height: 100vh;
 }
 
 .landingPageIntroLeft{
@@ -3009,10 +3010,145 @@ div.DraftEditor-root {
   clip-path: polygon(0% 81%, 2% 73%, 3% 71%, 5% 67%, 8% 65%, 12% 63%, 16% 63%, 21% 62%, 26% 62%, 29% 61%, 35% 61%, 43% 58%, 51% 52%, 53% 47%, 56% 43%, 59% 38%, 60% 32%, 61% 25%, 61% 22%, 61% 18%, 61% 15%, 61% 8%, 62% 4%, 63% 1%, 88% 0%, 88% 6%, 87% 11%, 87% 14%, 87% 19%, 87% 28%, 87% 25%, 86% 32%, 86% 35%, 83% 38%, 83% 45%, 80% 47%, 79% 51%, 76% 57%, 74% 59%, 69% 62%, 67% 64%, 64% 67%, 57% 70%, 62% 69%, 53% 74%, 50% 76%, 46% 79%, 43% 80%, 40% 83%, 33% 85%, 37% 84%, 26% 89%, 31% 87%, 24% 90%, 22% 91%, 21% 95%, 20% 98%, 16% 99%, 0% 99%);
 }
 
-.terrariumRiverWrapper{
+.terrariumImageWrapper{
   /* clip-path: polygon(100% 96%, 95% 96%, 92% 94%, 90% 93%, 88% 89%, 86% 87%, 81% 83%, 83% 84%, 79% 80%, 77% 77%, 77% 74%, 75% 69%, 70% 68%, 65% 64%, 60% 63%, 55% 63%, 51% 60%, 47% 56%, 47% 53%, 45% 50%, 45% 46%, 44% 39%, 40% 37%, 36% 34%, 32% 34%, 25% 34%, 21% 34%, 19% 32%, 16% 30%, 14% 27%, 14% 24%, 11% 17%, 11% 13%, 10% 7%, 10% 3%, 10% 0%, 39% 1%, 42% 6%, 44% 7%, 48% 9%, 51% 12%, 56% 14%, 57% 15%, 59% 17%, 61% 20%, 63% 24%, 64% 27%, 66% 32%, 70% 34%, 74% 37%, 75% 40%, 77% 42%, 81% 43%, 84% 46%, 86% 49%, 90% 50%, 93% 54%, 96% 58%, 96% 65%, 99% 65%, 100% 65%, 100% 65%); */
   width: 100%;
   height: 60%;
   /* background-color: green; */
+}
+
+.landingPageSection{
+  height: 100vh;
   border: 2px solid black;
+  width: 100%;
+  display: flex;
+}
+
+.absoluteLandingPageCanvas{
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: 0 auto !important;
+  width: unset; 
+  border: 2px dashed pink !important;
+}
+
+.landingPageSectionInner{
+  flex: 1.5;
+  border: 2px solid grey;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  align-items: center;
+  flex-direction: column;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.landingPageSectionViewportWrapper{
+  padding: 14vh;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  height: 80%;
+  width: 100%;
+  display: flex;
+  gap: 50px;
+}
+.landingPageSectionMainViewport{
+  height: 100%;
+  flex: 1;
+  border: 1px solid #e7e7e7;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+}
+
+.placeholderMessageStream{
+  flex: 1;
+  overflow: scroll;
+  width: 100%;
+  padding-top: 7px;
+}
+
+.placeholderMessageStreamOuter{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.landingPageTitleText{
+  font-weight: 700;
+  font-size: 46px;
+  color: #4b5563;
+  letter-spacing: -.03em;
+}
+
+.landingPageTitleChangingText{
+  margin-left: 8px;
+  color: #7e988e;
+}
+
+.pageTitleBoldedDescriptionText{
+  /* color: #4b556399; */
+  color: #b0bfb9;
+  font-weight: 500;
+  font-size: 26px;
+  letter-spacing: -0.06em;
+  transition: all 0.2s ease-in-out;
+}
+
+
+.landingPageSectionButtonOuterRow{
+  padding-left: 14vh;
+  padding-right: 14vh;
+  width: 100%;
+  display: flex;
+}
+
+.landingPageSectionButtonInnerRow{
+  height: "100%";
+  flex: 1;
+  display: flex;
+  gap: 20px;
+}
+
+.landingPageFeatureButton{
+  border: 1px solid #e7e7e7;
+  background-color: #fff;
+  flex: 1;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  height: 60px;
+  padding-left: 20px;
+  padding-right: 20px;
+  max-width: fit-content;
+  border-radius: 2px;
+  transition: all .3s ease-in-out, color 0s, border 0s;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4b556399;
+}
+
+.landingPageFeatureButton:hover{
+  transform: scale(1.05);
+}
+
+.landingPageFeatureButtonText{
+  font-size: 24px;
+  letter-spacing: -.06em;
+  color: #4b556399;
+  display: flex;
+  user-select: none;
+  justify-content: center;
+}
+
+.landingPageFeatureButtonIcon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
 }

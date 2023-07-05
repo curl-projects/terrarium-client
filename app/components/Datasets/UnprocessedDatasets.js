@@ -69,7 +69,6 @@ export default function UnprocessedDatasets(props){
     }
 
     useEffect(()=>{
-        console.log("BASE DATASETS:", props.baseDatasets)
         const nameArray = props.baseDatasets.map(i => i.uniqueFileName.split("-").slice(1).join("-"))
         const outputArray = alterDuplicates(nameArray)
 
@@ -84,9 +83,10 @@ export default function UnprocessedDatasets(props){
                 <BaseDatasetRow 
                     idx={idx} row={row} key={idx}
                     name={nameArray.length > idx ? nameArray[idx] : ""}
-                    handleUnprocessedDatasetClick={props.handleUnprocessedDatasetClick}
+                    handleUnprocessedDatasetClick={props.placeholder ? {} : props.handleUnprocessedDatasetClick}
                     unprocessedFileName={props.unprocessedFileName}
                     setHighlightedProcessedDatasets={props.setHighlightedProcessedDatasets}
+                    placeholder={props.placeholder}
                 />
             ))
             }
@@ -113,7 +113,7 @@ export default function UnprocessedDatasets(props){
                 <>
                 <div style={{height: "20px"}}/>
                 <div className='fileSubmitWrapper'>
-                    <button className='fileSubmit'>Upload</button>
+                    {!props.placeholder && <button className='fileSubmit'>Upload</button>}
                 </div>
                 </>
             }

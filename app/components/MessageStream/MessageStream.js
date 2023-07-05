@@ -139,6 +139,7 @@ export default function MessageStream(props) {
                                   expandSpecificCard={props.expandSpecificCard}
                                   searchText={props.searchText}
                                   setSearchText={props.setSearchText}
+                                  landingPageSearchBarRef={props.landingPageSearchBarRef}
                                   />,
             "clusters": <MessageStreamClusters 
                             clustersGenerated={props.clustersGenerated}

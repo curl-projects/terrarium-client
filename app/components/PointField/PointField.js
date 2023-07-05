@@ -15,7 +15,7 @@ function usePrevious(value) {
 export default function PointField({data, clusters, filterBrushedData,
                                    resetBrushFilter, zoomObject, setZoomObject,
                                    displayControl, resetZoomedData, headerCollapsed,
-                                  setDataView, setExpandSpecificCard, generateClusters}) {
+                                  setDataView, setExpandSpecificCard, generateClusters, placeholder}) {
 
   useEffect(()=>{
     console.log("POINT FIELD DATA:", data)
@@ -236,8 +236,14 @@ export default function PointField({data, clusters, filterBrushedData,
 
   const measuredRef = useCallback(node => {
     if (node !== null) {
-      setContainerHeight(node.getBoundingClientRect().height); 
-      setContainerWidth(node.getBoundingClientRect().width);
+      if(placeholder){
+        setContainerHeight(node.getBoundingClientRect().height*1.25); 
+        setContainerWidth(node.getBoundingClientRect().width*1.25);
+      }
+      else{
+        setContainerHeight(node.getBoundingClientRect().height); 
+        setContainerWidth(node.getBoundingClientRect().width);
+      }
     }
   }, []);
 

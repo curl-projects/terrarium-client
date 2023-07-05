@@ -24,6 +24,7 @@ function RichTextEditor(props){
         }
         return "not-handled"
     }
+    
     const handleTab = (e) => {
         if (editorState) {
             setEditorState(RichUtils.onTab(e, editorState, 6))

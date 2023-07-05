@@ -122,6 +122,7 @@ export default function PointFieldScaffold(props){
         setDataView={props.setDataView}
         setExpandSpecificCard={props.setExpandSpecificCard}
         generateClusters={generateClusters}
+        placeholder={props.placeholder}
         />
       <button style={{
         position: 'absolute',

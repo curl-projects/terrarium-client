@@ -15,7 +15,6 @@ export default function BaseDatasetRow(props){
     }
 
     function handleEnter(){
-
         props.setHighlightedProcessedDatasets(props.row.datasets.map(i => i.datasetId))
     }
 

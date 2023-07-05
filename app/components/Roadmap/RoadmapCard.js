@@ -34,10 +34,16 @@ export default function KanbanCard(props){
                     <div className='kanbanCardBookmark' style={{"backgroundColor": props.color}}></div>
                     <div className='kanbanCardContent'>
                         <div className='kanbanCardTitle'>
-                            <Link to={`/feature/discovery/${props.item.id}`} >
-                            <h1 className='kanbanCardTitleText'> {props.item ? props.item.title : "Untitled"}</h1>
-                            </Link>
+                            {props.placeholder ?
+                                <h1 className='kanbanCardTitleText'> {props.item ? props.item.title : "Untitled"}</h1>
+                            :
+                                <Link to={`/feature/discovery/${props.item.id}`} >
+                                <h1 className='kanbanCardTitleText'> {props.item ? props.item.title : "Untitled"}</h1>
+                                </Link>
+   
+                            }
                             <div style={{flex: 1}}/>
+                            {!props.placeholder && 
                             <div className='kanbanCardMenu'>
                                 <BiDotsHorizontalRounded onClick={handleClick} style={{cursor: "pointer"}}/>
                                 <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleClose}>
@@ -50,6 +56,7 @@ export default function KanbanCard(props){
                                         </MenuItem>
                                 </Menu>
                             </div>
+                            }
                         </div>
                         <div className='kanbanCardPinned'>
                             <p className='kanbanCardPinnedText' style={{"color": props.color}}><em>{props.item ? props.item._count.featureRequests : 0} pinned {(props.item._count.featureRequests == 1) ? <span>message</span> : <span>messages</span>}</em></p>

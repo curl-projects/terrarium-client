@@ -139,6 +139,11 @@ export default function Feature(){
     const [messageHistory, setMessageHistory] = useState([]);
 
     useEffect(()=>{
+        console.log("LOADER DATA:", loaderData)
+    }, [loaderData])
+
+
+    useEffect(()=>{
         setSocketUrl(window.ENV.WEBSOCKETS_URL)
       }, [])
 
