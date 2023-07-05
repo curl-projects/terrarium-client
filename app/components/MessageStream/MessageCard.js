@@ -124,7 +124,9 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
     <div className='pushPinWrapper'>
           <AiOutlinePushpin
             size={22}
-            onClick = {() => pinCard(props.cardData.fr_id)}
+            onClick = {() => {
+              !props.placeholder && pinCard(props.cardData.fr_id)
+            }}
             style={props.pushPinStyle && {...props.pushPinStyle }}
             className={cn(
               "pushPin",

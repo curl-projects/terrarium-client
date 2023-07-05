@@ -45,6 +45,7 @@ export default function MessageStreamClusters(props){
                     setAllCardsStatus={setAllCardsStatus}
                     allCardsStatus={allCardsStatus}
                     pinnedCards={props.pinnedCards}
+                    placeholder={props.placeholder}
                 />
             ))
             }

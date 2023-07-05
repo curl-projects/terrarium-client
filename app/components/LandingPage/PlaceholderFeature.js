@@ -4289,6 +4289,7 @@ export default function PlaceholderFeature(props){
     // LANDING PAGE LOGIC
     useEffect(()=>{
         setDataView(props.landingPageDataView)
+        props.landingPageDataView === 'clusters' && setTriggerClusters(true)
     }, [props.landingPageDataView])
 
     useEffect(()=>{
@@ -4531,6 +4532,7 @@ export default function PlaceholderFeature(props){
                             searchText={searchText}
                             setSearchText={setSearchText}
                             landingPageSearchBarRef={props.landingPageSearchBarRef}
+                            placeholder={true}
                             />
                     </div>
                 </div>

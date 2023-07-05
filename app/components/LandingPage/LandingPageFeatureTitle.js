@@ -7,12 +7,9 @@ export default function LandingPageRoadmapTitle(props){
         }}>
         <div className='pageTitle' style={{textAlign: "center"}}>
             <h1 className='landingPageTitleText'>
-                Filter, Search, Cluster, Sort
+                ...and analyse relevant data to identify trends and patterns.
             </h1>
-            <div className='pageTitleDivider'/>
-        </div>
-        <div className='pageTitleDescription' style={{justifyContent: 'center'}}>
-            <p className='pageTitleDescriptionText'>{props.description || "No description"}</p>
+            <div className='pageTitleDivider' style={{marginBottom: "20px"}}/>
         </div>
     </div>
     )

@@ -3105,6 +3105,7 @@ div.DraftEditor-root {
   padding-right: 14vh;
   width: 100%;
   display: flex;
+  flex-direction: column;
 }
 
 .landingPageSectionButtonInnerRow{
@@ -3114,6 +3115,19 @@ div.DraftEditor-root {
   gap: 20px;
 }
 
+.landingPageButtonDescription{
+  margin-top: 10px;
+  width: 100%;
+
+}
+
+.landingPageButtonDescriptionText{
+  color: #b0bfb9;
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -.06em;
+  transition: all .2s ease-in-out;
+}
 .landingPageFeatureButton{
   border: 1px solid #e7e7e7;
   background-color: #fff;

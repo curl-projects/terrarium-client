@@ -35,7 +35,9 @@ export default function MessageStreamFeatureRequests(props){
                 pinCard={props.pinCard}
                 expandSpecificCard={props.expandSpecificCard}
                 searchText={props.searchText}
-                isPinned={true}/>
+                isPinned={true}
+                placeholder={props.placeholder}
+                />
             ))}
             {props.pinnedCards.length > 0 && <h1 className="text-gray-400 text-xs font-medium pl-4">Unpinned Feature Requests</h1>}
             {props.remainingCards.map((cardData, idx) => (
@@ -49,7 +51,9 @@ export default function MessageStreamFeatureRequests(props){
                 cardScore={cardData.score}
                 isExpanded={props.isExpanded}
                 expandSpecificCard={props.expandSpecificCard}
-                pinCard={props.pinCard} />
+                pinCard={props.pinCard}
+                placeholder={props.placeholder}
+                />
             ))}
         </div>
     )

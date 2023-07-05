@@ -35,6 +35,7 @@ export default function LandingPage(){
     const [landingPageFeatureOutletToggle, setLandingPageFeatureOutletToggle] = useState(false)
     const [landingPageSearchText, setLandingPageSearchText] = useState("")
     const [searchTextIndex, setSearchTextIndex] = useState(-1);
+    const [featureDescriptionText, setFeatureDescriptionText] = useState("")
 
     useEffect(()=>{
         if(searchTextIndex > -1 && searchTextIndex < fullSearchText.length){
@@ -119,14 +120,16 @@ export default function LandingPage(){
         </div>
         <div className='landingPageSection'>
             <div className='landingPageSectionInner'>
-                {/* <LandingPageFeatureTitle /> */}
+                <LandingPageFeatureTitle />
                 <div className='landingPageSectionButtonOuterRow'>
                     <div className='landingPageSectionButtonInnerRow'>
                         <div 
                             className='landingPageFeatureButton'
                             onClick={() => {
+                                setLandingPageSearchText("")
                                 setLandingPageFeatureOutletToggle(false)
                                 setLandingPageDataView('featureRequests')
+                                setFeatureDescriptionText("Each search is associated with the 100 most relevant feature requests across all data sources.")
                                 setSearchTextIndex(0) 
                                 console.log("SEARCHBAR REF", searchBarRef.current)
                                 searchBarRef.current.focus()
@@ -144,6 +147,7 @@ export default function LandingPage(){
                             onClick={()=>{
                                 setLandingPageDataView('clusters')
                                 setLandingPageFeatureOutletToggle(false)
+                                setFeatureDescriptionText("Click each cluster to focus on it.")
                             }}
                             >
                             <p className='landingPageFeatureButtonText'>
@@ -158,6 +162,7 @@ export default function LandingPage(){
                             onClick={()=>{
                                 setLandingPageFeatureOutletToggle(false)
                                 setLandingPageDataView('filters')
+                                setFeatureDescriptionText("Filter by date and author.")
                             }}>
                             <p className='landingPageFeatureButtonText'>
                                 <span className='landingPageFeatureButtonIcon'>
@@ -170,6 +175,7 @@ export default function LandingPage(){
                             className='landingPageFeatureButton'
                             onClick={() => {
                                 setLandingPageFeatureOutletToggle(prevState => !prevState)
+                                setFeatureDescriptionText(landingPageFeatureOutletToggle ? "Select a region of the canvas to highlight data points" : "Write rich text notes on pinned feature requests to synthesise takeaways")
                             }}
                             >
                             <p className='landingPageFeatureButtonText'>
@@ -180,8 +186,11 @@ export default function LandingPage(){
                             </p>
                         </div>
                     </div>
+                    <div className='landingPageButtonDescription'>
+                        <p className='landingPageButtonDescriptionText'>{featureDescriptionText}</p>
+                    </div>
                 </div>
-                <div className='landingPageSectionViewportWrapper'>
+                <div className='landingPageSectionViewportWrapper' style={{paddingTop: "10px"}}>
                     <div className='landingPageSectionMainViewport'>
                         <PlaceholderFeature 
                             landingPageDataView={landingPageDataView}

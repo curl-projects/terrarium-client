@@ -133,13 +133,15 @@ export default function ClusterCard(props) {
             <input type='hidden' name='clusterId' value={props.clusterData[0].cluster.clusterId}/>
             <input type='hidden' name='description' value={descriptionText}/>
             <div className='clusterDescriptionSubmitWrapper'>
-                <button type="submit" style={{fontSize: descriptionFocused ? "16px" : "0px"}}>
-                    <p onClick={()=>setDescriptionFocused(false)} 
-                       className='clusterDescriptionSaveWrapper'
-                       style={{fontWeight: 'bold', fontSize: descriptionFocused ? "12px" : "0px", color: "#B0BFB9"}}>
-                        Save
-                    </p>
-                </button>
+                {!props.placeholder &&
+                  <button type="submit" style={{fontSize: descriptionFocused ? "16px" : "0px"}}>
+                      <p onClick={()=>setDescriptionFocused(false)} 
+                        className='clusterDescriptionSaveWrapper'
+                        style={{fontWeight: 'bold', fontSize: descriptionFocused ? "12px" : "0px", color: "#B0BFB9"}}>
+                          Save
+                      </p>
+                  </button>
+                }
                 <div style={{flex: 1}}/>
             </div>
           </clusterDescriptionFetcher.Form>
@@ -152,7 +154,9 @@ export default function ClusterCard(props) {
                 cardScore={cardData.score}
                 // isExpanded={props.isExpanded}
                 isPinned={props.pinnedCards.map(i => i.featureRequestId).includes(cardData.featureRequestId)}
-                pinCard={props.pinCard} />
+                pinCard={props.pinCard}
+                placeholder={props.placeholder}
+                />
 
             ))}
           </div>

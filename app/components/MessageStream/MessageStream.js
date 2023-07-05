@@ -140,6 +140,7 @@ export default function MessageStream(props) {
                                   searchText={props.searchText}
                                   setSearchText={props.setSearchText}
                                   landingPageSearchBarRef={props.landingPageSearchBarRef}
+                                  placeholder={props.placeholder}
                                   />,
             "clusters": <MessageStreamClusters 
                             clustersGenerated={props.clustersGenerated}
@@ -150,6 +151,7 @@ export default function MessageStream(props) {
                             pinnedCards={pinnedCards}
                             setZoomObject={props.setZoomObject}
                             expandSpecificCard={props.expandSpecificCard}
+                            placeholder={props.placeholder}
                         />,
             "authors": <MessageStreamAuthors 
                           authorData={authorData}
@@ -162,6 +164,7 @@ export default function MessageStream(props) {
                           authorNames={authorNames}
                           invisibleFilters={props.invisibleFilters}
                           setInvisibleFilters={props.setInvisibleFilters}
+                          placeholder={props.placeholder}
                           />
                       
           }[props.dataView]

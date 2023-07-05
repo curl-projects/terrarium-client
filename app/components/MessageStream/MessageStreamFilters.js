@@ -136,12 +136,20 @@ export default function MessageStreamFilters(props){
                                 renderInput={(params) => <TextField {...params} helperText={null} className='datePickerTextField'/>}
                             />
                         </LocalizationProvider>
-                        {filterSelected === 'date' && dateFilterOption && dayjs(dateValue).isValid() &&
+                        {filterSelected === 'date' && dateFilterOption && dayjs(dateValue).isValid() && !props.placeholder &&
                             <button
                                 className='filterOptionButton'
                                 onClick={(e) => handleAddFilter(e, 'date')}>
                                     <BsPlus style={{fontSize: "34px"}}/>
                             </button>                        
+                        }
+                        {filterSelected === 'date' && dateFilterOption && dayjs(dateValue).isValid() && props.placeholder &&
+                            <Tooltip title="Adds a filter to feature request data" arrow placement='top'>
+                                <button
+                                    className='filterOptionButton'>
+                                    <BsPlus style={{fontSize: "34px"}}/>
+                                </button>      
+                            </Tooltip>                  
                         }
 
                     </div>
@@ -172,13 +180,22 @@ export default function MessageStreamFilters(props){
                                     setAuthorValue(newInputValue)
                                     }}
                             />
-                        {filterSelected === 'author' && authorValue && 
+                        {(filterSelected === 'author' && authorValue && !props.placeholder)
+                         && <button
+                         className='filterOptionButton'
+                         onClick={(e) => handleAddFilter(e, 'author')}>
+                             <BsPlus style={{fontSize: "34px"}}/>
+                         </button>   
+                        }
+                        {(filterSelected === 'author' && authorValue && props.placeholder)
+                         && 
+                        <Tooltip title="Adds a filter to feature request data" arrow placement='top'>
                             <button
-                            className='filterOptionButton'
-                            onClick={(e) => handleAddFilter(e, 'author')}>
+                            className='filterOptionButton'>
                                 <BsPlus style={{fontSize: "34px"}}/>
                             </button>   
-                        }   
+                        </Tooltip>  
+                        }
                         </div>
                     }
                     </div>
