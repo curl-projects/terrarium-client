@@ -9,9 +9,11 @@ export default function BaseDatasetRow(props){
     const deleteFetcher = useFetcher()
 
     function handleDelete(){
-        deleteFetcher.submit({baseDatasetId: props.row.baseDatasetId, 
-                                    datasets: JSON.stringify(props.row.datasets), uniqueFileName: props.row.uniqueFileName}, 
-            {method: "post", action: "/utils/delete-base-dataset"})
+        if(!props.placeholder){
+            deleteFetcher.submit({baseDatasetId: props.row.baseDatasetId, 
+                datasets: JSON.stringify(props.row.datasets), uniqueFileName: props.row.uniqueFileName}, 
+                {method: "post", action: "/utils/delete-base-dataset"})
+        }
     }
 
     function handleEnter(){
@@ -42,7 +44,7 @@ export default function BaseDatasetRow(props){
                         <Tooltip title="Process Dataset" placement='top' arrow>
                             <div>
                                 <BiCog 
-                                    onClick={() => props.handleUnprocessedDatasetClick(props.row.uniqueFileName, props.row.baseDatasetId)}
+                                    onClick={() => !props.placeholder && props.handleUnprocessedDatasetClick(props.row.uniqueFileName, props.row.baseDatasetId)}
                                     style={{fontSize: "20px", color: "#9CA3AF", cursor: "pointer"}}
                                 />
                             </div>

@@ -233,7 +233,7 @@ body {
   font-weight: 500;
   font-size: 16px;
   letter-spacing: -0.06em;
-  transition: all 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
 .navigationText:hover{
@@ -439,6 +439,8 @@ body {
   justify-content: flex-start;
   width: 100%;
   height: 100%;
+  max-height: 70%;
+  overflow: scroll;
   flex: 1;
 }
 
@@ -665,6 +667,13 @@ body {
 .kanbanCardMenu{
   color: rgba(119, 153, 141, 0.8);
   font-size: 20px;
+}
+
+.kanbanCardMenuItem{
+  color: #4b556399;
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  font-size: 16px;
 }
 
 .kanbanCardTitleText{
@@ -1233,11 +1242,13 @@ div.DraftEditor-root {
 }
 
 .searchOutletText{
-  font-size: 18px;
-  letter-spacing: -0.02em;
-  color: #4b5563;
-  font-weight: 350;
-  text-align: center; 
+  color: #b0bfb9;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -.06em;
+  transition: all .2s ease-in-out;
+  text-align: center;
+  padding: 40px;
 }
 
 /* SEARCH BAR */
@@ -2620,6 +2631,7 @@ div.DraftEditor-root {
   grid-row: 3;
   padding-top: 30px;
   grid-column: 2;
+  overflow: hidden;
 }
 
 .integrationsAuthUserWrapper{
@@ -2875,6 +2887,11 @@ div.DraftEditor-root {
   box-shadow: 4px 4px 11px -1px #0000001a;
   transition: all 0.3s ease-in-out;
   height: auto;
+  cursor: pointer;
+}
+
+.possibleFeatureCard:hover{
+  transform: scale(1.05);
 }
 
 .possibleFeatureBookmark{
@@ -3234,3 +3251,12 @@ div.DraftEditor-root {
   transform: scale(1.05);
 }
 
+
+.MuiSnackbarContent-root{
+  background-color: white !important;
+  color: #b0bfb9 !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  letter-spacing: -.06em !important;
+  width: fit-content !important;
+}

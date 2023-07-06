@@ -240,6 +240,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                         setUpdateExistingDataset={setUpdateExistingDataset}
                         setColumnValues={setColumnValues}
                         setExistingDataset={setExistingDataset}
+                        placeholder={placeholder}
                     />
                 ))
 

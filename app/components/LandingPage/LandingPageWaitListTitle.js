@@ -30,7 +30,7 @@ export default function LandingPageWaitListTitle(props){
             <div className='pageTitleDivider' style={{width: "80%"}}/>
         </div>
         <div className='pageTitleDescription' style={{justifyContent: 'center', gap: "20px"}}>
-            <Fade fraction={1} triggerOnce={true}>
+            <Fade fraction={1} triggerOnce={true} delay={300}>
             <p 
                 className='pageTitleBoldedDescriptionText'
                 onClick={() => {
@@ -42,7 +42,7 @@ export default function LandingPageWaitListTitle(props){
                 </span>
             </p>
             </Fade>
-            <Fade fraction={1} delay={300} triggerOnce={true}>
+            <Fade fraction={1} delay={600} triggerOnce={true}>
                 <a href="https://discord.gg/UpZ3rA47uj" target="_blank" className='waitlistCallToAction'>
                     <p className='pageTitleBoldedDescriptionText' style={{display: 'flex', alignItems: "center", justifyContent: "center"}}> Join the Discord 
                     <span style={{display: 'flex', alignItems: 'center', justifyContent: "center", marginLeft: '6px'}}>

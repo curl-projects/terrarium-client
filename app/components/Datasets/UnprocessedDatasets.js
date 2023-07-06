@@ -3,6 +3,7 @@ import { BsUpload } from "react-icons/bs";
 import { Form, useFetcher } from "@remix-run/react";
 import { usePapaParse } from 'react-papaparse';
 import BaseDatasetRow from "~/components/Datasets/BaseDatasetRow";
+import { Tooltip } from '@mui/material';
 
 export default function UnprocessedDatasets(props){
     const [fileRef, setFileRef] = useState(Date.now())
@@ -98,7 +99,10 @@ export default function UnprocessedDatasets(props){
             ? <p className='fileUploadInitialText'>{file.name}</p>
             :
             <>
-                <label htmlFor='datasetFiles' className='fileUploadInitialText' style={{cursor: 'pointer'}}>Upload new file</label>
+                {props.placeholder
+                ? <Tooltip title='Any csv file should work, and file upload is also integrated with Discord!' placement='top' arrow><p className='fileUploadInitialText' style={{cursor: 'pointer'}}>Upload new file</p></Tooltip>
+                : <label htmlFor='datasetFiles' className='fileUploadInitialText' style={{cursor: 'pointer'}}>Upload new file</label>
+                }
             </>
             }
             <input id='datasetFiles' style={{display: "none"}} type="file" name="upload" onChange={handleFileChange} key={fileRef}/>
@@ -113,7 +117,7 @@ export default function UnprocessedDatasets(props){
                 <>
                 <div style={{height: "20px"}}/>
                 <div className='fileSubmitWrapper'>
-                    {!props.placeholder && <button className='fileSubmit'>Upload</button>}
+                    {!props.placeholder && <button className='fileSubmit' style={{border: "unset", fontSize: '16px', transition: "all 0.2s ease-in-out"}}>Upload</button>}
                 </div>
                 </>
             }

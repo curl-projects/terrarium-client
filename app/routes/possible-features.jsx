@@ -70,7 +70,7 @@ export default function PossibleFeatures(){
                 )}
                 </div>
                 <div className='innerBugsScaffold'>
-                    <p className='bugsScaffoldTitleText'>Submitted Feature Requests</p>
+                    <p className='bugsScaffoldTitleText'>Submitted Feature Requests & Bugs </p>
                     <div className='existingSubmissionsWrapper'>
                         {loaderData.userPossibleFeatures.map((feature, idx) => 
                             <PossibleFeatureCard 

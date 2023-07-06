@@ -158,6 +158,7 @@ export default function MessageStream(props) {
                           isExpanded={isExpanded}
                           pinCard={pinCard}
                           pinnedCards={pinnedCards}
+                          placeholder={props.placeholder}
                         />,
             "filters": <MessageStreamFilters 
                           filters={props.filters}

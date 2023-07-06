@@ -37,7 +37,7 @@ const [columns, setColumns] = useState(columnsFromBackend);
           icon: <GoTelescope />,
         },
         2: {
-            name: "Drafts",
+            name: "Ideas",
             items: columnTwo,
             color: "rgba(119, 153, 141, 0.5)",
             backgroundColor: "rgba(119, 153, 141, 0.15)",
@@ -48,7 +48,7 @@ const [columns, setColumns] = useState(columnsFromBackend);
         items: columnThree,
         color: "rgba(75, 85, 99, 0.3)",
         backgroundColor: "rgba(75, 85, 99, 0.1)",
-        icon: <BiArchive />
+        icon: <BiArchive />,
         },
 
       }
@@ -79,7 +79,7 @@ const [columns, setColumns] = useState(columnsFromBackend);
         }
       });
 
-      !placeholder && fetcher.submit({ columns: JSON.stringify({
+      !props.placeholder && fetcher.submit({ columns: JSON.stringify({
         ...columns,
         [source.droppableId]: {
           ...sourceColumn,
@@ -106,7 +106,7 @@ const [columns, setColumns] = useState(columnsFromBackend);
         }
       });
 
-      !placeholder && fetcher.submit({ columns: JSON.stringify({
+      !props.placeholder && fetcher.submit({ columns: JSON.stringify({
         ...columns,
         [source.droppableId]: {
           ...column,

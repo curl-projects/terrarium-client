@@ -51,7 +51,7 @@ export default function RoadmapCard(props){
                                         <Form method='post' >
                                         <input type="hidden" name='actionType' value='delete'/>
                                         <input type="hidden" name='featureId' value={props.item.id}/>
-                                        <button><p>Delete Topic</p></button>
+                                        <button className='kanbanCardMenuItem'><p>Delete Topic</p></button>
                                         </Form>
                                         </MenuItem>
                                 </Menu>

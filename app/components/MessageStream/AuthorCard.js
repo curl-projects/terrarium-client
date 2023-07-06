@@ -34,6 +34,7 @@ export default function AuthorCard(props){
                         isExpanded={props.isExpanded}
                         pinCard={props.pinCard}
                         isPinned={props.pinnedCards.map(i => i.featureRequestId).includes(cardData.featureRequestId)}
+                        placeholder={props.placeholder}
                     />
                     ))}
                 </div>

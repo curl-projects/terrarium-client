@@ -54,16 +54,20 @@ export default function DatasetRow(props){
     }, [props.deleteFetcher])
 
     function reprocessClusters(){
-        props.setUpdateExistingDataset(true)
+        if(!props.placeholder){
+            props.setUpdateExistingDataset(true)
         props.setExistingDataset(props.row)
         props.setColumnValues({'text': props.row.datasetMapping.text,'author': props.row.datasetMapping.author, "created_at": props.row.datasetMapping.createdAt, "id": props.row.datasetMapping.id, "searchFor": props.row.datasetMapping.searchFor})
         props.handleUnprocessedDatasetClick(props.row.baseDataset.uniqueFileName, props.row.baseDataset.baseDatasetId)
+        }
     }
 
     function handleDelete(){
-        props.setActivelyDeletingFile(props.row.uniqueFileName)
-        props.deleteFetcher.submit({datasetId: props.row.datasetId, uniqueFileName: props.row.uniqueFileName}, 
+        if(!props.placeholder){
+            props.setActivelyDeletingFile(props.row.uniqueFileName)
+            props.deleteFetcher.submit({datasetId: props.row.datasetId, uniqueFileName: props.row.uniqueFileName}, 
                                    {method: "post", action: "/utils/delete-dataset"})
+        }
     }
 
     return(

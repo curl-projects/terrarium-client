@@ -3,6 +3,7 @@ import { Droppable } from "@hello-pangea/dnd";
 import { useEffect } from "react";
 import RoadmapCard from '~/components/Roadmap/RoadmapCard.js'
 import { BsPlus } from "react-icons/bs";
+import { Tooltip } from "@mui/material";
 
 export default function RoadmapColumn(props){
   return(
@@ -13,10 +14,12 @@ export default function RoadmapColumn(props){
         <div className='kanbanColumnHeader'>
             <div className="kanbanColumnHeaderTextWrapper" style={{"backgroundColor": props.column.color}}>
                 {/* <div style={{flex: 1}}/> */}
-                <p className="kanbanColumnHeaderText" style={{color: props.column.color}}>
-                    {props.column.icon}
-                    {/* {props.column.name} */}
-                </p>
+                <Tooltip title={props.column.name} placement='left'>
+                    <p className="kanbanColumnHeaderText" style={{color: props.column.color}}>
+                        {props.column.icon}
+                        {/* {props.column.name} */}
+                    </p>
+                </Tooltip>
                 <div style={{flex: 1}}/>
             </div>
             {/* <div className='messageNumberWrapper'><p className="messageNumber">{props.column.items ? props.column.items.length : 0}</p></div> */}

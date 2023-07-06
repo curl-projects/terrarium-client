@@ -98,7 +98,7 @@ export default function PlaceholderDataSources(){
                 </div>
             </div>
         </div>
-        <Snackbar  
+        <Snackbar
             autoHideDuration={4000}
             message="Error Contacting Server"
             anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}

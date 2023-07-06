@@ -30,6 +30,7 @@ export default function MessageStreamAuthors(props){
                     pinCard={props.pinCard}
                     isExpanded={props.isExpanded}
                     pinnedCards={props.pinnedCards}
+                    placeholder={props.placeholder}
                     />
                 )}
             </div>
