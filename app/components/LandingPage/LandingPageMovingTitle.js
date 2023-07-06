@@ -26,7 +26,7 @@ export default function LandingPageMovingTitle(props){
         style={{
             flex: props.leftSide ? "1.2" : "unset"
         }}>
-        <div className='pageTitle' style={{textAlign: "center"}}>
+        <div className='pageTitle' style={{textAlign: "center", display: 'flex', flexDirection: "column", alignItems: "center"}}>
             <h1 className='landingPageTitleText'>
                 Classify and extract
                 <TextTransition
@@ -51,10 +51,7 @@ export default function LandingPageMovingTitle(props){
                 </TextTransition>
                 ...
             </h1>
-            <div className='pageTitleDivider'/>
-        </div>
-        <div className='pageTitleDescription' style={{justifyContent: 'center'}}>
-            <p className='pageTitleDescriptionText'>{props.description || "No description"}</p>
+            <div className='pageTitleDivider' style={{width: "80%", marginTop: "10px"}}/>
         </div>
     </div>
     )

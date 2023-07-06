@@ -1711,8 +1711,11 @@ div.DraftEditor-root {
 }
 
 .pageTitleDescriptionText{
-  font-size: 16px;
-  color: #4B5563;
+  color: #b0bfb9;
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -.06em;
+  transition: all .2s ease-in-out;
 }
 
 
@@ -2966,27 +2969,59 @@ div.DraftEditor-root {
 .landingPageIntro{
   display: flex;
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 5714 */
+
+.landingPageHook{
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.landingPageHookText{
+  color: #4b556399;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -.06em;
+  transition: all .2s ease-in-out;
+}
+
+.landingPageHookText:hover{
+  transform: scale(1.05);
 }
 
 .landingPageIntroLeft{
   flex: 1;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
+  position: relative;
+  left: 100px;
+  top: 30px;
 }
 
 .landingPageIntroRight{
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .landingPageLogoWrapper{
   display: flex;
-  align-items: column;
   padding: 20px;
   width: 100%;
   justify-content: center;
+  padding-bottom: 0px;
 }
 
 .landingPageLogo{
@@ -2996,11 +3031,30 @@ div.DraftEditor-root {
   font-weight: 700;
   display: flex;
   letter-spacing: -.03em;
-  position: relative;
-  left: 32px;
+  cursor: pointer;
+}
+
+.landingPageLogoDivider{
+  width: 80%;
+  border-bottom: 1px solid #bbbbbb;
 }
 
 .terrariumTagLine{}
+
+.landingPageLoginText{
+  color: #b0bfb9;
+  font-weight: 500;
+  font-size: 30px;
+  letter-spacing: -.06em;
+  transition: transform .2s ease-in-out;
+  position: relative;
+  top: -20px;
+  cursor: pointer;
+}
+
+.landingPageLoginText:hover{
+  transform: scale(1.05);
+}
 
 .shapeDiv{
   border: 2px solid black;
@@ -3014,12 +3068,15 @@ div.DraftEditor-root {
   /* clip-path: polygon(100% 96%, 95% 96%, 92% 94%, 90% 93%, 88% 89%, 86% 87%, 81% 83%, 83% 84%, 79% 80%, 77% 77%, 77% 74%, 75% 69%, 70% 68%, 65% 64%, 60% 63%, 55% 63%, 51% 60%, 47% 56%, 47% 53%, 45% 50%, 45% 46%, 44% 39%, 40% 37%, 36% 34%, 32% 34%, 25% 34%, 21% 34%, 19% 32%, 16% 30%, 14% 27%, 14% 24%, 11% 17%, 11% 13%, 10% 7%, 10% 3%, 10% 0%, 39% 1%, 42% 6%, 44% 7%, 48% 9%, 51% 12%, 56% 14%, 57% 15%, 59% 17%, 61% 20%, 63% 24%, 64% 27%, 66% 32%, 70% 34%, 74% 37%, 75% 40%, 77% 42%, 81% 43%, 84% 46%, 86% 49%, 90% 50%, 93% 54%, 96% 58%, 96% 65%, 99% 65%, 100% 65%, 100% 65%); */
   width: 100%;
   height: 60%;
+  font-size: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   /* background-color: green; */
 }
 
 .landingPageSection{
   height: 100vh;
-  border: 2px solid black;
   width: 100%;
   display: flex;
 }
@@ -3031,13 +3088,11 @@ div.DraftEditor-root {
   left: 0 !important;
   right: 0 !important;
   margin: 0 auto !important;
-  width: unset; 
-  border: 2px dashed pink !important;
+  width: unset;
 }
 
 .landingPageSectionInner{
   flex: 1.5;
-  border: 2px solid grey;
   display: flex;
   justify-content: center;
   box-sizing: border-box;
@@ -3054,7 +3109,7 @@ div.DraftEditor-root {
   height: 80%;
   width: 100%;
   display: flex;
-  gap: 50px;
+  flex-direction: column;
 }
 .landingPageSectionMainViewport{
   height: 100%;

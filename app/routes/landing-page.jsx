@@ -9,6 +9,7 @@ import { BiCurrentLocation, BiNetworkChart } from "react-icons/bi";
 import { MdOutlineFilterList } from "react-icons/md"
 import { GoTelescope } from 'react-icons/go'
 import { BiNotepad } from 'react-icons/bi'
+import { SocialsProvider } from "remix-auth-socials";
 
 import RiverPoints from "~/components/3DCanvas/RiverPoints"
 import LandingPageMessageStreamTitle from "~/components/LandingPage/LandingPageMessageStreamTitle";
@@ -23,6 +24,9 @@ import PlaceholderFeature from "~/components/LandingPage/PlaceholderFeature";
 import { useEffect } from "react";
 import LandingPageWaitListTitle from "~/components/LandingPage/LandingPageWaitListTitle";
 
+import { Fade } from "react-awesome-reveal";
+import { useSubmit } from "@remix-run/react";
+
 const fullSearchText = "Whiteboard"
 const searchTextDelay = 10
 
@@ -30,6 +34,10 @@ export default function LandingPage(){
     const pointsRef = useRef();
     const outlineRef = useRef();
     const searchBarRef = useRef();
+    const scrollRef = useRef();
+
+    const submit = useSubmit();
+
     const [messageStreamIsExpanded, setMessageStreamIsExpanded] = useState(false)
 
     const [landingPageDataView, setLandingPageDataView] = useState("featureRequests")
@@ -37,6 +45,7 @@ export default function LandingPage(){
     const [landingPageSearchText, setLandingPageSearchText] = useState("")
     const [searchTextIndex, setSearchTextIndex] = useState(-1);
     const [featureDescriptionText, setFeatureDescriptionText] = useState("")
+    const [titleHovered, setTitleHovered] = useState(false)
 
     useEffect(()=>{
         if(searchTextIndex > -1 && searchTextIndex < fullSearchText.length){
@@ -52,77 +61,104 @@ export default function LandingPage(){
     return(
         <>
         <div className='landingPageIntro'>
-            <div className='landingPageIntroLeft'>
-                <div style={{flex: 0.4}}/>
-                <div className='landingPageLogoWrapper'>
-                    <h1 className='landingPageLogo'>
+            <div className='landingPageLogoWrapper'>
+                <Fade>
+                    <h1 className='landingPageLogo' 
+                        onPointerOver={()=>setTitleHovered(true)}
+                        onPointerOut={()=>setTitleHovered(false)}
+                        onClick={()=>submit(null, {method: "post", "action": `/auth/${SocialsProvider.GOOGLE}`})}
+                        >
                     <div className='terrarium-plant-wrapper'><RiPlantLine/></div>
                     Terrarium
                     </h1>
-                </div>
-                <div className='terrariumTagline'>
-
-                </div>
-                <div style={{flex: 0.6}}/>
+                </Fade>
             </div>
-            <div className='landingPageIntroRight'>
-                <div className='terrariumImageWrapper'>
-                </div>
+            <div className='terrariumTagline'>
+                <Fade delay={150}>
+                    <p className='landingPageLoginText' onClick={() => submit(null, {method: "post", "action": `/auth/${SocialsProvider.GOOGLE}`})
+                    }>Log In</p>
+                </Fade>
             </div>
         </div>
-        <div className='landingPageSection'>
+        <div className='landingPageHook' onClick={()=>{
+            scrollRef.current?.scrollIntoView({behavior: "smooth"})
+        }}>
+            <Fade delay={300} triggerOnce={true}>
+                <p className='landingPageHookText'>What's Terrarium?</p>
+            </Fade>
+        </div>
+        {/* DATA SOURCES */}
+        <div className='landingPageSection' ref={scrollRef} style={{paddingTop: "30px", border: '1px solid #e7e7e7'}}>
             <div className='landingPageSectionInner'>
-                <LandingPageMovingTitle
-                    title="Classify and extract feature requests from Discord"
-                />
-                <div className='landingPageSectionViewportWrapper'>
-                    <div className='landingPageSectionMainViewport'>
-                        <PlaceholderDataSources />
+                <Fade fraction={1} delay={100} triggerOnce={true}>
+                    <LandingPageMovingTitle
+                        title="Classify and extract feature requests from Discord"
+                    />
+                </Fade>
+                <Fade fraction={0.1} delay={300} triggerOnce={true}>
+                    <div className='landingPageSectionViewportWrapper' style={{marginTop: "40px", height: '95%'}}>
+                        <div className='pageTitleDescription'>
+                            <p className='pageTitleDescriptionText'>Mouse over elements for more information</p>
+                        </div>
+                        <div className='landingPageSectionMainViewport'>
+                                <PlaceholderDataSources />
+                        </div>
                     </div>
-                </div>
+                </Fade>
             </div>
         </div>
-        <div className='landingPageSection'>
+        {/* MESSAGE STREAM */}
+        <div className='landingPageSection' style={{borderBottom: "1px solid #e7e7e7"}}>
             <div className='landingPageSectionInner'>
-                <div className='landingPageSectionViewportWrapper' style={{alignItems: "center", justifyContent: "center"}}>
+                <div className='landingPageSectionViewportWrapper' style={{alignItems: "center", justifyContent: "center", flexDirection: "row"}}>
                 <LandingPageMessageStreamTitle 
                     title="Classify and extract feature requests from Discord"
                     leftSide={true}
                     messageStreamIsExpanded={messageStreamIsExpanded}
                     setMessageStreamIsExpanded={setMessageStreamIsExpanded}
                 />
-                    <div className='landingPageSectionMainViewport' 
-                        style={{
-                            display: "flex", 
-                            justifyContent: "center", 
-                            flex: "0.8",
-                            padding: "20px",
-                            paddingTop: "5px",
-                            }}>
-                        <PlaceholderMessageStream 
-                            messageStreamIsExpanded={messageStreamIsExpanded}
-                            setMessageStreamIsExpanded={setMessageStreamIsExpanded}
-                        />
-                    </div>
+                <Fade className='landingPageSectionMainViewport' delay={600} triggerOnce={true}
+                    style={{
+                        display: "flex", 
+                        justifyContent: "center", 
+                        flex: "0.8",
+                        padding: "20px",
+                        paddingTop: "5px",
+                        }}>
+                    <PlaceholderMessageStream 
+                        messageStreamIsExpanded={messageStreamIsExpanded}
+                        setMessageStreamIsExpanded={setMessageStreamIsExpanded}
+                    />
+                </Fade>
                 </div>
+
                 
             </div>
         </div>
-        <div className='landingPageSection'>
-            <div className='landingPageSectionInner'>
-                <LandingPageRoadmapTitle
-                />
-                <div className='landingPageSectionViewportWrapper'>
-                    <div className='landingPageSectionMainViewport'>
+        {/* ROADMAP */}
+        <div className='landingPageSection' style={{borderBottom: "1px solid #e7e7e7"}}>
+            <div className='landingPageSectionInner' style={{marginTop: "60px"}}>
+                <Fade fraction={0.5} triggerOnce={true}>
+                    <LandingPageRoadmapTitle />
+                </Fade>
+                <div className='landingPageSectionViewportWrapper' style={{marginTop: "30px"}}>
+                    <Fade className='landingPageSectionMainViewport' triggerOnce={true} style={{border: "unset", boxShadow: "unset"}} delay={300}>
                         <PlaceholderRoadmap />
-                    </div>
+                    </Fade>
                 </div>
             </div>
         </div>
-        <div className='landingPageSection'>
+        <div className='landingPageSection' 
+            style={{
+                    paddingTop: "60px", 
+                    height: "120vh",
+                    border: '2px solid #e7e7e7',
+                    }}>
             <div className='landingPageSectionInner'>
-                <LandingPageFeatureTitle />
-                <div className='landingPageSectionButtonOuterRow'>
+                <Fade fraction={0.5} triggerOnce={true}>
+                    <LandingPageFeatureTitle />
+                </Fade>
+                <Fade className='landingPageSectionButtonOuterRow' triggerOnce={true} fraction={0.3} delay={300}>
                     <div className='landingPageSectionButtonInnerRow'>
                         <div 
                             className='landingPageFeatureButton'
@@ -188,32 +224,31 @@ export default function LandingPage(){
                         </div>
                     </div>
                     <div className='landingPageButtonDescription'>
-                        <p className='landingPageButtonDescriptionText'>{featureDescriptionText}</p>
+                       {featureDescriptionText && <Fade duration={400}><p className='landingPageButtonDescriptionText'>{featureDescriptionText}</p></Fade>}
                     </div>
-                </div>
-                <div className='landingPageSectionViewportWrapper' style={{paddingTop: "10px"}}>
-                    <div className='landingPageSectionMainViewport'>
+                </Fade>
+                <div className='landingPageSectionViewportWrapper' style={{paddingTop: "10px", height: "70%"}}>
+                    <Fade className='landingPageSectionMainViewport' delay={600} triggerOnce={true} fraction={0.3}>
                         <PlaceholderFeature 
                             landingPageDataView={landingPageDataView}
                             landingPageFeatureOutletToggle={landingPageFeatureOutletToggle}
                             landingPageSearchText={landingPageSearchText}
                             landingPageSearchBarRef={searchBarRef}
                         />
-                    </div>
+                    </Fade>
                 </div>
             </div>
         </div>
-        <div className='landingPageSection'>
-            <div className='landingPageSectionInner'>
+        <div className='landingPageSection' style={{ marginTop: "60px"}}>
+            <div className='landingPageSectionInner' style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                 <div className='landingPageSectionViewportWrapper' style={{alignItems: "center", justifyContent: "center"}}>
                 <LandingPageWaitListTitle
                     title="Classify and extract feature requests from Discord"
-                    leftSide={true}
+                    leftSide={false}
                     messageStreamIsExpanded={messageStreamIsExpanded}
                     setMessageStreamIsExpanded={setMessageStreamIsExpanded}
                 />
                 </div>
-                
             </div>
         </div>
 
@@ -225,18 +260,21 @@ export default function LandingPage(){
                     left: 0,
                     bottom: 0,
                     right: 0,
-                    border: "2px dashed pink",
-                    minHeight: '500%',
-                    pointerEvents: "none"
+                    minHeight: '650%',
+                    pointerEvents: "none",
+                    transition: 'all 0.2s ease-in-out',
                 }}>
                 <Canvas
                     gl={{ antialias: true}}
                     camera={{ position: [1.5, 0, 0] }} 
                     style={{pointerEvents: "none"}}
                     linear>
-                {/* <OrbitControls /> */}
                 <ambientLight />
-                <RiverPoints pointsRef={pointsRef} outlineRef={outlineRef}/>
+                <RiverPoints 
+                    pointsRef={pointsRef} 
+                    outlineRef={outlineRef}
+                    titleHovered={titleHovered}
+                    />
                 </Canvas>
                 </div>
             )}

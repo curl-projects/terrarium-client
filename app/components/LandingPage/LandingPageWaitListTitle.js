@@ -7,6 +7,8 @@ import { SocialsProvider } from "remix-auth-socials";
 import { useSubmit } from '@remix-run/react';
 import { RiPlantLine } from 'react-icons/ri'
 
+import { Fade } from "react-awesome-reveal";
+
 export default function LandingPageWaitListTitle(props){
     const submit = useSubmit()
 
@@ -28,6 +30,7 @@ export default function LandingPageWaitListTitle(props){
             <div className='pageTitleDivider' style={{width: "80%"}}/>
         </div>
         <div className='pageTitleDescription' style={{justifyContent: 'center', gap: "20px"}}>
+            <Fade fraction={1} triggerOnce={true}>
             <p 
                 className='pageTitleBoldedDescriptionText'
                 onClick={() => {
@@ -38,13 +41,16 @@ export default function LandingPageWaitListTitle(props){
                     <RiPlantLine/>
                 </span>
             </p>
-            <a href="https://discord.gg/UpZ3rA47uj" target="_blank" className='waitlistCallToAction'>
-                <p className='pageTitleBoldedDescriptionText' style={{display: 'flex', alignItems: "center", justifyContent: "center"}}> Join the Discord 
-                <span style={{display: 'flex', alignItems: 'center', justifyContent: "center", marginLeft: '6px'}}>
-                    <FiArrowUpRight />
-                </span>
-                </p>
-            </a>
+            </Fade>
+            <Fade fraction={1} delay={300} triggerOnce={true}>
+                <a href="https://discord.gg/UpZ3rA47uj" target="_blank" className='waitlistCallToAction'>
+                    <p className='pageTitleBoldedDescriptionText' style={{display: 'flex', alignItems: "center", justifyContent: "center"}}> Join the Discord 
+                    <span style={{display: 'flex', alignItems: 'center', justifyContent: "center", marginLeft: '6px'}}>
+                        <FiArrowUpRight />
+                    </span>
+                    </p>
+                </a>
+            </Fade>
         </div>
     </div>
     )
