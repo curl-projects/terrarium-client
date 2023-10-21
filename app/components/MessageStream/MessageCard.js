@@ -86,7 +86,7 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
         <div className='messageCardDivider' />
         <p className='messageCardMetadataText'>{parseFloat(props.cardScore).toPrecision(2)*100}% Relevant</p>
         <div className='messageCardDivider' />
-        <p className='messageCardMetadataText'>{props.cardData && props.cardData.dataset.readableName}</p>
+        <p className='messageCardMetadataText'>{props.cardData && (props.cardData.dataset?.readableName || "" )}</p>
       </div>
       <div
   

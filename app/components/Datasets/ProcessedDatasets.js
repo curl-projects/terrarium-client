@@ -12,11 +12,12 @@ import DatasetRow from "~/components/Datasets/DatasetRow";
 
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import { PropertyKeys } from "ag-grid-community";
 
 export default function ProcessedDatasets({  processedDatasets, activelyDeletingFile, setActivelyDeletingFile,
                                             readDatasetFetcher, unprocessedFileName, setUnprocessedFileName, baseDatasetId, setBaseDatasetId,
                                             fileHeaders, setFileHeaders, highlightedProcessedDatasets, actionData, handleUnprocessedDatasetClick,
-                                            placeholder}){
+                                            placeholder, exampleDatasets}){
     const { readString } = usePapaParse();
     const [filteredProcessedDatasets, setFilteredProcessedDatasets] = useState([])
     const [fileWarning, setFileWarning] = useState("")
@@ -40,6 +41,10 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
             resetFile()
         }
     }, [actionData])
+
+    useEffect(()=>{
+        console.log("EXISTING DATASET:", existingDataset)
+    }, [existingDataset])
 
 
     useEffect(()=>{
@@ -241,6 +246,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                         setColumnValues={setColumnValues}
                         setExistingDataset={setExistingDataset}
                         placeholder={placeholder}
+                        exampleDataset={exampleDatasets.map(e => e.datasetId).includes(row.datasetId)}
                     />
                 ))
 

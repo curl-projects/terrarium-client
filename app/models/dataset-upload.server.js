@@ -35,18 +35,80 @@ export async function getBaseDatasets(userId){
 }
 
 export async function getDatasets(userId){
-    const datasets = await db.dataset.findMany({
+    const datasets = await db.datasetUserMapping.findMany({
         where: {
             user: {
                 id: userId
-            }
+            },
         },
         include: {
-            baseDataset: true,
-            datasetMapping: true
+            dataset: {
+                include: {
+                    baseDataset: true,
+                    datasetMapping: true
+                }
+            }
         }
     })
     return datasets
+}
+
+export async function getExampleDatasets(userId){
+    const exampleDatasets = await db.exampleDataset.findMany({
+        where: {
+            userId: userId
+        },
+        include: {
+            dataset: true
+        }
+    })
+    return exampleDatasets
+}
+
+export async function connectExampleDataset(userId, datasetId){
+    const exampleDataset = await db.exampleDataset.update({
+        where: {
+            userId_datasetId: {
+                userId: userId,
+                datasetId: parseInt(datasetId)
+            }
+        },
+        data: {
+            active: true
+        }})
+    
+    const userDatasetMapping = await db.datasetUserMapping.create({
+        data: {
+            userId: userId,
+            datasetId: parseInt(datasetId)
+        }
+    })
+
+    return userDatasetMapping
+}
+
+export async function disconnectExampleDataset(userId, datasetId){
+    const exampleDataset = await db.exampleDataset.update({
+        where: {
+            userId_datasetId: {
+                userId: userId,
+                datasetId: parseInt(datasetId)
+            }
+        },
+        data: {
+            active: false
+        }})
+    
+    const userDatasetMapping = await db.datasetUserMapping.delete({
+        where: {
+            userId_datasetId: {
+                userId: userId,
+                datasetId: parseInt(datasetId)
+            }
+        }
+    })
+
+    return userDatasetMapping 
 }
 
 export async function createDatasetObject(fileName, userId, headerMapping, baseDatasetId){
@@ -56,10 +118,16 @@ export async function createDatasetObject(fileName, userId, headerMapping, baseD
     data: {
         uniqueFileName: `${uniqueId}-${fileName}`,
         readableName: fileName.split('-').slice(1).join("-"),
-        user: {
-            connect: {
-                id: userId
-            }
+        users: {
+            create: [
+                {
+                    user: {
+                        connect: {
+                            id: userId
+                        }
+                    }
+                }
+            ]
         },
         baseDataset: {
             connect: {

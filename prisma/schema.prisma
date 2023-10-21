@@ -13,11 +13,12 @@ model User {
   email           String
   discordBotAuth  Boolean          @default(false)
   authorizedUsers AuthorizedUser[]
-  baseDatasets     BaseDataset[]
-  datasets        Dataset[]
+  baseDatasets    BaseDataset[]
+  datasets        DatasetUserMapping[]
   features        Feature[]
   notionAuths     NotionAuth[]
   possibleFeatures PossibleFeature[]
+  exampleDatasets ExampleDataset[]
 }
 
 model AuthorizedUser {
@@ -133,14 +134,33 @@ model Dataset {
   readableName    String @default("General Dataset")
   size            String?
   status          String           @default("unprocessed")
-  userId          String
   baseDatasetId   Int?
   baseDataset     BaseDataset?     @relation(fields: [baseDatasetId], references: [baseDatasetId])
-  user            User             @relation(fields: [userId], references: [id])
+  users           DatasetUserMapping[]
   features        Feature[]
   datasetMapping  DatasetMapping?
   active Boolean @default(true) 
   featureRequests FeatureRequest[]
+  exampleDataset ExampleDataset?
+}
+
+model DatasetUserMapping{
+  userId String
+  datasetId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dataset Dataset @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
+
+  @@id([userId, datasetId])
+}
+
+model ExampleDataset{
+  datasetId Int @unique
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  dataset Dataset @relation(fields: [datasetId], references: [datasetId])
+  active Boolean @default(false)
+
+  @@id([userId, datasetId])
 }
 
 model DatasetMapping {

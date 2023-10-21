@@ -2,7 +2,7 @@ import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { unstable_parseMultipartFormData, json } from '@remix-run/node';
 import { useLoaderData, useActionData, Form, useFetcher } from "@remix-run/react";
 import Header from "~/components/Header/Header"
-import { googleUploadHandler, createDatasetObject, initiateDatasetProcessing, getDatasets, getBaseDatasets, createBaseDataset } from '~/models/dataset-upload.server';
+import { googleUploadHandler, createDatasetObject, initiateDatasetProcessing, getDatasets, getBaseDatasets, createBaseDataset, getExampleDatasets, connectExampleDataset, disconnectExampleDataset } from '~/models/dataset-upload.server';
 import { authenticator } from "~/models/auth.server.js";
 import { usePapaParse } from 'react-papaparse';
 
@@ -17,7 +17,7 @@ import { BsHash } from "react-icons/bs";
 import UnprocessedDatasets from '~/components/Datasets/UnprocessedDatasets';
 import ProcessedDatasets from '~/components/Datasets/ProcessedDatasets';
 import ExampleDataset from '~/components/Datasets/ExampleDataset';
-
+import { getUserWithDatasets } from '~/models/dataset-manipulation.server';
 
 
 export async function loader({ request }){
@@ -27,8 +27,10 @@ export async function loader({ request }){
 
     const baseDatasets = await getBaseDatasets(user.id)
     const datasets = await getDatasets(user.id)
+    const exampleDatasets = await getExampleDatasets(user.id)
+    const dbUser = await getUserWithDatasets(user.id)
 
-    return { datasets: datasets, baseDatasets: baseDatasets }
+    return { datasets: datasets.map(e => e['dataset']), baseDatasets: baseDatasets, user: dbUser, exampleDatasets: exampleDatasets}
 }
 
 export async function action({request}){
@@ -66,6 +68,15 @@ export async function action({request}){
         return { datasetObj, response: response.status, fileName: datasetObj.uniqueFileName }
     }
 
+    else if(actionType === 'addExampleDataset'){
+        const addedDataset = await connectExampleDataset(user.id, formData.get("datasetId"))
+        return { addedDataset }
+    }
+    else if(actionType === 'disconnectExampleDataset'){
+        const disconnectedDataset = await disconnectExampleDataset(user.id, formData.get("datasetId"));
+        return { disconnectedDataset }
+    }
+
     else{
         console.error("Unknown Action Type")
         return "Unknown Action Type"
@@ -92,6 +103,7 @@ export default function DataSources(){
     const loaderData = useLoaderData();
     const actionData = useActionData();
 
+    const exampleDatasetFetcher = useFetcher();
     const readDatasetFetcher = useFetcher();
 
     const [baseDatasetId, setBaseDatasetId] = useState("")
@@ -101,7 +113,7 @@ export default function DataSources(){
     const [highlightedProcessedDatasets, setHighlightedProcessedDatasets] = useState('default')
 
     useEffect(()=>{
-        console.debug('LOADER DATA:', loaderData)
+        console.log('LOADER DATA:', loaderData)
     }, [loaderData])
 
     // READING UNPROCESSED DATASETS
@@ -115,13 +127,22 @@ export default function DataSources(){
     return(
         <div className='dataSourcesPageWrapper'>
         <Header />
-        <PageTitle title="Data Sources" padding={true} description="Upload datasets for analysis and visualisation."/>
+        <PageTitle 
+            title="Data Sources" 
+            padding={true} 
+            description="Upload datasets for analysis and visualisation."
+            fetcher={exampleDatasetFetcher}
+            />
         <div className='dataSourcesInnerSplitter'>
             <div className='dataSourcesExampleRow'>
-                {['Example One', "Example Two", "Example Three"].map((element, index)=>
+                {loaderData.exampleDatasets.map((dataset, index)=>
                     <ExampleDataset 
-                        title={element}
-                        key={index}/>
+                        title={dataset.dataset.readableName}
+                        key={dataset.datasetId}
+                        datasetId={dataset.datasetId}
+                        active={dataset.active}
+                        fetcher={exampleDatasetFetcher}
+                        />
                 )}
             </div>
             <div className='dataSourcesInnerContainer'>
@@ -148,6 +169,7 @@ export default function DataSources(){
                         highlightedProcessedDatasets={highlightedProcessedDatasets}
                         actionData={actionData}
                         handleUnprocessedDatasetClick={handleUnprocessedDatasetClick}
+                        exampleDatasets={loaderData.exampleDatasets}
                     />
                 </div>
             </div>

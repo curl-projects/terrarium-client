@@ -19,7 +19,7 @@ import OutletPlaceholder from "~/components/Feature/OutletPlaceholder";
 import { ImSearch } from "react-icons/im"
 import { Outlet, Link, useParams, useMatches } from "@remix-run/react";
 import cn from 'classnames'
-import ExampleDataset from "~/components/Datasets/ExampleDataset";
+import ExampleDataset from "~/components/Datasets/GeneralDataset";
 import { Fade } from "react-awesome-reveal";
 
 import MessageStream from "~/components/MessageStream/MessageStream.js"
@@ -33,7 +33,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 import * as d3 from 'd3';
-import { getDatasets, updateFeatureDatasets } from "~/models/dataset-manipulation.server";
+import { getRoadmapDatasets, updateFeatureDatasets } from "~/models/dataset-manipulation.server";
 
 dayjs.extend(utc)
 
@@ -47,7 +47,7 @@ export async function loader({ request, params }){
   
     const featureId = params["*"]
     const feature = await readFeature(featureId)
-    const datasets = await getDatasets(user.id)
+    const datasets = await getRoadmapDatasets(user.id)
   
     // make sure the right user is looking at the feature information
     if(feature.userId !== user.id){
@@ -81,10 +81,10 @@ export async function loader({ request, params }){
   
     if(feature.isSearched){
       const  featureRequests = await findFeatureRequests(featureId); // get associated data objects
-      return { feature: feature, featureRequests: featureRequests, clusters: clusters, datasets: datasets}
+      return { feature: feature, featureRequests: featureRequests, clusters: clusters, datasets: datasets.map(e => e['dataset'])}
     }
   
-    return { feature: feature, featureRequests: [], datasets: datasets }
+    return { feature: feature, featureRequests: [], datasets: datasets.map(e => e['dataset']) }
   }
   
   export async function action({ request }){
@@ -151,6 +151,7 @@ export default function Feature(){
     useEffect(()=>{
         setTitleFocused(false)
         console.log("LOADER DATA:", loaderData)
+        setSelectedDatasets(loaderData.feature.datasets.map(x => x.uniqueFileName))
     }, [loaderData])
 
 

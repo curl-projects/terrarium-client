@@ -86,21 +86,31 @@ export default function DatasetRow(props){
                     </div>
                     <div style={{flex: 1}}/>
                     <div className='fileRemoveWrapper'>
-                        <Tooltip title="Reprocess Dataset" placement='top' arrow>
-                            <div>
-                                <TbRefreshDot
-                                    onClick={reprocessClusters}
-                                    style={{fontSize: "20px", color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}
-                                />
+                        {props.exampleDataset ? 
+                        <>  
+                            <div className='exampleDatasetBanner'>
+                                <p className='exampleDatasetBannerText'>Example</p>
                             </div>
-                        </Tooltip>
-                        <Tooltip title="Delete Dataset" placement='top' arrow>
-                            <div>
-                                <BsX 
-                                    onClick={handleDelete}
-                                    style={{fontSize: "28px", color: "rgba(75, 85, 99, 0.95)", cursor: "pointer"}}/>
-                            </div>
-                        </Tooltip>
+                        </>
+                        :
+                        <>
+                            <Tooltip title="Reprocess Dataset" placement='top' arrow>
+                                <div>
+                                    <TbRefreshDot
+                                        onClick={reprocessClusters}
+                                        style={{fontSize: "20px", color: "rgba(75, 85, 99, 0.8)", cursor: "pointer"}}
+                                    />
+                                </div>
+                            </Tooltip>
+                            <Tooltip title="Delete Dataset" placement='top' arrow>
+                                <div>
+                                    <BsX 
+                                        onClick={handleDelete}
+                                        style={{fontSize: "28px", color: "rgba(75, 85, 99, 0.95)", cursor: "pointer"}}/>
+                                </div>
+                            </Tooltip>
+                        </>
+                        }
                     </div>
                 </div>
                 <div>

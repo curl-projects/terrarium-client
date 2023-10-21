@@ -171,6 +171,11 @@ export async function readFeature(featureId){
     },
     include: {
       filters: true,
+      datasets: {
+        select: {
+          uniqueFileName: true
+        }
+      },
       _count: {
         select: {
           featureRequests: {

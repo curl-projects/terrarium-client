@@ -27,6 +27,10 @@ const [columns, setColumns] = useState(columnsFromBackend);
   }, [props.features])
 
   useEffect(()=>{
+    props.setColStateWatcher && props.setColStateWatcher(columnOne)
+  }, [columnOne])
+
+  useEffect(()=>{
     setColumns(
       {
         1: {
