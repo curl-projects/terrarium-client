@@ -46,8 +46,8 @@ export default function Header(props){
         <Link to ='/data-sources' style={{textDecoration: "none"}}>
         <h3 className='navigationText'>Data Sources</h3>
         </Link>
-        <Link to ='/possible-features' style={{textDecoration: "none"}}>
-        <h3 className='navigationText'>Possible Features</h3>
+        <Link to ='/extensions' style={{textDecoration: "none"}}>
+        <h3 className='navigationText'>Bugs & Extensions</h3>
         </Link>
         {/* <Link to ='/curr ent-bugs' style={{textDecoration: "none"}}>
           <h3 className='navigationText'>Bugs</h3>

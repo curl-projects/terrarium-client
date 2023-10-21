@@ -4,7 +4,7 @@ import Header from "~/components/Header/Header"
 import PageTitle from "~/components/Header/PageTitle.js"
 import PossibleFeatureCard from "~/components/PossibleFeatures/PossibleFeatureCard"
 import { authenticator } from "~/models/auth.server"
-import { getPossibleFeatures, getUsersPossibleFeatures, removeUpvote, upvoteFeature } from "~/models/possible-features"
+import { getPossibleFeatures, getUsersPossibleFeatures, removeUpvote, upvoteFeature } from "~/models/extensions"
 import TextField from '@mui/material/TextField';
 import { MenuItem, Select } from "@mui/material"
 import { BsPlus, BsX } from "react-icons/bs";
@@ -58,7 +58,7 @@ export default function PossibleFeatures(){
     return(
         <div className='roadmapPageWrapper'>
             <Header />
-            <PageTitle title='Possible Features' description="Tell me if there's anything wrong and vote on what Terrarium should implement next."/>
+            <PageTitle title='Bugs & Extensions' description="Tell me if there's anything wrong and vote on what Terrarium should implement next."/>
             <div className='possibleFeaturesScaffold'>
                 <div className='innerFeaturesScaffold'>
                 {loaderData.possibleFeatures.map((feature, idx) => 

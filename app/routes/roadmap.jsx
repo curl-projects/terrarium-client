@@ -12,15 +12,18 @@ import { processCardState } from "~/utils/processCardState"
 import cn from "classnames";
 
 import PageTitle from "~/components/Header/PageTitle.js"
+import FeatureSearch from "~/components/Feature/FeatureSearch";
+import { getDatasets } from "~/models/dataset-manipulation.server";
 
 export async function loader({ request }){
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/",
   })
   const features = await getFeatures(user.id)
+  const datasets = await getDatasets(user.id)
 
   const organisedFeatures = processCardState(features)
-  return({ features: organisedFeatures })
+  return({ features: organisedFeatures, datasets: datasets })
 }
 
 export async function action({ request }){
@@ -55,7 +58,7 @@ export default function RoadmapRoute(){
     return(
         <div className='roadmapPageWrapper'>
             <Header />
-            <PageTitle title='Roadmap' description="Create and organise features."/>
+            <FeatureSearch datasets={loaderData.datasets} />
             <div className='kanbanRoadmapWrapper'>
                   <div className='kanbanRoadmapColumns'>
                       <Roadmap features={loaderData.features} />

@@ -264,7 +264,7 @@ export default function LandingPage(){
                     pointerEvents: "none",
                     transition: 'all 0.2s ease-in-out',
                 }}>
-                <Canvas
+                {/* <Canvas
                     gl={{ antialias: true}}
                     camera={{ position: [1.5, 0, 0] }} 
                     style={{pointerEvents: "none"}}
@@ -275,7 +275,7 @@ export default function LandingPage(){
                     outlineRef={outlineRef}
                     titleHovered={titleHovered}
                     />
-                </Canvas>
+                </Canvas> */}
                 </div>
             )}
         </ClientOnly>

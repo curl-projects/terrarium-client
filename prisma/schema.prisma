@@ -13,10 +13,9 @@ model User {
   email           String
   discordBotAuth  Boolean          @default(false)
   authorizedUsers AuthorizedUser[]
-  BaseDataset     BaseDataset[]
+  baseDatasets     BaseDataset[]
   datasets        Dataset[]
   features        Feature[]
-  featureRequests FeatureRequest[]
   notionAuths     NotionAuth[]
   possibleFeatures PossibleFeature[]
 }
@@ -62,6 +61,8 @@ model Feature {
   user            User                @relation(fields: [userId], references: [id])
   filters         FeatureFilter[]
   featureRequests FeatureRequestMap[]
+    datasets        Dataset[]
+
 }
 
 model FeatureRequest {
@@ -74,7 +75,6 @@ model FeatureRequest {
   userId     String
   datasetId  Int
   dataset    Dataset             @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
-  user       User                @relation(fields: [userId], references: [id])
   features   FeatureRequestMap[]
 }
 
@@ -129,14 +129,17 @@ model ClusterTag {
 
 model Dataset {
   datasetId       Int              @id @default(sequence())
-  uniqueFileName  String
+  uniqueFileName  String @unique
+  readableName    String @default("General Dataset")
   size            String?
   status          String           @default("unprocessed")
   userId          String
   baseDatasetId   Int?
   baseDataset     BaseDataset?     @relation(fields: [baseDatasetId], references: [baseDatasetId])
   user            User             @relation(fields: [userId], references: [id])
+  features        Feature[]
   datasetMapping  DatasetMapping?
+  active Boolean @default(true) 
   featureRequests FeatureRequest[]
 }
 

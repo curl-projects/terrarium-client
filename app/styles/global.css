@@ -1367,7 +1367,7 @@ div.DraftEditor-root {
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-columns: 70px 1fr 70px;
+  grid-template-columns: 70px minmax(0, 1fr) 70px;
   grid-template-rows: 100px min-content 1fr 70px;
 }
 
@@ -1430,6 +1430,7 @@ div.DraftEditor-root {
   color: #4b5563;
   width: 100%;
   outline: none;
+  letter-spacing: -0.03em;
 }
 
 .featureTitleText{
@@ -1709,6 +1710,48 @@ div.DraftEditor-root {
   letter-spacing: -0.03em;
 }
 
+.featureSearchInnerWrapper{
+  display: flex;
+}
+
+.featureSearchInput{
+    font-weight: 700;
+    font-size: 50px;
+    color: #4b5563;
+    width: 100%;
+    outline: none;
+    letter-spacing: -.03em;
+}
+
+.featureSearchDescription{
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.featureSearchDescriptionText{
+  color: #b0bfb9;
+font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -.06em;
+  transition: all .2s ease-in-out;
+}
+
+.featureSearchDatasetSelector{
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  overflow-x: scroll;
+  justify-content: flex-start;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.featureSearchDatasetSelectorOuter{
+  width: 100%;
+  overflow: hidden;
+}
+
 .pageTitleDivider{
   width: 100%;
   border-bottom: 1px solid #BBBBBB;
@@ -1932,6 +1975,7 @@ div.DraftEditor-root {
   width: 100%;
   padding-top: 30px;
   display: flex;
+  flex-direction: column;
   overflow: hidden;
   grid-row: 3;
   grid-column: 2;
@@ -2322,13 +2366,13 @@ div.DraftEditor-root {
   letter-spacing: -0.03em;
   color: #7e988e;
   font-weight: 600;
-  font-size: 22px;
+  font-size: 16px;
   height: 32px;
   width: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(119, 153, 141, .3);
+  border: 0px solid rgba(119, 153, 141, .3);
 }
 
 .fileSubmit:hover{
@@ -3259,4 +3303,56 @@ div.DraftEditor-root {
   font-size: 16px !important;
   letter-spacing: -.06em !important;
   width: fit-content !important;
+}
+
+.exampleDatasetMainContainer{
+  border: 1px solid #e7e7e7;
+  background-color: white;
+  flex: 1;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  height: 60px;
+  /* width: 60px; */
+  /* max-width: 60px; */
+  padding-left: 20px;
+  padding-right: 20px;
+  max-width: fit-content;
+  min-width: fit-content;
+  border-radius: 2px;
+  transition: all 0.3s ease-in-out, color 0s, border 0s;
+  overflow: hidden;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4b556399;
+}
+
+.exampleDatasetMainContainer:hover{
+  color: #b0bfb9;
+  transform: scale(1.1);
+}
+
+.exampleDatasetContainerTitle{
+  font-size: 24px;
+  letter-spacing: -0.06em;
+  color: #4b556399;
+  display: flex;
+  user-select: none;
+}
+
+.exampleDatasetContainerTitleIcon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+}
+
+.dataSourcesExampleRow{
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }

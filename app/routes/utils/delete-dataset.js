@@ -1,3 +1,4 @@
+import { unique } from "underscore";
 import { deleteDataset, deleteDatasetEmbeddings, deleteDatasetStorage } from "~/models/dataset-upload.server"
 
 export async function action({ request }){
@@ -5,7 +6,7 @@ export async function action({ request }){
     const datasetId = formData.get("datasetId")
     const uniqueFileName = formData.get("uniqueFileName")
     try{
-        const embeddingsDeletion = await deleteDatasetEmbeddings(datasetId)
+        const embeddingsDeletion = await deleteDatasetEmbeddings(uniqueFileName)
         console.log("EMBEDDINGS DELETION:", embeddingsDeletion)
     }
     catch(exc){
@@ -17,7 +18,5 @@ export async function action({ request }){
     catch(exc){
         console.log("DATASET OBJECT DOES NOT EXIST", exc)
     }
-
-    const googleResponse = await deleteDatasetStorage(uniqueFileName)
     return { }
 }

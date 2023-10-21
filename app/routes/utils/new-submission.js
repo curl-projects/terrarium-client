@@ -1,4 +1,4 @@
-import { createPossibleFeature } from "~/models/possible-features";
+import { createPossibleFeature } from "~/models/extensions";
 import { authenticator } from "~/models/auth.server"
 
 export async function action({ request }){

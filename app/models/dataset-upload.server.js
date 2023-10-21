@@ -51,10 +51,11 @@ export async function getDatasets(userId){
 
 export async function createDatasetObject(fileName, userId, headerMapping, baseDatasetId){
 
-  const uniqueId = Math.random().toString(36).slice(2, 5);
+  const uniqueId = Math.random().toString(36).slice(2, 10);
   const dataset = await db.dataset.create({
     data: {
         uniqueFileName: `${uniqueId}-${fileName}`,
+        readableName: fileName.split('-').slice(1).join("-"),
         user: {
             connect: {
                 id: userId
@@ -81,8 +82,8 @@ export async function createDatasetObject(fileName, userId, headerMapping, baseD
   return dataset
 }
 
-export async function initiateDatasetProcessing(fileName, baseDatasetFileName, datasetId, userId, headerMapping){
-    console.log("Initiated Dataset Processing")
+export async function initiateDatasetProcessing(fileName, baseDatasetFileName, datasetId, userId, headerMapping, updateExistingDataset){
+    console.log("Initiated Dataset Processing", updateExistingDataset)
 
     let url = process.env.DATASET_PROCESSING_URL
 
@@ -91,8 +92,10 @@ export async function initiateDatasetProcessing(fileName, baseDatasetFileName, d
       'base_file_name': baseDatasetFileName,
       'dataset_id': datasetId,
       'user_id': userId,
-      header_mapping: headerMapping
+      "header_mapping": headerMapping,
+      "update_existing_dataset": updateExistingDataset ? "True" : "False"
     }
+    
     try{
         const res = await fetch(url, {
         method: "POST",
@@ -127,7 +130,6 @@ export async function readFile(fileName){
     const contents = await cloudStorage.bucket(bucketName).file(fileName).download()
 
     return contents
-
 }
 
 const uploadStreamToCloudStorage = async (fileData, fileName) => {
@@ -220,15 +222,7 @@ export const deleteDatasetStorage = async(uniqueFileName) => {
     deleteFile().catch(console.error)
 }
 
-export async function deleteDatasetEmbeddings(datasetId){
-    const featureRequests = await db.featureRequest.findMany({
-        where: {
-            datasetId: parseInt(datasetId)
-        }
-    })
-
-    const datasetFRs = featureRequests.map(i => i.fr_id)
-
+export async function deleteDatasetEmbeddings(uniqueFileName){
     let pinecone = new PineconeClient();
 
     await pinecone.init({
@@ -238,8 +232,14 @@ export async function deleteDatasetEmbeddings(datasetId){
 
     const index = pinecone.Index('terrarium');
 
-    const deletedVectors  = await index.delete1({
-        ids: datasetFRs
+    const deletedVectors  = await index._delete({
+        deleteRequest: {
+            filter: {
+                dataset: {
+                    "$eq": uniqueFileName
+                }
+            }
+        }
     })
 
     return { deletedVectors }

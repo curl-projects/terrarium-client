@@ -16,6 +16,7 @@ import { BiCalendar } from "react-icons/bi";
 import { BsHash } from "react-icons/bs";
 import UnprocessedDatasets from '~/components/Datasets/UnprocessedDatasets';
 import ProcessedDatasets from '~/components/Datasets/ProcessedDatasets';
+import ExampleDataset from '~/components/Datasets/ExampleDataset';
 
 
 
@@ -42,7 +43,7 @@ export async function action({request}){
         const datasetId = formData.get("datasetId")
         const datasetUniqueFileName = formData.get("datasetUniqueFileName")
         const baseDatasetUniqueFileName = formData.get("baseDatasetUniqueFileName")
-        const response = await initiateDatasetProcessing(datasetUniqueFileName, baseDatasetUniqueFileName, datasetId, user.id, headerMapping)
+        const response = await initiateDatasetProcessing(datasetUniqueFileName, baseDatasetUniqueFileName, datasetId, user.id, headerMapping, true)
 
         return { response: response.status, fileName: datasetUniqueFileName }
     }
@@ -61,7 +62,7 @@ export async function action({request}){
 
         const datasetObj = await createDatasetObject(uniqueFileName, user.id, JSON.parse(headerMapping), baseDatasetId)
         console.log("DATATEST OBJ:", datasetObj)
-        const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, uniqueFileName, datasetObj.datasetId, user.id, headerMapping)
+        const response = await initiateDatasetProcessing(datasetObj.uniqueFileName, uniqueFileName, datasetObj.datasetId, user.id, headerMapping, false)
         return { datasetObj, response: response.status, fileName: datasetObj.uniqueFileName }
     }
 
@@ -116,6 +117,13 @@ export default function DataSources(){
         <Header />
         <PageTitle title="Data Sources" padding={true} description="Upload datasets for analysis and visualisation."/>
         <div className='dataSourcesInnerSplitter'>
+            <div className='dataSourcesExampleRow'>
+                {['Example One', "Example Two", "Example Three"].map((element, index)=>
+                    <ExampleDataset 
+                        title={element}
+                        key={index}/>
+                )}
+            </div>
             <div className='dataSourcesInnerContainer'>
                 <div className='unprocessedDataWrapper'>
                     <UnprocessedDatasets 

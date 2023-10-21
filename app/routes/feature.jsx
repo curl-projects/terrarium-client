@@ -19,6 +19,9 @@ import OutletPlaceholder from "~/components/Feature/OutletPlaceholder";
 import { ImSearch } from "react-icons/im"
 import { Outlet, Link, useParams, useMatches } from "@remix-run/react";
 import cn from 'classnames'
+import ExampleDataset from "~/components/Datasets/ExampleDataset";
+import { Fade } from "react-awesome-reveal";
+
 import MessageStream from "~/components/MessageStream/MessageStream.js"
 import {IoIosArrowDropdown} from "react-icons/io"
 
@@ -30,6 +33,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 import * as d3 from 'd3';
+import { getDatasets, updateFeatureDatasets } from "~/models/dataset-manipulation.server";
 
 dayjs.extend(utc)
 
@@ -43,6 +47,7 @@ export async function loader({ request, params }){
   
     const featureId = params["*"]
     const feature = await readFeature(featureId)
+    const datasets = await getDatasets(user.id)
   
     // make sure the right user is looking at the feature information
     if(feature.userId !== user.id){
@@ -50,11 +55,16 @@ export async function loader({ request, params }){
     }
   
     if(searchTerm){
+    const selectedDatasets = url.searchParams.get("selectedDatasets")
+
       // update feature title
       const updatedFeature = await updateFeatureTitle(featureId, searchTerm)
+      
+      const updatedDatasets = await updateFeatureDatasets(featureId, selectedDatasets.split(','))
   
       // conduct search
-      const {knnIDs, pipelineResponse} = await embeddingSearch(searchTerm, featureId); // get sorted scores
+    //   TODO: change user id to dataset id
+      const {knnIDs, pipelineResponse} = await embeddingSearch(searchTerm, featureId, user.id, selectedDatasets.split(',')); // get sorted scores
 
       console.log("PIPELINE RESPONSE:", pipelineResponse)
   
@@ -70,11 +80,11 @@ export async function loader({ request, params }){
     }
   
     if(feature.isSearched){
-      const featureRequests = await findFeatureRequests(featureId); // get associated data objects
-      return { feature: feature, featureRequests: featureRequests, clusters: clusters}
+      const  featureRequests = await findFeatureRequests(featureId); // get associated data objects
+      return { feature: feature, featureRequests: featureRequests, clusters: clusters, datasets: datasets}
     }
   
-    return { feature: feature, featureRequests: [] }
+    return { feature: feature, featureRequests: [], datasets: datasets }
   }
   
   export async function action({ request }){
@@ -84,10 +94,10 @@ export async function loader({ request, params }){
     if(actionType === 'featureSearch'){
         const featureId = formData.get("featureId")
         const searchTerm = formData.get('searchTerm')
-      return redirect(`/feature/discovery/${featureId}?searchTerm=${searchTerm}`)
+        const selectedDatasets = formData.get('selectedDatasets')
+      return redirect(`/feature/discovery/${featureId}?searchTerm=${searchTerm}&selectedDatasets=${selectedDatasets}`)
     }
     else if(actionType === "saveDescription"){
-        console.log("HI!!!")
         const featureId = formData.get("featureId")
         const featureDescription = formData.get('featureDescription')
 
@@ -128,7 +138,7 @@ export default function Feature(){
     const [invisibleFilters, setInvisibleFilters] = useState([])
     const [searchText, setSearchText] = useState("")
     const [searchResults, setSearchResults] = useState([])
-
+    const [selectedDatasets, setSelectedDatasets] = useState([])
 
     const clusterSubmit = useSubmit();
     const clusterFetcher = useFetcher();
@@ -139,6 +149,7 @@ export default function Feature(){
     const [messageHistory, setMessageHistory] = useState([]);
 
     useEffect(()=>{
+        setTitleFocused(false)
         console.log("LOADER DATA:", loaderData)
     }, [loaderData])
 
@@ -226,6 +237,7 @@ export default function Feature(){
     }, [loaderData.featureRequests])
 
     useEffect(()=>{
+        console.log("TITLE FOCUSED:", titleFocused)
         if(titleFocused){
             titleRef.current.focus();
         }
@@ -233,7 +245,7 @@ export default function Feature(){
 
 
     function handleTitleSearch(){
-        fetcher.submit({'searchTerm': title, 'featureId': params["*"], actionType: "featureSearch"}, 
+        fetcher.submit({'searchTerm': title, 'featureId': params["*"], actionType: "featureSearch", selectedDatasets: selectedDatasets}, 
                        {method: "post"})
     }
 
@@ -304,7 +316,7 @@ export default function Feature(){
             <Header 
                 headerCollapsed={headerCollapsed}
                 />
-            <div className="featureTitleScaffold">
+            <div className="featureTitleScaffold" ref={titleRef}>
                 <div className="featureTitleWrapper">
                     {titleFocused
                      ? (
@@ -315,12 +327,10 @@ export default function Feature(){
                             defaultValue={title == "Untitled" ? null : title}
                             data-gramm="false"
                             style={{fontSize: headerCollapsed ? "24px" : "40px"}}
-                            ref={titleRef}
                             onChange={(e)=>setTitle(e.target.value)}
                             data-gramm_editor="false"
                             data-enable-grammarly="false"
                             />
-                            
                         </>
                      )
                      : (
@@ -349,17 +359,19 @@ export default function Feature(){
                     <input type='hidden' name='searchTerm' value={title} />
                     <input type='hidden' name='featureId' value={params["*"]}/>
                     <input type='hidden' name='actionType' value='featureSearch' />
-                    <button 
-                        className='searchIconWrapper'
-                        onClick={handleTitleSearch}
-                        >
-                        <ImSearch 
-                            className='searchIconText'
-                            style={{
-                                width: headerCollapsed ? "20px" : "40px",
-                                height: headerCollapsed ? "20px" : "40px",
-                            }}/>
-                    </button>
+                    {titleFocused && title !== "" && selectedDatasets.length > 0 &&
+                        <button 
+                            className='searchIconWrapper'
+                            onClick={handleTitleSearch}
+                            >
+                            <ImSearch 
+                                className='searchIconText'
+                                style={{
+                                    width: headerCollapsed ? "20px" : "40px",
+                                    height: headerCollapsed ? "20px" : "40px",
+                                }}/>
+                        </button>
+                    }
                 </div>
                 {navigate.type === "fetchActionRedirect" &&
                     <LinearProgress 
@@ -369,7 +381,24 @@ export default function Feature(){
                                 backgroundColor: 'rgba(119, 153, 141, 0.3)'}}
                     />
                 }
-    
+                {titleFocused && title !== "" &&
+                            <>  
+                                <div className='featureSearchDatasetSelectorOuter'>
+                                    <div className="featureSearchDatasetSelector">
+                                        {loaderData.datasets.map((dataset, index)=>
+                                                <ExampleDataset 
+                                                    title={dataset.readableName}
+                                                    uniqueFileName={dataset.uniqueFileName}
+                                                    key={dataset.datasetId}
+                                                    selected={selectedDatasets.includes(dataset.uniqueFileName)}
+                                                    selectedDatasets={selectedDatasets}
+                                                    setSelectedDatasets={setSelectedDatasets}
+                                                />
+                                            )}
+                                    </div>
+                                </div>
+                            </>
+                            }
                 <div className="pinnedMessagesWrapper" style={{fontSize: headerCollapsed ? "0px" : "18px"}}>
                     <p className='pinnedMessagesText'><em>{loaderData.feature._count.featureRequests} pinned {(loaderData.feature._count.featureRequests == 1) ? <span>message</span> : <span>messages</span>}</em></p>
                 </div>

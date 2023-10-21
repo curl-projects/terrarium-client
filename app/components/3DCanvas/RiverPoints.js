@@ -10,7 +10,7 @@ const AnimatedPoints = animated(Points)
 const AnimatedPointMaterial = animated(PointMaterial)
 
 export default function RiverPoints(props){
-    const [sphere] = useState(() => inSphere(new Float32Array(1001), { radius: 20 }))
+    const [sphere] = useState(() => inSphere(new Float32Array(201), { radius: 10 }))
 
     const springs = useSpring({
         scale: props.titleHovered ? 1 : 1

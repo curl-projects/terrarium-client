@@ -82,7 +82,7 @@ export default function DatasetRow(props){
             <div className='fileInnerWrapper' style={{padding: "10px"}}>
                 <div className='fileTitleRow'>
                     <div className='fileTitleWrapper'>
-                        <p className='fileTitle'>{props.row.uniqueFileName.split("-").slice(1).join("-") || `Untitled (${props.idx})`}</p>
+                        <p className='fileTitle'>{props.row.uniqueFileName || `Untitled (${props.idx})`}</p>
                     </div>
                     <div style={{flex: 1}}/>
                     <div className='fileRemoveWrapper'>

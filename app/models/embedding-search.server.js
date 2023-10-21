@@ -17,13 +17,16 @@ export async function generateSearchVector(searchString){
   return response.data
 }
 
-export async function getKNNfromSearchVector(vector, topK=1){
+export async function getKNNfromSearchVector(vector, selectedDatasets, topK=1){
   let url = "https:/terrarium-1ce80e9.svc.us-west1-gcp.pinecone.io/query"
+
 
   let data = {
     "vector": vector,
     "includeValues": false,
+    "filter": {"dataset": {"$in": selectedDatasets}},
     "topK": topK,
+    "includeMetadata": true,
   }
 
   const res = await fetch(url, {
@@ -69,7 +72,24 @@ export async function initialiseClusterAnalysis(searchVector, featureId, searchS
   return res
 }
 
-export async function embeddingSearch(searchString, featureId){
+export async function getDatasetUniqueNames(userId){
+  const datasets = await db.dataset.findMany({
+    where: {
+      user: {
+        id: userId
+      }
+    },
+    select: {
+      uniqueFileName: true
+    }
+  })
+
+  return datasets
+}
+
+export async function embeddingSearch(searchString, featureId, userId, selectedDatasets){
+  console.log("SELECTED DATASETS", selectedDatasets)
+
   const searchVectorRes = await generateSearchVector(searchString)
   const searchVector = searchVectorRes.data && searchVectorRes.data[0]['embedding']
 
@@ -77,7 +97,9 @@ export async function embeddingSearch(searchString, featureId){
   const clusterRes = await initialiseClusterAnalysis(searchVector, featureId, searchString)
   // end asynchronous processing
 
-  const knn = await getKNNfromSearchVector(searchVector, topK=100)
+  const knn = await getKNNfromSearchVector(searchVector, selectedDatasets, topK=100)
+
+  console.log("KNN", knn['matches'][0]['metadata'])
   const knnIDs = knn.matches
   const filteredEmbeddings = await filterEmbeddings(knnIDs)
   return {knnIDs: filteredEmbeddings, pipelineResponse: clusterRes.status}
