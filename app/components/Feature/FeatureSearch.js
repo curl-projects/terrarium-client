@@ -4,24 +4,65 @@ import { Fade } from "react-awesome-reveal";
 import { ImSearch } from "react-icons/im"
 import { Form, useTransition } from "@remix-run/react";
 import LinearProgress from '@mui/material/LinearProgress';
+import TextTransition, { presets } from 'react-text-transition';
+import LargeExampleDataset from "../Datasets/LargeExampleDataset";
 
 export default function FeatureSearch(props){
 
     const [searchText, setSearchText] = useState("")
     const [selectedDatasets, setSelectedDatasets] = useState([])
+    const displayExampleQuestions = [
+        "How can I improve the usability of my tagging system?",
+        "What are people most frustrated by?",
+        "How can I improve my developer tools?",
+        "Should I build a new interface for my newsfeed?",
+        "What journalling functionality are people asking for most often?",
+        "What should I build next?",
+        "Should I build a tagging system that allows users to share tags?",
+        "Do people want to use my application offline?",
+        "Which competitors should I be looking into?",
+
+    ]
+    const [displayText, setDisplayText] = useState("placeholder")
     const navigate = useTransition();
 
     useEffect(()=>{
-        console.log("NAVIGATE", navigate.type)
-    }, [navigate])
+        console.log("SELECTED", selectedDatasets)
+    }, [selectedDatasets])
+
+    useEffect(()=>{
+        if(searchText === ""){
+            setDisplayText(displayExampleQuestions[Math.floor(Math.random()*displayExampleQuestions.length)])
+            const intervalId = setInterval(
+                () => {
+                    setDisplayText(displayExampleQuestions[Math.floor(Math.random()*displayExampleQuestions.length)])
+                },
+                2000
+            );
+    
+            return () => clearTimeout(intervalId)
+        }
+        else{
+            setDisplayText("Select the discussions you want to search through")
+        }
+        
+    }, [searchText])
+
 
     return(
+
     <div className='pageTitleOuterWrapper' style={{
         gridRow: "2 / 3",
         gridColumn: "2 / 3",
         paddingLeft: props.placeholder & "5%",
-        paddingRight: props.placeholder & "5%"
+        paddingRight: props.placeholder & "5%",
+        paddingTop: '5vh',
         }}>
+        <div style={{display: 'flex', justifyContent: "center", flexDirection: "column"}}>
+            <div className='featureSearchDescription'>
+            {/* <p className='featureSearchDescriptionDivider'>|</p> */}
+            </div>
+        </div>
         <Form className='featureSearchInnerWrapper' method='post'>
             <input type="hidden" name="computedRankState" value={props.colStateWatcher.length + 1}/>
             <input type="hidden" name='searchTerm' value={searchText} />
@@ -29,7 +70,7 @@ export default function FeatureSearch(props){
             <input type="hidden" name="actionType" value="search" />
             <input 
                 className='featureSearchInput' 
-                placeholder='Search'
+                placeholder='Ask any question about your communities...'
                 value={searchText}
                 onChange={(e)=>setSearchText(e.target.value)}
                 autoFocus
@@ -59,25 +100,29 @@ export default function FeatureSearch(props){
                                 backgroundColor: 'rgba(119, 153, 141, 0.3)'}}
                     />
         }
-        <div className='featureSearchDescription'>
-            <p className='featureSearchDescriptionText'>Create and organise features.</p>
-        </div>
-        {searchText !== "" &&
-            <Fade>
-                <div className="featureSearchDatasetSelector">
+        <TextTransition 
+            className='featureSearchDescriptionText'
+            direction="up"
+            springConfig={presets.gentle}
+            >{displayText}
+        </TextTransition>
+
+       {searchText !== "" && <div className="featureSearchDatasetSelector">
+                <Fade cascade direction='up'>
                     {props.datasets.map((dataset, index)=>
-                            <ExampleDataset 
+                            <LargeExampleDataset 
                                 title={dataset.readableName}
                                 uniqueFileName={dataset.uniqueFileName}
                                 key={dataset.datasetId}
-                                selected={selectedDatasets.includes(dataset.uniqueFileName)}
+                                active={selectedDatasets.includes(dataset.uniqueFileName)}
                                 selectedDatasets={selectedDatasets}
                                 setSelectedDatasets={setSelectedDatasets}
+                                description={dataset.description}
                                 />
                         )}
-                </div>
-            </Fade>
-        }
+                </Fade>
+        </div>}
     </div>
     )
+
 }

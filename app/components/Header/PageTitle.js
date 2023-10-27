@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 export default function PageTitle(props){
 
     useEffect(()=>{
-        console.log("FETCHER STATE:", props.fetcher.state)
+        console.log("FETCHER STATE:", props.fetcher?.state)
     }, [props.fetcher])
 
     return(

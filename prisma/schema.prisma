@@ -159,6 +159,7 @@ model ExampleDataset{
   user User @relation(fields: [userId], references: [id])
   dataset Dataset @relation(fields: [datasetId], references: [datasetId])
   active Boolean @default(false)
+  description String @default("")
 
   @@id([userId, datasetId])
 }

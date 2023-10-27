@@ -8,6 +8,7 @@ import { MdOutlineLightbulb } from "react-icons/md"
 import { AiTwotoneExperiment } from "react-icons/ai"
 
 import { BiArchive } from "react-icons/bi"
+import { Fade } from "react-awesome-reveal";
 
 const columnsFromBackend = {};
 
@@ -124,6 +125,7 @@ const [columns, setColumns] = useState(columnsFromBackend);
     <DragDropContext
         onDragEnd={result => onDragEnd(result, columns, setColumns)}
     >
+
         {Object.entries(columns).map(([columnId, column], index) => {
         return (
             <RoadmapColumn key={columnId}

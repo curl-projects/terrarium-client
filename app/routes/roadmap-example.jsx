@@ -37,34 +37,20 @@ export async function action({ request }){
 
   console.log("HELLO!", actionType)
 
-  if(actionType === "create"){
-    const columnState = formData.get('columnState')
-    const rankState = formData.get('rankState')
+    if(actionType === 'search'){
+        const columnState = "1"
+        const computedRankState = formData.get("computedRankState")
+        const searchTerm = formData.get("searchTerm")
+        const selectedDatasets = formData.get("selectedDatasets")
 
-    console.log("COLUMN STATE:", columnState)
-    console.log("RANK STATE:", rankState)
-    const feature = await createFeature(user.id, columnState, rankState)
-    return redirect(`/feature/discovery/${feature.id}`)
-  }
-  else if(actionType === "delete"){
-    const featureId = formData.get('featureId');
-    const deletedFeature = await deleteFeature(featureId);
-    return ({ deleteFeature })
-  }
-  else if(actionType === 'search'){
-    const columnState = "1"
-    const computedRankState = formData.get("computedRankState")
-    const searchTerm = formData.get("searchTerm")
-    const selectedDatasets = formData.get("selectedDatasets")
-
-    console.log("IMPORTANT:", computedRankState, searchTerm)
-    console.log("IMPORTANT 2:", selectedDatasets)
-    const feature = await createFeature(user.id, columnState, computedRankState)
+        console.log("IMPORTANT:", computedRankState, searchTerm)
+        console.log("IMPORTANT 2:", selectedDatasets)
+        const feature = await createFeature(user.id, columnState, computedRankState)
     return redirect(`/feature/discovery/${feature.id}?searchTerm=${searchTerm}&selectedDatasets=${selectedDatasets}`)
   }
 }
 
-export default function RoadmapRoute(){
+export default function RoadmapExample(){
     const loaderData = useLoaderData();
     const actionData = useActionData();
     const matches = useMatches();
@@ -78,6 +64,10 @@ export default function RoadmapRoute(){
       console.log("COL STATE WATCHER:", colStateWatcher)
   }, [colStateWatcher])
 
+  useEffect(()=>{
+    loaderData?.features[0] && setColStateWatcher(loaderData.features[0])
+  }, [loaderData])
+
     return(
         <div className='roadmapPageWrapper'>
             <Header />
@@ -85,15 +75,6 @@ export default function RoadmapRoute(){
                 datasets={loaderData.datasets}
                 colStateWatcher={colStateWatcher}
                 />
-                
-            <Fade className='kanbanRoadmapWrapper' duration={4000} delay={500}>
-                  <div className='kanbanRoadmapColumns'>
-                      <Roadmap 
-                        features={loaderData.features} 
-                        setColStateWatcher={setColStateWatcher}
-                        />
-                  </div>
-            </Fade>
         </div>
     )
 }

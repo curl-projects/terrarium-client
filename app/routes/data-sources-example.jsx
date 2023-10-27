@@ -1,10 +1,11 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { unstable_parseMultipartFormData, json } from '@remix-run/node';
-import { useLoaderData, useActionData, Form, useFetcher } from "@remix-run/react";
+import { useLoaderData, useActionData, Form, useFetcher, Link } from "@remix-run/react";
 import Header from "~/components/Header/Header"
 import { googleUploadHandler, createDatasetObject, initiateDatasetProcessing, getDatasets, getBaseDatasets, createBaseDataset, getExampleDatasets, connectExampleDataset, disconnectExampleDataset } from '~/models/dataset-upload.server';
 import { authenticator } from "~/models/auth.server.js";
 import { usePapaParse } from 'react-papaparse';
+import TextTransition, { presets } from 'react-text-transition';
 
 import PageTitle from "~/components/Header/PageTitle.js"
 
@@ -18,7 +19,9 @@ import UnprocessedDatasets from '~/components/Datasets/UnprocessedDatasets';
 import ProcessedDatasets from '~/components/Datasets/ProcessedDatasets';
 import ExampleDataset from '~/components/Datasets/ExampleDataset';
 import { getUserWithDatasets } from '~/models/dataset-manipulation.server';
-
+import LargeExampleDataset from '~/components/Datasets/LargeExampleDataset';
+import LinearProgress from '@mui/material/LinearProgress';
+import { Fade } from "react-awesome-reveal";
 
 export async function loader({ request }){
     const user = await authenticator.isAuthenticated(request, {
@@ -99,7 +102,7 @@ export async function action({request}){
     // return { jsonData: jsonData }
 }
 
-export default function DataSources(){
+export default function DataSourcesExample(){
     const loaderData = useLoaderData();
     const actionData = useActionData();
 
@@ -111,6 +114,26 @@ export default function DataSources(){
     const [unprocessedFileName, setUnprocessedFileName] = useState("")
     const [fileHeaders, setFileHeaders] = useState([])
     const [highlightedProcessedDatasets, setHighlightedProcessedDatasets] = useState('default')
+    const platformValues = ["Anywhere", 'Discord', 'Slack', 'Telegram', 'CSV',]
+    const [platformIndex, setPlatformIndex] = useState(0);
+    const typeValues = ['Feature Requests', 'Issues', 'Bug Reports', "Ideas", "Anything"]
+    const [typeIndex, setTypeIndex] = useState(0);
+
+
+    useEffect(()=>{
+        const intervalId = setInterval(
+            () => {
+                setTypeIndex((typeIndex) => typeIndex + 1)
+
+                setPlatformIndex((platformIndex) => platformIndex + 1)
+            },
+            3000
+        );
+
+        return () => clearTimeout(intervalId)
+    }, [])
+
+
 
     useEffect(()=>{
         console.log('LOADER DATA:', loaderData)
@@ -127,25 +150,76 @@ export default function DataSources(){
     return(
         <div className='dataSourcesPageWrapper'>
         <Header />
-        <PageTitle 
+        {/* <PageTitle 
             title="Data Sources" 
             padding={true} 
             description="Upload datasets for analysis and visualisation."
             fetcher={exampleDatasetFetcher}
-            />
-        <div className='dataSourcesInnerSplitter'>
-            <div className='dataSourcesExampleRow'>
-                {loaderData.exampleDatasets.map((dataset, index)=>
-                    <ExampleDataset 
-                        title={dataset.dataset.readableName}
-                        key={dataset.datasetId}
-                        datasetId={dataset.datasetId}
-                        active={dataset.active}
-                        fetcher={exampleDatasetFetcher}
+            /> */}
+        
+        <div className='pageTitleOuterWrapper' style={{
+                    gridRow: "2 / 3",
+                    gridColumn: "2 / 3",
+                    paddingTop: "8%"
+        }}>
+        <Fade className='pageTitle' duration={1500} style={{textAlign: "center", display: 'flex', flexDirection: "column", alignItems: "center"}}>
+]                <h1 className='landingPageTitleText' style={{letterSpacing: "-0.06em", color: "#4b5563"}}>
+                    Add
+                    <TextTransition
+                    inline={true}
+                    direction='down'
+                    springConfig={presets.gentle} 
+                    className='landingPageTitleChangingText'
+                    style={{marginLeft: "10px", marginRight: "10px", color: "#B0BFB9"}}
+                    >
+                        {typeValues[typeIndex % typeValues.length]}
+                    </TextTransition>
+                    from 
+                    <TextTransition
+                    inline={true}
+                    direction='up'
+                    springConfig={presets.gentle} 
+                    style={{marginLeft: "10px", marginRight: "10px"}}
+                    className='landingPageTitleChangingText'
+                    >
+                        {platformValues[platformIndex % platformValues.length]}
+                    </TextTransition>
+                    ...
+                </h1>
+                <div className='pageTitleDivider' style={{width: "80%", marginTop: "10px"}}/>
+                {exampleDatasetFetcher && (exampleDatasetFetcher.state === "submitting" || exampleDatasetFetcher.state === 'loading')  &&
+                        <LinearProgress 
+                            variant="indeterminate"
+                            style={{width: "80%", 
+                                    height: "2px", 
+                                    backgroundColor: 'rgba(119, 153, 141, 0.3)'}}
                         />
-                )}
+                }
+                <p className='featureSearchDescriptionText' style={{
+                    paddingTop: '10px'
+                }}>Click a dataset to add it to your workspace</p>
+            </Fade>
+        </div>
+        <div className='dataSourcesInnerSplitter' style={{
+            paddingTop: "20px"
+        }}>
+            <div className='dataSourcesExampleRow'>
+                <Fade cascade direction='up' delay={1000}>
+                    {loaderData.exampleDatasets.map((dataset, index)=>
+                        
+                            <LargeExampleDataset 
+                                title={dataset.dataset.readableName}
+                                key={dataset.datasetId}
+                                datasetId={dataset.datasetId}
+                                active={dataset.active}
+                                fetcher={exampleDatasetFetcher}
+                                description={dataset.description}
+                                datasourced={true}
+                                />
+                    )}
+                </Fade>
             </div>
-            <div className='dataSourcesInnerContainer'>
+            {/* <div className='dataSourcesInnerContainer'>
                 <div className='unprocessedDataWrapper'>
                     <UnprocessedDatasets 
                         baseDatasets={loaderData.baseDatasets}
@@ -172,7 +246,7 @@ export default function DataSources(){
                         exampleDatasets={loaderData.exampleDatasets}
                     />
                 </div>
-            </div>
+            </div> */}
         </div>
         <Snackbar  
             open={actionData?.response === "404"}
@@ -181,6 +255,15 @@ export default function DataSources(){
             anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
 
         />
+        {loaderData?.exampleDatasets.map(d => d.active).some(i => i) &&
+        <div className='exampleDataSourcesNext'>
+            <Fade direction='up'>
+                <Link to={'/roadmap-example'}>
+                <p className='exampleDataSourcesNextText'>Next →</p>
+                </Link>
+            </Fade>
+        </div>
+        }
         </div>
     )
 }

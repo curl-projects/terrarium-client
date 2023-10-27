@@ -246,7 +246,7 @@ export default function ProcessedDatasets({  processedDatasets, activelyDeleting
                         setColumnValues={setColumnValues}
                         setExistingDataset={setExistingDataset}
                         placeholder={placeholder}
-                        exampleDataset={exampleDatasets.map(e => e.datasetId).includes(row.datasetId)}
+                        exampleDataset={exampleDatasets ? exampleDatasets.map(e => e.datasetId).includes(row.datasetId): false}
                     />
                 ))
 

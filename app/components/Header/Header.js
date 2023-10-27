@@ -27,7 +27,7 @@ export default function Header(props){
   return(
     <div className='header' style={{gridColumn: "1 / 4", gridRow: "1 / 2"}}>
       <div className='headerTerrariumWrapper'>
-        <Link to ='/roadmap'>
+        <Link to ='/roadmap-example'>
           <h1 className='headerTerrariumText'>
             <div className='terrarium-plant-wrapper'><RiPlantLine/></div>
             Terrarium
@@ -37,15 +37,18 @@ export default function Header(props){
       <div style={{flex: 1}}/>
       {!props.headerCollapsed &&
       <div className="navigationTextWrapper">
-        <Link to ='/roadmap' style={{textDecoration: "none"}}>
-        <h3 className='navigationText'>Roadmap</h3>
-        </Link>
-        <Link to ='/integrations' style={{textDecoration: "none"}}>
-        <h3 className='navigationText'>Integrations</h3>
-        </Link>
-        <Link to ='/data-sources' style={{textDecoration: "none"}}>
+        <Link to ='/data-sources-example' style={{textDecoration: "none"}}>
         <h3 className='navigationText'>Data Sources</h3>
         </Link>
+        <Link to ='/roadmap-example' style={{textDecoration: "none"}}>
+        <h3 className='navigationText'>Roadmap</h3>
+        </Link>
+        <Link to ='/archive' style={{textDecoration: "none"}}>
+        <h3 className='navigationText'>Archive</h3>
+        </Link>
+        {/* <Link to ='/integrations' style={{textDecoration: "none"}}>
+        <h3 className='navigationText'>Integrations</h3>
+        </Link> */}
         <Link to ='/extensions' style={{textDecoration: "none"}}>
         <h3 className='navigationText'>Bugs & Extensions</h3>
         </Link>
@@ -53,7 +56,7 @@ export default function Header(props){
           <h3 className='navigationText'>Bugs</h3>
         </Link> */}
         
-          <Form method='post' action='/logout'>
+          <Form method='post' action='/logout' style={{display: 'flex'}}>
             <Tooltip title="Logout" placement='bottom' arrow>
               <button type='submit'>
                 <p className='navigationText'>
