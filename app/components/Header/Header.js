@@ -27,7 +27,7 @@ export default function Header(props){
   return(
     <div className='header' style={{gridColumn: "1 / 4", gridRow: "1 / 2"}}>
       <div className='headerTerrariumWrapper'>
-        <Link to ='/roadmap-example'>
+        <Link to ='/query'>
           <h1 className='headerTerrariumText'>
             <div className='terrarium-plant-wrapper'><RiPlantLine/></div>
             Terrarium
@@ -40,8 +40,8 @@ export default function Header(props){
         <Link to ='/data-sources-example' style={{textDecoration: "none"}}>
         <h3 className='navigationText'>Data Sources</h3>
         </Link>
-        <Link to ='/roadmap-example' style={{textDecoration: "none"}}>
-        <h3 className='navigationText'>Roadmap</h3>
+        <Link to ='/query' style={{textDecoration: "none"}}>
+        <h3 className='navigationText'>Query</h3>
         </Link>
         <Link to ='/archive' style={{textDecoration: "none"}}>
         <h3 className='navigationText'>Archive</h3>

@@ -12,10 +12,12 @@ export default function PageTitle(props){
         gridRow: "2 / 3",
         gridColumn: "2 / 3",
         paddingLeft: props.placeholder & "5%",
-        paddingRight: props.placeholder & "5%"
+        paddingRight: props.placeholder & "5%",
         }}>
         <div className='pageTitle'>
-            <h1 className='pageTitleText'>{props.title}</h1>
+            <h1 className='pageTitleText' style={{
+                textAlign: props.centered ? "center" : "left",
+            }}>{props.title}</h1>
             <div className='pageTitleDivider'/>
             {props.fetcher && (props.fetcher.state === "submitting" || props.fetcher.state === 'loading')  &&
                     <LinearProgress 
@@ -26,8 +28,12 @@ export default function PageTitle(props){
                     />
             }
         </div>
-        <div className='pageTitleDescription'>
-            <p className='pageTitleDescriptionText'>{props.description}</p>
+        <div className='pageTitleDescription' style={{
+            justifyContent: props.centered ? "center" : "left",
+        }}>
+            <p className='pageTitleDescriptionText' style={{
+                textAlign: props.centered ? "center" : "left",
+            }}>{props.description}</p>
         </div>
     </div>
     )

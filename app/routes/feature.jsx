@@ -35,6 +35,8 @@ import utc from 'dayjs/plugin/utc';
 import * as d3 from 'd3';
 import { getRoadmapDatasets, updateFeatureDatasets } from "~/models/dataset-manipulation.server";
 
+import Modal from '@mui/material/Modal';
+
 dayjs.extend(utc)
 
 export async function loader({ request, params }){
@@ -139,6 +141,7 @@ export default function Feature(){
     const [searchText, setSearchText] = useState("")
     const [searchResults, setSearchResults] = useState([])
     const [selectedDatasets, setSelectedDatasets] = useState([])
+    const [instructionModalOpen, setInstructionModalOpen] = useState(false)
 
     const clusterSubmit = useSubmit();
     const clusterFetcher = useFetcher();
@@ -480,6 +483,19 @@ export default function Feature(){
                 </div>
             </div>
             <div style={{gridRow: "2 / 5", gridColumn: "3"}}></div>
+            <Modal
+                open={instructionModalOpen}
+                onClose={()=>setInstructionModalOpen(false)}>
+                <div className='instructionModalWrapper'>
+                    <h1>Hi!</h1>
+                </div>
+            </Modal>
+            <div className='instructionModalButton'
+                onClick={()=>setInstructionModalOpen(true)}>
+                <h1 className='instructionModalButtonIcon'>
+                    ?
+                </h1>
+            </div>
             </div>
 
     )

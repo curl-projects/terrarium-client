@@ -18,7 +18,7 @@ export default function FeatureSearch(props){
         "Should I build a new interface for my newsfeed?",
         "What journalling functionality are people asking for most often?",
         "What should I build next?",
-        "Should I build a tagging system that allows users to share tags?",
+        "Should I build a system that allows users to upvote other people's content?",
         "Do people want to use my application offline?",
         "Which competitors should I be looking into?",
 
@@ -27,7 +27,7 @@ export default function FeatureSearch(props){
     const navigate = useTransition();
 
     useEffect(()=>{
-        console.log("SELECTED", selectedDatasets)
+        console.log("NAVIGATE", selectedDatasets)
     }, [selectedDatasets])
 
     useEffect(()=>{
@@ -48,6 +48,9 @@ export default function FeatureSearch(props){
         
     }, [searchText])
 
+    useEffect(()=>{
+        (navigate.type === "actionSubmission" || navigate.type === 'actionRedirect')  && setDisplayText("Finding all relevant conversations...")
+    }, [navigate])
 
     return(
 
@@ -100,6 +103,7 @@ export default function FeatureSearch(props){
                                 backgroundColor: 'rgba(119, 153, 141, 0.3)'}}
                     />
         }
+
         <TextTransition 
             className='featureSearchDescriptionText'
             direction="up"
@@ -122,6 +126,33 @@ export default function FeatureSearch(props){
                         )}
                 </Fade>
         </div>}
+        {searchText !== "" && selectedDatasets.length > 0 &&
+            <Form className='featureSearchInnerWrapper' method='post'>
+                <input type="hidden" name="computedRankState" value={props.colStateWatcher.length + 1}/>
+                <input type="hidden" name='searchTerm' value={searchText} />
+                <input type="hidden" name="selectedDatasets" value={selectedDatasets} />
+                <input type="hidden" name="actionType" value="search" />
+                <div className='exampleDataSourcesNext' style={{
+                    display: 'flex',
+                    gap: '5px'
+                }}>
+                    <Fade direction='up'>
+                        <button className='exampleDataSourcesNextText' type='submit'>
+                            Search
+                            <ImSearch style={{
+                            display: 'inline',
+                            height: '18px',
+                            width: '18px',
+                            position: "relative",
+                            top: "-2px",
+                            left: "5px",
+                            transform: "rotate(90deg)"
+                        }}/>
+                        </button>
+                    </Fade>
+                </div>
+            </Form>
+        }
     </div>
     )
 

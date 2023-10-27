@@ -1706,7 +1706,7 @@ div.DraftEditor-root {
   font-weight: bold;
   font-size: 50px;
   color: #4B5563;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.06em;
 }
 
 .featureSearchInnerWrapper{
@@ -3429,4 +3429,42 @@ font-weight: 500;
   justify-content: flex-start;
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+.instructionModalWrapper{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  background-color: white;
+  border: 1px solid #e7e7e7;
+  transform: translate(-50%, -50%);
+}
+
+.instructionModalButton{
+  border: 2px solid #e7e7e7;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+
+}
+
+.instructionModalButton:hover{
+  transform: scale(1.15);
+}
+
+.instructionModalButtonIcon{
+  font-size: 18px;
+  font-weight: 700;
+  color: #4b556399;
 }

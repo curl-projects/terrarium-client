@@ -118,7 +118,7 @@ export default function DataSourcesExample(){
     const [platformIndex, setPlatformIndex] = useState(0);
     const typeValues = ['Feature Requests', 'Issues', 'Bug Reports', "Ideas", "Anything"]
     const [typeIndex, setTypeIndex] = useState(0);
-
+    const [activeExampleDataset, setActiveExampleDataset] = useState({status: "adding", readableName: ""})
 
     useEffect(()=>{
         const intervalId = setInterval(
@@ -136,7 +136,12 @@ export default function DataSourcesExample(){
 
 
     useEffect(()=>{
-        console.log('LOADER DATA:', loaderData)
+        console.log('FETCHER STATE:', exampleDatasetFetcher.state)
+        console.log('FETCHER DATA:', exampleDatasetFetcher.data)
+    }, [exampleDatasetFetcher])
+
+    useEffect(()=>{
+        console.log("LOADER DATA:", loaderData)
     }, [loaderData])
 
     // READING UNPROCESSED DATASETS
@@ -150,42 +155,46 @@ export default function DataSourcesExample(){
     return(
         <div className='dataSourcesPageWrapper'>
         <Header />
-        {/* <PageTitle 
-            title="Data Sources" 
-            padding={true} 
-            description="Upload datasets for analysis and visualisation."
-            fetcher={exampleDatasetFetcher}
-            /> */}
-        
         <div className='pageTitleOuterWrapper' style={{
                     gridRow: "2 / 3",
                     gridColumn: "2 / 3",
                     paddingTop: "8%"
         }}>
-        <Fade className='pageTitle' duration={1500} style={{textAlign: "center", display: 'flex', flexDirection: "column", alignItems: "center"}}>
-]                <h1 className='landingPageTitleText' style={{letterSpacing: "-0.06em", color: "#4b5563"}}>
-                    Add
-                    <TextTransition
-                    inline={true}
-                    direction='down'
-                    springConfig={presets.gentle} 
-                    className='landingPageTitleChangingText'
-                    style={{marginLeft: "10px", marginRight: "10px", color: "#B0BFB9"}}
-                    >
-                        {typeValues[typeIndex % typeValues.length]}
-                    </TextTransition>
-                    from 
-                    <TextTransition
-                    inline={true}
-                    direction='up'
-                    springConfig={presets.gentle} 
-                    style={{marginLeft: "10px", marginRight: "10px"}}
-                    className='landingPageTitleChangingText'
-                    >
-                        {platformValues[platformIndex % platformValues.length]}
-                    </TextTransition>
-                    ...
+        <Fade className='pageTitle' triggerOnce duration={1500} style={{textAlign: "center", display: 'flex', flexDirection: "column", alignItems: "center"}}>
+                {exampleDatasetFetcher && (exampleDatasetFetcher.state === 'loading' || exampleDatasetFetcher.state === 'submitting')
+                ? <h1 className='landingPageTitleText' style={{letterSpacing: "-0.06em", color: "#4b5563"}}>
+                    {activeExampleDataset.status === 'adding' 
+                        ? <Fade><span>Adding <span style={{color: "#7e988e"}}>{activeExampleDataset.readableName}</span> to workspace</span> </Fade>
+                        : <Fade><span>Removing <span style={{color: "#B0BFB9"}}>{activeExampleDataset.readableName}</span> from workspace</span> </Fade>
+                    }
                 </h1>
+                :
+                <Fade>
+                    <h1 className='landingPageTitleText' style={{letterSpacing: "-0.06em", color: "#4b5563"}}>
+                        Add
+                        <TextTransition
+                        inline={true}
+                        direction='down'
+                        springConfig={presets.gentle} 
+                        className='landingPageTitleChangingText'
+                        style={{marginLeft: "10px", marginRight: "10px", color: "#B0BFB9"}}
+                        >
+                            {typeValues[typeIndex % typeValues.length]}
+                        </TextTransition>
+                        from 
+                        <TextTransition
+                        inline={true}
+                        direction='up'
+                        springConfig={presets.gentle} 
+                        style={{marginLeft: "10px", marginRight: "10px"}}
+                        className='landingPageTitleChangingText'
+                        >
+                            {platformValues[platformIndex % platformValues.length]}
+                        </TextTransition>
+                        ...
+                    </h1>
+                </Fade>
+                }
                 <div className='pageTitleDivider' style={{width: "80%", marginTop: "10px"}}/>
                 {exampleDatasetFetcher && (exampleDatasetFetcher.state === "submitting" || exampleDatasetFetcher.state === 'loading')  &&
                         <LinearProgress 
@@ -215,38 +224,12 @@ export default function DataSourcesExample(){
                                 fetcher={exampleDatasetFetcher}
                                 description={dataset.description}
                                 datasourced={true}
+                                readableName={dataset.dataset.readableName}
+                                setActiveExampleDataset={setActiveExampleDataset}
                                 />
                     )}
                 </Fade>
             </div>
-            {/* <div className='dataSourcesInnerContainer'>
-                <div className='unprocessedDataWrapper'>
-                    <UnprocessedDatasets 
-                        baseDatasets={loaderData.baseDatasets}
-                        handleUnprocessedDatasetClick={handleUnprocessedDatasetClick}
-                        unprocessedFileName={unprocessedFileName}
-                        setHighlightedProcessedDatasets={setHighlightedProcessedDatasets}
-                        />
-                </div>
-                <div className='processedDataWrapper'>
-                    <ProcessedDatasets  
-                        processedDatasets={loaderData.datasets}
-                        activelyDeletingFile={activelyDeletingFile}
-                        setActivelyDeletingFile={setActivelyDeletingFile}
-                        readDatasetFetcher={readDatasetFetcher}
-                        unprocessedFileName={unprocessedFileName}
-                        setUnprocessedFileName={setUnprocessedFileName}
-                        baseDatasetId={baseDatasetId}
-                        setBaseDatasetId={setBaseDatasetId}
-                        fileHeaders={fileHeaders}
-                        setFileHeaders={setFileHeaders}
-                        highlightedProcessedDatasets={highlightedProcessedDatasets}
-                        actionData={actionData}
-                        handleUnprocessedDatasetClick={handleUnprocessedDatasetClick}
-                        exampleDatasets={loaderData.exampleDatasets}
-                    />
-                </div>
-            </div> */}
         </div>
         <Snackbar  
             open={actionData?.response === "404"}
@@ -258,7 +241,7 @@ export default function DataSourcesExample(){
         {loaderData?.exampleDatasets.map(d => d.active).some(i => i) &&
         <div className='exampleDataSourcesNext'>
             <Fade direction='up'>
-                <Link to={'/roadmap-example'}>
+                <Link to={'/query'}>
                 <p className='exampleDataSourcesNextText'>Next →</p>
                 </Link>
             </Fade>

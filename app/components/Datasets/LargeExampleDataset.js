@@ -6,16 +6,18 @@ export default function LargeExampleDataset({ fetcher, ...props}){
     function handleClick(){
         if(props.datasourced){
             if(props.active){
+                props.setActiveExampleDataset({status: "removing", readableName: props.readableName})
                 fetcher.submit({
                     actionType: "disconnectExampleDataset",
-                    datasetId: props.datasetId
+                    datasetId: props.datasetId,
                 }, {method: "post"})
     
             }
             else{
+                props.setActiveExampleDataset({status: "adding", readableName: props.readableName})
                 fetcher.submit({
                     actionType: "addExampleDataset",
-                    datasetId: props.datasetId
+                    datasetId: props.datasetId,
                 }, {method: "post"})     
             }
         }
