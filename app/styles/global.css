@@ -660,6 +660,7 @@ body {
 .kanbanCardTitle{
   display: flex;
   flex-direction: row;
+  padding-bottom: 5px;
 }
 
 
@@ -670,9 +671,10 @@ body {
 
 .kanbanCardMenuItem{
   color: #4b556399;
-  font-weight: 500;
-  letter-spacing: -0.06em;
+  text-decoration: none;
+  font-weight: 600;
   font-size: 16px;
+  letter-spacing: -.06em;
 }
 
 .kanbanCardTitleText{
@@ -680,6 +682,7 @@ body {
   font-weight: 600;
   font-size: 16px;
   letter-spacing: -0.05em;
+  line-height: 1.2rem;
 }
 
 .kanbanCardPinnedText{
@@ -1368,6 +1371,7 @@ div.DraftEditor-root {
   display: grid;
   grid-template-columns: 70px minmax(0, 1fr) 70px;
   grid-template-rows: 100px min-content 1fr 70px;
+  background-color: white;
 }
 
 .integrationsPageWrapper{
@@ -1394,6 +1398,7 @@ div.DraftEditor-root {
   align-items: flex-start;
   padding-top: 0px;
   box-sizing: border-box;
+  background-color: white;
 }
 
 
@@ -3432,14 +3437,18 @@ font-weight: 500;
 }
 
 .instructionModalWrapper{
+  width: 80vw;
+  height: 60vh;
+  background-color: white;
+  border: 1px solid #e7e7e7;
+  padding: 30px;
+  border-radius: 20px;
+  transform: translate(-50%, -50%);
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 400px;
-  height: 400px;
-  background-color: white;
-  border: 1px solid #e7e7e7;
-  transform: translate(-50%, -50%);
+  outline: 0;
+
 }
 
 .instructionModalButton{
@@ -3467,4 +3476,47 @@ font-weight: 500;
   font-size: 18px;
   font-weight: 700;
   color: #4b556399;
+}
+
+.instructionModalStateController{
+  position: absolute;
+  bottom: 0;
+  left: auto;
+  right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  border: 2px solid black;
+}
+
+.instructionWelcomeText{
+  font-weight: 700;
+  font-size: 46px;
+  color: #4b5563;
+  letter-spacing: -.06em;
+}
+
+.instructionLogo{
+  color: #7e988e;
+  display: inline;
+}
+
+.instructionLogoPlant{
+  display: inline;
+  position: relative;
+  top: -5px;
+  left: 3px;
+}
+
+.instructionModalInnerWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+
+}
+
+.react-joyride__spotlight{
+  border-radius: 20px !important;
 }

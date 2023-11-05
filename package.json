@@ -50,6 +50,7 @@
     "react-expanding-textarea": "^2.3.6",
     "react-highlight-words": "^0.20.0",
     "react-icons": "^4.6.0",
+    "react-joyride": "^2.6.2",
     "react-moving-text": "^0.0.7",
     "react-papaparse": "^4.1.0",
     "react-router-dom": "^6.12.1",

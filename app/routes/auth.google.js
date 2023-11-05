@@ -11,7 +11,7 @@ async function login(request){
 
   try{
     return await authenticator.authenticate(SocialsProvider.GOOGLE, request, {
-      successRedirect: "/roadmap",
+      successRedirect: "/data-sources-example",
       failureRedirect: "/",
     });
   }

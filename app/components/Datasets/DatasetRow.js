@@ -86,7 +86,8 @@ export default function DatasetRow(props){
                     </div>
                     <div style={{flex: 1}}/>
                     <div className='fileRemoveWrapper'>
-                        {props.exampleDataset ? 
+                        {/* {props.exampleDataset ?  */}
+                        { false ?
                         <>  
                             <div className='exampleDatasetBanner'>
                                 <p className='exampleDatasetBannerText'>Example</p>

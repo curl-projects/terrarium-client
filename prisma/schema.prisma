@@ -157,7 +157,7 @@ model ExampleDataset{
   datasetId Int @unique
   userId String
   user User @relation(fields: [userId], references: [id])
-  dataset Dataset @relation(fields: [datasetId], references: [datasetId])
+  dataset Dataset @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
   active Boolean @default(false)
   description String @default("")
 

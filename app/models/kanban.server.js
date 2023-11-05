@@ -79,11 +79,15 @@ export async function createFeature(userId, columnState, rankState){
 export async function deleteFeature(featureId){
   const textBox = await deleteTextBox(featureId)
 
+  console.log("TEXT BOX:", textBox)
+
   const feature = await db.feature.delete({
     where: {
       id: parseInt(featureId)
     }
   })
+
+  console.log("DELETED FEATURE:", features)
   return feature
 }
 

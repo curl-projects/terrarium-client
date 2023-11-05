@@ -22,7 +22,6 @@ export async function loader({ request }){
   })
   const features = await getFeatures(user.id)
   const datasets = await getRoadmapDatasets(user.id)
-  console.log("DDs:", datasets)
 
   const organisedFeatures = processCardState(features)
   return({ features: organisedFeatures, datasets: datasets.map(e => e['dataset']) })
@@ -34,8 +33,6 @@ export async function action({ request }){
   })
   const formData = await request.formData();
   const actionType = formData.get('actionType');
-
-  console.log("HELLO!", actionType)
 
   if(actionType === "create"){
     const columnState = formData.get('columnState')
@@ -57,8 +54,6 @@ export async function action({ request }){
     const searchTerm = formData.get("searchTerm")
     const selectedDatasets = formData.get("selectedDatasets")
 
-    console.log("IMPORTANT:", computedRankState, searchTerm)
-    console.log("IMPORTANT 2:", selectedDatasets)
     const feature = await createFeature(user.id, columnState, computedRankState)
     return redirect(`/feature/discovery/${feature.id}?searchTerm=${searchTerm}&selectedDatasets=${selectedDatasets}`)
   }
