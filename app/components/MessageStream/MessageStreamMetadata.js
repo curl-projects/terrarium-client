@@ -25,7 +25,7 @@ function handleClusterClick(e){
 }
 
   return (
-    <div className='messageStreamMetadataWrapper'>
+    <div className='messageStreamMetadataWrapper' id='tourMessageStreamMetadata'>
       <div className='messageStreamMetadataSection'
            onClick={()=>props.setDataView('featureRequests')}>
         <p className='messageStreamMetadataText'>

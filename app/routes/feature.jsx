@@ -426,7 +426,7 @@ export default function Feature(){
                 </descriptionFetcher.Form>
             </div>
             <div className='workspaceScaffold'>
-                <div className='workspaceOutletScaffold'>
+                <div className='workspaceOutletScaffold' id="tourWorkspaceScaffold">
                     <div className='workspaceOutletControls'>
                         <Link to={`/feature/discovery/${params["*"]}`}>
                             <Tooltip title="Discovery" placement='top' arrow>
@@ -441,7 +441,7 @@ export default function Feature(){
                         </Link>
                         <Link to={`/feature/notepad/${params["*"]}`}>
                             <Tooltip title="Notepad" placement='top' arrow>
-                                <div className={cn('notepadTab writing',
+                                <div id='tourNotepad' className={cn('notepadTab writing',
                                                     {"notepadTabActive": matches[2] ? matches[2].pathname.includes('notepad') : false}
                                                     )}>
                                     <p className="notepadTabLabel">
@@ -458,8 +458,8 @@ export default function Feature(){
                         }
                     </div>
                 </div>
-                <div className='messageStreamScaffold'>
-                    <div className="messageStreamColumn">
+                <div className='messageStreamScaffold' id='tourMessageStream'>
+                    <div className="messageStreamColumn" id="">
                         <MessageStream
                             data={topLevelStreamDataObj}
                             featureId={loaderData.feature.id}

@@ -77,8 +77,18 @@ export async function connectExampleDataset(userId, datasetId){
             active: true
         }})
     
-    const userDatasetMapping = await db.datasetUserMapping.create({
-        data: {
+    const userDatasetMapping = await db.datasetUserMapping.upsert({
+        where: {
+            userId_datasetId: {
+                userId: userId,
+                datasetId: parseInt(datasetId)
+            }
+        },
+        create: {
+            userId: userId,
+            datasetId: parseInt(datasetId)
+        },
+        update: {
             userId: userId,
             datasetId: parseInt(datasetId)
         }

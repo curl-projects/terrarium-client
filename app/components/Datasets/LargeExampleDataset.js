@@ -40,6 +40,8 @@ export default function LargeExampleDataset({ fetcher, ...props}){
             flexDirection: 'column',
             height: "fit-content",
             padding: "20px",
+            maxWidth: "400px",
+            textAlign: "center",
         }}>
             <p className='exampleDatasetContainerTitle' style={{paddingLeft: "20px", paddingRight: "20px", fontWeight: "700", fontSize: "20px"}}>
                 <span className="exampleDatasetContainerTitleIcon">

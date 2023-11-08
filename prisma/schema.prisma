@@ -135,13 +135,14 @@ model Dataset {
   size            String?
   status          String           @default("unprocessed")
   baseDatasetId   Int?
+  description String @default("")
   baseDataset     BaseDataset?     @relation(fields: [baseDatasetId], references: [baseDatasetId])
   users           DatasetUserMapping[]
   features        Feature[]
   datasetMapping  DatasetMapping?
   active Boolean @default(true) 
   featureRequests FeatureRequest[]
-  exampleDataset ExampleDataset?
+  exampleDataset ExampleDataset[]
 }
 
 model DatasetUserMapping{
@@ -154,12 +155,11 @@ model DatasetUserMapping{
 }
 
 model ExampleDataset{
-  datasetId Int @unique
+  datasetId Int
   userId String
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   dataset Dataset @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
   active Boolean @default(false)
-  description String @default("")
 
   @@id([userId, datasetId])
 }

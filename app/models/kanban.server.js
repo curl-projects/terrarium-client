@@ -87,7 +87,6 @@ export async function deleteFeature(featureId){
     }
   })
 
-  console.log("DELETED FEATURE:", features)
   return feature
 }
 

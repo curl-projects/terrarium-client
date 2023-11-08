@@ -28,12 +28,11 @@ export async function loader({ request }){
         failureRedirect: "/",
       })
 
-    const baseDatasets = await getBaseDatasets(user.id)
-    const datasets = await getDatasets(user.id)
+
     const exampleDatasets = await getExampleDatasets(user.id)
     const dbUser = await getUserWithDatasets(user.id)
 
-    return { datasets: datasets.map(e => e['dataset']), baseDatasets: baseDatasets, user: dbUser, exampleDatasets: exampleDatasets}
+    return { user: dbUser, exampleDatasets: exampleDatasets}
 }
 
 export async function action({request}){
@@ -222,7 +221,7 @@ export default function DataSourcesExample(){
                                 datasetId={dataset.datasetId}
                                 active={dataset.active}
                                 fetcher={exampleDatasetFetcher}
-                                description={dataset.description}
+                                description={dataset.dataset.description}
                                 datasourced={true}
                                 readableName={dataset.dataset.readableName}
                                 setActiveExampleDataset={setActiveExampleDataset}
@@ -238,12 +237,20 @@ export default function DataSourcesExample(){
             anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
 
         />
-        {loaderData?.exampleDatasets.map(d => d.active).some(i => i) &&
+        {loaderData?.exampleDatasets.map(d => d.active).some(i => i) ?
         <div className='exampleDataSourcesNext'>
             <Fade direction='up'>
                 <Link to={'/query'}>
                 <p className='exampleDataSourcesNextText'>Next →</p>
                 </Link>
+            </Fade>
+        </div>
+        : 
+        <div className='exampleDataSourcesNext'>
+            <Fade direction='up'>
+                <p className='exampleDataSourcesNextText' style={{
+                    fontSize: "18px"
+                }}>Reach out if you would like to upload a dataset</p>
             </Fade>
         </div>
         }

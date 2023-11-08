@@ -21,7 +21,6 @@ export default function FeatureSearch(props){
         "Should I build a system that allows users to upvote other people's content?",
         "Do people want to use my application offline?",
         "Which competitors should I be looking into?",
-
     ]
     const [displayText, setDisplayText] = useState("placeholder")
     const navigate = useTransition();
@@ -43,7 +42,12 @@ export default function FeatureSearch(props){
             return () => clearTimeout(intervalId)
         }
         else{
-            setDisplayText("Select the discussions you want to search through")
+            if(props.datasets.length === 0){
+                setDisplayText("Add datasets in the Data Sources panel to ask a question")
+            }
+            else{
+                setDisplayText("Select the discussions you want to search through")
+            }
         }
         
     }, [searchText])

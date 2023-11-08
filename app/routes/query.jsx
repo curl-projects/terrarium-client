@@ -25,7 +25,7 @@ export async function loader({ request }){
   console.log("DDs:", datasets)
 
   const organisedFeatures = processCardState(features)
-  return({ features: organisedFeatures, datasets: datasets.map(e => e['dataset']) })
+  return({ features: organisedFeatures, datasets: datasets.map(e => e['dataset'])})
 }
 
 export async function action({ request }){

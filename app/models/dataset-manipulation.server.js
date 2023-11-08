@@ -8,8 +8,12 @@ export async function getRoadmapDatasets(userId){
             }
         },
         include: {
-            dataset: true
-        }
+            dataset: {
+                include: {
+                    exampleDataset: true
+                }
+            }
+        },
     })
     return datasets
 }
@@ -79,4 +83,12 @@ export async function getUserWithDatasets(userId){
     })
 
     return user
+}
+
+export async function connectExampleDatasets(){
+    const newConnections = await db.exampleDataset.createMany({
+        data: [ { datasetId: 114, userId: '112925170812588898578' } ]
+      })
+    
+    return newConnections
 }

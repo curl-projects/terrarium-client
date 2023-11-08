@@ -36,7 +36,7 @@ export default function Header(props){
       </div>
       <div style={{flex: 1}}/>
       {!props.headerCollapsed &&
-      <div className="navigationTextWrapper">
+      <div className="navigationTextWrapper" id='tourHeader'>
         <Link to ='/data-sources-example' style={{textDecoration: "none"}}>
         <h3 className='navigationText'>Data Sources</h3>
         </Link>

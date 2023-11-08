@@ -3405,7 +3405,7 @@ font-weight: 500;
   right: 0; 
   margin-left: auto; 
   margin-right: auto; 
-  width: 300px;
+  width: 600px;
   height: 10vh;
   display: flex;
   align-items: center;
@@ -3438,7 +3438,7 @@ font-weight: 500;
 
 .instructionModalWrapper{
   width: 80vw;
-  height: 60vh;
+  height: fit-content;
   background-color: white;
   border: 1px solid #e7e7e7;
   padding: 30px;
@@ -3446,9 +3446,18 @@ font-weight: 500;
   transform: translate(-50%, -50%);
   position: absolute;
   top: 50%;
+  overflow: hidden;
   left: 50%;
   outline: 0;
+}
 
+.instructionModalJoyrideWrapper{
+  background-color: white;
+  border: 1px solid #e7e7e7;
+  padding: 30px;
+  border-radius: 20px;
+  height: fit-content;
+  width: 60vw;
 }
 
 .instructionModalButton{
@@ -3495,6 +3504,94 @@ font-weight: 500;
   font-size: 46px;
   color: #4b5563;
   letter-spacing: -.06em;
+} 
+
+.instructionToolDescriptionText{
+  font-weight: 700;
+  font-size: 26px;
+  color: #4b5563;
+  letter-spacing: -.06em;
+}
+
+.instructionGeneralTextWrapper{
+  padding: 20px;
+}
+
+.instructionGeneralText{
+  font-weight: 700;
+  font-size: 40px;
+  color: #4b5563ba;
+  letter-spacing: -.06em;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+  line-height: 48px;
+}
+
+.instructionSubSplitWrapper{
+  display: flex;
+  flex: 1;
+  gap: 40px;
+  padding-top: 20px;
+  min-height: 0;
+}
+
+.instructionComponentHighlighter{
+  border: 1px solid #e7e7e7;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  margin: 10px;
+}
+
+.instructionSubText{
+  font-weight: 700;
+  font-size: 30px;
+  color: #4b5563ba;
+  letter-spacing: -.06em;
+}
+
+.instructionParagraphText{
+  font-weight: 700;
+  font-size: 28px;
+  color: #4b5563ba;
+  letter-spacing: -.06em;
+}
+
+.instructionGeneralText:hover{
+  transform: scale(1.01);
+}
+
+.instructionQuestionText{
+  color: #b0bfb9;
+  font-weight: 500;
+  font-size: 34px;
+  letter-spacing: -.06em;
+  transition: all .2s ease-in-out;
+  text-align: center;
+  height: unset !important;
+}
+
+.instructionNextWrapper{
+  display: flex;
+  align-self: flex-end;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 10px;
+}
+
+.instructionNextText{
+  color: #4b556399;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -.06em;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
 }
 
 .instructionLogo{
@@ -3514,9 +3611,50 @@ font-weight: 500;
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
+  height: 100%;
+}
 
+.instructionInsightText{
+  color: #b0bfb9;
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -.06em;
+  transition: all .2s ease-in-out;
+  line-height: 22px;
+}
+
+.insightsCard{
+  width: 80%;
+  border: 1px solid #e7e7e7;
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  transition: all .3s ease-in-out;
+  height: auto;
+  cursor: pointer;
+}
+
+.insightsCard:hover{
+  transform: scale(1.02);
+}
+
+.insightsBookmark{
+  width: 10px;
+  background-color: #77998dcc;
+}
+
+.insightsInnerCard{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
 }
 
 .react-joyride__spotlight{
   border-radius: 20px !important;
+}
+
+.__floater __floater__open{
+  max-width: 70vw;
 }
