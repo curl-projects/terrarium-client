@@ -7,8 +7,6 @@ export default function MessageStreamFeatureRequests(props){
         <div className="pl-10 pr-8 flex flex-col gap-2" style={{backgroundColor: "rgb(243, 244, 246)"}}>
             <div className='featureRequestSearchWrapper'>
             <input 
-                    inputRef={props.landingPageSearchBarRef}
-                    InputProps={{ inputProps: { tabIndex: -1 } }} 
                     className='featureRequestSearchTextField'
                     onKeyPress={(e)=>{e.key === "Enter" && e.preventDefault();}}
                     value={props.searchText}

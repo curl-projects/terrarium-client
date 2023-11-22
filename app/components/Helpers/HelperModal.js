@@ -78,10 +78,6 @@ export default function HelperModal({modalOpen, setModalOpen, ...props}){
         !modalOpen && setModalIndex(0)
     }, [modalOpen])
 
-    useEffect(()=>{
-        console.log("JOYRIDE OPEN:", joyrideOpen)
-    }, [joyrideOpen])
-
     const modalCode = [
         <>
             <div className='instructionGeneralTextWrapper'>

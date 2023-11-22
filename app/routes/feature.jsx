@@ -265,8 +265,8 @@ export default function Feature(){
         }
     }, [searchText])
 
+    // handling search result reset
     useEffect(()=>{
-        console.log("SEARCH RESULTS", searchResults)
         d3.selectAll(".frNode")
           .classed("invisibleFrNode", false)
 
