@@ -2516,14 +2516,19 @@ font-weight: 500;
   gap: 10px;
 }
 
-.featureRequestSearchTextField fieldset.MuiOutlinedInput-notchedOutline {
-  border-color: rgba(119, 153, 141, 0.3) !important;
+.featureRequestSearchTextField{
+  border: 1px solid rgba(119, 153, 141, 0.3) !important;
   border-radius: 0px;
+  background: none;
+  color: rgba(55, 65, 81, 1) !important;
+  width: 100%;
+  padding: 14px 16.5px;
 }
 
-.featureRequestSearchTextField .Mui-focused fieldset.MuiOutlinedInput-notchedOutline {
-  border-color: #77998d !important;
+.featureRequestSearchTextField:focus{
+  border: 1px solid #77998d !important;
   border-radius: 0px;
+  outline: none;
 }
 
 .featureRequestSearchTextField label {

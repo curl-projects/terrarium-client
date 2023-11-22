@@ -79,6 +79,7 @@ export default function FeatureSearch(props){
                 className='featureSearchInput' 
                 placeholder='Ask any question about your communities...'
                 value={searchText}
+                onKeyPress={(e)=>{e.key === "Enter" && e.preventDefault();}}
                 onChange={(e)=>setSearchText(e.target.value)}
                 autoFocus
                 >
