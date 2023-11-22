@@ -24,6 +24,7 @@ import { Fade } from "react-awesome-reveal";
 
 import MessageStream from "~/components/MessageStream/MessageStream.js"
 import {IoIosArrowDropdown} from "react-icons/io"
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 import { GoTelescope } from 'react-icons/go'
 import { BiNotepad } from 'react-icons/bi'
@@ -346,18 +347,34 @@ export default function Feature(){
                         </div>
                      )
                     }
-                    <div 
+                    {!titleFocused ?
+                        <div 
+                            className='featureDropDownArrow' 
+                            onClick={()=>setHeaderCollapsed(prevState => !prevState)}
+                            style={{
+                                transform: headerCollapsed ? "rotate(0deg)" : "rotate(180deg)",
+                                height: headerCollapsed ? "22px" : "30px",
+                                width: headerCollapsed ? "22px" : "30px",
+                                top: headerCollapsed ? "2px" : "7.5px",
+                                left: headerCollapsed ? "-24px" : "-36px",
+                                }}>
+                                <IoIosArrowDropdown color="#B0BFB9"/>
+                        </div>
+                    :
+                        <div 
                         className='featureDropDownArrow' 
-                        onClick={()=>setHeaderCollapsed(prevState => !prevState)}
+                        onClick={()=>setTitleFocused(false)}
                         style={{
                             transform: headerCollapsed ? "rotate(0deg)" : "rotate(180deg)",
                             height: headerCollapsed ? "22px" : "30px",
                             width: headerCollapsed ? "22px" : "30px",
                             top: headerCollapsed ? "2px" : "7.5px",
                             left: headerCollapsed ? "-24px" : "-36px",
-                               }}>
-                            <IoIosArrowDropdown color="#B0BFB9"/>
-                    </div>
+                            }}>
+                            <IoIosCloseCircleOutline color="#B0BFB9"/>
+                        </div>
+
+                    }
                     <div style={{flex: 1}}/>
                     <input type='hidden' name='searchTerm' value={title} />
                     <input type='hidden' name='featureId' value={params["*"]}/>
