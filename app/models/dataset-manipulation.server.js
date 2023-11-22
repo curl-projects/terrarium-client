@@ -48,7 +48,7 @@ export async function updateFeatureDatasets(featureId, selectedDatasets){
 export async function connectDatasetToUser(userId, datasetId){
     // create connection object
     const datasetUserMapping = await db.datasetUserMapping.create({
-        data: {
+        data: { 
             userId: userId,
             datasetId: datasetId
         }

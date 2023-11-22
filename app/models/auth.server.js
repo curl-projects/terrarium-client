@@ -13,10 +13,14 @@ async function handleSocialAuthCallback({ profile }) {
   const specialEmails = {
     'andre@uni.minerva.edu': "foundingTeam",
     'finn.james.macken@gmail.com': "foundingTeam",
+    "scya597@gmail.com": "heptabase",
+    "finn.macken.chem@gmail.com": "heptabase",
+    "maliambird@gmail.com": "foundingTeam",
   }
 
   const exampleDatasetLinks = {
-    'foundingTeam': [114]
+    'foundingTeam': [114],
+    'heptabase': [114]
   }
 
   // create user in your db here

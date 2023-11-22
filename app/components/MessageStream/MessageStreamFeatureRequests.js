@@ -40,7 +40,7 @@ export default function MessageStreamFeatureRequests(props){
                 />
             ))}
             {props.pinnedCards.length > 0 && <h1 className="text-gray-400 text-xs font-medium pl-4">Unpinned Feature Requests</h1>}
-            {props.remainingCards.map((cardData, idx) => (
+            {props.remainingCards.sort((a, b) => parseFloat(b.score) - parseFloat(a.score)).map((cardData, idx) => (
                 <MessageCard
                 style={{boxShadow: "1px 1px 10px 1px #0000001a"}}
                 pushPinStyle={{boxShadow: "1px 1px 10px 1px #0000001a"}}

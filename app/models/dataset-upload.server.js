@@ -66,59 +66,68 @@ export async function getExampleDatasets(userId){
 }
 
 export async function connectExampleDataset(userId, datasetId){
-    const exampleDataset = await db.exampleDataset.update({
-        where: {
-            userId_datasetId: {
+    try {
+        const exampleDataset = await db.exampleDataset.update({
+            where: {
+                userId_datasetId: {
+                    userId: userId,
+                    datasetId: parseInt(datasetId)
+                }
+            },
+            data: {
+                active: true
+            }})
+        
+        const userDatasetMapping = await db.datasetUserMapping.upsert({
+            where: {
+                userId_datasetId: {
+                    userId: userId,
+                    datasetId: parseInt(datasetId)
+                }
+            },
+            create: {
+                userId: userId,
+                datasetId: parseInt(datasetId)
+            },
+            update: {
                 userId: userId,
                 datasetId: parseInt(datasetId)
             }
-        },
-        data: {
-            active: true
-        }})
+        })
     
-    const userDatasetMapping = await db.datasetUserMapping.upsert({
-        where: {
-            userId_datasetId: {
-                userId: userId,
-                datasetId: parseInt(datasetId)
-            }
-        },
-        create: {
-            userId: userId,
-            datasetId: parseInt(datasetId)
-        },
-        update: {
-            userId: userId,
-            datasetId: parseInt(datasetId)
-        }
-    })
-
-    return userDatasetMapping
+        return userDatasetMapping    
+    } catch (error) {
+        console.log('CONNECT DATASET ERROR', error)
+    }
+    
 }
 
 export async function disconnectExampleDataset(userId, datasetId){
-    const exampleDataset = await db.exampleDataset.update({
-        where: {
-            userId_datasetId: {
-                userId: userId,
-                datasetId: parseInt(datasetId)
+    try {
+        const exampleDataset = await db.exampleDataset.update({
+            where: {
+                userId_datasetId: {
+                    userId: userId,
+                    datasetId: parseInt(datasetId)
+                }
+            },
+            data: {
+                active: false
+            }})
+        
+        const userDatasetMapping = await db.datasetUserMapping.delete({
+            where: {
+                userId_datasetId: {
+                    userId: userId,
+                    datasetId: parseInt(datasetId)
+                }
             }
-        },
-        data: {
-            active: false
-        }})
+        })
     
-    const userDatasetMapping = await db.datasetUserMapping.delete({
-        where: {
-            userId_datasetId: {
-                userId: userId,
-                datasetId: parseInt(datasetId)
-            }
-        }
-    })
-
-    return userDatasetMapping 
+        return userDatasetMapping   
+    } catch (error) {
+        console.log("DISCONNECT DATASET ERROR:", error)
+    } 
 }
 
 export async function createDatasetObject(fileName, userId, headerMapping, baseDatasetId){
