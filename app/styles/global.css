@@ -1637,7 +1637,6 @@ div.DraftEditor-root {
   flex: 1;
   width: 100%;
   box-sizing: border-box;
-  background-color: white;
   box-shadow: 4px 4px 11px -1px rgba(0, 0, 0, 0.1);
   min-height: 0;
 }
@@ -1690,7 +1689,27 @@ div.DraftEditor-root {
 .textEditorScaffold{
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+}
 
+.textEditorPromptBar{
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid rgba(119, 153, 141, .3) !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.textEditorPromptText{
+  color: #4b556399 !important;
+  letter-spacing: -0.06em;
 }
 
 /* PAGE TITLE */
@@ -2774,6 +2793,7 @@ font-weight: 500;
   display: flex;
   flex-direction: column;
 }
+
 .editorWrapper{
   height: 100%;
   color: #4b5563;
@@ -2782,6 +2802,7 @@ font-weight: 500;
   max-height: 100%;
   gap: 0px;
   overflow: hidden;
+  background-color: white;
 }
 
 .editorControlsBar{
@@ -2790,6 +2811,7 @@ font-weight: 500;
   padding: 20px;
   padding-left: 26px;
   padding-right: 26px;
+  background-color: white;
 }
 
 .editorToolbar{

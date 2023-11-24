@@ -7,6 +7,9 @@ export default function Notepad(){
 
     return(
         <div className='textEditorScaffold'>
+            <div className='textEditorPromptBar'>
+                <p className='textEditorPromptText'>Crazy AI Goes Here</p>
+            </div>
             <ClientOnly>
             {() => <RichTextEditor
                     featureId={params["*"]} />}
