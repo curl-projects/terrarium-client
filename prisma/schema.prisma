@@ -58,7 +58,6 @@ model Feature {
   columnState     Int
   rankState       Int
   isSearched      Boolean             @default(false)
-  clusters        Cluster[]
   user            User                @relation(fields: [userId], references: [id])
   filters         FeatureFilter[]
   featureRequests FeatureRequestMap[]
@@ -74,7 +73,12 @@ model FeatureRequest {
   author     String
   fr         String
   userId     String
+  challengingScore Float @default(0)
+  usefulScore Float @default(0)
+  specificScore Float @default(0)
   datasetId  Int
+  clusterId  Int
+  cluster    Cluster @relation(fields: [clusterId], references: [clusterId])
   dataset    Dataset             @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
   features   FeatureRequestMap[]
 }
@@ -83,10 +87,7 @@ model FeatureRequestMap {
   featureId        Int
   featureRequestId String
   pinned           Boolean        @default(false)
-  clusterId        Int?
-  oldCluster       Int            @default(-1)
   score            String?
-  cluster          Cluster?       @relation(fields: [clusterId], references: [clusterId])
   feature          Feature        @relation(fields: [featureId], references: [id], onDelete: Cascade)
   featureRequest   FeatureRequest @relation(fields: [featureRequestId], references: [fr_id], onDelete: Cascade)
 
@@ -111,14 +112,14 @@ model DiscordMessage {
 }
 
 model Cluster {
+  datasetId          Int
   clusterId          Int                 @id @default(sequence())
-  featureId          Int?
   internalClusterId  Int                 @default(-1)
   description        String              @default("")
   type               String              @default("localKMeans")
-  feature            Feature?            @relation(fields: [featureId], references: [id], onDelete: Cascade)
+  dataset            Dataset             @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
+  featureRequests    FeatureRequest[]
   clusterTags        ClusterTag[]
-  featureRequestMaps FeatureRequestMap[]
 }
 
 model ClusterTag {
@@ -143,6 +144,7 @@ model Dataset {
   active Boolean @default(true) 
   featureRequests FeatureRequest[]
   exampleDataset ExampleDataset[]
+  clusters       Cluster[]
 }
 
 model DatasetUserMapping{

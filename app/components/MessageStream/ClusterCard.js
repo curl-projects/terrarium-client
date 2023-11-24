@@ -22,12 +22,12 @@ export default function ClusterCard(props) {
 
 
   useEffect(()=>{
-    props.clusterData[0] && setDescriptionText(props.clusterData[0].cluster.description)
+    props.clusterData[0] && setDescriptionText(props.clusterData[0].featureRequest.cluster.description)
   }, [props.clusterData])
 
   function handleClusterCardClick(){
     if(!isCardExpanded){
-        props.setZoomObject({id: props.clusterData[0].cluster.internalClusterId, type: "cluster"})
+        props.setZoomObject({id: props.clusterData[0].featureRequest.cluster.internalClusterId, type: "cluster"})
     }
     else if(isCardExpanded && (Object.values(props.allCardsStatus).map(a => a.expanded)).filter((v)=> (v === true)).length === 1){
         props.setZoomObject(null)
@@ -64,7 +64,7 @@ export default function ClusterCard(props) {
   }, [props.isExpanded])
 
   useEffect(()=>{
-    if(props.expandSpecificCard && props.expandSpecificCard.cardType === 'cluster' && props.expandSpecificCard.cardId === props.clusterData[0].cluster.internalClusterId){
+    if(props.expandSpecificCard && props.expandSpecificCard.cardType === 'cluster' && props.expandSpecificCard.cardId === props.clusterData[0].featureRequest.cluster.internalClusterId){
         clusterCardRef.current.scrollIntoView({block: "start", behaviour: "smooth"})
         setIsCardExpanded(true)
     }
@@ -80,12 +80,12 @@ export default function ClusterCard(props) {
   return (
     <div 
         className='clusterCard relative' 
-        onMouseOver={event => handleMouseOver(event, props.clusterData[0].cluster.internalClusterId)}
-        onMouseOut={event => handleMouseOut(event, props.clusterData[0].cluster.internalClusterId)}
+        onMouseOver={event => handleMouseOver(event, props.clusterData[0].featureRequest.cluster.internalClusterId)}
+        onMouseOut={event => handleMouseOut(event, props.clusterData[0].featureRequest.cluster.internalClusterId)}
         >
         <div onClick={handleClusterCardClick} style={{cursor: 'pointer'}} className='clusterCardOuter'>
         <div ref={clusterCardRef} className='clusterCardInner' >
-            <p className='clusterCardTitle'>Cluster {toWords.convert(props.clusterData[0].cluster.internalClusterId+1)}</p>
+            <p className='clusterCardTitle'>Cluster {toWords.convert(props.clusterIndex+1)}</p>
             <div style={{flex: 1}}/>
             <div className='clusterCardTitleMetadataWrapper'>
                 <p className='clusterCardTitleMetadata'>{props.clusterData.length} {props.clusterData.length === 1 ? "Feature Request" : "Feature Requests"}</p>
@@ -95,7 +95,7 @@ export default function ClusterCard(props) {
         <div className='clusterCardTitleSeparator'/>
 
         <div className='clusterCardTagsWrapper'>
-            {props.clusterData[0].cluster.clusterTags.map((clusterTag, idx) => (
+            {props.clusterData[0].featureRequest.cluster.clusterTags.map((clusterTag, idx) => (
                 <TopicTag 
                     key={idx}
                     idx={idx}
@@ -130,7 +130,7 @@ export default function ClusterCard(props) {
                 />
                 </div>
             </div>
-            <input type='hidden' name='clusterId' value={props.clusterData[0].cluster.clusterId}/>
+            <input type='hidden' name='clusterId' value={props.clusterData[0].featureRequest.cluster.clusterId}/>
             <input type='hidden' name='description' value={descriptionText}/>
             <div className='clusterDescriptionSubmitWrapper'>
                 {!props.placeholder &&

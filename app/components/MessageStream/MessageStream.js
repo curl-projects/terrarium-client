@@ -24,11 +24,11 @@ export default function MessageStream(props) {
 
   useEffect(()=>{
     if(props.data){
-      if(props.data[0] && props.data[0].cluster){
+      if(props.data[0] && props.data[0].featureRequest.cluster){
         const organisedClusterData = props.data.reduce((group, featureRequest) => {
-          const { internalClusterId } = featureRequest.cluster;
-          group[internalClusterId] = group[internalClusterId] ?? [];
-          group[internalClusterId].push(featureRequest)
+          const { clusterId } = featureRequest.featureRequest.cluster;
+          group[clusterId] = group[clusterId] ?? [];
+          group[clusterId].push(featureRequest)
           return group
       }, {});
 
@@ -46,7 +46,7 @@ export default function MessageStream(props) {
           group[author] = group[author] ?? [];
           group[author].push(featureRequest)
           return group
-      }, {});
+    }, {});
       
       const sortedAuthorData = Object.values(organisedAuthorData).sort((a, b) => b.length - a.length)
 
@@ -118,13 +118,13 @@ export default function MessageStream(props) {
           setIsExpanded={setIsExpanded}
           scrollToTop={scrollToTop}
           paneRef={paneRef}
-          clustersGenerated={props.clustersGenerated}
+          // clustersGenerated={props.clustersGenerated}
           clusterData={clusterData}
           authorData={authorData}
           filters={props.filters}
-          setClustersGenerated={props.setClustersGenerated}
+          // setClustersGenerated={props.setClustersGenerated}
           setDataView={props.setDataView}
-          clusterFetcher={props.clusterFetcher}
+          // clusterFetcher={props.clusterFetcher}
           featureTitle={props.featureTitle}
           setTriggerClusters={props.setTriggerClusters}
           invisibleFilters={props.invisibleFilters}

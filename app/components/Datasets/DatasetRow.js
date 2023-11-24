@@ -13,13 +13,21 @@ function reducer(state, action){
         case 'request_initiated':
             return {...state, datasetStatus: "Request Initiated"}
         case 'server_contacted':
-            return {...state, datasetStatus: "Server Contacted (1/4)"}
+            return {...state, datasetStatus: "Server Contacted (1/8)"}
         case 'frs_generated':
-            return {...state, datasetStatus: "Feature Requests Generated (2/4)"}
+            return {...state, datasetStatus: "Feature Requests Generated (2/8)"}
         case 'vectors_generated':
-            return {...state, datasetStatus: "Vectors Generated (3/4)"}
+            return {...state, datasetStatus: "Vectors Generated (3/8)"}
+        case 'scores_generated':
+            return {...state, datasetStatus: "Scores Generated (4/8)"}
+        case 'clusters_generated':
+            return {...state, datasetStatus: "Clusters Generated (5/8)"}
+        case 'cluster_descriptions_generated':
+            return {...state, datasetStatus: "Cluster Descriptions Generated (6/8)"}
+        case 'clusters_uploaded':
+            return {...state, datasetStatus: "Clusters Uploaded (7/8)"}
         case 'dataset_generated':
-            return {...state, datasetStatus: "Dataset Generated (4/4)"}
+            return {...state, datasetStatus: "Dataset Generated (8/8)"}
         case 'known_error':
             return {...state, datasetStatus: "Known Error"}
         case 'unknown_error':

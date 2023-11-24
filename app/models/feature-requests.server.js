@@ -11,18 +11,23 @@ export async function findFeatureRequests(featureId){
             select: {
               readableName: true
             }
+          },
+        cluster: {
+          include: {
+            clusterTags: true
           }
         }
-      },
-      cluster: {
-        include: {
-          clusterTags: true
         }
-      }
+      },
+
     }
   })
 
   return featureRequests
+}
+
+export async function findClusters(datasetId){
+
 }
 
 export async function getAllActiveFeatureRequests(userId){

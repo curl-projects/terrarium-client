@@ -128,8 +128,8 @@ export default function HelperModal({modalOpen, setModalOpen, ...props}){
                             "Researchers care more about the ability to search through references than perform keyword search",
                             "Collaborative annotation needs to happen in context or learners don't make difficult connections",
                             "Everyone really hates the current state of our integrations",
-                        ].map(insight =>
-                            <div className='insightsCard'>
+                        ].map((idx, insight) =>
+                            <div className='insightsCard' key={idx}>
                                 <div className='insightsBookmark'/>
                                 <div className='insightsInnerCard'>
                                     <p className='instructionInsightText'>{insight}</p>

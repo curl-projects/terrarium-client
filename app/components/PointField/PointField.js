@@ -138,14 +138,15 @@ export default function PointField({data, clusters, filterBrushedData,
 
       const clusterIdName =  zoomObjectMap[zoomObject.type]
 
-      const transforms = [[]].concat(d3.groups(data, d => d.cluster.internalClusterId).map(([key, data])=> {
+      const transforms = [[]].concat(d3.groups(data, d => d.featureRequest.cluster.internalClusterId).map(([key, data])=> {
+        console.log("DATA:", data)
         const [x0, x1] = d3.extent(data, d => d["xDim"]).map(x);
         const [y1, y0] = d3.extent(data, d => d['yDim']).map(y);
         let margin = 10
         const k = 0.1*Math.min(containerWidth / (x1+2*margin - x0), containerHeight / (y1+2*margin - y0));
         const tx = (containerWidth - k * (x0 + x1)) / 2;
         const ty = (containerHeight - k * (y0 + y1)) / 2;
-        return [data[0].cluster.internalClusterId, d3.zoomIdentity.translate(tx, ty).scale(k)];
+        return [data[0].featureRequest.cluster.internalClusterId, d3.zoomIdentity.translate(tx, ty).scale(k)];
       }))
 
 

@@ -42,7 +42,7 @@ export default function PointFieldScaffold(props){
 
   // GENERATOR FUNCTIONS
   function generateClusterCoords(data){
-    const labels = data.map(a => a.cluster.internalClusterId)
+    const labels = data.map(a => a.featureRequest.cluster.clusterId)
     const clusterLabels = Array.from(new Set(labels))
     const clusterCoordsArray = []
 
@@ -62,7 +62,7 @@ export default function PointFieldScaffold(props){
     const clusterUnits = []
 
     for(let idx in data){
-      let cluster = data[idx].cluster.internalClusterId
+      let cluster = data[idx].featureRequest.cluster.clusterId
 
       let obj = {...data[idx],
                  "xDim": clusterCoordsArray.find(clus => clus.id === cluster)['xDim'] + gaussian(0, (xMax-xMin)/dispersionFactor).random()[0],
@@ -151,7 +151,7 @@ export default function PointFieldScaffold(props){
             cursor: 'pointer'
           }} />
         </Tooltip>
-      {props.clustersGenerated === 'completed' &&
+      {/* {props.clustersGenerated === 'completed' && */}
       <Tooltip title="Cluster" placement='top' arrow>
         <img
           onClick={() => generateClusters(false)}
@@ -167,7 +167,6 @@ export default function PointFieldScaffold(props){
             cursor: 'pointer'
           }} />
         </Tooltip>
-      }
         </>
         }
         {props.zoomObject &&

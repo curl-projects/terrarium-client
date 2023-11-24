@@ -45,7 +45,6 @@ export async function loader({ request, params }){
     })
     const url = new URL(request.url)
     const searchTerm = url.searchParams.get("searchTerm")
-    const clusters = url.searchParams.get("clusters")
   
     const featureId = params["*"]
     const feature = await readFeature(featureId)
@@ -82,8 +81,8 @@ export async function loader({ request, params }){
     }
   
     if(feature.isSearched){
-      const  featureRequests = await findFeatureRequests(featureId); // get associated data objects
-      return { feature: feature, featureRequests: featureRequests, clusters: clusters, datasets: datasets.map(e => e['dataset'])}
+      const featureRequests = await findFeatureRequests(featureId); // get associated data objects
+      return { feature: feature, featureRequests: featureRequests, datasets: datasets.map(e => e['dataset'])}
     }
   
     return { feature: feature, featureRequests: [], datasets: datasets.map(e => e['dataset']) }
@@ -143,91 +142,89 @@ export default function Feature(){
     const [selectedDatasets, setSelectedDatasets] = useState([])
     const [instructionModalOpen, setInstructionModalOpen] = useState(true)
 
-    const clusterSubmit = useSubmit();
-    const clusterFetcher = useFetcher();
-
-    const [clustersGenerated, setClustersGenerated] = useState("incomplete")
+    // const clusterSubmit = useSubmit();
+    // const clusterFetcher = useFetcher();
+    // const [clustersGenerated, setClustersGenerated] = useState("incomplete")
 
     const [socketUrl, setSocketUrl] = useState("");
     const [messageHistory, setMessageHistory] = useState([]);
 
     useEffect(()=>{
         setTitleFocused(false)
-        console.log("LOADER DATA:", loaderData)
         setSelectedDatasets(loaderData.feature.datasets.map(x => x.uniqueFileName))
     }, [loaderData])
 
 
-    useEffect(()=>{
-        setSocketUrl(window.ENV.WEBSOCKETS_URL)
-      }, [])
+    // useEffect(()=>{
+    //     setSocketUrl(window.ENV.WEBSOCKETS_URL)
+    //   }, [])
 
-    useEffect(()=>{
-        console.log("CLUSTER FETCHER DATA", clusterFetcher.data)
-        String(clusterFetcher.data?.clusterResponse) === '404' && setClustersGenerated('error')
-    }, [clusterFetcher.data])
+    // useEffect(()=>{
+    //     console.log("CLUSTER FETCHER DATA", clusterFetcher.data)
+    //     String(clusterFetcher.data?.clusterResponse) === '404' && setClustersGenerated('error')
+    // }, [clusterFetcher.data])
 
-    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+    // const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
 
-    const connectionStatus = {
-        [ReadyState.CONNECTING]: 'Connecting',
-        [ReadyState.OPEN]: 'Open',
-        [ReadyState.CLOSING]: 'Closing',
-        [ReadyState.CLOSED]: 'Closed',
-        [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-    }[readyState];
+    // const connectionStatus = {
+    //     [ReadyState.CONNECTING]: 'Connecting',
+    //     [ReadyState.OPEN]: 'Open',
+    //     [ReadyState.CLOSING]: 'Closing',
+    //     [ReadyState.CLOSED]: 'Closed',
+    //     [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+    // }[readyState];
 
-    useEffect(() => {
-        if (lastMessage !== null) {
-          setMessageHistory((prev) => prev.concat(lastMessage));
-        }
-      }, [lastMessage, setMessageHistory]);
+    // useEffect(() => {
+    //     if (lastMessage !== null) {
+    //       setMessageHistory((prev) => prev.concat(lastMessage));
+    //     }
+    //   }, [lastMessage, setMessageHistory]);
 
-    useEffect(()=>{
-        console.log("LAST MESSAGE:", lastMessage)
-    }, [lastMessage])
+    // useEffect(()=>{
+    //     console.log("LAST MESSAGE:", lastMessage)
+    // }, [lastMessage])
 
     // determine if clusters have been processed and update the state
-    useEffect(()=>{
-            ((loaderData.featureRequests && loaderData.featureRequests[0]?.cluster !== null) 
-            ? setClustersGenerated("completed")
-            : setClustersGenerated("incomplete"))
+    // useEffect(()=>{
+    //         ((loaderData.featureRequests && loaderData.featureRequests[0]?.cluster !== null) 
+    //         ? setClustersGenerated("completed")
+    //         : setClustersGenerated("incomplete"))
 
-            loaderData.clusters === '202' && setClustersGenerated('initiated')
-            loaderData.clusters === '404' && setClustersGenerated('error')
+    //         loaderData.clusters === '202' && setClustersGenerated('initiated')
+    //         loaderData.clusters === '404' && setClustersGenerated('error')
 
-            // TODO should we automatically trigger this if clusters are incomplete?
-        }, [loaderData.featureRequests])
+    //         // TODO should we automatically trigger this if clusters are incomplete?
+    //     }, [loaderData.featureRequests])
 
     // LISTEN TO WEBSOCKET TO FIGURE OUT WHETHER THE CLUSTERS HAVE BEEN GENERATED
-    useEffect(()=>{
-        if(lastMessage && lastMessage.data){
-            const data = JSON.parse(lastMessage.data)
+    // useEffect(()=>{
+    //     if(lastMessage && lastMessage.data){
+    //         const data = JSON.parse(lastMessage.data)
 
-            if(data.type === 'cluster_generation' && data.status === 'initiated'){
-                console.log("CLUSTER ANALYSIS INITIALISING")
-                setClustersGenerated('initiated')
-            }
+    //         if(data.type === 'cluster_generation' && data.status === 'initiated'){
+    //             console.log("CLUSTER ANALYSIS INITIALISING")
+    //             setClustersGenerated('initiated')
+    //         }
 
-            else if(data.type === 'cluster_generation' && data.status === 'completed'){
-                console.log("CLUSTER ANALYSIS COMPLETED")
-                setClustersGenerated("completed")
+    //         else if(data.type === 'cluster_generation' && data.status === 'completed'){
+    //             console.log("CLUSTER ANALYSIS COMPLETED")
+    //             setClustersGenerated("completed")
                 
-                // reload data to load new clusters
-                clusterSubmit({actionType: "reload", featureId: params["*"]}, {method: "post"})
+    //             // reload data to load new clusters
+    //             clusterSubmit({actionType: "reload", featureId: params["*"]}, {method: "post"})
 
-            }
-            else if(data.type === 'error' && data.status === 'cluster_generation'){
-                setClustersGenerated("error")
-            }
-            else{
-                console.log("UNEXPECTED WEBSOCKET RESPONSE")
-            }
-        }
-        else{
-            console.log("NO LAST MESSAGE DATA")
-        }
-    }, [lastMessage])
+    //         }
+    //         else if(data.type === 'error' && data.status === 'cluster_generation'){
+    //             setClustersGenerated("error")
+    //         }
+    //         else{
+    //             console.log("UNEXPECTED WEBSOCKET RESPONSE")
+    //         }
+    //     }
+    //     else{
+    //         console.log("NO LAST MESSAGE DATA")
+    //     }
+    // }, [lastMessage])
 
     // TITLE EFFECTS
     useEffect(()=>{
@@ -235,6 +232,11 @@ export default function Feature(){
         setDescription(loaderData.feature.description)
     }, [loaderData])
 
+    useEffect(()=>{
+        console.log("LOADER DATA:", loaderData)
+    }, [loaderData])
+
+    // LOADER DATA PROPAGATION 
     useEffect(()=>{
         setTopLevelStreamDataObj(loaderData.featureRequests)
         setTopLevelCanvasDataObj(loaderData.featureRequests)
@@ -253,6 +255,7 @@ export default function Feature(){
                        {method: "post"})
     }
 
+    // HANDLING SEARCH TEXT
     useEffect(()=>{
         if(searchText){
             setSearchResults(topLevelFilteredData.filter(x => x.featureRequest.fr.toLowerCase().includes(searchText.toLowerCase())).map(fr => fr.featureRequest.fr_id))
@@ -265,7 +268,8 @@ export default function Feature(){
         }
     }, [searchText])
 
-    // handling search result reset
+    // HANDLING SEARCH TEXT RESET
+    // TODO: MOVE TO RELEVANT COMPOONEWNT
     useEffect(()=>{
         d3.selectAll(".frNode")
           .classed("invisibleFrNode", false)
@@ -280,7 +284,7 @@ export default function Feature(){
         }
     }, [searchResults])
    
-
+    // FILTERING DATA
     useEffect(()=>{
         const filteredData = loaderData.featureRequests.filter(function(fr){
             const filterConditions = []
@@ -471,7 +475,11 @@ export default function Feature(){
                     <div className='workspaceOutletInnerScaffold'>
                         {(Array.isArray(loaderData.featureRequests) && loaderData.featureRequests.length === 0)
                             ? <OutletPlaceholder isSearched={loaderData.feature.isSearched}/>
-                            : <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed, zoomObject, setZoomObject, clustersGenerated, triggerClusters, setTriggerClusters, setDataView, setExpandSpecificCard, topLevelFilteredData]}/>
+                            : <Outlet context={[topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, 
+                                                loaderData, headerCollapsed, zoomObject, setZoomObject, 
+                                                // clustersGenerated, 
+                                                triggerClusters, setTriggerClusters, 
+                                                setDataView, setExpandSpecificCard, topLevelFilteredData]}/>
                         }
                     </div>
                 </div>
@@ -482,9 +490,9 @@ export default function Feature(){
                             featureId={loaderData.feature.id}
                             featureTitle={loaderData.feature.title}
                             filters={loaderData.feature.filters}
-                            clustersGenerated={clustersGenerated}
-                            clusterFetcher={clusterFetcher}
-                            setClustersGenerated={setClustersGenerated}
+                            // clustersGenerated={clustersGenerated}
+                            // clusterFetcher={clusterFetcher}
+                            // setClustersGenerated={setClustersGenerated}
                             setTriggerClusters={setTriggerClusters}
                             setZoomObject={setZoomObject}
                             dataView={dataView}

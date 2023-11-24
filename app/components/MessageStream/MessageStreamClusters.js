@@ -18,7 +18,7 @@ export default function MessageStreamClusters(props){
     
     return(
         <>
-        {props.clustersGenerated === "initiated" && 
+        {/* {props.clustersGenerated === "initiated" && 
             <LinearProgress 
                 variant="indeterminate"
                 style={{
@@ -26,16 +26,11 @@ export default function MessageStreamClusters(props){
                     height: "2px",
                     backgroundColor: 'rgba(119, 153, 141, 0.3)'
                 }}/>
-        }
+        } */}
         <div className="pl-10 pr-8 flex flex-col gap-2" style={{backgroundColor: "rgb(243, 244, 246)"}}>
-            {props.clustersGenerated === 'error' && 
-                <div className='clusterErrorWrapper'>
-                    <p className='clusterErrorText'>Sorry, something went wrong!</p>
-                </div>
-            }
             {props.clusterData && props.clusterData.map((clusterData, idx) => (
                 <ClusterCard 
-                    key={clusterData[0].cluster.internalClusterId}
+                    key={clusterData[0].featureRequest.cluster.internalClusterId}
                     clusterIndex={idx}
                     isExpanded={props.isExpanded}
                     clusterData={clusterData}

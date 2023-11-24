@@ -14,14 +14,13 @@ export default function MessageStreamMetadata({isExpanded, setIsExpanded, scroll
 const params = useParams()
 
 function handleClusterClick(e){
-  console.log("CLUSTERS GENERATED:", props.clustersGenerated)
   props.setDataView('clusters')
-  props.clustersGenerated === 'completed' && props.setTriggerClusters(true)
-  if(props.clustersGenerated === "incomplete"){
-    props.setClustersGenerated('initiated')
-    props.clusterFetcher.submit({featureId: params["*"], searchString: props.featureTitle}, 
-                                {method: "get", action: "/utils/regenerate-clusters"})
-  }
+  props.setTriggerClusters(true)
+  // if(props.clustersGenerated === "incomplete"){
+  //   props.setClustersGenerated('initiated')
+  //   props.clusterFetcher.submit({featureId: params["*"], searchString: props.featureTitle}, 
+  //                               {method: "get", action: "/utils/regenerate-clusters"})
+  // }
 }
 
   return (
@@ -38,7 +37,8 @@ function handleClusterClick(e){
            onClick={handleClusterClick}>
       <p className='messageStreamMetadataText'>
           <span className='messageStreamMetadataIcon'>
-            {
+            <span>{props.clusterData.length}</span>
+            {/* {
               {
                 'incomplete': <span>0</span>,
                 'initiated': <CircularProgress 
@@ -51,7 +51,7 @@ function handleClusterClick(e){
                 'error': <BsX style={{fontSize: "18px", color: 'rgb(31, 41, 55)',
                                       position: "relative", left: "2px", bottom: "1px"}}/>
               }[props.clustersGenerated]
-            }
+            } */}
           </span>
           {props.clusterData.length === 1 ? "Cluster" : "Clusters"}
         </p>

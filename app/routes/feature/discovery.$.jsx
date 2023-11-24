@@ -23,7 +23,11 @@ export default function Discovery(){
     const transition = useNavigate();
     const params = useParams();
    
-    const [topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, headerCollapsed, zoomObject, setZoomObject, clustersGenerated, triggerClusters, setTriggerClusters, setDataView, setExpandSpecificCard, topLevelFilteredData] = useOutletContext();
+    const [topLevelCanvasDataObj, topLevelStreamDataObj, setTopLevelCanvasDataObj, setTopLevelStreamDataObj, loaderData, 
+           headerCollapsed, zoomObject, setZoomObject, 
+          //  clustersGenerated, 
+          triggerClusters, setTriggerClusters, 
+           setDataView, setExpandSpecificCard, topLevelFilteredData] = useOutletContext();
 
     useEffect(()=>{
         setInnerCanvasData(topLevelCanvasDataObj)
@@ -55,7 +59,7 @@ export default function Discovery(){
                 setZoomObject={setZoomObject}
                 resetZoomedData={resetZoomedData}
                 headerCollapsed={headerCollapsed}
-                clustersGenerated={clustersGenerated}
+                // clustersGenerated={clustersGenerated}
                 triggerClusters={triggerClusters}
                 setTriggerClusters={setTriggerClusters}
                 setDataView={setDataView}
