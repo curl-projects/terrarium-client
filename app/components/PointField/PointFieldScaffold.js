@@ -4,9 +4,11 @@ import { useEffect, useState } from 'react';
 import _, { rest } from "underscore";
 import network from '../../../public/assets/network.svg';
 import refresh from '../../../public/assets/refresh.svg';
+import measure from '../../../public/assets/measure.svg';
 var gaussian = require('gaussian');
 import { CgZoomOut } from "react-icons/cg";
 import Tooltip from '@mui/material/Tooltip';
+import { FormControlUnstyledContext } from '@mui/base';
 
 
 export default function PointFieldScaffold(props){
@@ -15,15 +17,19 @@ export default function PointFieldScaffold(props){
 
   const [dataObj, setDataObj] = useState(generateUniformCoords(props.data))
   const [clusters, setClusters] = useState([])
-  const [displayControl, setDisplayControl] = useState({data: true, clusters: false})
+  const [displayControl, setDisplayControl] = useState({data: true, clusters: false, ranked: false})
   const [stableCoords, setStableCoords] = useState([])
 
   useEffect(()=>{
-    console.log("DISPLAY CONTROL", displayControl)
+    console.log("SCAFFOLD DATA", props.data)
     displayControl.clusters 
       ? generateClusters()
       : generateUniform()
   }, [props.data])
+
+  useEffect(()=>{
+    generateRanked()
+  }, [props.semanticDimensions])
 
   // SHARED FUNCTIONS
   function generateUniformCoords(data){
@@ -40,6 +46,39 @@ export default function PointFieldScaffold(props){
     return coordsArray
   }
 
+  function findNormalizedScore(datapoint, data, key){
+    if(key === 'score'){
+      return (datapoint - Math.min(...data.map(i => parseFloat(i[key])))) / (Math.max(...data.map(i => parseFloat(i[key]))) - Math.min(...data.map(i => parseFloat(i[key]))))
+    }
+    else{
+      return (datapoint - Math.min(...data.map(i => parseFloat(i.featureRequest[key])))) / (Math.max(...data.map(i => parseFloat(i.featureRequest[key]))) - Math.min(...data.map(i => parseFloat(i.featureRequest[key]))))
+    }
+  }
+
+  function generateRankedCoords(data){
+    const coordsArray = []
+    const jitterConstant = 0.02
+    for(let idx in data){
+      let obj = {...data[idx],
+                 "xDim": {"Relevance": props.semanticDimensions[0].normalized ? findNormalizedScore(parseFloat(data[idx].score), data, 'score') : parseFloat(data[idx].score),
+                          "Engineering Lift": props.semanticDimensions[0].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.challengingScore), data, 'challengingScore') : data[idx].featureRequest.challengingScore,
+                          "Usefulness": props.semanticDimensions[0].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.usefulScore), data, 'usefulScore') : data[idx].featureRequest.usefulScore,
+                          "Specificity": props.semanticDimensions[0].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.specificScore), data, 'specificScore') : data[idx].featureRequest.specificScore,
+                         }[props.semanticDimensions[0].dimension], // normalize based on range in data
+                 "yDim": {"Relevance": props.semanticDimensions[1].normalized ? findNormalizedScore(parseFloat(data[idx].score), data, 'score') : parseFloat(data[idx].score),
+                          "Engineering Lift": props.semanticDimensions[1].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.challengingScore), data, 'challengingScore') : data[idx].featureRequest.challengingScore,
+                          "Usefulness": props.semanticDimensions[1].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.usefulScore), data, 'usefulScore') : data[idx].featureRequest.usefulScore,
+                          "Specificity": props.semanticDimensions[1].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.specificScore), data, 'specificScore') : data[idx].featureRequest.specificScore,
+                          }[props.semanticDimensions[1].dimension], // normalize based on range in data
+                }
+      console.log("OBJ:", obj)
+      coordsArray.push(obj)
+    }
+
+    return coordsArray
+  }
+
+// + jitterConstant * (Math.random() * 2 - 1)
   // GENERATOR FUNCTIONS
   function generateClusterCoords(data){
     const labels = data.map(a => a.featureRequest.cluster.clusterId)
@@ -81,7 +120,14 @@ export default function PointFieldScaffold(props){
 
     const coordsArray = generateUniformCoords(props.data)
     setDataObj(coordsArray)
-    setDisplayControl({data: true, clusters: false})
+    setDisplayControl({data: true, clusters: false, ranked: false})
+  }
+
+  function generateRanked(e){
+    props.setZoomObject(null)
+    const coordsArray = generateRankedCoords(props.data)
+    setDataObj(coordsArray)
+    setDisplayControl({data: true, clusters: false, ranked: true})
   }
 
   function generateClusters(resetZoom){
@@ -93,7 +139,7 @@ export default function PointFieldScaffold(props){
     const clusterUnitsArray = generateClusterUnitCoords(props.data, clusterCoordsArray)
     setDataObj(clusterUnitsArray)
     setClusters(clusterCoordsArray)
-    setDisplayControl({data: true, clusters: true})
+    setDisplayControl({data: true, clusters: true, ranked: false})
     }
   
   function resetZoom(){
@@ -105,6 +151,16 @@ export default function PointFieldScaffold(props){
     (props.triggerClusters && !displayControl.clusters) && generateClusters()
     props.setTriggerClusters(false)
   }, [props.triggerClusters])
+
+  useEffect(()=>{
+    (props.triggerRanked && !displayControl.ranked) && generateRanked()
+    props.setTriggerRanked(false)
+  }, [props.triggerRanked])
+
+  function handleRankedTooltip(){
+    generateRanked()
+    props.setDataView('semanticDimensions')
+  }
 
   return(
     <>
@@ -144,7 +200,22 @@ export default function PointFieldScaffold(props){
           style={{
             position: 'absolute',
             bottom: 30,
-            right: 30,
+            right: 170,
+            zIndex: 100,
+            height: '40px',
+            width: '40px',
+            cursor: 'pointer'
+          }} />
+        </Tooltip>
+      <Tooltip title="Rank" placement='top' arrow>
+        <img
+          onClick={handleRankedTooltip}
+          src={measure}
+          alt="Rank Data"
+          style={{
+            position: 'absolute',
+            bottom: 30,
+            right: 100,
             zIndex: 100,
             height: '40px',
             width: '40px',
@@ -160,7 +231,7 @@ export default function PointFieldScaffold(props){
           style={{
             position: 'absolute',
             bottom: 30,
-            right: 100,
+            right: 30,
             zIndex: 100,
             height: '40px',
             width: '40px',

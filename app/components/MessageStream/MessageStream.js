@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useFetcher } from "@remix-run/react";
 import MessageStreamMetadata from "~/components/MessageStream/MessageStreamMetadata";
 import MessageStreamFeatureRequests from "~/components/MessageStream/MessageStreamFeatureRequests";
+import MessageStreamSemanticDimensions from "~/components/MessageStream/MessageStreamSemanticDimensions"
 import MessageStreamClusters from "~/components/MessageStream/MessageStreamClusters";
 import MessageStreamAuthors from "~/components/MessageStream/MessageStreamAuthors";
 import MessageStreamFilters from "~/components/MessageStream/MessageStreamFilters";
@@ -127,6 +128,7 @@ export default function MessageStream(props) {
           // clusterFetcher={props.clusterFetcher}
           featureTitle={props.featureTitle}
           setTriggerClusters={props.setTriggerClusters}
+          setTriggerRanked={props.setTriggerRanked}
           invisibleFilters={props.invisibleFilters}
         />
         {
@@ -141,6 +143,10 @@ export default function MessageStream(props) {
                                   setSearchText={props.setSearchText}
                                   landingPageSearchBarRef={props.landingPageSearchBarRef}
                                   placeholder={props.placeholder}
+                                  />,
+            "semanticDimensions": <MessageStreamSemanticDimensions 
+                                  semanticDimensions={props.semanticDimensions}
+                                  setSemanticDimensions={props.setSemanticDimensions}
                                   />,
             "clusters": <MessageStreamClusters 
                             clustersGenerated={props.clustersGenerated}

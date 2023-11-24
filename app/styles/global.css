@@ -796,7 +796,6 @@ body {
 .messageCardInner{
   /* line-height: 1.25rem; */
   padding: 0.5rem;
-  background-color: rgb(255, 255, 255);
   cursor: pointer;
   padding-top: unset;
 }
@@ -861,7 +860,6 @@ body {
   line-height: 1.25rem;
   font-weight: 500;
   font-size: 14px;
-  background-color: rgb(255, 255, 255);
   cursor: pointer;
   display: flex;
 }
@@ -939,7 +937,6 @@ body {
   line-height: 1.25rem;
   font-weight: 500;
   font-size: 14px;
-  background-color: rgb(255, 255, 255);
   cursor: pointer;
   display: flex;
   flex-wrap: wrap;
@@ -2119,6 +2116,136 @@ font-weight: 500;
   margin-top: 24px;
 }
 
+.semanticDimWrapper{
+  background-color: rgb(243, 244, 246);
+  padding-right: 2rem;
+  padding-left: 2.5rem;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 40px;
+}
+
+.semanticDimRow{
+  width: 80%;
+  border: 1px solid rgba(119, 153, 141, .3);
+  display: flex;
+  flex-direction: column;
+  letter-spacing: -0.03em;
+  background: white;
+  padding: 15px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.semanticDimLabel{
+  border-right: 1px solid rgba(119, 153, 141, .3);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.semanticDimInputWrapper{
+  display: flex;
+}
+
+.semanticDimLabelText{
+  color: #4b556399 !important;
+  text-decoration: none;
+  font-weight: 600 !important;
+  font-size: 18px !important;
+  letter-spacing: -.06em !important;
+}
+
+.semanticDimOptionButton{
+  border-radius: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  font-size: 20px;
+  color: #4b556399;
+  letter-spacing: -.03em;
+  border: 1px solid #e7e7e7;
+  transition: all .3s ease-in-out;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  cursor: pointer;
+}
+
+
+.semanticDimOptionButton:hover{
+  transform: scale(1.05);
+}
+
+
+.semanticDimDescriptionWrapper{
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.semanticDimDescriptionText{
+  color: #4b556399;
+  font-weight: 500;
+  letter-spacing: -.06em;
+  font-size: 16px;
+}
+
+.semanticDimInputSelect{
+  height: 100%;
+  border-radius: 0px !important;
+  /* border: 1px solid rgba(119, 153, 141, 0.3) !important; */
+  border: unset;
+  color: #4b5563e0 !important;
+  font-weight: 400 !important;
+  padding: 0px !important;
+}
+
+.semanticDimInputSelect fieldset{
+  border: 0px;
+}
+
+.semanticDimInputSelect input {
+  color: pink;
+}
+
+.semanticDimInputSelect .MuiSelect-select{
+
+  color: #4b5563;
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: -0.06em;
+  font-family: Inter !important;
+  display: flex;
+  justify-content: center;
+  align-items: center
+
+}
+
+.semanticDimInputWrapper .MuiSelect-select{
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.semanticDimInputSelect .Mui-focused{
+  color: #77998d !important;
+}
+
+.semanticDimMenuItem{
+  color: #4b556399 !important;
+  text-decoration: none;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  letter-spacing: -.06em !important;
+  font-family: Inter !important;
+}
+
+.semanticDimMenuItem:hover{
+  background-color: rgba(176, 191, 185, 0.4) !important;
+}
+
 .fileOptionRow{
   width: 70%;
   border: 1px solid rgba(119, 153, 141, .3);
@@ -2249,8 +2376,6 @@ font-weight: 500;
   justify-content: center;
   padding-left: 14px;
 }
-
-
 
 
 .fileOptionInputSelect .Mui-focused{

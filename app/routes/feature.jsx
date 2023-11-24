@@ -131,6 +131,7 @@ export default function Feature(){
 
     const [zoomObject, setZoomObject] = useState(null)
     const [triggerClusters, setTriggerClusters] = useState(false)
+    const [triggerRanked, setTriggerRanked] = useState(false)
     const [dataView, setDataView] = useState("featureRequests")
     const [expandSpecificCard, setExpandSpecificCard] = useState({cardId: null, cardType: null})
     const [topLevelCanvasDataObj, setTopLevelCanvasDataObj] = useState([])
@@ -141,6 +142,8 @@ export default function Feature(){
     const [searchResults, setSearchResults] = useState([])
     const [selectedDatasets, setSelectedDatasets] = useState([])
     const [instructionModalOpen, setInstructionModalOpen] = useState(true)
+    const [semanticDimensions, setSemanticDimensions] = useState([{dimension: 'Relevance', normalized: false}, 
+                                                                  {dimension: 'Usefulness', normalized: false}])
 
     // const clusterSubmit = useSubmit();
     // const clusterFetcher = useFetcher();
@@ -479,7 +482,9 @@ export default function Feature(){
                                                 loaderData, headerCollapsed, zoomObject, setZoomObject, 
                                                 // clustersGenerated, 
                                                 triggerClusters, setTriggerClusters, 
-                                                setDataView, setExpandSpecificCard, topLevelFilteredData]}/>
+                                                setDataView, setExpandSpecificCard, topLevelFilteredData,
+                                                semanticDimensions, triggerRanked, setTriggerRanked
+                                            ]}/>
                         }
                     </div>
                 </div>
@@ -494,6 +499,7 @@ export default function Feature(){
                             // clusterFetcher={clusterFetcher}
                             // setClustersGenerated={setClustersGenerated}
                             setTriggerClusters={setTriggerClusters}
+                            setTriggerRanked={setTriggerRanked}
                             setZoomObject={setZoomObject}
                             dataView={dataView}
                             setDataView={setDataView}
@@ -502,6 +508,8 @@ export default function Feature(){
                             setInvisibleFilters={setInvisibleFilters}
                             searchText={searchText}
                             setSearchText={setSearchText}
+                            semanticDimensions={semanticDimensions}
+                            setSemanticDimensions={setSemanticDimensions}
                             />
                     </div>
                 </div>

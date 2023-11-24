@@ -23,6 +23,11 @@ function handleClusterClick(e){
   // }
 }
 
+function handleRankedClick(){
+  props.setDataView('semanticDimensions')
+  props.setTriggerRanked(true)
+}
+
   return (
     <div className='messageStreamMetadataWrapper' id='tourMessageStreamMetadata'>
       <div className='messageStreamMetadataSection'
@@ -31,6 +36,13 @@ function handleClusterClick(e){
           <span className="messageStreamMetadataIcon">{numberWithCommas(props.data.length)}</span>
           {props.data.length == 1 ? "Feature Request" : "Feature Requests"}
           {props.filters.length > props.invisibleFilters.length && " (Filtered)"}
+        </p>
+      </div>
+      <div className='messageStreamMetadataSection'
+           onClick={handleRankedClick}>
+        <p className='messageStreamMetadataText'>
+          <span className="messageStreamMetadataIcon">4</span>
+          Semantic Dimensions
         </p>
       </div>
       <div className='messageStreamMetadataSection'

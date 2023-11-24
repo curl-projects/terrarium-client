@@ -59,6 +59,10 @@ export default function PointField({data, clusters, filterBrushedData,
             .style('opacity', 0.2)
   }
 
+  function renderRanked(x, y){
+
+  }
+
   useEffect(()=>{
     var x = d3.scaleLinear()
     .domain(xDomain)

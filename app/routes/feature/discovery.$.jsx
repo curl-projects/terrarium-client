@@ -27,7 +27,14 @@ export default function Discovery(){
            headerCollapsed, zoomObject, setZoomObject, 
           //  clustersGenerated, 
           triggerClusters, setTriggerClusters, 
-           setDataView, setExpandSpecificCard, topLevelFilteredData] = useOutletContext();
+           setDataView, setExpandSpecificCard, topLevelFilteredData, semanticDimensions,
+          triggerRanked, setTriggerRanked
+          ] = useOutletContext();
+    
+    useEffect(()=>{
+      console.log("STREAM OBJ", topLevelStreamDataObj)
+      console.log("CANVAS OBJ", topLevelCanvasDataObj)
+    }, [topLevelCanvasDataObj, topLevelStreamDataObj])
 
     useEffect(()=>{
         setInnerCanvasData(topLevelCanvasDataObj)
@@ -62,8 +69,11 @@ export default function Discovery(){
                 // clustersGenerated={clustersGenerated}
                 triggerClusters={triggerClusters}
                 setTriggerClusters={setTriggerClusters}
+                triggerRanked={triggerRanked}
+                setTriggerRanked={setTriggerRanked}
                 setDataView={setDataView}
                 setExpandSpecificCard={setExpandSpecificCard}
+                semanticDimensions={semanticDimensions}
                 />
             </div>
       </div>
