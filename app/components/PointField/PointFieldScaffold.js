@@ -64,12 +64,12 @@ export default function PointFieldScaffold(props){
                           "Engineering Lift": props.semanticDimensions[0].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.challengingScore), data, 'challengingScore') : data[idx].featureRequest.challengingScore,
                           "Usefulness": props.semanticDimensions[0].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.usefulScore), data, 'usefulScore') : data[idx].featureRequest.usefulScore,
                           "Specificity": props.semanticDimensions[0].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.specificScore), data, 'specificScore') : data[idx].featureRequest.specificScore,
-                         }[props.semanticDimensions[0].dimension], // normalize based on range in data
+                         }[props.semanticDimensions[0].dimension] + jitterConstant * (Math.random() * 2 - 1), // normalize based on range in data
                  "yDim": {"Relevance": props.semanticDimensions[1].normalized ? findNormalizedScore(parseFloat(data[idx].score), data, 'score') : parseFloat(data[idx].score),
                           "Engineering Lift": props.semanticDimensions[1].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.challengingScore), data, 'challengingScore') : data[idx].featureRequest.challengingScore,
                           "Usefulness": props.semanticDimensions[1].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.usefulScore), data, 'usefulScore') : data[idx].featureRequest.usefulScore,
                           "Specificity": props.semanticDimensions[1].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.specificScore), data, 'specificScore') : data[idx].featureRequest.specificScore,
-                          }[props.semanticDimensions[1].dimension], // normalize based on range in data
+                          }[props.semanticDimensions[1].dimension] + jitterConstant * (Math.random() * 2 - 1), // normalize based on range in data
                 }
       console.log("OBJ:", obj)
       coordsArray.push(obj)
