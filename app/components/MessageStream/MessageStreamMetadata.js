@@ -31,7 +31,13 @@ function handleRankedClick(){
   return (
     <div className='messageStreamMetadataWrapper' id='tourMessageStreamMetadata'>
       <div className='messageStreamMetadataSection'
-           onClick={()=>props.setDataView('featureRequests')}>
+           onClick={()=>props.setDataView('featureRequests')}
+           style={{
+            borderBottom: props.dataView === 'featureRequests' ? '2px solid gainsboro' : "none",
+            paddingBottom: props.dataView === 'featureRequests' ? '6px'  : "0px",
+            top: props.dataView === 'featureRequests' ? '5px'  : "0px",
+           }}
+           >
         <p className='messageStreamMetadataText'>
           <span className="messageStreamMetadataIcon">{numberWithCommas(props.data.length)}</span>
           {props.data.length == 1 ? "Feature Request" : "Feature Requests"}
@@ -39,13 +45,24 @@ function handleRankedClick(){
         </p>
       </div>
       <div className='messageStreamMetadataSection'
-           onClick={handleRankedClick}>
+           onClick={handleRankedClick}
+           style={{
+            borderBottom: props.dataView === 'semanticDimensions' ? '2px solid gainsboro' : "none",
+            paddingBottom: props.dataView === 'semanticDimensions' ? '6px'  : "0px",
+            top: props.dataView === 'semanticDimensions' ? '5px'  : "0px",
+           }}
+           >
         <p className='messageStreamMetadataText'>
           <span className="messageStreamMetadataIcon">4</span>
           Semantic Dimensions
         </p>
       </div>
       <div className='messageStreamMetadataSection'
+           style={{
+            borderBottom: props.dataView === 'clusters' ? '2px solid gainsboro' : "none",
+            paddingBottom: props.dataView === 'clusters' ? '6px'  : "0px",
+            top: props.dataView === 'clusters' ? '5px'  : "0px",
+           }}
            onClick={handleClusterClick}>
       <p className='messageStreamMetadataText'>
           <span className='messageStreamMetadataIcon'>
@@ -69,6 +86,11 @@ function handleRankedClick(){
         </p>
       </div>
       <div className='messageStreamMetadataSection'
+           style={{
+            borderBottom: props.dataView === 'authors' ? '2px solid gainsboro' : "none",
+            paddingBottom: props.dataView === 'authors' ? '6px'  : "0px",
+            top: props.dataView === 'authors' ? '5px'  : "0px",
+           }}
            onClick={()=>props.setDataView('authors')}>
         <p className='messageStreamMetadataText'>
           <span className="messageStreamMetadataIcon">{props.authorData.length}</span>
@@ -76,6 +98,11 @@ function handleRankedClick(){
         </p>
       </div>
       <div className='messageStreamMetadataSection'
+           style={{
+            borderBottom: props.dataView === 'filters' ? '2px solid gainsboro' : "none",
+            paddingBottom: props.dataView === 'filters' ? '6px'  : "0px",
+            top: props.dataView === 'filters' ? '5px'  : "0px",
+           }}
            onClick={()=>props.setDataView('filters')}>
         <p className='messageStreamMetadataText'>
           <span className="messageStreamMetadataIcon">{props.filters.length}</span>

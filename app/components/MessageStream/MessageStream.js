@@ -124,6 +124,7 @@ export default function MessageStream(props) {
           authorData={authorData}
           filters={props.filters}
           // setClustersGenerated={props.setClustersGenerated}
+          dataView={props.dataView}
           setDataView={props.setDataView}
           // clusterFetcher={props.clusterFetcher}
           featureTitle={props.featureTitle}
