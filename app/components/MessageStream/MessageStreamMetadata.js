@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams } from "@remix-run/react"
 
 import { IoExpand, IoContract } from 'react-icons/io5';
@@ -12,6 +13,10 @@ function numberWithCommas(x) {
 
 export default function MessageStreamMetadata({isExpanded, setIsExpanded, scrollToTop, ...props }) {
 const params = useParams()
+
+useEffect(()=>{
+  props.setDataView('featureRequests')
+}, [])
 
 function handleClusterClick(e){
   props.setDataView('clusters')

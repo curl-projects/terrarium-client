@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useFetcher } from "@remix-run/react";
+import { useFetcher, useMatches } from "@remix-run/react";
 import MessageStreamMetadata from "~/components/MessageStream/MessageStreamMetadata";
 import MessageStreamFeatureRequests from "~/components/MessageStream/MessageStreamFeatureRequests";
 import MessageStreamSemanticDimensions from "~/components/MessageStream/MessageStreamSemanticDimensions"
@@ -7,6 +7,8 @@ import MessageStreamClusters from "~/components/MessageStream/MessageStreamClust
 import MessageStreamAuthors from "~/components/MessageStream/MessageStreamAuthors";
 import MessageStreamFilters from "~/components/MessageStream/MessageStreamFilters";
 import { ProvidedColumnGroup } from "ag-grid-community";
+import EvidenceFileMetadata from "./EvidenceFileHelper/EvidenceFileMetadata";
+import MessageStreamAI from "./MessageStreamAI";
 export default function MessageStream(props) {
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -18,6 +20,7 @@ export default function MessageStream(props) {
   const [clusterData, setClusterData] = useState([])
   const [authorData, setAuthorData] = useState([])
   const [authorNames, setAuthorNames] = useState([])
+  const matches = useMatches()
 
   useEffect(() => {
     setPinned(props.data.filter(d => d.pinned === true).map(e => e.featureRequestId))
@@ -110,28 +113,52 @@ export default function MessageStream(props) {
       <div 
       ref={paneRef} 
       className='flex relative flex-col align-middle pt-2 gap-2'
-      style={{backgroundColor: "#f3f4f6"}}
+      style={{backgroundColor: "#f3f4f6", minHeight: "100%", height: "1px"}}
       >
-        <MessageStreamMetadata
-          data={props.data}
-          zoomObject={props.zoomObject}
-          isExpanded={isExpanded}
-          setIsExpanded={setIsExpanded}
-          scrollToTop={scrollToTop}
-          paneRef={paneRef}
-          // clustersGenerated={props.clustersGenerated}
-          clusterData={clusterData}
-          authorData={authorData}
-          filters={props.filters}
-          // setClustersGenerated={props.setClustersGenerated}
-          dataView={props.dataView}
-          setDataView={props.setDataView}
-          // clusterFetcher={props.clusterFetcher}
-          featureTitle={props.featureTitle}
-          setTriggerClusters={props.setTriggerClusters}
-          setTriggerRanked={props.setTriggerRanked}
-          invisibleFilters={props.invisibleFilters}
-        />
+      {
+        {
+        'discovery': <MessageStreamMetadata
+                        data={props.data}
+                        zoomObject={props.zoomObject}
+                        isExpanded={isExpanded}
+                        setIsExpanded={setIsExpanded}
+                        scrollToTop={scrollToTop}
+                        paneRef={paneRef}
+                        // clustersGenerated={props.clustersGenerated}
+                        clusterData={clusterData}
+                        authorData={authorData}
+                        filters={props.filters}
+                        // setClustersGenerated={props.setClustersGenerated}
+                        dataView={props.dataView}
+                        setDataView={props.setDataView}
+                        // clusterFetcher={props.clusterFetcher}
+                        featureTitle={props.featureTitle}
+                        setTriggerClusters={props.setTriggerClusters}
+                        setTriggerRanked={props.setTriggerRanked}
+                        invisibleFilters={props.invisibleFilters}
+                      />,
+        'notepad': <EvidenceFileMetadata 
+                        data={props.data}
+                        zoomObject={props.zoomObject}
+                        isExpanded={isExpanded}
+                        setIsExpanded={setIsExpanded}
+                        scrollToTop={scrollToTop}
+                        paneRef={paneRef}
+                        // clustersGenerated={props.clustersGenerated}
+                        clusterData={clusterData}
+                        authorData={authorData}
+                        filters={props.filters}
+                        // setClustersGenerated={props.setClustersGenerated}
+                        dataView={props.dataView}
+                        setDataView={props.setDataView}
+                        // clusterFetcher={props.clusterFetcher}
+                        featureTitle={props.featureTitle}
+                        setTriggerClusters={props.setTriggerClusters}
+                        setTriggerRanked={props.setTriggerRanked}
+                        invisibleFilters={props.invisibleFilters}
+                      />
+        }[matches[2].pathname.split("/")[2]]
+        }
         {
           {
             "featureRequests": <MessageStreamFeatureRequests 
@@ -173,7 +200,13 @@ export default function MessageStream(props) {
                           invisibleFilters={props.invisibleFilters}
                           setInvisibleFilters={props.setInvisibleFilters}
                           placeholder={props.placeholder}
-                          />
+                          />,
+            "ai": <MessageStreamAI 
+                    featureId={props.featureId}
+                    aiMessages={props.aiMessages}
+                    pinCard={pinCard}
+                    pinnedCards={pinnedCards}
+                  />
                       
           }[props.dataView]
         }

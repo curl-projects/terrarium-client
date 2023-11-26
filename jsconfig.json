@@ -1,5 +1,5 @@
 {
-  "include": ["**/*.js", "**/*.jsx", "app/routes/test4.ts"],
+  "include": ["**/*.js", "**/*.jsx", "app/routes/test4.ts", "app/models/ai-logic.server.ts"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
     "isolatedModules": true,

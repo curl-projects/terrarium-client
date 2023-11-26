@@ -13,6 +13,7 @@ import { authenticator } from "~/models/auth.server.js";
 import { readFeature, updateFeatureTitle, updateFeatureIsSearched, updateFeatureDescription } from "~/models/kanban.server"
 import { findFeatureRequests, associateFeatureRequestsWithFeature } from "~/models/feature-requests.server"
 import { embeddingSearch, generateSearchVector, initialiseClusterAnalysis } from "~/models/embedding-search.server"
+import { getAIMessages, saveUserMessage } from "~/models/ai-messages.server"
 
 import Header from "~/components/Header/Header";
 import OutletPlaceholder from "~/components/Feature/OutletPlaceholder";
@@ -40,6 +41,7 @@ import HelperModal from "~/components/Helpers/HelperModal";
 dayjs.extend(utc)
 
 export async function loader({ request, params }){
+    console.log("LOADER INIT!")
     const user = await authenticator.isAuthenticated(request, {
       failureRedirect: "/",
     })
@@ -49,9 +51,11 @@ export async function loader({ request, params }){
     const featureId = params["*"]
     const feature = await readFeature(featureId)
     const datasets = await getRoadmapDatasets(user.id)
+    const aiMessages = await getAIMessages(featureId)
   
     // make sure the right user is looking at the feature information
     if(feature.userId !== user.id){
+        console.log('REDIRECT ERROR!')
       return redirect("/")
     }
   
@@ -82,10 +86,10 @@ export async function loader({ request, params }){
   
     if(feature.isSearched){
       const featureRequests = await findFeatureRequests(featureId); // get associated data objects
-      return { feature: feature, featureRequests: featureRequests, datasets: datasets.map(e => e['dataset'])}
+      return { feature: feature, featureRequests: featureRequests, datasets: datasets.map(e => e['dataset']), aiMessages: aiMessages}
     }
   
-    return { feature: feature, featureRequests: [], datasets: datasets.map(e => e['dataset']) }
+    return { feature: feature, featureRequests: [], datasets: datasets.map(e => e['dataset']), aiMessages: aiMessages}
   }
   
   export async function action({ request }){
@@ -109,6 +113,12 @@ export async function loader({ request, params }){
         const featureId = formData.get("featureId")
         return redirect(`/feature/discovery/${featureId}`)
     }
+    else if(actionType === 'messageSave'){
+        const messageContent = formData.get("messageContent")
+        const featureId = formData.get("featureId")
+        const aiMessage = await saveUserMessage(messageContent, featureId)
+        return redirect(`/feature/notepad/${featureId}`)
+        }
   }
 
 export default function Feature(){
@@ -141,7 +151,7 @@ export default function Feature(){
     const [searchText, setSearchText] = useState("")
     const [searchResults, setSearchResults] = useState([])
     const [selectedDatasets, setSelectedDatasets] = useState([])
-    const [instructionModalOpen, setInstructionModalOpen] = useState(true)
+    const [instructionModalOpen, setInstructionModalOpen] = useState(false)
     const [semanticDimensions, setSemanticDimensions] = useState([{dimension: 'Relevance', normalized: false}, 
                                                                   {dimension: 'Usefulness', normalized: false}])
 
@@ -252,6 +262,21 @@ export default function Feature(){
         }
     }, [titleFocused])
 
+    const aiMessageFetcher = useFetcher()
+
+    useEffect(()=>{
+        console.log("AI FETCHER:", aiMessageFetcher.state)
+    }, [aiMessageFetcher.state])
+    
+    function handleTest(){
+        console.log("HI!")
+        aiMessageFetcher.submit({
+         data: "hi"
+        }, {
+            method: "post",
+            action: "/utils/aiMessage"
+        })
+    }
 
     function handleTitleSearch(){
         fetcher.submit({'searchTerm': title, 'featureId': params["*"], actionType: "featureSearch", selectedDatasets: selectedDatasets}, 
@@ -337,6 +362,7 @@ export default function Feature(){
                             placeholder={"Enter a Feature Description"}
                             defaultValue={title == "Untitled" ? null : title}
                             data-gramm="false"
+                            onKeyPress={(e)=>{e.key === "Enter" && e.preventDefault();}}
                             style={{fontSize: headerCollapsed ? "24px" : "40px"}}
                             onChange={(e)=>setTitle(e.target.value)}
                             data-gramm_editor="false"
@@ -510,6 +536,7 @@ export default function Feature(){
                             setSearchText={setSearchText}
                             semanticDimensions={semanticDimensions}
                             setSemanticDimensions={setSemanticDimensions}
+                            aiMessages={loaderData.aiMessages}
                             />
                     </div>
                 </div>
@@ -519,6 +546,9 @@ export default function Feature(){
                 modalOpen={instructionModalOpen}
                 setModalOpen={setInstructionModalOpen}
             />
+             <button onClick={handleTest}>
+                Click me!
+            </button>
             </div>
 
     )

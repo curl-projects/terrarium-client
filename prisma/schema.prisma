@@ -61,7 +61,8 @@ model Feature {
   user            User                @relation(fields: [userId], references: [id])
   filters         FeatureFilter[]
   featureRequests FeatureRequestMap[]
-    datasets        Dataset[]
+  datasets        Dataset[]
+  aiMessages      AIMessage[]
 
 }
 
@@ -78,6 +79,7 @@ model FeatureRequest {
   specificScore Float @default(0)
   datasetId  Int
   clusterId  Int
+  aiMessages AIMessage[]
   cluster    Cluster @relation(fields: [clusterId], references: [clusterId])
   dataset    Dataset             @relation(fields: [datasetId], references: [datasetId], onDelete: Cascade)
   features   FeatureRequestMap[]
@@ -207,4 +209,13 @@ model PossibleFeature {
   upvotes Int @default(0)
   users User[]
   authorId String @default("")
+}
+
+model AIMessage{
+  messageId Int @id @default(sequence())
+  content String
+  agent String
+  featureId Int
+  feature Feature @relation(fields: [featureId], references: id)
+  featureRequests FeatureRequest[]
 }

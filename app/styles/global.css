@@ -1694,6 +1694,84 @@ div.DraftEditor-root {
   padding-top: 10px;
 }
 
+.userMessageWrapper{
+  padding: 10px;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  border: 1px solid rgba(119, 153, 141, .3) !important;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.userMessageWrapper:hover{
+  transform: scale(1.02);
+}
+
+.userMessageContent{
+  color: #4b556399;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -.06em;
+  transition: transform .2s ease-in-out, color .2s ease-in-out;
+}
+
+
+.agentMessageWrapper{
+  padding: 10px;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+  border: 1px solid rgba(119, 153, 141, .3) !important;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  background-color: rgba(185, 199, 192, 0.1);
+}
+
+.agentMessageWrapper:hover{
+  transform: scale(1.01);
+}
+
+.agentMessageName{
+  color: #7e988e;
+  letter-spacing: -.06em;
+  font-weight: 700;
+  font-size: 14px;
+  transition: transform .2s ease-in-out, color .2s ease-in-out;
+}
+
+.userMessageName{
+  color: #4b556399;
+  letter-spacing: -.06em;
+  font-weight: 700;
+  font-size: 14px;
+  transition: transform .2s ease-in-out, color .2s ease-in-out;
+}
+
+
+.agentMessageContent{
+  color: #4b556399;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -.06em;
+  transition: transform .2s ease-in-out, color .2s ease-in-out;
+  padding-bottom: 10px;
+}
+
+.chatStreamInnerWrapper{
+  overflow-x: scroll;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+  padding: 24px;
+}
+
+.textEditorPromptBarWrapper{
+  display: flex;
+  transition: all 0.3s ease-in-out;
+  gap: 10px;
+}
+
 .textEditorPromptBar{
   width: 100%;
   height: 60px;
@@ -1704,11 +1782,29 @@ div.DraftEditor-root {
   border: 1px solid rgba(119, 153, 141, .3) !important;
   padding-top: 10px;
   padding-bottom: 10px;
-}
-
-.textEditorPromptText{
   color: #4b556399 !important;
   letter-spacing: -0.06em;
+  font-family: Inter;
+  outline: none;
+  background: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+}
+
+.promptButton{
+  border: 1px solid rgba(119, 153, 141, .3) !important;
+  border-radius: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  min-height: 46px;
+  font-size: 24px;
+  color: #4b556399;
+  letter-spacing: -0.03em;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 4px 4px 11px -1px #0000001a;
+
 }
 
 /* PAGE TITLE */
