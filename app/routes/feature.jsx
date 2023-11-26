@@ -271,7 +271,8 @@ export default function Feature(){
     function handleTest(){
         console.log("HI!")
         aiMessageFetcher.submit({
-         data: "hi"
+         messageContent: "Hi!",
+         featureId: params["*"]
         }, {
             method: "post",
             action: "/utils/aiMessage"

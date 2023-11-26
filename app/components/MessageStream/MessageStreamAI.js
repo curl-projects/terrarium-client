@@ -1,6 +1,6 @@
 import { BsPlus } from "react-icons/bs";
 import { useState, useEffect} from "react"
-import { Form, useTransition } from "@remix-run/react";
+import { Form, useFetcher, useTransition } from "@remix-run/react";
 import MessageCard from "./MessageCard";
 
 export default function MessageStreamAI(props){
@@ -15,6 +15,12 @@ export default function MessageStreamAI(props){
         transition.state === 'submitting' && setPromptQuery("")
         transition.submission && console.log("TRANSITION STATE:", transition.submission.formData.get("actionType"))
     }, [transition])
+
+    const messageFetcher = useFetcher()
+
+    useEffect(()=>{
+        console.log("MESSAGE FETCHER DATA:", messageFetcher.data)
+    }, [messageFetcher.data])
 
     return(
         <div className="pl-10 pr-8 flex flex-col gap-2" 
@@ -53,7 +59,7 @@ export default function MessageStreamAI(props){
                         )
                     }
                 </div>
-            <Form className='textEditorPromptBarWrapper' method='post'>
+            <messageFetcher.Form className='textEditorPromptBarWrapper' method='post' action="/utils/ai-message-processing">
                 <input 
                     className='textEditorPromptBar' 
                     placeholder='AI Goes Here'
@@ -71,7 +77,7 @@ export default function MessageStreamAI(props){
                         <BsPlus style={{fontSize: "34px"}}/>
                     </button>          
                 }
-            </Form>
+            </messageFetcher.Form>
         </div>
     )
 }
