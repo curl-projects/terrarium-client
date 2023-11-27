@@ -16,7 +16,7 @@
     "@google-cloud/storage": "^6.11.0",
     "@hello-pangea/dnd": "^16.0.1",
     "@mui/lab": "^5.0.0-alpha.109",
-    "@mui/material": "^5.13.1",
+    "@mui/material": "4.13.1",
     "@mui/x-date-pickers": "^5.0.9",
     "@pinecone-database/pinecone": "^1.1.2",
     "@prisma/client": "^4.15.0",

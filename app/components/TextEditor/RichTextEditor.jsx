@@ -9,6 +9,7 @@ import SyncIndicator from "./SyncIndicator";
 import Toolbar from "~/components/TextEditor/ToolBar"
 
 import createAutoListPlugin from 'draft-js-autolist-plugin'
+
 const autoListPlugin = createAutoListPlugin()
 
 function RichTextEditor(props){
@@ -49,7 +50,7 @@ function RichTextEditor(props){
                                 editorState={editorState}
                                 onChange={setEditorState}
                                 handleKeyCommand={handleKeyCommand}
-                                // onTab={handleTab}
+                                onTab={handleTab}
                                 ref={editorRef}
                                 readOnly={props.readOnly}
                                 placeholder={"Write notes here!"}

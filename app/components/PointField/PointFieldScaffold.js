@@ -71,7 +71,6 @@ export default function PointFieldScaffold(props){
                           "Specificity": props.semanticDimensions[1].normalized ? findNormalizedScore(parseFloat(data[idx].featureRequest.specificScore), data, 'specificScore') : data[idx].featureRequest.specificScore,
                           }[props.semanticDimensions[1].dimension] + jitterConstant * (Math.random() * 2 - 1), // normalize based on range in data
                 }
-      console.log("OBJ:", obj)
       coordsArray.push(obj)
     }
 

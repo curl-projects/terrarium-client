@@ -121,19 +121,22 @@ export default function MessageCard({ isExpanded, isPinned, pinCard, ...props}) 
         </div>
       )}
     </div>
-    <div className='pushPinWrapper'>
-          <AiOutlinePushpin
-            size={22}
-            onClick = {() => {
-              !props.placeholder && pinCard(props.cardData.fr_id)
-            }}
-            style={props.pushPinStyle && {...props.pushPinStyle }}
-            className={cn(
-              "pushPin",
-              {"visible": isHovered || isPinned},
-              {"invisible": !isHovered && !isPinned}
-            )} />
-      </div>
+    {!props.unpinnable && 
+      <div className='pushPinWrapper'>
+            <AiOutlinePushpin
+              size={22}
+              onClick = {() => {
+                !props.placeholder && pinCard(props.cardData.fr_id)
+              }}
+              style={props.pushPinStyle && {...props.pushPinStyle }}
+              className={cn(
+                "pushPin",
+                {"visible": isHovered || isPinned},
+                {"invisible": !isHovered && !isPinned}
+              )} />
+        </div>
+    }
     </div>
+
   )
 }

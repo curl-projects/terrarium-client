@@ -34,8 +34,8 @@ async function getPinnedFRsAndEmbeddings(featureId){
         pinned: true
       }
     },
-    select: {
-      featureRequestId: true
+    include: {
+      featureRequest: true
     }
   })
 

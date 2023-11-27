@@ -113,12 +113,6 @@ export async function loader({ request, params }){
         const featureId = formData.get("featureId")
         return redirect(`/feature/discovery/${featureId}`)
     }
-    else if(actionType === 'messageSave'){
-        const messageContent = formData.get("messageContent")
-        const featureId = formData.get("featureId")
-        const aiMessage = await saveUserMessage(messageContent, featureId)
-        return redirect(`/feature/notepad/${featureId}`)
-        }
   }
 
 export default function Feature(){
@@ -267,17 +261,6 @@ export default function Feature(){
     useEffect(()=>{
         console.log("AI FETCHER:", aiMessageFetcher.state)
     }, [aiMessageFetcher.state])
-    
-    function handleTest(){
-        console.log("HI!")
-        aiMessageFetcher.submit({
-         messageContent: "Hi!",
-         featureId: params["*"]
-        }, {
-            method: "post",
-            action: "/utils/aiMessage"
-        })
-    }
 
     function handleTitleSearch(){
         fetcher.submit({'searchTerm': title, 'featureId': params["*"], actionType: "featureSearch", selectedDatasets: selectedDatasets}, 
@@ -547,9 +530,6 @@ export default function Feature(){
                 modalOpen={instructionModalOpen}
                 setModalOpen={setInstructionModalOpen}
             />
-             <button onClick={handleTest}>
-                Click me!
-            </button>
             </div>
 
     )

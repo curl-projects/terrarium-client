@@ -27,16 +27,56 @@ export async function saveUserMessage(messageContent, featureId){
             content: messageContent,
             agent: "user",
             feature: {
-
                 connect: {
                     id: parseInt(featureId)
                 }
-            }
+            },
 
         }
     })
 
     return message
+}
+
+export async function saveAIMessage(messageContent, featureId, sourcesList){
+    // VALIDATE SOURCES LIST
+    if(sourcesList){
+        const validatedSourcesList = sourcesList
+
+        console.log("VALIDATED LIST:", validatedSourcesList, validatedSourcesList.map(source => ({fr_id: source})))
+    
+        const message = await db.aIMessage.create({
+            data: {
+                content: messageContent,
+                agent: "ai",
+                feature: {
+                    connect: {
+                        id: parseInt(featureId)
+                    }
+                },
+                featureRequests: {
+                    connect: validatedSourcesList.map(source => ({fr_id: source}))
+                }
+            }
+        })
+    
+        return message
+    }
+    else{
+        const message = await db.aIMessage.create({
+            data: {
+                content: messageContent,
+                agent: "ai",
+                feature: {
+                    connect: {
+                        id: parseInt(featureId)
+                    }
+                },
+            }
+        })
+    
+        return message 
+    }
 }
 
 async function getPinnedFRsAndEmbeddings(featureId){
@@ -48,7 +88,12 @@ async function getPinnedFRsAndEmbeddings(featureId){
         }
       },
       select: {
-        featureRequestId: true
+        featureRequestId: true,
+        featureRequest: {
+            select: {
+                fr: true
+            }
+        }
       }
     })
   

@@ -1,3 +1,4 @@
+import { Select } from "@mui/material"
 import { useLoaderData, useOutlet } from "@remix-run/react"
 import { useState } from "react"
 
@@ -15,6 +16,9 @@ export default function Sandbox(){
             border: '2px solid green',
             transform: "translate(-50%, -50%)"
         }}>
+            <Select>
+                
+            </Select>
 
         </div>
     )

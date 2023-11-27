@@ -1766,6 +1766,14 @@ div.DraftEditor-root {
   padding: 24px;
 }
 
+.chatStreamLoaderWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 12px;
+  transition: all 0.3s ease-in-out;
+}
+
 .textEditorPromptBarWrapper{
   display: flex;
   transition: all 0.3s ease-in-out;

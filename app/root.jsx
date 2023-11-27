@@ -15,8 +15,7 @@ import agGrid from 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, alw
 import agGridAlpine from 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 
 import { json } from "@remix-run/node";
-
-
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 
 export function links() {
   return [
@@ -53,7 +52,8 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
+          <Outlet />
+
         <ScrollRestoration />
         <script
           dangerouslySetInnerHTML={{
