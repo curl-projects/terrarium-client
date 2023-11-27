@@ -1,6 +1,7 @@
 import { zodToJsonSchema } from "zod-to-json-schema";
 import fs from "fs";
 import { z } from "zod";
+import { StructuredOutputParser } from "langchain/output_parsers";
 import { OpenAI } from "langchain/llms/openai";
 import { RunnableSequence } from "langchain/schema/runnable";
 import { OpenAIFunctionsAgentOutputParser } from "langchain/agents/openai/output_parser";
@@ -22,6 +23,8 @@ import { db } from "~/models/db.server";
 import { Document } from "langchain/document";
 import { initializeAgentExecutorWithOptions } from "langchain/agents";
 import { VectorDBQAChain } from "langchain/chains";
+import { OpenAIAgentTokenBufferMemory } from "langchain/agents/toolkits";
+import { ChatMessageHistory } from "langchain/memory";
 
 async function getPinnedFRsAndEmbeddings(featureId){
   const pinnedFRs = await db.featureRequestMap.findMany({
@@ -31,15 +34,172 @@ async function getPinnedFRsAndEmbeddings(featureId){
         pinned: true
       }
     },
-    include: {
-      featureRequest: true
+    select: {
+      featureRequestId: true
     }
   })
 
   return pinnedFRs
 }
 
+
 export async function respondToMessage(messageContent, featureId){
+  const pinnedFRs = await getPinnedFRsAndEmbeddings(featureId)
+        
+    console.log("PINNED FRS:", pinnedFRs)
+
+    const docs = pinnedFRs.map(fr => new Document({pageContent: fr.featureRequest.fr, metadata: {id: fr.featureRequest.fr_id}}))
+
+    console.log("DOCS:", docs, docs[0])
+
+    // Initialize docs & create retriever
+    const vectorStore = await MemoryVectorStore.fromDocuments(docs, new OpenAIEmbeddings({openAIApiKey: process.env.OPENAI_KEY}));
+
+    const retriever = vectorStore.asRetriever()
+
+    const retrieverTool = createRetrieverTool(retriever, {
+      name: "search_feature_requests",
+      description:
+        "Searches and returns feature requests in the evidence file.",
+    });
+    
+    // TOOL DECLARATION
+    tools = [retrieverTool]
+
+    // CONSTRUCTING THE AGENT
+  // load previous messages in here
+  const previousMessages = [
+  ];
+  
+  const chatHistory = new ChatMessageHistory(previousMessages);
+  
+  const memory = new OpenAIAgentTokenBufferMemory({
+    llm: new ChatOpenAI({openAIApiKey: process.env.OPENAI_KEY}),
+    memoryKey: "chat_history",
+    outputKey: "output",
+    chatHistory,
+  });
+
+  // RESPONSE SCHEMA:
+  const responseSchema = StructuredOutputParser.fromZodSchema(z.object({
+        answer: z.string().describe("The final answer to respond to the user"),
+        sources: z
+            .array(z.string())
+            .describe(
+            "List of documents that contain answers to the question. Only include a document if it contains relevant information. It's okay not to include any documents. These documents should be in the form of string IDs, which can be found in the metadata of each returned object from the retriever."
+            ),
+        })
+  )
+    
+  const llm = new ChatOpenAI({model: "gpt-3.5-turbo-0613", openAIApiKey: process.env.OPENAI_KEY, temperature: 0});
+  
+  const prefix = `Do your best to answer the questions. Feel free to use any tools available to look up relevant information, only if necessary. Include relevant document ids in your answer when you use the FeatureRequestSearch tool to answer a question.`
+
+  const executor = await initializeAgentExecutorWithOptions(tools, llm, {
+    agentType: "openai-functions",
+    memory,
+    returnIntermediateSteps: true,
+    agentArgs: {
+      prefix: prefix,
+      outputParser: responseSchema
+    },
+  });  
+
+  const result = await executor.invoke({
+    input: messageContent,
+  });
+  
+  console.log("FINAL RESULT:", result)
+  return result
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export async function respondToMessageOld(messageContent, featureId){
         const pinnedFRs = await getPinnedFRsAndEmbeddings(featureId)
           
         console.log("PINNED FRS:", pinnedFRs)
@@ -57,7 +217,7 @@ export async function respondToMessage(messageContent, featureId){
         const qaTool = new ChainTool({
           name: "feature-request-search",
           description:
-            "Query this retriever to get feature request information",
+            "Query this retriever to get information about specific feature requests",
           chain: retrieverChain,
         });
         
